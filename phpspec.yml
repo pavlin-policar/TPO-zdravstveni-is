@@ -1,0 +1,13 @@
+suites:
+    main:
+        namespace: App
+        psr4_prefix: App
+        src_path: app
+
+extensions:
+    - PhpSpec\Laravel\Extension\LaravelExtension
+
+laravel_extension:
+    testing_environment: 'testing'
+
+formatter.name: pretty

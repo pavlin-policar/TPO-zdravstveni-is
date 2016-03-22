@@ -2,6 +2,7 @@
 /node_modules
 /public/storage
 /.vagrant
+/.idea
 Homestead.yaml
 Homestead.json
 .env
