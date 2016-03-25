@@ -1,7 +1,10 @@
 {
   "private": true,
   "devDependencies": {
-    "gulp": "^3.8.8"
+    "gulp": "^3.9.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-phpspec": "^0.5.4",
+    "gulp-shell": "^0.5.2"
   },
   "dependencies": {
     "laravel-elixir": "^4.0.0",
