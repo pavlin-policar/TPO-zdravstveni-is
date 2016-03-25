@@ -12,10 +12,10 @@ class UstvariTabeloVrsteSifrantov extends Migration
      */
     public function up()
     {
-        Schema::create('vrsteSifrantov', function (Blueprint $table) {
+        Schema::create('codeTypes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('imeVrsteSifranta');
-			$table->text('opisVrsteSifranta');
+            $table->string('codeItemName');
+			$table->text('codeItemDescription');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class UstvariTabeloVrsteSifrantov extends Migration
      */
     public function down()
     {
-        Schema::drop('vrsteSifrantov');
+        Schema::drop('codeTypes');
     }
 }

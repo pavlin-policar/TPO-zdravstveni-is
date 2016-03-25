@@ -12,16 +12,16 @@ class UstvariTabeloKontaktneOsebe extends Migration
      */
     public function up()
     {
-        Schema::create('kontaktneOsebe', function (Blueprint $table) {
+        Schema::create('contactPersons', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('prvaOseba')->unsigned();
-			$table->integer('drugaOseba')->unsigned();
-			$table->integer('razmerje')->unsigned();
+			$table->integer('firstPerson')->unsigned();
+			$table->integer('secondPerson')->unsigned();
+			$table->integer('relation')->unsigned();
             $table->timestamps();
 			
-			$table->foreign('prvaOseba')->references('id')->on('uporabniki');
-			$table->foreign('drugaOseba')->references('id')->on('uporabniki');
-            $table->foreign('razmerje')->references('id')->on('sifranti');
+			$table->foreign('firstPerson')->references('id')->on('users');
+			$table->foreign('secondPerson')->references('id')->on('users');
+            $table->foreign('relation')->references('id')->on('codes');
         });
     }
 
@@ -32,6 +32,6 @@ class UstvariTabeloKontaktneOsebe extends Migration
      */
     public function down()
     {
-        Schema::drop('kontaktneOsebe');
+        Schema::drop('contactPersons');
     }
 }

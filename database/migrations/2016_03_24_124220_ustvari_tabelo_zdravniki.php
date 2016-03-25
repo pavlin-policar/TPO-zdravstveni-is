@@ -12,14 +12,18 @@ class UstvariTabeloZdravniki extends Migration
      */
     public function up()
     {
-        Schema::create('zdravnik', function (Blueprint $table) {
+        Schema::create('doctor', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('profil')->unsigned();
-			$table->integer('stevilkaZdravnika')->unique()->unsigned()->nullable();
-			$table->integer('moznoSteviloPacientov')->unsigned()->nullable();
+			$table->integer('profile')->unsigned();
+			$table->integer('doctorNumber')->unique()->unsigned()->nullable();
+			$table->integer('doctorType')->unique()->unsigned()->nullable();
+			$table->integer('institution')->unique()->unsigned()->nullable();
+			$table->integer('maxPatients')->unsigned()->nullable();
             $table->timestamps();
 			
-			$table->foreign('profil')->references('id')->on('uporabniki');
+			$table->foreign('profile')->references('id')->on('users');
+			$table->foreign('doctorType')->references('id')->on('codes');
+			$table->foreign('institution')->references('id')->on('codes');
         });
     }
 
@@ -30,6 +34,6 @@ class UstvariTabeloZdravniki extends Migration
      */
     public function down()
     {
-        Schema::drop('zdravnik');
+        Schema::drop('doctor');
     }
 }

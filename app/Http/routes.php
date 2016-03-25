@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('user/profile', 'UserController@showProfile')->name('profile');
+Route::get('user/{id}', 'UserController@showProfile')->name('profile') ->where('id', '[0-9]+');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes

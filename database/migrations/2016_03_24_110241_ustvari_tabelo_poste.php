@@ -12,10 +12,10 @@ class UstvariTabeloPoste extends Migration
      */
     public function up()
     {
-        Schema::create('poste', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-			$table->smallInteger('postnaStevilka')->unique()->unsigned();
-            $table->string('posta');
+			$table->smallInteger('postCode')->unique()->unsigned();
+            $table->string('post');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class UstvariTabeloPoste extends Migration
      */
     public function down()
     {
-        Schema::drop('poste');
+        Schema::drop('posts');
     }
 }
