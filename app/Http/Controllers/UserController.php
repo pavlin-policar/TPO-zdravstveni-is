@@ -11,6 +11,6 @@ class UserController extends Controller
 {
     public function showProfile($id)
     {
-        return var_dump(['user' => Uporabniki::findOrFail($id)]);
+        return var_dump(['user' => User::findOrFail($id)]);
     }
 }
