@@ -15,13 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('user/profile', array('uses' => 'UserController@showProfile'));
-Route::get('user/{id}', 'UserController@showUser')->name('profile') ->where('id', '[0-9]+');
-// route to show the login form
-Route::get('login', array('uses' => 'UserController@showLogin'));
-// route to process the form
-Route::post('login', array('uses' => 'UserController@doLogin'));
-Route::get('logout', array('uses' => 'UserController@doLogout'));
 
 /*
 |--------------------------------------------------------------------------
@@ -36,4 +29,10 @@ Route::get('logout', array('uses' => 'UserController@doLogout'));
 
 Route::group(['middleware' => ['web']], function () {
     //
+});
+
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+    Route::get('/home', 'HomeController@index');
 });
