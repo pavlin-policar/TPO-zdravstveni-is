@@ -15,8 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('user/profile', 'UserController@showProfile')->name('profile');
-Route::get('user/{id}', 'UserController@showProfile')->name('profile') ->where('id', '[0-9]+');
+Route::get('user/profile', array('uses' => 'UserController@showProfile'));
+Route::get('user/{id}', 'UserController@showUser')->name('profile') ->where('id', '[0-9]+');
+// route to show the login form
+Route::get('login', array('uses' => 'UserController@showLogin'));
+// route to process the form
+Route::post('login', array('uses' => 'UserController@doLogin'));
+Route::get('logout', array('uses' => 'UserController@doLogout'));
 
 /*
 |--------------------------------------------------------------------------
