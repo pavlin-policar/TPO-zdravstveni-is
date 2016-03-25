@@ -14,4 +14,10 @@ In case you don't have composer installed, you really really should.
 Run `php vendor/bin/homestead make`. You should now have a `Homestead.yaml` file in the project directory. Configure to your liking.
 
 [Documentation for homestead](https://laravel.com/docs/5.2/homestead)
+
 [Documentation for vagrant](https://www.vagrantup.com/docs/)
+
+### General
+
+#### Templates
+Form helpers for blade are installed. [Docs](https://laravelcollective.com/docs/5.2/html)
