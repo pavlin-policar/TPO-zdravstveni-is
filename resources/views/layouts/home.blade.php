@@ -8,17 +8,17 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
     <!-- CSS Libs -->
-    <link rel="stylesheet" type="text/css" href="../resources/lib/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../resources/lib/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../resources/lib/css/animate.min.css">
-    <link rel="stylesheet" type="text/css" href="../resources/lib/css/bootstrap-switch.min.css">
-    <link rel="stylesheet" type="text/css" href="../resources/lib/css/checkbox3.min.css">
-    <link rel="stylesheet" type="text/css" href="../resources/lib/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="../resources/lib/css/dataTables.bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../resources/lib/css/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="../public/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../public/lib/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../public/lib/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="../public/lib/css/bootstrap-switch.min.css">
+    <link rel="stylesheet" type="text/css" href="../public/lib/css/checkbox3.min.css">
+    <link rel="stylesheet" type="text/css" href="../public/lib/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="../public/lib/css/dataTables.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../public/lib/css/select2.min.css">
     <!-- CSS App -->
-    <link rel="stylesheet" type="text/css" href="../resources/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../resources/css/themes/flat-blue.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/themes/flat-blue.css">
 </head>
 
 <body class="flat-blue">
@@ -117,6 +117,9 @@
                                 <i class="fa fa-times icon"></i>
                             </button>
                         </div>
+						
+						@yield('menu')
+						
                         <ul class="nav navbar-nav">
                             <li class="active">
                                 <a href="index.html">
@@ -166,6 +169,8 @@
             <!-- Main Content -->
             <div class="content">
 			
+				@yield('content')
+				
             </div>    
         </div>
         <footer class="app-footer">
@@ -175,19 +180,19 @@
         </footer>
         <div>
             <!-- Javascript Libs -->
-            <script type="text/javascript" src="../resources/lib/js/jquery.min.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/bootstrap.min.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/Chart.min.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/bootstrap-switch.min.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/jquery.matchHeight-min.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/jquery.dataTables.min.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/dataTables.bootstrap.min.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/select2.full.min.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/ace/ace.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/ace/mode-html.js"></script>
-            <script type="text/javascript" src="../resources/lib/js/ace/theme-github.js"></script>
+            <script type="text/javascript" src="../public/lib/js/jquery.min.js"></script>
+            <script type="text/javascript" src="../public/lib/js/bootstrap.min.js"></script>
+            <script type="text/javascript" src="../public/lib/js/Chart.min.js"></script>
+            <script type="text/javascript" src="../public/lib/js/bootstrap-switch.min.js"></script>
+            <script type="text/javascript" src="../public/lib/js/jquery.matchHeight-min.js"></script>
+            <script type="text/javascript" src="../public/lib/js/jquery.dataTables.min.js"></script>
+            <script type="text/javascript" src="../public/lib/js/dataTables.bootstrap.min.js"></script>
+            <script type="text/javascript" src="../public/lib/js/select2.full.min.js"></script>
+            <script type="text/javascript" src="../public/lib/js/ace/ace.js"></script>
+            <script type="text/javascript" src="../public/lib/js/ace/mode-html.js"></script>
+            <script type="text/javascript" src="../public/lib/js/ace/theme-github.js"></script>
             <!-- Javascript -->
-            <script type="text/javascript" src="../resources/js/app.js"></script>
+            <script type="text/javascript" src="../public/js/app.js"></script>
 </body>
 
 </html>
