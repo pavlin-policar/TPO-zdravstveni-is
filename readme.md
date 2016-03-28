@@ -9,7 +9,7 @@ Run `composer install` in the project folder. See magic.
 In case you don't have composer installed, you really really should. You can get it [here](https://getcomposer.org/).
 
 ### Vagrant
-Run `php vendor/bin/homestead make`. You should now have a `Homestead.yaml` file in the project directory. Configure to your liking.
+Run `vendor/bin/homestead make`. You should now have a `Homestead.yaml` file in the project directory. Configure to your liking.
 
 [Homestead](https://laravel.com/docs/5.2/homestead)
 [Vagrant](https://www.vagrantup.com/docs/)

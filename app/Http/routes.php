@@ -36,6 +36,7 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
-
+    Route::get('/profileUpdate', ['uses' => 'UserController@showProfile']);
+    Route::post('/profileUpdate', 'UserController@editProfile');
     Route::get('/home', 'HomeController@index');
 });
