@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProfileRequest;
 use App\User;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,16 +21,17 @@ class UserController extends Controller
         //$result = Array();
         //$result['firstName']= "test";
         $id = \Auth::user()->id;
-        $result['user']= User::findOrFail($id);
+        $result['user'] = User::findOrFail($id);
         //return var_dump($result);
         return view('partials.profile', $result);
     }
 
-    public function editProfile(Request $request) {
+    public function editProfile(Request $request)
+    {
 
         $id = \Auth::user()->id;
         //$user = User::findOrFail($id);
-        $result['user']= User::findOrFail($id);
+        $result['user'] = User::findOrFail($id);
 
         //TODO input validation
         /*$this->validate($request, [
@@ -42,8 +42,6 @@ class UserController extends Controller
             $request->input('phoneNumber') => 'required',
             $request->input('ZZCardNumber') => 'required|unique',
         ]);*/
-
-
 
 
         $result['user']->firstName = $request->input('firstName');
@@ -67,6 +65,9 @@ class UserController extends Controller
      */
     public function showGotoCreateProfile()
     {
+        if (Auth::user()->hasCompletedRegistration()) {
+            return redirect()->back();
+        }
         return view('profile.goto-profile-create');
     }
 
@@ -77,6 +78,9 @@ class UserController extends Controller
      */
     public function showCreateProfile()
     {
+        if (Auth::user()->hasCompletedRegistration()) {
+            return redirect()->back();
+        }
         return view('profile.create')->with('user', Auth::user());
     }
 
@@ -88,6 +92,10 @@ class UserController extends Controller
      */
     public function createProfile(CreateProfileRequest $request)
     {
+        if (Auth::user()->hasCompletedRegistration()) {
+            return redirect()->back();
+        }
+        // TODO test that this works, integrity constraint failures due to db being empty.
         Auth::user()->update($request->all());
         return redirect()->route('home.index');
     }

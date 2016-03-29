@@ -2,23 +2,23 @@
 
 @section('content')
     <div class="page-title">
-        <span class="title">You haven't completed registration yet</span>
-        <div class="description">Complete the registration process to access the website.</div>
+        <span class="title">Niste še zaključili registracije</span>
+        <div class="description">Za poln dostop do spletne aplikacije morate dokončati postopek registracije.</div>
     </div>
     <div class="row">
         <div class="col-xs-12">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <div class="title">Complete registration</div>
+                        <div class="title">Zaključi registracijo</div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p>To access and use the web application, you must complete the registration process.</p>
-                    <p>Complete the registration process by creating a profile for yourself and filling out the required fields.</p>
+                    <p>Za poln dostop do spletne aplikacije morate dokončati postopek registracije.</p>
+                    <p>Postopek registracije lahko zaključite tako, da si kreirate profil in izpolnite zahtevane podatke.</p>
                     <div class="text-right">
-                        {!! link_to('/logout', 'Log out', ['class' => 'btn btn-default']) !!}
-                        {!! link_to_route('profile.getCreate', 'Create profile', [], ['class' => 'btn btn-primary']) !!}
+                        {!! link_to('/logout', 'Izpiši me', ['class' => 'btn btn-default']) !!}
+                        {!! link_to_route('profile.getCreate', 'Kreiraj profil', [], ['class' => 'btn btn-primary']) !!}
                     </div>
                 </div>
             </div>

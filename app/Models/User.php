@@ -11,14 +11,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property int id
  * @property string firstName
  * @property string lastName
- * @property int    post        Postal code of the address
+ * @property int post        Postal code of the address
  * @property string address     Users address
  * @property string email
  * @property string password
  * @property string phoneNumber
- * @property int    ZZCardNumber
+ * @property int ZZCardNumber
  * @property Carbon birthDate
- * @property int    gender
+ * @property int gender
  * @property Carbon created_at
  * @property Carbon modified_at
  * @property Carbon deleted_at
@@ -78,8 +78,9 @@ class User extends Authenticatable
      */
     public function hasCompletedRegistration()
     {
-        return $this->address !== null and
-        $this->birthDate !== null;
+        return
+            $this->address !== null and
+            $this->birthDate !== null;
     }
 
     /**

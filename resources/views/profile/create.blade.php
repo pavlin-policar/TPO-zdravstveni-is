@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="page-title">
-        <span class="title">Create profile</span>
+        <span class="title">Kreiraj profil</span>
         <div class="description">Create a profile so you and your doctors have access to your
             personal information.
         </div>
@@ -16,7 +16,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <p>Please fill out all the required fields. The required fields are denoted with an asterix (*).</p>
+                    <p>Please fill out all the required fields. The required fields are denoted with
+                        an asterix (*).</p>
                     <div class="sub-title">Personal information</div>
                     {!! Form::open(['route' => 'profile.postCreate', 'method' => 'post', 'class' => 'form-horizontal']) !!}
                     {{-- First name --}}
@@ -115,13 +116,14 @@
                         {!! Form::label('ZZCardNumber', 'ZZ Card Number', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
                             {!! Form::text('ZZCardNumber', $user->ZZCardNumber, ['class' => 'form-control', 'required']) !!}
+                            <span class="help-block">Please enter the card id that can be found on the backside of your ZZ card.</span>
                             @if ($errors->has('ZZCardNumber'))
                                 <span class="help-block">{{ $errors->first('ZZCardNumber') }}</span>
                             @endif
                         </div>
                     </div>
 
-                    <div class="sub-title">Please select your doctor, dentist and caretaker</div>
+                    <div class="sub-title">Doctors</div>
                     {{-- Personal doctor --}}
                     <div class="form-group{{ $errors->has('personalDoctor') ? ' has-error' : '' }}">
                         {!! Form::label('personalDoctor', 'Personal doctor', ['class' => 'col-sm-2 control-label']) !!}
@@ -156,7 +158,7 @@
                     {{-- Submit button --}}
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
+                            {!! Form::submit('Kreiraj profil', ['class' => 'btn btn-primary']) !!}
                         </div>
                     </div>
 
