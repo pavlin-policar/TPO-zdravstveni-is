@@ -13,6 +13,7 @@
                     <div class="card-title">
                         <div class="title">Table</div>
                         <a href="addCode/{{ $id }}" type="button" class="btn btn-success">Dodaj šifrant</a>
+                        <a href="../codeTypes" type="button" class="btn btn-success">Vrnite se nazaj</a>
                     </div>
                 </div>
                 <div class="card-body">
