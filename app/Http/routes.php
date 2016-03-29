@@ -59,4 +59,6 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
 
     Route::get('/profileUpdate', ['uses' => 'UserController@showProfile']);
     Route::post('/profileUpdate', 'UserController@editProfile');
+    Route::get('/codeTypes', ['uses' => 'CodeController@showCodeTypes']);
+    Route::get('/codeType/{id}', ['uses' => 'CodeController@showCodesForType']);
 });

@@ -17,6 +17,8 @@ class UstvariTabeloSifranti extends Migration
 			$table->integer('codeType')->unsigned();
             $table->string('codeName');
 			$table->text('codeDescription');
+			$table->double('minValue', 15, 6)->nullable();
+			$table->double('maxValue', 15, 6)->nullable();
             $table->timestamps();
 			
 			$table->foreign('codeType')->references('id')->on('codeTypes');
