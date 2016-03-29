@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProfileRequest;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -68,4 +70,25 @@ class UserController extends Controller
         return view('profile.goto-profile-create');
     }
 
+    /**
+     * Display the create profile page.
+     *
+     * @return mixed
+     */
+    public function showCreateProfile()
+    {
+        return view('profile.create')->with('user', Auth::user());
+    }
+
+    /**
+     * Persist the users information to the database.
+     *
+     * @param CreateProfileRequest $request
+     * @return mixed
+     */
+    public function createProfile(CreateProfileRequest $request)
+    {
+        Auth::user()->update($request->all());
+        return redirect()->route('home.index');
+    }
 }

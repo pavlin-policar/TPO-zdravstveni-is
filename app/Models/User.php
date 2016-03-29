@@ -28,6 +28,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
+    const MALE = 1;
+    const FEMALE = 2;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -36,17 +39,17 @@ class User extends Authenticatable
     public $fillable = [
         'firstName',
         'lastName',
-        'address',
-        'post',
-        'email',
-        'password',
-        'phoneNumber',
-        'ZZCardNumber',
         'birthDate',
         'gender',
+        'email',
+        'phoneNumber',
+        'post',
+        'address',
+        'ZZCardNumber',
         'personalDoctor',
         'personalDentist',
         'delegate',
+        'password',
     ];
 
     /**
@@ -60,6 +63,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'birthDate',
+    ];
+
+    /**
      * Check if the user has completed their registration by creating a profile.
      *
      * @return bool
@@ -68,5 +80,25 @@ class User extends Authenticatable
     {
         return $this->address !== null and
         $this->birthDate !== null;
+    }
+
+    /**
+     * Check if the user is a man.
+     *
+     * @return bool
+     */
+    public function isMale()
+    {
+        return $this->gender === static::MALE;
+    }
+
+    /**
+     * Check if the user is a woman.
+     *
+     * @return bool
+     */
+    public function isFemale()
+    {
+        return $this->gender === static::FEMALE;
     }
 }

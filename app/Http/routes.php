@@ -34,15 +34,15 @@ Route::group(['middleware' => 'web'], function () {
 Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('registration/step-2', [
         'uses' => 'UserController@showGotoCreateProfile',
-        'as' => 'registration.step-2'
+        'as' => 'registration.step-2',
     ]);
     Route::get('profile/create', [
         'uses' => 'UserController@showCreateProfile',
-        'as' => 'profile.getCreate'
+        'as' => 'profile.getCreate',
     ]);
     Route::post('profile/create', [
         'uses' => 'UserController@createProfile',
-        'as' => 'profile.postCreate'
+        'as' => 'profile.postCreate',
     ]);
 });
 
@@ -52,7 +52,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         return view('welcome');
     });
 
-    Route::get('/home', 'HomeController@index');
+    Route::get('/home', [
+        'uses' => 'HomeController@index',
+        'as' => 'home.index',
+    ]);
 
     Route::get('/profileUpdate', ['uses' => 'UserController@showProfile']);
     Route::post('/profileUpdate', 'UserController@editProfile');
