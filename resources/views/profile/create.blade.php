@@ -90,15 +90,7 @@
                         </div>
                     </div>
                     {{-- Postal code --}}
-                    <div class="form-group{{ $errors->has('post') ? ' has-error' : '' }}">
-                        {!! Form::label('post', 'Postal code', ['class' => 'col-sm-2 control-label']) !!}
-                        <div class="col-sm-10">
-                            {!! Form::text('post', $user->post, ['class' => 'form-control', 'required']) !!}
-                            @if ($errors->has('post'))
-                                <span class="help-block">{{ $errors->first('post') }}</span>
-                            @endif
-                        </div>
-                    </div>
+                    @include('partials.form-elements.select-postal-codes')
                     {{-- Address --}}
                     <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
                         {!! Form::label('address', 'Address', ['class' => 'col-sm-2 control-label']) !!}
