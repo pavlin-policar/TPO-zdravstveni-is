@@ -78,6 +78,11 @@ return [
             'schema' => 'public',
         ],
 
+        'memory_test' => [
+            'driver' => 'sqlite',
+            'database' => ':memory:',
+        ],
+
     ],
 
     /*

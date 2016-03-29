@@ -2,8 +2,8 @@
 
 namespace spec\App\Console\Commands;
 
-use PhpSpec\Laravel\LaravelObjectBehavior;
 use Prophecy\Argument;
+use spec\App\BaseSpec;
 
 /**
  * Class InspireSpec
@@ -13,7 +13,7 @@ use Prophecy\Argument;
  *
  * @package spec\App\Console\Commands
  */
-class InspireSpec extends LaravelObjectBehavior
+class InspireSpec extends BaseSpec
 {
     public function it_is_initializable()
     {
