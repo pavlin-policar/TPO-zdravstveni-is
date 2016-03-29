@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/layout', function () {
-    return view('layouts.home');
+    return view('layouts.master');
 });
 
 /*
