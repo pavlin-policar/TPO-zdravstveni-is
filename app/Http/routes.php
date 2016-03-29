@@ -11,15 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/layout', function () {
     return view('layouts.master');
 });
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -32,13 +26,34 @@ Route::get('/layout', function () {
 |
 */
 
-Route::group(['middleware' => ['web']], function () {
-    //
-});
-
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
+});
+
+
+Route::group(['middleware' => ['web', 'auth']], function () {
+    Route::get('registration/step-2', [
+        'uses' => 'UserController@showGotoCreateProfile',
+        'as' => 'registration.step-2'
+    ]);
+    Route::get('profile/create', [
+        'uses' => 'UserController@showCreateProfile',
+        'as' => 'profile.getCreate'
+    ]);
+    Route::post('profile/create', [
+        'uses' => 'UserController@createProfile',
+        'as' => 'profile.postCreate'
+    ]);
+});
+
+Route::group(['middleware' => ['web', 'authenticated']], function () {
+
+    Route::get('/', function () {
+        return view('welcome');
+    });
+
+    Route::get('/home', 'HomeController@index');
+
     Route::get('/profileUpdate', ['uses' => 'UserController@showProfile']);
     Route::post('/profileUpdate', 'UserController@editProfile');
-    Route::get('/home', 'HomeController@index');
 });

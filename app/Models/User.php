@@ -2,8 +2,30 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/**
+ * Class User
+ *
+ * @property int id
+ * @property string firstName
+ * @property string lastName
+ * @property int    post        Postal code of the address
+ * @property string address     Users address
+ * @property string email
+ * @property string password
+ * @property string phoneNumber
+ * @property int    ZZCardNumber
+ * @property Carbon birthDate
+ * @property int    gender
+ * @property Carbon created_at
+ * @property Carbon modified_at
+ * @property Carbon deleted_at
+ * @property Carbon last_login
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
     /**
@@ -36,4 +58,15 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    /**
+     * Check if the user has completed their registration by creating a profile.
+     *
+     * @return bool
+     */
+    public function hasCompletedRegistration()
+    {
+        return $this->address !== null and
+        $this->birthDate !== null;
+    }
 }

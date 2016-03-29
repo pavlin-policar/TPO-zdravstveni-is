@@ -27,8 +27,10 @@
         @include('partials.navbar')
         {{-- Bar to the side --}}
         @include('partials.sidebar')
-        <div class="content">
-            @yield('content')
+        <div class="container-fluid">
+            <div class="side-body">
+                @yield('content')
+            </div>
         </div>
     </div>
     @include('partials.footer')

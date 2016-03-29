@@ -58,4 +58,14 @@ class UserController extends Controller
         return view('partials.profile', $result);
     }
 
+    /**
+     * Display the page that gives you a notice that you haven't completed registration yet.
+     *
+     * @return mixed
+     */
+    public function showGotoCreateProfile()
+    {
+        return view('profile.goto-profile-create');
+    }
+
 }
