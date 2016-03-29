@@ -12,6 +12,7 @@
 
                     <div class="card-title">
                         <div class="title">Table</div>
+                        <a href="addCodeType" type="button" class="btn btn-success">Dodaj vrsto šifranta</a>
                     </div>
                 </div>
                 <div class="card-body">
