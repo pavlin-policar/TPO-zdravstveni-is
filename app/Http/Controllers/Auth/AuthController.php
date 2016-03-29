@@ -44,6 +44,7 @@ class AuthController extends Controller
     {
         $name = User::find(\Auth::user()->id)->firstName;
         //$name = '';
+        session(['showUser' => \Auth::user()->id]);
         if ($name == NULL || $name == '') return redirect('/profileUpdate'); //return redirect()->intended('/profileUpdate');
         else return redirect('/home'); //return redirect()->intended('/home');
     }

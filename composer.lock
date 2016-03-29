@@ -1839,12 +1839,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "fb3241979bd080ac17f157244e9d6fc84a22bf9d"
+                "reference": "5a8994d18552912137e3078e0759e61da66c7a33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/fb3241979bd080ac17f157244e9d6fc84a22bf9d",
-                "reference": "fb3241979bd080ac17f157244e9d6fc84a22bf9d",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/5a8994d18552912137e3078e0759e61da66c7a33",
+                "reference": "5a8994d18552912137e3078e0759e61da66c7a33",
                 "shasum": ""
             },
             "require": {
@@ -1911,7 +1911,7 @@
                 "symfony",
                 "testing"
             ],
-            "time": "2016-03-06 17:47:41"
+            "time": "2016-03-28 07:04:11"
         },
         {
             "name": "behat/gherkin",
