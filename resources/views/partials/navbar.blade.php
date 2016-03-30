@@ -79,7 +79,7 @@
                                     <i class="fa fa-user"></i> Profile
                                 </button>
                                 <button type="button" class="btn btn-default">
-                                    <i class="fa fa-sign-out"></i> Logout
+                                    <a href="/logout"><i class="fa fa-sign-out"></i> Logout</a>
                                 </button>
                             </div>
                         </div>

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Repositories\GenderRepository;
+
 class CreateProfileRequest extends Request
 {
     /**
@@ -25,18 +27,15 @@ class CreateProfileRequest extends Request
             'firstName' => 'required|alpha',
             'lastName' => 'required|alpha',
             'birthDate' => 'required|date|before:today',
-            'gender' => 'required',
+            'gender' =>'required|in:' .
+                app(GenderRepository::class)->getGenders()->lists('id')->implode(','),
 
             'email' => 'required|email',
             'phoneNumber' => 'required',
-            'post' => 'required',
+            'post' => 'required|exists:posts',
             'address' => 'required',
 
             'ZZCardNumber' => 'required',
-
-            'personalDoctor' => 'required',
-            'personalDentist' => 'required',
-            'delegate' => '',
         ];
     }
 }

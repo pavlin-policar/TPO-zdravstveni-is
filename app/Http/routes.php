@@ -30,7 +30,10 @@ Route::group(['middleware' => 'web'], function () {
     Route::auth();
 });
 
-
+/**
+ * Routes that only authenticated users can access, but they needn't have completed the registration
+ * process.
+ */
 Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('registration/step-2', [
         'uses' => 'UserController@showGotoCreateProfile',
@@ -48,13 +51,19 @@ Route::group(['middleware' => ['web', 'auth']], function () {
 
 Route::group(['middleware' => ['web', 'authenticated']], function () {
 
-    Route::get('/', function () {
-        return view('welcome');
-    });
-
-    Route::get('/home', [
+    Route::get('/', [
         'uses' => 'HomeController@index',
         'as' => 'home.index',
+    ]);
+
+    Route::get('/profile/{user?}', [
+        'uses' => 'UserController@showProfile',
+        'as' => 'profile.show'
+    ]);
+
+    Route::put('profile/{user}/update', [
+        'uses' => 'UserController@updatePersonalInfo',
+        'as' => 'profile.updatePersonal',
     ]);
 
     Route::get('/profileUpdate', ['uses' => 'UserController@showProfile']);

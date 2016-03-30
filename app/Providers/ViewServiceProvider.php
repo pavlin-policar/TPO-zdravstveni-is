@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\CodeType;
+use App\Repositories\GenderRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
@@ -15,6 +17,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->composerPostsSelectBox();
+        $this->composeGenderRadioButtonsHz();
     }
 
     /**
@@ -41,6 +44,15 @@ class ViewServiceProvider extends ServiceProvider
                     ->orderBy('display', 'asc')
                     ->lists('display', 'id')
             );
+        });
+    }
+
+    protected function composeGenderRadioButtonsHz()
+    {
+        view()->composer('partials.form-elements.radio-gender-buttons-hz', function ($view) {
+            $view
+                ->with('male', app(GenderRepository::class)->getMale())
+                ->with('female', app(GenderRepository::class)->getFemale());
         });
     }
 }

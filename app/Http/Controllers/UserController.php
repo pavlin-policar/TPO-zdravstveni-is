@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateProfileRequest;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,15 +16,15 @@ class UserController extends Controller
      */
     //$data['id']
 
-    public function showProfile()
-    {
-        //$result = Array();
-        //$result['firstName']= "test";
-        $id = \Auth::user()->id;
-        $result['user'] = User::findOrFail($id);
-        //return var_dump($result);
-        return view('partials.profile', $result);
-    }
+//    public function showProfile()
+//    {
+//        //$result = Array();
+//        //$result['firstName']= "test";
+//        $id = \Auth::user()->id;
+//        $result['user'] = User::findOrFail($id);
+//        //return var_dump($result);
+//        return view('partials.profile', $result);
+//    }
 
     public function editProfile(Request $request)
     {
@@ -56,6 +56,38 @@ class UserController extends Controller
         $result['user']->save();
 
         return view('partials.profile', $result);
+    }
+
+    /**
+     * Show the users profile / settings page.
+     *
+     * @param User $user
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function showProfile(User $user)
+    {
+        // If no user id was supplied, assume the user would like to edit their own profile.
+        if (!$user->existsInStorage()) {
+            $user = Auth::user();
+        }
+        $this->authorize('canViewProfile', $user);
+        return view('profile.view')->with('user', $user);
+    }
+
+    /**
+     * Update the users personal information.
+     *
+     * @param User $user
+     * @param CreateProfileRequest $request
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function updatePersonalInfo(User $user, CreateProfileRequest $request)
+    {
+        $this->authorize('canUpdatePersonalInfo', $user);
+        $user->update($request->all());
+        return redirect()->back();
     }
 
     /**

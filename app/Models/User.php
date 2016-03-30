@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Repositories\GenderRepository;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -28,9 +29,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
-    const MALE = 1;
-    const FEMALE = 2;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -72,6 +70,28 @@ class User extends Authenticatable
     ];
 
     /**
+     * ACCESSORS
+     */
+
+    /**
+     * Get the full name for the user.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        return $this->firstName . ' ' . $this->lastName;
+    }
+
+    /**
+     * MUTATORS
+     */
+
+    /**
+     * HELPERS
+     */
+
+    /**
      * Check if the user has completed their registration by creating a profile.
      *
      * @return bool
@@ -90,7 +110,7 @@ class User extends Authenticatable
      */
     public function isMale()
     {
-        return $this->gender === static::MALE;
+        return $this->gender === app(GenderRepository::class)->getMale()->id;
     }
 
     /**
@@ -100,6 +120,43 @@ class User extends Authenticatable
      */
     public function isFemale()
     {
-        return $this->gender === static::FEMALE;
+        return $this->gender === app(GenderRepository::class)->getFemale()->id;
     }
+
+    /**
+     * Check if the user has ever been persisted to storage or if we are dealing with a fresh
+     * instance.
+     *
+     * @return bool
+     */
+    public function existsInStorage()
+    {
+        return $this->created_at !== null;
+    }
+
+    /**
+     * Check if we are dealing with two objects that represent the same user entity.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isSameUserAs(User $user)
+    {
+        return $this->id === $user->id;
+    }
+
+    /**
+     * Check if the user is an admin user.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        // TODO implement logic here
+        return true;
+    }
+
+    /**
+     * RELATIONSHIPS
+     */
 }
