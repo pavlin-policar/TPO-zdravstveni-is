@@ -6,7 +6,7 @@
  * Time: 20:57
  */
 use Illuminate\Database\Seeder;
-use App\User;
+use App\Models\User;
 
 class UserTableSeeder extends Seeder
 {

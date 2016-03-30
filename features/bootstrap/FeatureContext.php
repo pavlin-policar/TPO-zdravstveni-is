@@ -1,19 +1,28 @@
 <?php
 
 use App\Models\User;
+use App\Repositories\GenderRepository;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Behat\Definition\Call\Given;
 use Behat\MinkExtension\Context\MinkContext;
 use Carbon\Carbon;
-use Laracasts\Behat\Context\Migrator;
 
 /**
  * Defines application features from the specific context.
  */
 class FeatureContext extends MinkContext implements Context, SnippetAcceptingContext
 {
-    use Migrator;
+    /**
+     * Migrate the database before each scenario.
+     *
+     * @beforeScenario
+     */
+    public function migrate()
+    {
+        Artisan::call('migrate', [
+            '--seed' => true
+        ]);
+    }
 
     /**
      * Initializes context.
@@ -50,7 +59,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
             'firstName' => 'Janez',
             'lastName' => 'Novak',
             'birthDate' => Carbon::create(1994, 1, 1),
-            'gender' => User::MALE,
+            'gender' => app(GenderRepository::class)->getMale()->id,
             'email' => $email,
             'password' => bcrypt('password'),
             'phoneNumber' => '+386 40 123 123 123',
