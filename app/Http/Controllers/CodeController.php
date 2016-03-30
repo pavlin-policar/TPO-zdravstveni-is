@@ -39,6 +39,9 @@ class CodeController extends Controller
         $data=Array();
         $data['codeType']=CodeType::findOrFail($id)->codeItemName;
         $data['id']=$id;
+        $data['back']=$id;
+        $data['formSubmit']='addCode';
+        $data['code']=null;
         return view('code.addCode')->with($data);
     }
 
@@ -48,8 +51,28 @@ class CodeController extends Controller
         $codeType->codeDescription=$request->input('codeDescription');
         $codeType->minValue=$request->input('minValue');
         $codeType->maxValue=$request->input('maxValue');
-        $codeType->codeType=$request->input('codeType');
+        $codeType->codeType=$request->input('curentId');
         $codeType->save();
         return redirect("codeType/addCode/".$request->input('codeType'));
+    }
+
+    public function editCode($id){
+        $data=Array();
+        $data['code']=Code::findOrFail($id);
+        $data['codeType']=CodeType::findOrFail($data['code']['codeType'])->codeItemName;
+        $data['id']=$id;
+        $data['back']=$data['code']['codeType'];
+        $data['formSubmit']='editCode';
+        return view('code.addCode')->with($data);
+    }
+
+    public function updateCode(Request $request){
+        $codeType = Code::findOrFail($request->input('curentId'));
+        $codeType->codeName=$request->input('codeName');
+        $codeType->codeDescription=$request->input('codeDescription');
+        $codeType->minValue=$request->input('minValue');
+        $codeType->maxValue=$request->input('maxValue');
+        $codeType->save();
+        return redirect("codeType/".$codeType->codeType);
     }
 }
