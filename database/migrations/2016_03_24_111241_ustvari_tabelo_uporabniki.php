@@ -28,6 +28,8 @@ class UstvariTabeloUporabniki extends Migration
 			$table->integer('personalDentist')->unsigned()->nullable();
 			$table->integer('personType')->unsigned()->nullable();
 			$table->integer('delegate')->unsigned()->nullable();
+			$table->boolean('confirmed')->nullable();
+			$table->string('confirmationCode')->nullable();
 			$table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
