@@ -7,6 +7,10 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Mail;
+use Illuminate\Support\Facades\Input;
+
+//require_once 'Mail.php';
 
 class AuthController extends Controller
 {
@@ -39,7 +43,6 @@ class AuthController extends Controller
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
-    //TODO fix redirection URLs
     protected function authenticated()
     {
         $name = User::find(\Auth::user()->id)->firstName;
@@ -74,10 +77,48 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         //$this->redirectTo = '/url-after-register';
-        return User::create([
+        $confirmation_code = str_random(30);
+        //return User::create([
+        $user = User::create([
             //'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'confirmation_code' => $confirmation_code,
         ]);
+
+        //var_dump(Input::get('email'));
+
+        //TODO set up an email and configure .env, then uncomment below code and it should hopefully work
+        /*Mail::send('email.verify', ['confirmation_code' => $confirmation_code], function($message) {
+            $message->to(Input::get('email'), 'User')->subject('Verify your email address');
+            $message->from('hello@ZIS.com', 'ZIS admin');
+        });
+
+        Flash::message('Thanks for signing up! Please check your email.');*/
+
+        return $user;
+    }
+
+    public function confirm($confirmation_code)
+    {
+        if( ! $confirmation_code)
+        {
+            throw new InvalidConfirmationCodeException;
+        }
+
+        $user = User::whereConfirmationCode($confirmation_code)->first();
+
+        if ( ! $user)
+        {
+            throw new InvalidConfirmationCodeException;
+        }
+
+        $user->confirmed = 1;
+        $user->confirmation_code = null;
+        $user->save();
+
+        Flash::message('You have successfully verified your account.');
+
+        return Redirect::route('login_path');
     }
 }

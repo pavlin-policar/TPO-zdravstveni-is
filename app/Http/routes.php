@@ -28,6 +28,11 @@ Route::get('/layout', function () {
 
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
+
+    Route::get('register/verify/{confirmationCode}', [
+        'as' => 'confirmation_path',
+        'uses' => 'AuthController@confirm'
+    ]);
 });
 
 /**
