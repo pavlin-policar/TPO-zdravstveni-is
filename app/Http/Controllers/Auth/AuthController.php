@@ -45,7 +45,10 @@ class AuthController extends Controller
 
     protected function authenticated()
     {
-        $name = User::find(\Auth::user()->id)->firstName;
+        $user=User::find(\Auth::user()->id);
+        $name = $user->firstName;
+        $user->last_login=date("Y-m-d H:i:s");
+        $user->save();
         //$name = '';
         session(['showUser' => \Auth::user()->id]);
         if ($name == NULL || $name == '') return redirect('/profileUpdate'); //return redirect()->intended('/profileUpdate');
