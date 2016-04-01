@@ -33,6 +33,7 @@ class UstvariTabeloUporabniki extends Migration
 			$table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
+            $table->datetime('last_login')->nullable();
 			
 			$table->foreign('post')->references('id')->on('posts');
 			$table->foreign('personalDoctor')->references('id')->on('users');
