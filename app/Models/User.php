@@ -153,7 +153,10 @@ class User extends Authenticatable
     public function isAdmin()
     {
         // TODO implement logic here
-        return true;
+        if($this->personType==1)
+            return true;
+        else
+            return false;
     }
 
     /**
