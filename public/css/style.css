@@ -7,6 +7,7 @@
 }
 #meter
 {
+  margin-bottom: 5px;
   width:0px;
   height:15px;
   border-radius: 3px;
@@ -38,6 +39,16 @@ footer {
 
 * {
   outline: none; }
+
+.icon-arrow-right {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.title-white {
+    color: white;
+}
 
 .row > [class*="col-"] {
   margin-bottom: 25px; }

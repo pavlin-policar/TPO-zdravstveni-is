@@ -2,6 +2,58 @@ $(document).ready(function(){
   $("#password").keyup(function(){
     check_pass();
   });
+
+  $("#glyphicon-user").click(function(){
+      if($('#dash-user').is(":visible")){
+          $("#glyphicon-user").attr('class','fa fa-expand icon-arrow-right');
+          $("#dash-user").hide(1000);
+      }
+      else{
+          $("#glyphicon-user").attr('class','fa fa-compress icon-arrow-right');
+          $("#dash-user").show(1000);
+      }
+  });
+  $("#glyphicon-medical").click(function(){
+        if($('#dash-medical').is(":visible")){
+            $("#glyphicon-medical").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-medical").fadeOut('slow');
+        }
+        else{
+            $("#glyphicon-medical").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-medical").fadeIn('fast');
+        }
+  });
+  $("#glyphicon-measurments").click(function(){
+        if($('#dash-measurments').is(":visible")){
+            $("#glyphicon-measurments").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-measurments").hide(1000);
+        }
+        else{
+            $("#glyphicon-measurments").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-measurments").show(1000);
+        }
+    });
+    $("#glyphicon-allergy").click(function(){
+        if($('#dash-allergy').is(":visible")){
+            $("#glyphicon-allergy").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-allergy").hide(1000);
+        }
+        else{
+            $("#glyphicon-allergy").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-allergy").show(1000);
+        }
+    });
+    $("#glyphicon-diet").click(function(){
+        if($('#dash-diet').is(":visible")){
+            $("#glyphicon-diet").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-diet").hide(1000);
+        }
+        else{
+            $("#glyphicon-diet").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-diet").show(1000);
+        }
+    });
+
 });
 
 $(function() {

@@ -61,6 +61,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'home.index',
     ]);
 
+    Route::get('/dashboard/{user?}', [
+        'uses' => 'HomeController@dashboard',
+        'as' => 'dashboard.show',
+    ]);
+
     Route::get('/profile/{user?}', [
         'uses' => 'UserController@showProfile',
         'as' => 'profile.show'
