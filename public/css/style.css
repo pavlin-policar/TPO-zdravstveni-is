@@ -1,3 +1,24 @@
+#meter_wrapper
+{
+  border:1px solid grey;
+  width:200px;
+  height:15px;
+  border-radius:3px;
+}
+#meter
+{
+  width:0px;
+  height:15px;
+  border-radius: 3px;
+}
+#pass_type
+{
+  height: 15px;
+  font-size:16px;
+  text-align:center;
+  color:Black;
+}
+
 html {
   height: 100%; }
 
@@ -583,7 +604,6 @@ a:hover {
       margin-top: 15px; }
 
 body.login-page {
-  background: url(../../img/app-header-bg.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -1017,7 +1037,6 @@ body.login-page {
     padding: 0 15px; }
   .landing-page .app-header {
     padding-top: 100px;
-    background-image: url("../img/app-header-bg.jpg");
     background-repeat: no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -1033,7 +1052,6 @@ body.login-page {
     padding-top: 50px;
     padding-bottom: 20px; }
   .landing-page .app-content-b.feature-1 {
-    background-image: url("../img/bg/picjumbo.com_HNCK3558.jpg");
     background-repeat: no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -1044,7 +1062,6 @@ body.login-page {
   .landing-page .app-content-b.contact-us {
     padding-top: 60px;
     padding-bottom: 60px;
-    background-image: url("../img/contact-us-bg.jpg");
     background-repeat: no-repeat;
     -webkit-background-size: cover;
     -moz-background-size: cover;

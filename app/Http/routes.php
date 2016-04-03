@@ -71,6 +71,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'profile.updatePersonal',
     ]);
 
+    Route::put('profile/{user}/password', [
+        'uses' => 'UserController@changePassword',
+        'as' => 'profile.changePassword',
+    ]);
+
     Route::get('/profileUpdate', ['uses' => 'UserController@showProfile']);
     Route::post('/profileUpdate', 'UserController@editProfile');
 
