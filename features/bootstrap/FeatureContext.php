@@ -75,16 +75,16 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     public function createRegisteredUser($email)
     {
         $user = new User([
-            'firstName' => 'Janez',
-            'lastName' => 'Novak',
-            'birthDate' => Carbon::create(1994, 1, 1),
+            'first_name' => 'Janez',
+            'last_name' => 'Novak',
+            'birth_date' => Carbon::create(1994, 1, 1),
             'gender' => app(GenderRepository::class)->getMale()->id,
             'email' => $email,
             'password' => bcrypt('password'),
-            'phoneNumber' => '+386 40 123 123 123',
+            'phone_number' => '+386 40 123 123 123',
             'post' => 1,
             'address' => 'Address',
-            'ZZCardNumber' => 'Totally valid',
+            'zz_card_number' => 'Totally valid',
         ]);
         $user->confirmEmail();
         $user->save();

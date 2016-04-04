@@ -6,7 +6,7 @@ Feature: Login system
   Scenario: I log in as a valid user
     Given I have a new user with the email "user@gmail.com"
     And I am on "/login"
-    When I fill in "Email" with "user@gmail.com"
-    And I fill in "Password" with "password"
-    And I press "Login"
+    When I fill in "email" with "user@gmail.com"
+    And I fill in "password" with "password"
+    And I press "Prijava"
     Then I should not be on "/login"

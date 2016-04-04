@@ -13,20 +13,20 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string firstName
  * @property string lastName
  * @property string fullName
- * @property int post               Postal code of the address
+ * @property int post            Postal code of the address
  * @property string address         Users address
  * @property string email
  * @property string password
  * @property string phoneNumber
- * @property int ZZCardNumber
+ * @property int ZzCardNumber
  * @property Carbon birthDate
  * @property int gender
- * @property Carbon created_at
- * @property Carbon modified_at
- * @property Carbon deleted_at
+ * @property Carbon createdAt
+ * @property Carbon modifiedAt
+ * @property Carbon deletedAt
  * @property Carbon last_login
- * @property bool   confirmed
- * @property string confirmation_code
+ * @property bool confirmed
+ * @property string confirmationCode
  *
  * @package App\Models
  */
@@ -38,18 +38,18 @@ class User extends Authenticatable
      * @var array
      */
     public $fillable = [
-        'firstName',
-        'lastName',
-        'birthDate',
+        'first_name',
+        'last_name',
+        'birth_date',
         'gender',
         'email',
-        'phoneNumber',
+        'phone_number',
         'post',
         'address',
-        'ZZCardNumber',
-        'personalDoctor',
-        'personalDentist',
-        'delegate',
+        'zz_card_number',
+        'personal_doctor',
+        'personal_dentist',
+        'caretaker',
         'password',
     ];
 
@@ -83,7 +83,7 @@ class User extends Authenticatable
      */
     public function getFullNameAttribute()
     {
-        return $this->firstName . ' ' . $this->lastName;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     /**
@@ -103,7 +103,7 @@ class User extends Authenticatable
     {
         return
             $this->address !== null and
-            $this->birthDate !== null;
+            $this->birth_date !== null;
     }
 
     /**
@@ -155,7 +155,37 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return $this->personType === 1;
+        return $this->person_type === 1;
+    }
+
+    /**
+     * Check if the user is an doctor.
+     *
+     * @return bool
+     */
+    public function isDoctor()
+    {
+        return $this->person_type === 2;
+    }
+
+    /**
+     * Check if the user is an nurse.
+     *
+     * @return bool
+     */
+    public function isNurse()
+    {
+        return $this->person_type === 3;
+    }
+
+    /**
+     * Check if the user is an patient.
+     *
+     * @return bool
+     */
+    public function isPatient()
+    {
+        return $this->person_type === 5;
     }
 
     /**
@@ -185,33 +215,6 @@ class User extends Authenticatable
     {
         $this->confirmed = true;
         $this->confirmation_code = null;
-    }
-
-    public function isDoctor()
-    {
-        // TODO implement logic here
-        if($this->personType==2)
-            return true;
-        else
-            return false;
-    }
-
-    public function isNurse()
-    {
-        // TODO implement logic here
-        if($this->personType==3)
-            return true;
-        else
-            return false;
-    }
-
-    public function isPatient()
-    {
-        // TODO implement logic here
-        if($this->personType==5)
-            return true;
-        else
-            return false;
     }
 
     /**

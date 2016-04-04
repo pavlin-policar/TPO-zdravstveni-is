@@ -5,8 +5,8 @@
  * Date: 25. 03. 2016
  * Time: 20:57
  */
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class UserTableSeeder extends Seeder
 {
@@ -15,11 +15,11 @@ class UserTableSeeder extends Seeder
     {
         DB::table('users')->delete();
         User::create(array(
-            'firstName'     => 'Admin',
-            'lastName' => 'Admin',
-            'email'    => 'admin@admin.si',
+            'first_name' => 'Admin',
+            'last_name' => 'Admin',
+            'email' => 'admin@admin.si',
             'password' => Hash::make('admin'),
-            'personType' => '1',
+            'person_type' => '1',
         ));
     }
 

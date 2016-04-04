@@ -14,33 +14,33 @@ class UstvariTabeloUporabniki extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('firstName')->nullable();
-            $table->string('lastName')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('address')->nullable();
 			$table->integer('post')->unsigned()->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('phoneNumber')->nullable();
-			$table->integer('ZZCardNumber')->unique()->unsigned()->nullable();
-			$table->date('birthDate')->nullable();
+            $table->string('phone_number')->nullable();
+			$table->integer('zz_card_number')->unique()->unsigned()->nullable();
+			$table->date('birth_date')->nullable();
 			$table->integer('gender')->unsigned()->nullable();
 			$table->integer('personal_doctor')->unsigned()->nullable();
-			$table->integer('personalDentist')->unsigned()->nullable();
-			$table->integer('personType')->unsigned()->nullable();
-			$table->integer('delegate')->unsigned()->nullable();
+			$table->integer('personal_dentist')->unsigned()->nullable();
+			$table->integer('person_type')->unsigned()->nullable();
+			$table->integer('caretaker')->unsigned()->nullable();
 			$table->boolean('confirmed')->nullable();
 			$table->string('confirmation_code')->nullable();
 			$table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
-            $table->datetime('last_login')->nullable();
+            $table->dateTime('last_login')->nullable();
 			
 			$table->foreign('post')->references('id')->on('posts');
-			$table->foreign('personalDoctor')->references('id')->on('users');
-			$table->foreign('personalDentist')->references('id')->on('users');
-			$table->foreign('personType')->references('id')->on('codes');
+			$table->foreign('personal_doctor')->references('id')->on('users');
+			$table->foreign('personal_dentist')->references('id')->on('users');
+			$table->foreign('person_type')->references('id')->on('codes');
 			$table->foreign('gender')->references('id')->on('codes');
-			$table->foreign('delegate')->references('id')->on('codes'); //skrbnik
+			$table->foreign('caretaker')->references('id')->on('codes');
         });
     }
 
