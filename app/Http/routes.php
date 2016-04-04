@@ -71,10 +71,13 @@ Route::group(['middleware' => ['web', 'auth', 'email-validated']], function () {
  */
 Route::group(['middleware' => ['web', 'authenticated']], function () {
 
-    Route::get('/', [
+    /*Route::get('/', [
         'uses' => 'HomeController@index',
         'as' => 'home.index',
-    ]);
+    ]);*/
+    Route::get('/', function () {
+        return redirect()->route('dashboard.show');
+    });
 
     Route::get('/dashboard/{user?}', [
         'uses' => 'HomeController@dashboard',
