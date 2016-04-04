@@ -64,6 +64,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'home.index',
     ]);
 
+    Route::get('/dashboard/{user?}', [
+        'uses' => 'HomeController@dashboard',
+        'as' => 'dashboard.show',
+    ]);
+
     Route::get('/profile/{user?}', [
         'uses' => 'UserController@showProfile',
         'as' => 'profile.show'
@@ -76,6 +81,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
     /**
      * Routes only available to the admin user.
      */
+    Route::put('profile/{user}/password', [
+        'uses' => 'UserController@changePassword',
+        'as' => 'profile.changePassword',
+    ]);
+
     Route::group(['middleware' => 'admin'], function () {
         
         Route::get('/code-types', [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\CreateProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -131,4 +132,37 @@ class UserController extends Controller
         Auth::user()->update($request->all());
         return redirect()->route('home.index');
     }
+
+    //Change password
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        $user = Auth::user();
+        $userdata = array(
+            'email'     => $user->email,
+            'password'  => $request['oldPassword']
+        );
+
+        // attempt to do the login
+        if (Auth::attempt($userdata)) {
+            $user->password = bcrypt($request['password']);
+            $user->update();
+            return redirect()->back();
+
+        } else {
+
+            // validation not successful, wrong password
+            return "errror";
+
+        }
+        /*if(bcrypt($request['oldPassword']) === $user->password){
+            $user->password = bcrypt($request['password']);
+            $user->update();
+            return redirect()->back();
+        }
+        else{
+            return "wrong password";
+        }
+        */
+    }
+
 }

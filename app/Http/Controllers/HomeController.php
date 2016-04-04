@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -26,4 +28,15 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function dashboard(User $user)
+    {
+
+        if (!$user->existsInStorage()) {
+            $user = Auth::user();
+        }
+        $this->authorize('canViewProfile', $user);
+        return view('dashboard')->with('user', $user);
+    }
+
 }

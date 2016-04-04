@@ -54,7 +54,7 @@
                                 <p>2</p>
                             </div>
                             <div class="tab-pane fade" id="password-reset" aria-labelledby="password-reset-tab">
-                                <p>3</p>
+                                @include('profile.tabs.profile-change-passwd', ['user' => $user])
                             </div>
                         </div>
                     </div>

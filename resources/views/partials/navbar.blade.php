@@ -64,22 +64,21 @@
                 </ul>
             </li>
             <li class="dropdown profile">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Emily
-                    Hart <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ $user->firstName }} <span class="caret"></span></a>
                 <ul class="dropdown-menu animated fadeInDown">
                     <li class="profile-img">
-                        <img src="" class="profile-img">
+                        <img src="http://www.myiconfinder.com/uploads/iconsets/ac7256a56da1fa7c09a699ddec407e7e-human.png" class="profile-img">
                     </li>
                     <li>
                         <div class="profile-info">
-                            <h4 class="username">Emily Hart</h4>
-                            <p>emily_hart@email.com</p>
+                            <h4 class="username">{{ $user->firstName }} {{ $user->lastName }}</h4>
+                            <p>{{  $user->email }}</p>
                             <div class="btn-group margin-bottom-2x" role="group">
-                                <button type="button" class="btn btn-default">
+                                <button type="button" class="btn btn-default" href="{{ url('/profile', $user->id) }}">
                                     <i class="fa fa-user"></i> Profile
                                 </button>
                                 <button type="button" class="btn btn-default">
-                                    <a href="/logout"><i class="fa fa-sign-out"></i> Logout</a>
+                                    <a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
                                 </button>
                             </div>
                         </div>

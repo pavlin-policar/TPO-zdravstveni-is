@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a815a9aa6a54e063378056f3fd7cc750",
+    "hash": "57929c21e3425d46623bc5ad47adcae0",
     "content-hash": "c3cdd31579f2ad65c7c3eb2f4661bc26",
     "packages": [
         {
@@ -1843,7 +1843,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/5a8994d18552912137e3078e0759e61da66c7a33",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/56657835a16fa1fcfbd801612c7b8f95ebd7a328",
                 "reference": "5a8994d18552912137e3078e0759e61da66c7a33",
                 "shasum": ""
             },
