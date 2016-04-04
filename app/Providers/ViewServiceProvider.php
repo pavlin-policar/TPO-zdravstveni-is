@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\CodeType;
 use App\Repositories\GenderRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,6 +19,8 @@ class ViewServiceProvider extends ServiceProvider
     {
         $this->composerPostsSelectBox();
         $this->composeGenderRadioButtonsHz();
+        $this->composeNavbar();
+        $this->composeSidebar();
     }
 
     /**
@@ -53,6 +56,20 @@ class ViewServiceProvider extends ServiceProvider
             $view
                 ->with('male', app(GenderRepository::class)->getMale())
                 ->with('female', app(GenderRepository::class)->getFemale());
+        });
+    }
+
+    protected function composeNavbar()
+    {
+        view()->composer('partials.navbar', function ($view) {
+            $view->with('user', Auth::user());
+        });
+    }
+
+    protected function composeSidebar()
+    {
+        view()->composer('partials.sidebar', function ($view) {
+            $view->with('user', Auth::user());
         });
     }
 }

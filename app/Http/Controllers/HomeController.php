@@ -31,7 +31,6 @@ class HomeController extends Controller
 
     public function dashboard(User $user)
     {
-
         if (!$user->existsInStorage()) {
             $user = Auth::user();
         }
