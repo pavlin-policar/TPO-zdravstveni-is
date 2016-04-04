@@ -24,18 +24,18 @@ class CreateProfileRequest extends Request
     public function rules()
     {
         return [
-            'firstName' => 'required|alpha',
-            'lastName' => 'required|alpha',
-            'birthDate' => 'required|date|before:today',
+            'first_name' => 'required|alpha',
+            'last_name' => 'required|alpha',
+            'birth_date' => 'required|date|before:today',
             'gender' =>'required|in:' .
                 app(GenderRepository::class)->getGenders()->lists('id')->implode(','),
 
             'email' => 'required|email',
-            'phoneNumber' => 'required',
+            'phone_number' => 'required',
             'post' => 'required|exists:posts,id',
             'address' => 'required',
 
-            'ZZCardNumber' => 'required',
+            'zz_card_number' => 'required',
         ];
     }
 }

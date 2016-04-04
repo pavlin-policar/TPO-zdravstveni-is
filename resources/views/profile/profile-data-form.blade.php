@@ -1,32 +1,32 @@
 
 <div class="sub-title">Osebni podatki</div>
 {{-- First name --}}
-<div class="form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
-    {!! Form::label('firstName', 'First name', ['class' => 'col-sm-2 control-label']) !!}
+<div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+    {!! Form::label('first_name', 'First name', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        {!! Form::text('firstName', $user->firstName, ['class' => 'form-control', 'required']) !!}
-        @if ($errors->has('firstName'))
-            <span class="help-block">{{ $errors->first('firstName') }}</span>
+        {!! Form::text('first_name', $user->first_name, ['class' => 'form-control', 'required']) !!}
+        @if ($errors->has('first_name'))
+            <span class="help-block">{{ $errors->first('first_name') }}</span>
         @endif
     </div>
 </div>
 {{-- Last name --}}
-<div class="form-group{{ $errors->has('lastName') ? ' has-error' : '' }}">
-    {!! Form::label('lastName', 'Last name', ['class' => 'col-sm-2 control-label']) !!}
+<div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+    {!! Form::label('last_name', 'Last name', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        {!! Form::text('lastName', $user->lastName, ['class' => 'form-control', 'required']) !!}
-        @if ($errors->has('lastName'))
-            <span class="help-block">{{ $errors->first('lastName') }}</span>
+        {!! Form::text('last_name', $user->last_name, ['class' => 'form-control', 'required']) !!}
+        @if ($errors->has('last_name'))
+            <span class="help-block">{{ $errors->first('last_name') }}</span>
         @endif
     </div>
 </div>
 {{-- Birthday --}}
-<div class="form-group{{ $errors->has('birthDate') ? ' has-error' : '' }}">
-    {!! Form::label('birthDate', 'Birthday', ['class' => 'col-sm-2 control-label']) !!}
+<div class="form-group{{ $errors->has('birth_date') ? ' has-error' : '' }}">
+    {!! Form::label('birth_date', 'Birthday', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        {!! Form::date('birthDate', $user->birthDate, ['class' => 'form-control', 'required']) !!}
-        @if ($errors->has('birthDate'))
-            <span class="help-block">{{ $errors->first('birthDate') }}</span>
+        {!! Form::date('birth_date', $user->birth_date, ['class' => 'form-control', 'required']) !!}
+        @if ($errors->has('birth_date'))
+            <span class="help-block">{{ $errors->first('birth_date') }}</span>
         @endif
     </div>
 </div>
@@ -45,12 +45,12 @@
     </div>
 </div>
 {{-- Telephone number --}}
-<div class="form-group{{ $errors->has('phoneNumber') ? ' has-error' : '' }}">
-    {!! Form::label('phoneNumber', 'Telephone number', ['class' => 'col-sm-2 control-label']) !!}
+<div class="form-group{{ $errors->has('phone_number') ? ' has-error' : '' }}">
+    {!! Form::label('phone_number', 'Telephone number', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        {!! Form::text('phoneNumber', $user->phoneNumber, ['class' => 'form-control', 'required']) !!}
-        @if ($errors->has('phoneNumber'))
-            <span class="help-block">{{ $errors->first('phoneNumber') }}</span>
+        {!! Form::text('phone_number', $user->phone_number, ['class' => 'form-control', 'required']) !!}
+        @if ($errors->has('phone_number'))
+            <span class="help-block">{{ $errors->first('phone_number') }}</span>
         @endif
     </div>
 </div>
@@ -69,13 +69,13 @@
 
 <div class="sub-title">Kartica zdravstvenega zavarovanja</div>
 {{-- ZZ Card Number --}}
-<div class="form-group{{ $errors->has('ZZCardNumber') ? ' has-error' : '' }}">
-    {!! Form::label('ZZCardNumber', 'ZZ Card Number', ['class' => 'col-sm-2 control-label']) !!}
+<div class="form-group{{ $errors->has('zz_card_number') ? ' has-error' : '' }}">
+    {!! Form::label('zz_card_number', 'ZZ Card Number', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        {!! Form::text('ZZCardNumber', $user->ZZCardNumber, ['class' => 'form-control', 'required']) !!}
+        {!! Form::text('zz_card_number', $user->zz_card_number, ['class' => 'form-control', 'required']) !!}
         <span class="help-block">Please enter the card id that can be found on the backside of your ZZ card.</span>
-        @if ($errors->has('ZZCardNumber'))
-            <span class="help-block">{{ $errors->first('ZZCardNumber') }}</span>
+        @if ($errors->has('zz_card_number'))
+            <span class="help-block">{{ $errors->first('zz_card_number') }}</span>
         @endif
     </div>
 </div>

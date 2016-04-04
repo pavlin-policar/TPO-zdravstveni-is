@@ -128,7 +128,6 @@ class UserController extends Controller
         if (Auth::user()->hasCompletedRegistration()) {
             return redirect()->back();
         }
-        // TODO test that this works, integrity constraint failures due to db being empty.
         Auth::user()->update($request->all());
         return redirect()->route('home.index');
     }

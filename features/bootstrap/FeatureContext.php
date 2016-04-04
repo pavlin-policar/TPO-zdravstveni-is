@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Postcode;
 use App\Models\User;
 use App\Repositories\GenderRepository;
 use Behat\Behat\Context\Context;
@@ -85,6 +86,29 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
             'post' => 1,
             'address' => 'Address',
             'zz_card_number' => 'Totally valid',
+        ]);
+        $user->confirmEmail();
+        $user->save();
+    }
+
+    /**
+     * Create a fully registered user, profile and all.
+     *
+     * @Given /^I have have registered as Janez Novak$/
+     */
+    public function createJanezNovak()
+    {
+        $user = new User([
+            'first_name' => 'Janez',
+            'last_name' => 'Novak',
+            'birth_date' => Carbon::create(2000, 1, 1, 0, 0, 0),
+            'gender' => app(GenderRepository::class)->getMale()->id,
+            'email' => 'janez.novak@gmail.com',
+            'password' => bcrypt('password'),
+            'phone_number' => '123456789',
+            'post' => Postcode::wherePostcode(1000)->first()->id,
+            'address' => 'Dunajska',
+            'zz_card_number' => '123',
         ]);
         $user->confirmEmail();
         $user->save();

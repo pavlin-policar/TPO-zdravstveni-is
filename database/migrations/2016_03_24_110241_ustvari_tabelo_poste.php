@@ -14,7 +14,7 @@ class UstvariTabeloPoste extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-			$table->smallInteger('postCode')->unique()->unsigned();
+			$table->smallInteger('postcode')->unique()->unsigned();
             $table->string('post');
             $table->timestamps();
         });

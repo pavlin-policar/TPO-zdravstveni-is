@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\CodeType;
+use App\Models\Postcode;
 use App\Repositories\GenderRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -42,10 +42,7 @@ class ViewServiceProvider extends ServiceProvider
         view()->composer('partials.form-elements.select-postal-codes', function ($view) {
             $view->with(
                 'postcodes',
-                DB::table('posts')
-                    ->selectRaw("id, CONCAT(post, ' (', postCode, ')') AS display")
-                    ->orderBy('display', 'asc')
-                    ->lists('display', 'id')
+                Postcode::orderBy('post', 'asc')->get()->lists('display', 'id')->toArray()
             );
         });
     }
