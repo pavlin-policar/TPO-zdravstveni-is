@@ -24,12 +24,12 @@ class UstvariTabeloUporabniki extends Migration
 			$table->integer('ZZCardNumber')->unique()->unsigned()->nullable();
 			$table->date('birthDate')->nullable();
 			$table->integer('gender')->unsigned()->nullable();
-			$table->integer('personalDoctor')->unsigned()->nullable();
+			$table->integer('personal_doctor')->unsigned()->nullable();
 			$table->integer('personalDentist')->unsigned()->nullable();
 			$table->integer('personType')->unsigned()->nullable();
 			$table->integer('delegate')->unsigned()->nullable();
 			$table->boolean('confirmed')->nullable();
-			$table->string('confirmationCode')->nullable();
+			$table->string('confirmation_code')->nullable();
 			$table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

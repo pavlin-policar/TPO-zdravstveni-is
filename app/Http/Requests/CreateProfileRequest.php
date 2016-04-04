@@ -32,7 +32,7 @@ class CreateProfileRequest extends Request
 
             'email' => 'required|email',
             'phoneNumber' => 'required',
-            'post' => 'required|exists:posts',
+            'post' => 'required|exists:posts,id',
             'address' => 'required',
 
             'ZZCardNumber' => 'required',
