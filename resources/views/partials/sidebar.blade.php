@@ -24,6 +24,11 @@
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Settings</span>
                     </a>
                 </li>
+                <li class="inactive">
+                    <a href="{{ url('/code-types') }}">
+                        <span class="icon glyphicon glyphicon-cog"></span><span class="title">Urejanje šifrantov</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->

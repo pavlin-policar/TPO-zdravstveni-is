@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CodeType;
 use App\Models\Code;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Redirect;
 
 class CodeController extends Controller
 {
@@ -32,7 +33,7 @@ class CodeController extends Controller
         $codeType->codeItemName=$request->input('codeItemName');
         $codeType->codeItemDescription=$request->input('codeItemDescription');
         $codeType->save();
-        return redirect()->route('code.codeTypes');
+        return redirect()->route('code.index');
     }
 
     public function addCode($id){
@@ -40,7 +41,6 @@ class CodeController extends Controller
         $data['codeType']=CodeType::findOrFail($id)->codeItemName;
         $data['id']=$id;
         $data['back']=$id;
-        $data['formSubmit']='addCode';
         $data['code']=null;
         return view('code.addCode')->with($data);
     }
@@ -53,7 +53,8 @@ class CodeController extends Controller
         $codeType->maxValue=$request->input('maxValue');
         $codeType->codeType=$request->input('curentId');
         $codeType->save();
-        return redirect("codeType/addCode/".$request->input('codeType'));
+        return redirect()->route('code.getCreate', ['id' => $request->input('curentId')]);
+        //return redirect("codeType/addCode/".$request->input('codeType'));
     }
 
     public function editCode($id){
@@ -62,7 +63,6 @@ class CodeController extends Controller
         $data['codeType']=CodeType::findOrFail($data['code']['codeType'])->codeItemName;
         $data['id']=$id;
         $data['back']=$data['code']['codeType'];
-        $data['formSubmit']='editCode';
         return view('code.addCode')->with($data);
     }
 
@@ -73,6 +73,7 @@ class CodeController extends Controller
         $codeType->minValue=$request->input('minValue');
         $codeType->maxValue=$request->input('maxValue');
         $codeType->save();
-        return redirect("codeType/".$codeType->codeType);
+        return redirect()->route('code.edit', ['id' => $request->input('curentId')]);
+        //return redirect("codeType/".$codeType->codeType);
     }
 }

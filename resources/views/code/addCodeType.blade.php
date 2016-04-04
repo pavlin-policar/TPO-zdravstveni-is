@@ -15,7 +15,7 @@
                 </div>
                 <div class="card-body">
 
-                    {!! Form::open(['url' => 'addCodeType']) !!}
+                    {!! Form::open(array('route' => 'codeTypes.postCreate')) !!}
                     {{ csrf_field() }}
 
                     <div class="form-group">

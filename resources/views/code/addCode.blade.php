@@ -11,12 +11,16 @@
                 <div class="card-header">
                     <div class="card-title">
                         <div class="title">Izpolnite naslednje podatke</div>
-                        <a href="../{{ $back }}" type="button" class="btn btn-success">Vrnite se nazaj</a>
+                        {!! link_to_route('codeTypes.show', 'Vrnite se nazaj', ['id' => $back ], ['class' => 'btn btn-primary']) !!}
                     </div>
                 </div>
                 <div class="card-body">
 
-                    {!! Form::open(['url' => $formSubmit]) !!}
+                    @if(!isset($code))
+                        {!! Form::open(array('route' => 'code.postCreate')) !!}
+                    @else
+                        {!! Form::open(array('route' => 'code.update')) !!}
+                    @endif
                     {{ csrf_field() }}
 
                     @include('code.codeItems')
