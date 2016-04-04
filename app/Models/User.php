@@ -12,8 +12,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property int id
  * @property string firstName
  * @property string lastName
- * @property int post        Postal code of the address
- * @property string address     Users address
+ * @property string fullName
+ * @property int post               Postal code of the address
+ * @property string address         Users address
  * @property string email
  * @property string password
  * @property string phoneNumber
@@ -24,6 +25,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property Carbon modified_at
  * @property Carbon deleted_at
  * @property Carbon last_login
+ * @property bool   confirmed
+ * @property string confirmation_code
  *
  * @package App\Models
  */
@@ -153,10 +156,20 @@ class User extends Authenticatable
     public function isAdmin()
     {
         // TODO implement logic here
-        if($this->personType==1)
+        if ($this->personType == 1) {
             return true;
-        else
+        } else {
             return false;
+        }
+    }
+
+    /**
+     * Mark that the user has completed their registration.
+     */
+    public function confirmEmail()
+    {
+        $this->confirmed = true;
+        $this->confirmation_code = null;
     }
 
     /**

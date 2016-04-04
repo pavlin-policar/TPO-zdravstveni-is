@@ -6,12 +6,15 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\MinkExtension\Context\MinkContext;
 use Carbon\Carbon;
+use Laracasts\Behat\Context\Services\MailTrap;
 
 /**
  * Defines application features from the specific context.
  */
 class FeatureContext extends MinkContext implements Context, SnippetAcceptingContext
 {
+    use MailTrap;
+
     /**
      * Migrate the database before each scenario.
      *
@@ -92,5 +95,47 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     public function assertPageAddressNot($page)
     {
         $this->assertSession()->addressNotEquals($this->locatePath($page));
+    }
+
+    /**
+     * Check that an email has been sent to the given email with subject and body containing.
+     *
+     * @Then /^An email should be sent to "([^"]+)" with subject "([^"]+)" containing "([^"]+)"$/
+     */
+    public function anEmailShouldBeSentToWithSubjectAndBody($email, $subject, $contains)
+    {
+    }
+
+    /**
+     * Check that an email has been sent to the given email.
+     *
+     * @Then /^An email should be sent to "([^"]+)" with their confirmation code$/
+     */
+    public function anEmailShouldBeSentToWithSubjectAndConfirmationCode($email)
+    {
+        $inbox = $this->fetchInbox();
+        var_dump($inbox);
+//        if (count($inbox === 0)) {
+//            throw new \Exception('Inbox is empty.');
+//        }
+//        $this->emptyInbox();
+    }
+
+    /**
+     * Check that an email has been sent to the given email.
+     *
+     * @Then /^An email should be sent to "([^"]+)" with subject "([^"]+)"$/
+     */
+    public function anEmailShouldBeSentToWithSubject($email, $subject)
+    {
+    }
+
+    /**
+     * Check that an email has been sent to the given email.
+     *
+     * @Then /^An email should be sent to "([^"]+)" containing "([^"]+)"$/
+     */
+    public function anEmailShouldBeSentToWithBody($email, $contains)
+    {
     }
 }
