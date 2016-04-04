@@ -1,7 +1,7 @@
 Feature: Initial registration
-  In order to test the basic registration process
   As a regular user
-  I need to verify that I can register with data and that an activation email is sent to the supplied email
+  I want to be able to register myself
+  So that I could gain access to the web application
 
   Scenario: Normal registration flow
     Given I am on "/register"
@@ -9,4 +9,5 @@ Feature: Initial registration
     And I fill in "password" with "password"
     And I fill in "password_confirmation" with "password"
     And I press "Register"
-    Then An email should be sent to "user@gmail.com" with their confirmation code
+    Then I should be on "/registration/confirm"
+    And An email should be sent to "user@gmail.com" with their confirmation code

@@ -43,7 +43,11 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->middleware($this->guestMiddleware(), ['except' => [
+            'logout',
+            'showConfirmationPage',
+            'confirm',
+        ]]);
     }
 
     /**
@@ -91,14 +95,7 @@ class AuthController extends Controller
         $user->confirmation_code = str_random(30);
         $user->save();
 
-        Mail::send('email.confirm', [
-            'confirmationCode' => $user->confirmation_code
-        ], function ($message) use ($user) {
-            $message
-                ->to($user->email, $user->fullName)
-                ->from('info@zis.com', 'Zdravstveni informacijski sistem')
-                ->subject('Zaključite registracijo');
-        });
+        $this->sendActivationEmail($user);
         request()->session()->flash(
             'message',
             'Uspešno ste se registrirali. Zdaj morate še aktivirati svoj račun z aktivacijsko kodo,'
@@ -106,6 +103,18 @@ class AuthController extends Controller
         );
 
         return $user;
+    }
+
+    /**
+     * Show the page where users can manually enter the activation code to their email that they
+     * received from us.
+     */
+    public function showConfirmationPage()
+    {
+        if (Auth::user()->hasConfirmedEmail()) {
+            return redirect()->back();
+        }
+        return view('auth.confirm-email');
     }
 
     /**
@@ -117,6 +126,9 @@ class AuthController extends Controller
      */
     public function confirm(Request $request, $confirmationCode)
     {
+        if (Auth::user()->hasConfirmedEmail()) {
+            return redirect()->back();
+        }
         $user = User::whereConfirmationCode($confirmationCode)->firstOrFail();
         $user->confirmEmail();
         $user->save();
@@ -137,5 +149,13 @@ class AuthController extends Controller
      */
     protected function sendActivationEmail($user)
     {
+        Mail::send('email.confirm', [
+            'confirmationCode' => $user->confirmation_code
+        ], function ($message) use ($user) {
+            $message
+                ->to($user->email, '')
+                ->from('info@zis.com', 'Zdravstveni informacijski sistem')
+                ->subject('Zaključite registracijo');
+        });
     }
 }

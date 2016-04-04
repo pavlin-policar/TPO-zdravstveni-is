@@ -29,7 +29,7 @@ class UstvariTabeloUporabniki extends Migration
 			$table->integer('personType')->unsigned()->nullable();
 			$table->integer('delegate')->unsigned()->nullable();
 			$table->boolean('confirmed')->nullable();
-			$table->string('confirmationCode')->nullable();
+			$table->string('confirmation_code')->nullable();
 			$table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

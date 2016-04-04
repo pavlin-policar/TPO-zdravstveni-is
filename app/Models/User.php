@@ -155,12 +155,27 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        // TODO implement logic here
-        if ($this->personType == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->personType === 1;
+    }
+
+    /**
+     * Get the users confirmation code.
+     *
+     * @return string
+     */
+    public function getConfirmationCode()
+    {
+        return $this->confirmation_code;
+    }
+
+    /**
+     * Check if the user has confirmed their email.
+     *
+     * @return bool
+     */
+    public function hasConfirmedEmail()
+    {
+        return (bool)$this->confirmed;
     }
 
     /**
