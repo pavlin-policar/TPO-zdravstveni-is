@@ -159,6 +159,33 @@ class User extends Authenticatable
             return false;
     }
 
+    public function isDoctor()
+    {
+        // TODO implement logic here
+        if($this->personType==2)
+            return true;
+        else
+            return false;
+    }
+
+    public function isNurse()
+    {
+        // TODO implement logic here
+        if($this->personType==3)
+            return true;
+        else
+            return false;
+    }
+
+    public function isPatient()
+    {
+        // TODO implement logic here
+        if($this->personType==5)
+            return true;
+        else
+            return false;
+    }
+
     /**
      * RELATIONSHIPS
      */
