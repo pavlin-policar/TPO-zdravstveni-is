@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Validator;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
+use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Mail;
-use Illuminate\Support\Facades\Input;
+use Validator;
 
 //require_once 'Mail.php';
 
@@ -33,7 +32,10 @@ class AuthController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
+
+
     protected $maxLoginAttempts = 3;
+    
     /**
      * Create a new authentication controller instance.
      *
@@ -46,20 +48,24 @@ class AuthController extends Controller
 
     protected function authenticated()
     {
-        $user=User::find(\Auth::user()->id);
+        $user = User::find(\Auth::user()->id);
         $name = $user->firstName;
-        $user->last_login=date("Y-m-d H:i:s");
+        $user->last_login = date("Y-m-d H:i:s");
         $user->save();
         //$name = '';
         session(['showUser' => \Auth::user()->id]);
-        if ($name == NULL || $name == '') return redirect('/profileUpdate'); //return redirect()->intended('/profileUpdate');
-        else return redirect('/home'); //return redirect()->intended('/home');
+        if ($name == null || $name == '') {
+            return redirect('/profileUpdate');
+        } //return redirect()->intended('/profileUpdate');
+        else {
+            return redirect($this->redirectPath());
+        } //return redirect()->intended('/home');
     }
 
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
@@ -75,7 +81,7 @@ class AuthController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  array $data
      * @return User
      */
     protected function create(array $data)
@@ -105,15 +111,13 @@ class AuthController extends Controller
 
     public function confirm($confirmation_code)
     {
-        if( ! $confirmation_code)
-        {
+        if (!$confirmation_code) {
             throw new InvalidConfirmationCodeException;
         }
 
         $user = User::whereConfirmationCode($confirmation_code)->first();
 
-        if ( ! $user)
-        {
+        if (!$user) {
             throw new InvalidConfirmationCodeException;
         }
 

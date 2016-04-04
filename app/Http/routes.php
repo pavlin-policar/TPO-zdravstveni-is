@@ -54,6 +54,9 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     ]);
 });
 
+/**
+ * Routes accessible only for authenticated users who have completed registration.
+ */
 Route::group(['middleware' => ['web', 'authenticated']], function () {
 
     Route::get('/', [
@@ -70,29 +73,53 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'UserController@showProfile',
         'as' => 'profile.show'
     ]);
-
     Route::put('profile/{user}/update', [
         'uses' => 'UserController@updatePersonalInfo',
         'as' => 'profile.updatePersonal',
     ]);
 
+    /**
+     * Routes only available to the admin user.
+     */
     Route::put('profile/{user}/password', [
         'uses' => 'UserController@changePassword',
         'as' => 'profile.changePassword',
     ]);
 
-    Route::get('/profileUpdate', ['uses' => 'UserController@showProfile']);
-    Route::post('/profileUpdate', 'UserController@editProfile');
-
     Route::group(['middleware' => 'admin'], function () {
-        Route::get('/codeTypes', ['uses' => 'CodeController@showCodeTypes', 'as' => 'code.codeTypes']);
-        Route::get('/codeType/{id}', ['uses' => 'CodeController@showCodesForType']);
-        Route::get('/addCodeType', ['uses' => 'CodeController@addCodeType']);
-        Route::post('/addCodeType', ['uses' => 'CodeController@createCodeType']);
+        
+        Route::get('/code-types', [
+            'uses' => 'CodeController@showCodeTypes',
+            'as' => 'code.index',
+        ]);
+        Route::get('/code-types/{id}', [
+            'uses' => 'CodeController@showCodesForType',
+            'as' => 'codeTypes.show',
+        ]);
+        Route::get('/code-types/create', [
+            'uses' => 'CodeController@addCodeType',
+            'as' => 'codeTypes.getCreate',
+        ]);
+        Route::post('/code-types', [
+            'uses' => 'CodeController@createCodeType',
+            'as' => 'codeTypes.postCreate',
+        ]);
 
-        Route::get('/codeType/addCode/{id}', ['uses' => 'CodeController@addCode']);
-        Route::post('/addCode', ['uses' => 'CodeController@createCode']);
-        Route::get('/codeType/code/{id}', ['uses' => 'CodeController@editCode']);
-        Route::post('/editCode', ['uses' => 'CodeController@updateCode']);
+        Route::get('/codeType/addCode/{id}', [
+            'uses' => 'CodeController@addCode',
+            'as' => 'code.getCreate',
+        ]);
+        Route::post('/addCode', [
+            'uses' => 'CodeController@createCode',
+            'as' => 'code.postCreate',
+        ]);
+        Route::get('/codeType/code/{id}', [
+            'uses' => 'CodeController@editCode',
+            'as' => 'code.edit',
+        ]);
+        Route::post('/editCode', [
+            'uses' => 'CodeController@updateCode',
+            'as' => 'code.update',
+        ]);
     });
 });
