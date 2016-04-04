@@ -33,6 +33,8 @@ class AuthController extends Controller
      */
     protected $redirectTo = '/';
 
+    protected $maxLoginAttempts = 3;
+
     /**
      * Create a new authentication controller instance.
      *
