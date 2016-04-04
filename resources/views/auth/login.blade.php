@@ -11,7 +11,7 @@
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label" for="email">E-Mail Address</label>
+                            <label class="col-md-4 control-label" for="email">E-Mail naslov</label>
 
                             <div class="col-md-6">
                                 <input type="email" class="form-control" name="email" value="{{ old('email') }}" id="email" placeholder="Email">
@@ -25,10 +25,10 @@
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label" for="password">Password</label>
+                            <label class="col-md-4 control-label" for="password">Geslo</label>
 
                             <div class="col-md-6">
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Geslo">
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -42,7 +42,7 @@
                             <div class="col-md-6 col-md-offset-4">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="remember"> Remember Me
+                                        <input type="checkbox" name="remember"> Zapomni si me
                                     </label>
                                 </div>
                             </div>
@@ -51,10 +51,10 @@
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-sign-in"></i>Login
+                                    <i class="fa fa-btn fa-sign-in"></i>Prijava
                                 </button>
 
-                                <a class="btn btn-link" href="{{ url('/password/reset') }}">Forgot Your Password?</a>
+                                <a class="btn btn-link" href="{{ url('/password/reset') }}">Pozabljeno geslo</a>
                             </div>
                         </div>
                     </form>
