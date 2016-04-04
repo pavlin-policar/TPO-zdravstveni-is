@@ -24,7 +24,9 @@
     "behat/behat": "dev-master",
     "behat/mink": "dev-master",
     "behat/mink-extension": "dev-master",
-    "laracasts/behat-laravel-extension": "^1.0"
+    "laracasts/behat-laravel-extension": "^1.0",
+    "guzzlehttp/guzzle": "5.*",
+    "phpunit/phpunit": "^5.3"
   },
   "autoload": {
     "classmap": [

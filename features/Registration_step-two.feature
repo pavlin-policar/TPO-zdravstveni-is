@@ -1,10 +1,10 @@
 Feature: Two step registration
-  In order to test two step registration
-  As a regular user
-  I need to be verify that I can't access the webpage until I create my profile
+  As a product owner
+  I want users to create their profile before accessing the web application
+  So that the initial registration process is short, but we still get the required data
 
   Scenario: I have not yet created my profile and try to access the homepage
-    Given I have a new user with the email "user@gmail.com"
+    Given I have a validated user with the email "user@gmail.com"
     And I log in as "user@gmail.com"
     When I go to "/"
     Then I should be on "/registration/step-2"
@@ -29,7 +29,7 @@ Feature: Two step registration
     Then I should not be on "profile/create"
 
   Scenario: I have not yet created my profile and I go to the create profile page
-    Given I have a new user with the email "user@gmail.com"
+    Given I have a validated user with the email "user@gmail.com"
     And I log in as "user@gmail.com"
     When I go to "/registration/step-2"
     And I follow "Kreiraj profil"
@@ -37,7 +37,7 @@ Feature: Two step registration
     And I should be on "profile/create"
 
   Scenario: I have not yet created my profile and I decide to do it another time
-    Given I have a new user with the email "user@gmail.com"
+    Given I have a validated user with the email "user@gmail.com"
     And I log in as "user@gmail.com"
     When I go to "/registration/step-2"
     And I follow "Izpiši me"

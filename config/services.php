@@ -35,4 +35,9 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'mailtrap' => [
+        'secret' => env('MAILTRAP_API_KEY'),
+        'default_inbox' => env('MAILTRAP_INBOX'),
+    ],
+
 ];

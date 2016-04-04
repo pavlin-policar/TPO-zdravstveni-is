@@ -6,12 +6,16 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\MinkExtension\Context\MinkContext;
 use Carbon\Carbon;
+use Laracasts\Behat\Context\Services\MailTrap;
+use PHPUnit_Framework_Assert as PHPUnit;
 
 /**
  * Defines application features from the specific context.
  */
 class FeatureContext extends MinkContext implements Context, SnippetAcceptingContext
 {
+    use MailTrap;
+
     /**
      * Migrate the database before each scenario.
      *
@@ -36,7 +40,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     }
 
     /**
-     * Create a new user that still has to create their profile.
+     * Create a new user that still has to validate their email and create their profile.
      *
      * @Given /^I have a new user with\s*(?:the email "([^"]+)")?$/
      */
@@ -49,13 +53,28 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     }
 
     /**
+     * Create a user that has already validated their email but still has to create their profile.
+     *
+     * @Given /^I have a validated user with\s*(?:the email "([^"]+)")?$/
+     */
+    public function createValidatedUser($email)
+    {
+        $user = new User([
+            'email' => $email,
+            'password' => bcrypt('password'),
+        ]);
+        $user->confirmEmail();
+        $user->save();
+    }
+
+    /**
      * Create a fully registered user, profile and all.
      *
      * @Given /^I have an existing user with\s*(?:the email "([^"]+)")?$/
      */
     public function createRegisteredUser($email)
     {
-        User::create([
+        $user = new User([
             'firstName' => 'Janez',
             'lastName' => 'Novak',
             'birthDate' => Carbon::create(1994, 1, 1),
@@ -66,9 +85,9 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
             'post' => 1,
             'address' => 'Address',
             'ZZCardNumber' => 'Totally valid',
-            'personalDoctor' => 1,
-            'personalDentist' => 1,
         ]);
+        $user->confirmEmail();
+        $user->save();
     }
 
     /**
@@ -80,7 +99,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     {
         Auth::attempt([
             'email' => $email,
-            'password' => 'password'
+            'password' => 'password',
         ]);
     }
 
@@ -89,8 +108,83 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
      *
      * @Then /^(?:|I )should not be on "(?P<page>[^"]+)"$/
      */
-    public function assertPageAddressNot($page)
+    public function pageAddressNot($page)
     {
         $this->assertSession()->addressNotEquals($this->locatePath($page));
+    }
+
+    /**
+     * Check that an email has been sent to the given email with subject and body containing.
+     *
+     * @Then /^An email should be sent to "([^"]+)" with subject "([^"]+)" containing "([^"]+)"$/
+     */
+    public function emailShouldBeSentToWithSubjectAndBody($email, $subject, $contains)
+    {
+        $inbox = $this->fetchInbox();
+        PHPUnit::assertCount(1, $inbox);
+
+        $message = $inbox[0];
+        PHPUnit::assertEquals($email, $message['to_email']);
+        PHPUnit::assertContains($subject, $message['subject']);
+        PHPUnit::assertContains($contains, $message['html_body']);
+
+        // clear the inbox after we're done.
+        $this->emptyInbox();
+    }
+
+    /**
+     * Check that an email has been sent to the given email.
+     *
+     * @Then /^An email should be sent to "([^"]+)" with their confirmation code$/
+     */
+    public function emailShouldBeSentToWithConfirmationCode($email)
+    {
+        $inbox = $this->fetchInbox();
+        PHPUnit::assertCount(1, $inbox);
+
+        $message = $inbox[0];
+        PHPUnit::assertEquals($email, $message['to_email']);
+
+        $user = User::whereEmail($email)->firstOrFail();
+        PHPUnit::assertContains($user->getConfirmationCode(), $message['html_body']);
+
+        // clear the inbox after we're done.
+        $this->emptyInbox();
+    }
+
+    /**
+     * Check that an email has been sent to the given email.
+     *
+     * @Then /^An email should be sent to "([^"]+)" with subject "([^"]+)"$/
+     */
+    public function emailShouldBeSentToWithSubject($email, $subject)
+    {
+        $inbox = $this->fetchInbox();
+        PHPUnit::assertCount(1, $inbox);
+
+        $message = $inbox[0];
+        PHPUnit::assertEquals($email, $message['to_email']);
+        PHPUnit::assertContains($subject, $message['subject']);
+
+        // clear the inbox after we're done.
+        $this->emptyInbox();
+    }
+
+    /**
+     * Check that an email has been sent to the given email.
+     *
+     * @Then /^An email should be sent to "([^"]+)" containing "([^"]+)"$/
+     */
+    public function emailShouldBeSentToWithBody($email, $contains)
+    {
+        $inbox = $this->fetchInbox();
+        PHPUnit::assertCount(1, $inbox);
+
+        $message = $inbox[0];
+        PHPUnit::assertEquals($email, $message['to_email']);
+        PHPUnit::assertContains($contains, $message['html_body']);
+
+        // clear the inbox after we're done.
+        $this->emptyInbox();
     }
 }

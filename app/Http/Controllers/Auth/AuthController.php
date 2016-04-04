@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Auth;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Mail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Validator;
-
-//require_once 'Mail.php';
 
 class AuthController extends Controller
 {
@@ -43,23 +44,11 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
-    }
-
-    protected function authenticated()
-    {
-        $user = User::find(\Auth::user()->id);
-        $name = $user->firstName;
-        $user->last_login = date("Y-m-d H:i:s");
-        $user->save();
-        //$name = '';
-        session(['showUser' => \Auth::user()->id]);
-        if ($name == null || $name == '') {
-            return redirect('/profileUpdate');
-        } //return redirect()->intended('/profileUpdate');
-        else {
-            return redirect($this->redirectPath());
-        } //return redirect()->intended('/home');
+        $this->middleware($this->guestMiddleware(), ['except' => [
+            'logout',
+            'showConfirmationPage',
+            'confirm',
+        ]]);
     }
 
     /**
@@ -71,11 +60,25 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            //'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
+    }
 
+    /**
+     * This method is called if the user has successfully logged in.
+     *
+     * @param $request
+     * @param User $user The authenticated user object.
+     */
+    protected function authenticated($request, User $user)
+    {
+        $user->update([
+            'last_login' => Carbon::now(),
+        ]);
+        session(['showUser' => $user->id]);
+
+        return redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -86,47 +89,74 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        //$this->redirectTo = '/url-after-register';
-        $confirmation_code = str_random(30);
-        //return User::create([
-        $user = User::create([
-            //'name' => $data['name'],
+        $user = new User([
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'confirmation_code' => $confirmation_code,
         ]);
+        $user->confirmation_code = str_random(30);
+        $user->save();
 
-        //var_dump(Input::get('email'));
-
-        //TODO set up an email and configure .env, then uncomment below code and it should hopefully work
-        /*Mail::send('email.verify', ['confirmation_code' => $confirmation_code], function($message) {
-            $message->to(Input::get('email'), 'User')->subject('Verify your email address');
-            $message->from('hello@ZIS.com', 'ZIS admin');
-        });
-
-        Flash::message('Thanks for signing up! Please check your email.');*/
+        $this->sendActivationEmail($user);
+        request()->session()->flash(
+            'message',
+            'Uspešno ste se registrirali. Zdaj morate še aktivirati svoj račun z aktivacijsko kodo,'
+            . ' ki smo vam jo poslali na elektronski naslov.'
+        );
 
         return $user;
     }
 
-    public function confirm($confirmation_code)
+    /**
+     * Show the page where users can manually enter the activation code to their email that they
+     * received from us.
+     */
+    public function showConfirmationPage()
     {
-        if (!$confirmation_code) {
-            throw new InvalidConfirmationCodeException;
+        if (Auth::user()->hasConfirmedEmail()) {
+            return redirect()->back();
         }
+        return view('auth.confirm-email');
+    }
 
-        $user = User::whereConfirmationCode($confirmation_code)->first();
-
-        if (!$user) {
-            throw new InvalidConfirmationCodeException;
+    /**
+     * Confirm the users email with their confirmation code.
+     *
+     * @param Request $request
+     * @param $confirmationCode
+     * @return mixed
+     */
+    public function confirm(Request $request, $confirmationCode)
+    {
+        if (Auth::user()->hasConfirmedEmail()) {
+            return redirect()->back();
         }
-
-        $user->confirmed = 1;
-        $user->confirmation_code = null;
+        $user = User::whereConfirmationCode($confirmationCode)->firstOrFail();
+        $user->confirmEmail();
         $user->save();
 
-        Flash::message('You have successfully verified your account.');
+        $request->session()->flash(
+            'message',
+            'Uspešno ste aktivirali svoj račun.'
+        );
 
-        return Redirect::route('login_path');
+        return redirect('/login');
+    }
+
+    /**
+     * Send an activation email to a given user with the activation code they can use to complete
+     * the registration process.
+     *
+     * @param $user
+     */
+    protected function sendActivationEmail($user)
+    {
+        Mail::send('email.confirm', [
+            'confirmationCode' => $user->confirmation_code
+        ], function ($message) use ($user) {
+            $message
+                ->to($user->email, '')
+                ->from('info@zis.com', 'Zdravstveni informacijski sistem')
+                ->subject('Zaključite registracijo');
+        });
     }
 }
