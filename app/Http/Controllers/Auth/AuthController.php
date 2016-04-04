@@ -91,7 +91,14 @@ class AuthController extends Controller
         $user->confirmation_code = str_random(30);
         $user->save();
 
-        $this->sendActivationEmail($user);
+        Mail::send('email.confirm', [
+            'confirmationCode' => $user->confirmation_code
+        ], function ($message) use ($user) {
+            $message
+                ->to($user->email, $user->fullName)
+                ->from('info@zis.com', 'Zdravstveni informacijski sistem')
+                ->subject('Zaključite registracijo');
+        });
         request()->session()->flash(
             'message',
             'Uspešno ste se registrirali. Zdaj morate še aktivirati svoj račun z aktivacijsko kodo,'
@@ -130,13 +137,5 @@ class AuthController extends Controller
      */
     protected function sendActivationEmail($user)
     {
-        Mail::send('email.confirm', [
-            'confirmationCode' => $user->confirmation_code
-        ], function ($message) use ($user) {
-            $message
-                ->to($user->email, $user->fullName)
-                ->from('info@zis.com', 'Zdravstveni informacijski sistem')
-                ->subject('Zaključite registracijo');
-        });
     }
 }
