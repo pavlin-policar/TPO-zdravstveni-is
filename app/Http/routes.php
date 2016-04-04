@@ -104,13 +104,13 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'uses' => 'CodeController@showCodeTypes',
             'as' => 'code.index',
         ]);
-        Route::get('/code-types/{id}', [
-            'uses' => 'CodeController@showCodesForType',
-            'as' => 'codeTypes.show',
-        ]);
         Route::get('/code-types/create', [
             'uses' => 'CodeController@addCodeType',
             'as' => 'codeTypes.getCreate',
+        ]);
+        Route::get('/code-types/{id}', [
+            'uses' => 'CodeController@showCodesForType',
+            'as' => 'codeTypes.show',
         ]);
         Route::post('/code-types', [
             'uses' => 'CodeController@createCodeType',

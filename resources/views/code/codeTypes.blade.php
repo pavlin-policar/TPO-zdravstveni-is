@@ -12,7 +12,7 @@
 
                     <div class="card-title">
                         <div class="title">Table</div>
-                        <a href="addCodeType" type="button" class="btn btn-success">Dodaj vrsto šifranta</a>
+                        {!! link_to_route('codeTypes.getCreate', 'Dodaj vrsto šifranta', [], ['class' => 'btn btn-primary']) !!}
                     </div>
                 </div>
                 <div class="card-body">
@@ -38,7 +38,7 @@
                             @foreach($array as $item)
                                 <tr>
                                     <td>{{ $item['id'] }}</td>
-                                    <td><a href="codeType/{{ $item['id']  }}">{{ $item['codeItemName'] }}</a></td>
+                                    <td>{!! link_to_route('codeTypes.show', $item['codeItemName'], ['id' => $item['id']]) !!}</td>
                                     <td>{{ $item['codeItemDescription'] }}</td>
                                     <td>{{ $item['updated_at'] }}</td>
                                 </tr>

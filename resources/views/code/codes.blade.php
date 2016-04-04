@@ -12,8 +12,8 @@
 
                     <div class="card-title">
                         <div class="title">Table</div>
-                        <a href="addCode/{{ $id }}" type="button" class="btn btn-success">Dodaj šifrant</a>
-                        <a href="../codeTypes" type="button" class="btn btn-success">Vrnite se nazaj</a>
+                        {!! link_to_route('code.getCreate', 'Dodaj šifrant', ['id' => $id ], ['class' => 'btn btn-primary']) !!}
+                        {!! link_to_route('code.index', 'Vrnite se nazaj', [], ['class' => 'btn btn-primary']) !!}
                     </div>
                 </div>
                 <div class="card-body">
@@ -43,7 +43,7 @@
                             @foreach($array as $item)
                                 <tr>
                                     <td>{{ $item['id'] }}</td>
-                                    <td><a href="code/{{ $item['id']  }}">{{ $item['codeName'] }}</a></td>
+                                    <td>{!! link_to_route('code.edit', $item['codeName'], ['id' => $item['id']]) !!}</td>
                                     <td>{{ $item['codeDescription'] }}</td>
                                     <td>{{ $item['minValue'] }}</td>
                                     <td>{{ $item['maxValue'] }}</td>
