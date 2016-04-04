@@ -145,23 +145,15 @@ class UserController extends Controller
         if (Auth::attempt($userdata)) {
             $user->password = bcrypt($request['password']);
             $user->update();
-            return redirect()->back();
+            return redirect()->back()->with('cahangedPass', 'Geslo je spremenjeno');
 
         } else {
-
             // validation not successful, wrong password
-            return "errror";
+
+            return redirect()->back()->with('cahangePassError', 'Geslo ni spremenjeno');
 
         }
-        /*if(bcrypt($request['oldPassword']) === $user->password){
-            $user->password = bcrypt($request['password']);
-            $user->update();
-            return redirect()->back();
-        }
-        else{
-            return "wrong password";
-        }
-        */
+
     }
 
 }

@@ -1,5 +1,11 @@
 {!! Form::open(['route' => ['profile.changePassword', $user->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
+@if (Session::has('cahangePassError'))
+    <div class="alert alert-danger" role="alert">Sprememba gesla ni uspela!</div>
+@endif
+@if (Session::has('cahangedPass'))
+    <div class="alert alert-success" role="alert">Geslo je spremenjeno!</div>
+@endif
 
 <div class="sub-title">Sprememba gesla</div>
 {{-- Old passwd --}}
@@ -20,8 +26,12 @@
         @if ($errors->has('password'))
             <span class="help-block">{{ $errors->first('password') }}</span>
         @endif
+
+        @include('profile.tabs.passCheck')
+
     </div>
 </div>
+
 {{-- Repeat passwd --}}
 <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
     {!! Form::label('newPassword', 'Ponovite novo geslo', ['class' => 'col-sm-2 control-label']) !!}
@@ -35,7 +45,6 @@
 
 
 @include('auth.passwords.passStrength')
-
 
 {{-- Submit button --}}
 <div class="form-group">

@@ -54,6 +54,29 @@ $(document).ready(function(){
         }
     });
 
+    $("#password").keyup(function() {
+        checkPassword();
+    });
+    $("#password").focus(function() {
+        checkPassword();
+    });
+    $("#password").blur(function() {
+        checkPassword();
+    });
+    $("#password").keyup(function() {
+        checkPassword();
+    }).focus(function() {
+        checkPassword();
+    }).blur(function() {
+        checkPassword();
+    });
+    $("#password").keyup(function() {
+        checkPassword();
+    }).focus(function() {
+        $('#pswd_info').show();
+    }).blur(function() {
+        $('#pswd_info').hide();
+    });
 });
 
 $(function() {
@@ -93,14 +116,34 @@ $(function() {
   });
 });
 
-function check_pass()
-{
+function checkPassword(){
+    var pswd = $("#password").val();
+    if ( pswd.length < 8 ) {
+        $('#length').removeClass('valid').addClass('invalid');
+    } else {
+        $('#length').removeClass('invalid').addClass('valid');
+    }
+
+    //validate letter
+    if ( pswd.match(/[A-z]/) ) {
+        $('#letter').removeClass('invalid').addClass('valid');
+    } else {
+        $('#letter').removeClass('valid').addClass('invalid');
+    }
+
+//validate number
+    if ( pswd.match(/\d/) ) {
+        $('#number').removeClass('invalid').addClass('valid');
+    } else {
+        $('#number').removeClass('valid').addClass('invalid');
+    }
+}
+
+function check_pass(){
   var val=document.getElementById("password").value;
   var meter=document.getElementById("meter");
   var no=0;
-  if(val!="")
-  {
-
+  if(val!="") {
     // If the password length is less than or equal to 6
     if(val.length<=6)no=1;
 
