@@ -15,7 +15,6 @@ Feature: Profile page
     And the "phone_number" field should contain "123456789"
     And I should see "Ljubljana (1000)"
     And the "address" field should contain "Dunajska"
-    And the "zz_card_number" field should contain "123"
 
   Scenario: I want to update my personal information
     Given I have have registered as Janez Novak
