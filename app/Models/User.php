@@ -10,23 +10,25 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * Class User
  *
  * @property int id
- * @property string firstName
- * @property string lastName
+ * @property string first_name
+ * @property string last_name
  * @property string fullName
- * @property int post            Postal code of the address
+ * @property int    post            Postal code of the address
  * @property string address         Users address
  * @property string email
  * @property string password
  * @property string phoneNumber
- * @property int ZzCardNumber
- * @property Carbon birthDate
- * @property int gender
- * @property Carbon createdAt
- * @property Carbon modifiedAt
- * @property Carbon deletedAt
+ * @property int    zz_card_number
+ * @property Carbon birth_date
+ * @property int    gender
+ * @property Carbon created_at
+ * @property Carbon modified_at
+ * @property Carbon deleted_at
  * @property Carbon last_login
- * @property bool confirmed
- * @property string confirmationCode
+ * @property bool   confirmed
+ * @property string confirmation_code
+ * @property User   caretaker
+ * @property int    person_type
  *
  * @package App\Models
  */
@@ -83,7 +85,10 @@ class User extends Authenticatable
      */
     public function getFullNameAttribute()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        if ($this->last_name !== null) {
+            return $this->first_name . ' ' . $this->last_name;
+        }
+        return $this->first_name;
     }
 
     /**
@@ -102,7 +107,7 @@ class User extends Authenticatable
      */
     public function isCaretakerOf(User $user)
     {
-        return $this->id === $user->caretaker()->id;
+        return $this->id === $user->caretaker->id;
     }
 
     /**
@@ -239,7 +244,7 @@ class User extends Authenticatable
      */
     public function charges()
     {
-        return $this->hasMany(User::class, 'caretaker');
+        return $this->hasMany(User::class, 'caretaker_id');
     }
 
     /**
@@ -249,6 +254,6 @@ class User extends Authenticatable
      */
     public function caretaker()
     {
-        return $this->belongsTo(User::class, 'caretaker');
+        return $this->belongsTo(User::class, 'caretaker_id');
     }
 }

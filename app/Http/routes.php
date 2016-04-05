@@ -97,6 +97,14 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'ChargeController@index',
         'as' => 'charges.index',
     ]);
+    Route::get('/charges/activate/{user}', [
+        'uses' => 'ChargeController@activate',
+        'as' => 'charges.activate',
+    ]);
+    Route::get('/charges/deactivate', [
+        'uses' => 'ChargeController@activate',
+        'as' => 'charges.deactivate',
+    ]);
     Route::get('/charges/create', [
         'uses' => 'ChargeController@create',
         'as' => 'charges.create',
@@ -104,6 +112,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
     Route::post('/charges', [
         'uses' => 'ChargeController@store',
         'as' => 'charges.store',
+    ]);
+    Route::put('/charges/{user}', [
+        'uses' => 'ChargeController@update',
+        'as' => 'charges.update',
     ]);
     Route::get('/charges/{user}', [
         'uses' => 'ChargeController@show',

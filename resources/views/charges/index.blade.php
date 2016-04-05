@@ -11,8 +11,17 @@
         @foreach($charges as $charge)
             <div class="col-xs-12 col-md-6 col-lg-4">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <span class="title">{{ $charge->fullName }}</span>
+                        </div>
+                    </div>
                     <div class="card-body">
-                        {{ $charge->fullName }}
+                        <div class="sub-title">Splošne informacije</div>
+                        Medical shit here
+                        <div class="sub-title">Možnosti</div>
+                        {!! link_to_route('charges.activate', 'Aktiviraj', [$charge->id], ['class' => 'btn btn-primary']) !!}
+                        {!! link_to_route('charges.show', 'Pregled profila', [$charge->id], ['class' => 'btn btn-default']) !!}
                     </div>
                 </div>
             </div>

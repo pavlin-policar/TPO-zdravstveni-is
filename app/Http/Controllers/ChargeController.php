@@ -43,4 +43,30 @@ class ChargeController extends Controller
         Auth::user()->charges()->create($request->all());
         return redirect()->route('charges.index');
     }
+
+    /**
+     * Show the charge profile data.
+     *
+     * @param User $user
+     * @return mixed
+     */
+    public function show(User $user)
+    {
+        $this->authorize('can-view-profile', $user);
+        return view('charges.show')->with('charge', $user);
+    }
+
+    /**
+     * Update the charges personal information on the profile page.
+     *
+     * @param CreateProfileRequest $request
+     * @param User $user
+     * @return mixed
+     */
+    public function update(CreateProfileRequest $request, User $user)
+    {
+        $this->authorize('can-update-personal-info', $user);
+        $user->update($request->all());
+        return redirect()->route('charges.show', [$user->id]);
+    }
 }
