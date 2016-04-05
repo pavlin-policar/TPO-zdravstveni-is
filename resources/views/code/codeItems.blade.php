@@ -1,25 +1,25 @@
-                    <div class="form-group">
-                        {!! Form::label('codeName', 'Ime šifranta') !!}
-                        @if(isset($code))
-                            {!! Form::text('codeName', $code['codeName'], ['class' => 'form-control', 'required' => 'required']) !!}
-                        @else
-                            {!! Form::text('codeName', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                        @endif
-                    </div>
+<div class="form-group">
+    {!! Form::label('name', 'Ime šifranta') !!}
+    @if(isset($code))
+        {!! Form::text('name', $code['name'], ['class' => 'form-control', 'required' => 'required']) !!}
+    @else
+        {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
+    @endif
+</div>
 
-                    <div class="form-group">
-                        {!! Form::label('codeDescription', 'Opis šifranta') !!}
-                        {!! Form::textarea('codeDescription', $code['codeDescription'], ['class' => 'form-control']) !!}
-                    </div>
+<div class="form-group">
+    {!! Form::label('description', 'Opis šifranta') !!}
+    {!! Form::textarea('description', $code['description'], ['class' => 'form-control']) !!}
+</div>
 
-                    <div class="form-group">
-                        {!! Form::label('minValue', 'Minimalna vrednost') !!}
-                        {!! Form::number('minValue', $code['minValue'], ['class' => 'form-control','step'=>'any']) !!}
-                    </div>
+<div class="form-group">
+    {!! Form::label('min_value', 'Minimalna vrednost') !!}
+    {!! Form::number('min_value', $code['min_value'], ['class' => 'form-control','step'=>'any']) !!}
+</div>
 
-                    <div class="form-group">
-                        {!! Form::label('maxValue', 'Maksimalna vrednost') !!}
-                        {!! Form::number('maxValue', $code['maxValue'], ['class' => 'form-control','step'=>'any']) !!}
-                    </div>
+<div class="form-group">
+    {!! Form::label('max_value', 'Maksimalna vrednost') !!}
+    {!! Form::number('max_value', $code['max_value'], ['class' => 'form-control','step'=>'any']) !!}
+</div>
 
-                    {{ Form::hidden('curentId', $id) }}
+{{ Form::hidden('code_type', $id) }}

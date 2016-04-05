@@ -71,10 +71,6 @@ Route::group(['middleware' => ['web', 'auth', 'email-validated']], function () {
  */
 Route::group(['middleware' => ['web', 'authenticated']], function () {
 
-    /*Route::get('/', [
-        'uses' => 'HomeController@index',
-        'as' => 'home.index',
-    ]);*/
     Route::get('/', function () {
         return redirect()->route('dashboard.show');
     });
@@ -120,7 +116,7 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'as' => 'codeTypes.postCreate',
         ]);
 
-        Route::get('/codeType/addCode/{id}', [
+        Route::get('/codeType/addCode/{codeType}', [
             'uses' => 'CodeController@addCode',
             'as' => 'code.getCreate',
         ]);
@@ -128,11 +124,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'uses' => 'CodeController@createCode',
             'as' => 'code.postCreate',
         ]);
-        Route::get('/codeType/code/{id}', [
+        Route::get('/codeType/code/{code}', [
             'uses' => 'CodeController@editCode',
             'as' => 'code.edit',
         ]);
-        Route::post('/editCode', [
+        Route::post('/editCode/code/{code}', [
             'uses' => 'CodeController@updateCode',
             'as' => 'code.update',
         ]);

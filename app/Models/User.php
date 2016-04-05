@@ -113,7 +113,7 @@ class User extends Authenticatable
      */
     public function isMale()
     {
-        return $this->gender === app(GenderRepository::class)->getMale()->id;
+        return $this->gender === Code::MALE()->id;
     }
 
     /**
@@ -123,7 +123,7 @@ class User extends Authenticatable
      */
     public function isFemale()
     {
-        return $this->gender === app(GenderRepository::class)->getFemale()->id;
+        return $this->gender === Code::FEMALE()->id;
     }
 
     /**
@@ -155,7 +155,7 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return $this->person_type === 1;
+        return $this->person_type === Code::ADMIN()->id;
     }
 
     /**
@@ -165,7 +165,7 @@ class User extends Authenticatable
      */
     public function isDoctor()
     {
-        return $this->person_type === 2;
+        return $this->person_type === Code::DOCTOR()->id;
     }
 
     /**
@@ -175,7 +175,7 @@ class User extends Authenticatable
      */
     public function isNurse()
     {
-        return $this->person_type === 3;
+        return $this->person_type === Code::NURSE()->id;
     }
 
     /**
@@ -185,7 +185,7 @@ class User extends Authenticatable
      */
     public function isPatient()
     {
-        return $this->person_type === 5;
+        return $this->person_type === Code::PATIENT()->id;
     }
 
     /**

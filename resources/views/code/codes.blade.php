@@ -39,18 +39,16 @@
                         </tr>
                         </tfoot>
                         <tbody>
-                        @if(!empty($array))
-                            @foreach($array as $item)
-                                <tr>
-                                    <td>{{ $item['id'] }}</td>
-                                    <td>{!! link_to_route('code.edit', $item['codeName'], ['id' => $item['id']]) !!}</td>
-                                    <td>{{ $item['codeDescription'] }}</td>
-                                    <td>{{ $item['minValue'] }}</td>
-                                    <td>{{ $item['maxValue'] }}</td>
-                                    <td>{{ $item['updated_at'] }}</td>
-                                </tr>
-                            @endforeach
-                        @endif
+                        @foreach($array as $item)
+                            <tr>
+                                <td>{{ $item['id'] }}</td>
+                                <td>{!! link_to_route('code.edit', $item['name'], ['id' => $item['id']]) !!}</td>
+                                <td>{{ $item['description'] }}</td>
+                                <td>{{ $item['min_value'] }}</td>
+                                <td>{{ $item['max_value'] }}</td>
+                                <td>{{ $item['updated_at'] }}</td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

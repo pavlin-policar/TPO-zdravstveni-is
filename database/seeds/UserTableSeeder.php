@@ -22,7 +22,7 @@ class UserTableSeeder extends Seeder
 
         $user = new User([
             'first_name' => 'Doctor',
-            'last_name' => '1',
+            'last_name' => 'Doctor',
             'email' => 'doctor1@zis.si',
             'password' => Hash::make('password'),
             'person_type' => Code::DOCTOR()->id,
@@ -32,7 +32,7 @@ class UserTableSeeder extends Seeder
 
         $user = new User([
             'first_name' => 'Doctor',
-            'last_name' => '2',
+            'last_name' => 'Doctor',
             'email' => 'doctor2@zis.si',
             'password' => Hash::make('password'),
             'person_type' => Code::DOCTOR()->id,

@@ -19,7 +19,7 @@
                     @if(!isset($code))
                         {!! Form::open(array('route' => 'code.postCreate')) !!}
                     @else
-                        {!! Form::open(array('route' => 'code.update')) !!}
+                        {!! Form::open(['route' => ['code.update', $id]]) !!}
                     @endif
                     {{ csrf_field() }}
 

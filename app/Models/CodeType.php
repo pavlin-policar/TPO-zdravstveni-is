@@ -35,6 +35,16 @@ class CodeType extends Model
     protected $table = 'code_types';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    public $fillable = [
+        'name',
+        'description',
+    ];
+
+    /**
      * Get the genders key type.
      *
      * @return mixed

@@ -2,78 +2,67 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\CodeType;
-use App\Models\Code;
 use App\Http\Requests;
-use Illuminate\Support\Facades\Redirect;
+use App\Models\Code;
+use App\Models\CodeType;
+use Illuminate\Http\Request;
 
 class CodeController extends Controller
 {
-    public function showCodeTypes(){
-        $data=Array();
-        $data['array']=CodeType::all();
-        return view('code.codeTypes')->with($data);
+    public function showCodeTypes()
+    {
+        return view('code.codeTypes')
+            ->with('codeTypes', CodeType::all());
     }
-    public function showCodesForType($id){
-        $data=Array();
-        $data['codeType']=CodeType::findOrFail($id)->codeItemName;
-        $data['array']=Code::where('codeType', '=', $id)->get();
-        $data['id']=$id;
+
+    public function showCodesForType($id)
+    {
+        $data['codeType'] = CodeType::findOrFail($id)->codeItemName;
+        $data['array'] = Code::where('code_type', $id)->get();
+        $data['id'] = $id;
         return view('code.codes')->with($data);
     }
 
-    public function addCodeType(){
-        $data=Array();
-        return view('code.addCodeType')->with($data);
+    public function addCodeType()
+    {
+        return view('code.addCodeType');
     }
 
-    public function createCodeType(Request $request){
-        $codeType = new CodeType();
-        $codeType->codeItemName=$request->input('codeItemName');
-        $codeType->codeItemDescription=$request->input('codeItemDescription');
-        $codeType->save();
+    public function createCodeType(Request $request)
+    {
+        CodeType::create($request->all());
         return redirect()->route('code.index');
     }
 
-    public function addCode($id){
-        $data=Array();
-        $data['codeType']=CodeType::findOrFail($id)->codeItemName;
-        $data['id']=$id;
-        $data['back']=$id;
-        $data['code']=null;
+    public function addCode(CodeType $codeType)
+    {
+        $data['codeType'] = $codeType->name;
+        $data['id'] = $codeType->id;
+        $data['back'] = $codeType->id;
+        $data['code'] = null;
         return view('code.addCode')->with($data);
     }
 
-    public function createCode(Request $request){
-        $codeType = new Code;
-        $codeType->codeName=$request->input('codeName');
-        $codeType->codeDescription=$request->input('codeDescription');
-        $codeType->minValue=$request->input('minValue');
-        $codeType->maxValue=$request->input('maxValue');
-        $codeType->codeType=$request->input('curentId');
-        $codeType->save();
-        return redirect()->route('code.getCreate', ['id' => $request->input('curentId')]);
+    public function createCode(Request $request)
+    {
+        $code = Code::create($request->all());
+        return redirect()->route('code.getCreate', ['id' => $code->code_type]);
         //return redirect("codeType/addCode/".$request->input('codeType'));
     }
 
-    public function editCode($id){
-        $data=Array();
-        $data['code']=Code::findOrFail($id);
-        $data['codeType']=CodeType::findOrFail($data['code']['codeType'])->codeItemName;
-        $data['id']=$id;
-        $data['back']=$data['code']['codeType'];
+    public function editCode(Code $code)
+    {
+        $data['code'] = $code;
+        $data['codeType'] = $code->type->name;
+        $data['id'] = $code->id;
+        $data['back'] = $code->type->id;
         return view('code.addCode')->with($data);
     }
 
-    public function updateCode(Request $request){
-        $codeType = Code::findOrFail($request->input('curentId'));
-        $codeType->codeName=$request->input('codeName');
-        $codeType->codeDescription=$request->input('codeDescription');
-        $codeType->minValue=$request->input('minValue');
-        $codeType->maxValue=$request->input('maxValue');
-        $codeType->save();
-        return redirect()->route('code.edit', ['id' => $request->input('curentId')]);
+    public function updateCode(Request $request, Code $code)
+    {
+        $code->update($request->all());
+        return redirect()->route('code.edit', ['id' => $code->id]);
         //return redirect("codeType/".$codeType->codeType);
     }
 }

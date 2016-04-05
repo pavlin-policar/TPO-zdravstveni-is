@@ -62,18 +62,18 @@ class CodeTableSeeder extends Seeder
         // DOCTOR TYPES
         $doctorTypes = CodeType::create([
             'key' => CodeType::$codeTypes['DOCTOR_TYPES'],
-            'name' => 'Vrste uporabnikov',
+            'name' => 'Vrste zdravnikov',
             'description' => '',
         ]);
         $doctorTypes->codes()->create([
             'key' => Code::$codeTypes['PERSONAL_DOCTOR'],
-            'name' => 'Administrator',
-            'description' => 'Glavni urednik strani',
+            'name' => 'Osebni zdravnik',
+            'description' => '',
         ]);
         $doctorTypes->codes()->create([
             'key' => Code::$codeTypes['PERSONAL_DENTIST'],
-            'name' => 'Zdravnik',
-            'description' => 'Zdravnik ali zobozdravnik',
+            'name' => 'Osebni zobozdravnik',
+            'description' => '',
         ]);
 
         // BLOOD PRESSURE

@@ -129,7 +129,7 @@ class UserController extends Controller
             return redirect()->back();
         }
         Auth::user()->update($request->all());
-        return redirect()->route('home.index');
+        return redirect()->route('dashboard.show');
     }
 
     //Change password

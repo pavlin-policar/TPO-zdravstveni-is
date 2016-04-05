@@ -35,6 +35,19 @@ class Code extends Model
     protected $table = 'codes';
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    public $fillable = [
+        'name',
+        'description',
+        'code_type',
+        'min_value',
+        'max_value',
+    ];
+
+    /**
      * Get the male key type.
      *
      * @return mixed

@@ -34,16 +34,14 @@
                         </tr>
                         </tfoot>
                         <tbody>
-                        @if(!empty($array))
-                            @foreach($array as $item)
-                                <tr>
-                                    <td>{{ $item['id'] }}</td>
-                                    <td>{!! link_to_route('codeTypes.show', $item['codeItemName'], ['id' => $item['id']]) !!}</td>
-                                    <td>{{ $item['codeItemDescription'] }}</td>
-                                    <td>{{ $item['updated_at'] }}</td>
-                                </tr>
-                            @endforeach
-                        @endif
+                        @foreach($codeTypes as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{!! link_to_route('codeTypes.show', $item->name, ['id' => $item->id]) !!}</td>
+                                <td>{{ $item->description }}</td>
+                                <td>{{ $item->updated_at }}</td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 </div>

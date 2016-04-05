@@ -19,13 +19,13 @@
                     {{ csrf_field() }}
 
                     <div class="form-group">
-                        {!! Form::label('codeItemName', 'Ime vrste šifranta') !!}
-                        {!! Form::text('codeItemName', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                        {!! Form::label('name', 'Ime vrste šifranta') !!}
+                        {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
                     </div>
 
                     <div class="form-group">
-                        {!! Form::label('codeItemDescription', 'Opis vrste šifranta') !!}
-                        {!! Form::textarea('codeItemDescription', null, ['class' => 'form-control']) !!}
+                        {!! Form::label('description', 'Opis vrste šifranta') !!}
+                        {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
                     </div>
 
                     <div class="form-group">
