@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\Postcode;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class PostsTableSeeder extends Seeder
 {
@@ -12,9 +13,9 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        Postcode::create([
-            'postcode' => 1000,
-            'post' => 'Ljubljana',
-        ]);
+        // insert all postcodes from postcodes.sql
+        DB::transaction(function () {
+            DB::unprepared(File::get('database/seeds/sql/postcodes.sql'));
+        });
     }
 }
