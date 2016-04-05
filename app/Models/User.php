@@ -95,6 +95,17 @@ class User extends Authenticatable
      */
 
     /**
+     * Check if the current user is the caretaker of a given user.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isCaretakerOf(User $user)
+    {
+        return $this->id === $user->caretaker()->id;
+    }
+
+    /**
      * Check if the user has completed their registration by creating a profile.
      *
      * @return bool

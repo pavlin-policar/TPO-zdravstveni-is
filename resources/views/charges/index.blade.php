@@ -9,7 +9,7 @@
 
     <div class="row">
         @foreach($charges as $charge)
-            <div class="col-xs-12 col-md-6">
+            <div class="col-xs-12 col-md-6 col-lg-4">
                 <div class="card">
                     <div class="card-body">
                         {{ $charge->fullName }}
@@ -17,7 +17,8 @@
                 </div>
             </div>
         @endforeach
-        <div class="col-xs-12 col-md-6">
+
+        <div class="col-xs-12 col-md-6 col-lg-4">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">

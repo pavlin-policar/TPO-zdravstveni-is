@@ -97,10 +97,17 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'ChargeController@index',
         'as' => 'charges.index',
     ]);
-
     Route::get('/charges/create', [
         'uses' => 'ChargeController@create',
         'as' => 'charges.create',
+    ]);
+    Route::post('/charges', [
+        'uses' => 'ChargeController@store',
+        'as' => 'charges.store',
+    ]);
+    Route::get('/charges/{user}', [
+        'uses' => 'ChargeController@show',
+        'as' => 'charges.show',
     ]);
 
     /**

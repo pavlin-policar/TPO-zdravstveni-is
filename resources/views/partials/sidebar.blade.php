@@ -19,10 +19,28 @@
                         <span class="icon fa fa-tachometer"></span><span class="title">Nadzorna plošča</span>
                     </a>
                 </li>
-                <li class="inactive">
-                    <a href="{{ route('charges.index') }}">
-                        <span class="icon fa-user-md"></span><span class="title">Oskrbljenci</span>
+                <li class="panel panel-default dropdown">
+                    <a data-toggle="collapse" href="#dropdown-charges">
+                        <span class="icon fa fa-user-md"></span><span class="title">Oskrbljenci</span>
                     </a>
+                    <div id="dropdown-charges" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    {!! link_to_route('charges.index', 'Pregled oskrbljencev') !!}
+                                </li>
+                                <hr>
+                                @foreach($user->charges as $charge)
+                                    <li>
+                                        {!! link_to_route('charges.show', $charge->fullName, [$charge->id]) !!}
+                                    </li>
+                                @endforeach
+                                <li>
+                                    {!! link_to_route('charges.create', 'Dodaj oskrbljenca') !!}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </li>
                 <li class="inactive">
                     <a href="{{ route('profile.show') }}">
