@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Requests\CreateProfileRequest;
+use App\Http\Requests\CreateChargeRequest;
+use App\Models\CodeType;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +14,7 @@ class ChargeController extends Controller
      * Get a listing of all your charges.
      *
      * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
@@ -24,6 +26,7 @@ class ChargeController extends Controller
      * Show a form to create a new charge.
      *
      * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
@@ -35,12 +38,15 @@ class ChargeController extends Controller
      * Create a profile for the new user, and associate them with their caretaker i.e. the current
      * user.
      *
-     * @param CreateProfileRequest $request
+     * @param CreateChargeRequest $request
+     * @return
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(CreateProfileRequest $request)
+    public function store(CreateChargeRequest $request)
     {
         $this->authorize('can-be-caretaker', User::class);
-        Auth::user()->charges()->create($request->all());
+        $user = Auth::user()->charges()->create($request->all());
+        $this->createRelation(Auth::user(), $user, $request->get('relation_id'));
         return redirect()->route('charges.index');
     }
 
@@ -49,24 +55,51 @@ class ChargeController extends Controller
      *
      * @param User $user
      * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function show(User $user)
     {
         $this->authorize('can-view-profile', $user);
-        return view('charges.show')->with('charge', $user);
+        return view('charges.show')
+            ->with('charge', $user)
+            ->with(
+                'relations',
+                CodeType::whereKey(CodeType::$codeTypes['PERSON_RELATIONSHIPS'])->firstOrFail()
+                    ->codes->lists('name', 'id')->toArray())
+            ->with(
+                'relationId',
+                Auth::user()->relationships()->where('user_2', $user->id)->first()->pivot
+                    ->relation_id);
     }
 
     /**
      * Update the charges personal information on the profile page.
      *
-     * @param CreateProfileRequest $request
+     * @param CreateChargeRequest $request
      * @param User $user
      * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(CreateProfileRequest $request, User $user)
+    public function update(CreateChargeRequest $request, User $user)
     {
         $this->authorize('can-update-personal-info', $user);
         $user->update($request->all());
+        $this->createRelation(Auth::user(), $user, $request->get('relation_id'));
         return redirect()->route('charges.show', [$user->id]);
+    }
+
+    /**
+     * Add the relation between two users to the database.
+     *
+     * @param User $user1
+     * @param User $user2
+     * @param $relationId
+     */
+    protected function createRelation(User $user1, User $user2, $relationId)
+    {
+        // add relation to pivot table
+        $user1->relationships()->sync([$user2->id => ['relation_id' => $relationId]]);
+        // define the inverse
+        $user2->relationships()->sync([$user1->id => ['relation_id' => $relationId]]);
     }
 }

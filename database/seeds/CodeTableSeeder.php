@@ -76,10 +76,75 @@ class CodeTableSeeder extends Seeder
             'description' => '',
         ]);
 
+        // PEOPLE RELATIONSHIPS
+        $doctorTypes = CodeType::create([
+            'key' => CodeType::$codeTypes['PERSON_RELATIONSHIPS'],
+            'name' => 'Vrste sorodstvenih razmerij',
+        ]);
+        $doctorTypes->codes()->create(['name' => 'Brat / Sestra']);
+        $doctorTypes->codes()->create(['name' => 'Starš']);
+        $doctorTypes->codes()->create(['name' => 'Mož / Žena']);
+        $doctorTypes->codes()->create(['name' => 'Otrok']);
+        $doctorTypes->codes()->create(['name' => 'Drugo bljižnje sorodstvo']);
+        $doctorTypes->codes()->create(['name' => 'Daljno sorodstvo']);
+        $doctorTypes->codes()->create(['name' => 'Prijatelj']);
+        $doctorTypes->codes()->create([
+            'name' => 'Znanec',
+            'description' => 'Osebi se med seboj poznata.',
+        ]);;
+        $doctorTypes->codes()->create([
+            'name' => 'Neznanec',
+            'description' => 'Osebi se med seboj ne poznata.',
+        ]);
+
         // BLOOD PRESSURE
-        $bloodPressureTypes = CodeType::create([
-            'name' => 'Krvni tlak',
-            'description' => '',
+        $systolicBP = CodeType::create(['name' => 'Sistoličen krvni tlak']);
+        $systolicBP->codes()->create([
+            'name' => 'Normal',
+            'max_value' => '120',
+        ]);
+        $systolicBP->codes()->create([
+            'name' => 'Prehypertension',
+            'min_value' => '120',
+            'max_value' => '139',
+        ]);
+        $systolicBP->codes()->create([
+            'name' => 'Hypertension (stage 1)',
+            'min_value' => '140',
+            'max_value' => '159',
+        ]);
+        $systolicBP->codes()->create([
+            'name' => 'Hypertension (stage 2)',
+            'min_value' => '160',
+            'max_value' => '179',
+        ]);
+        $systolicBP->codes()->create([
+            'name' => 'Hypertensive crisis',
+            'min_value' => '180',
+        ]);
+        $systolicBP = CodeType::create(['name' => 'Diastoličen krvni tlak']);
+        $systolicBP->codes()->create([
+            'name' => 'Normal',
+            'max_value' => '80',
+        ]);
+        $systolicBP->codes()->create([
+            'name' => 'Prehypertension',
+            'min_value' => '80',
+            'max_value' => '89',
+        ]);
+        $systolicBP->codes()->create([
+            'name' => 'Hypertension (stage 1)',
+            'min_value' => '90',
+            'max_value' => '99',
+        ]);
+        $systolicBP->codes()->create([
+            'name' => 'Hypertension (stage 2)',
+            'min_value' => '100',
+            'max_value' => '109',
+        ]);
+        $systolicBP->codes()->create([
+            'name' => 'Hypertensive crisis',
+            'min_value' => '110',
         ]);
 
         // HEART BEAT

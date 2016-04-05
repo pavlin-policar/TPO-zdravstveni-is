@@ -17,7 +17,7 @@
                 <div class="card-body">
                     {!! Form::open(['route' => ['charges.update', $charge->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
-                    @include('profile.profile-data-form', ['user' => $charge])
+                    @include('charges.charge-form', ['user' => $charge])
 
                     {{-- Submit button --}}
                     <div class="form-group">

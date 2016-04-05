@@ -18,7 +18,7 @@
                     <p>Prosimo, izpolnite vsa zahtevana polja. Zahtevana polja so označena s zvezdico (*).</p>
                     {!! Form::open(['route' => 'charges.store', 'method' => 'post', 'class' => 'form-horizontal']) !!}
 
-                    @include('profile.profile-data-form')
+                    @include('charges.charge-form')
 
                     {{-- Submit button --}}
                     <div class="form-group">

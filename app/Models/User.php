@@ -256,4 +256,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'caretaker_id');
     }
+
+    /**
+     * Get all the users that this user is in a relationship with.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function relationships()
+    {
+        return $this->belongsToMany(User::class, 'user_relationships', 'user_1', 'user_2')
+            ->withPivot('relation_id')
+            ->withTimestamps();
+    }
 }
