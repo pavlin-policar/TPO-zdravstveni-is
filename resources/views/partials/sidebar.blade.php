@@ -15,17 +15,22 @@
 
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="{{ url('/dashboard') }}">
-                        <span class="icon fa fa-tachometer"></span><span class="title">Dashboard</span>
+                    <a href="{{ route('dashboard.show') }}">
+                        <span class="icon fa fa-tachometer"></span><span class="title">Nadzorna plošča</span>
                     </a>
                 </li>
                 <li class="inactive">
-                    <a data-toggle="collapse" href="{{ url('/profile', $user->id) }}">
-                        <span class="icon glyphicon glyphicon-cog"></span><span class="title">Settings</span>
+                    <a href="{{ route('charges.index') }}">
+                        <span class="icon fa-user-md"></span><span class="title">Oskrbljenci</span>
                     </a>
                 </li>
                 <li class="inactive">
-                    <a href="{{ url('/code-types') }}">
+                    <a href="{{ route('profile.show') }}">
+                        <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
+                    </a>
+                </li>
+                <li class="inactive">
+                    <a href="{{ route('code.index') }}">
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Urejanje šifrantov</span>
                     </a>
                 </li>

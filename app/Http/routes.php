@@ -88,15 +88,24 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'UserController@updatePersonalInfo',
         'as' => 'profile.updatePersonal',
     ]);
-
-    /**
-     * Routes only available to the admin user.
-     */
     Route::put('profile/{user}/password', [
         'uses' => 'UserController@changePassword',
         'as' => 'profile.changePassword',
     ]);
 
+    Route::get('/charges', [
+        'uses' => 'ChargeController@index',
+        'as' => 'charges.index',
+    ]);
+
+    Route::get('/charges/create', [
+        'uses' => 'ChargeController@create',
+        'as' => 'charges.create',
+    ]);
+
+    /**
+     * Routes only available to the admin user.
+     */
     Route::group(['middleware' => 'admin'], function () {
         
         Route::get('/code-types', [

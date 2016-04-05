@@ -220,4 +220,24 @@ class User extends Authenticatable
     /**
      * RELATIONSHIPS
      */
+
+    /**
+     * Get all the charges associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function charges()
+    {
+        return $this->hasMany(User::class, 'caretaker');
+    }
+
+    /**
+     * Get the users caretaker, if they have one.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function caretaker()
+    {
+        return $this->belongsTo(User::class, 'caretaker');
+    }
 }
