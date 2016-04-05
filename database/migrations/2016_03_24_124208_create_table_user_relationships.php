@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableContactInfo extends Migration
+class CreateTableUserRelationships extends Migration
 {
     /**
      * Run the migrations.
@@ -12,24 +12,25 @@ class CreateTableContactInfo extends Migration
      */
     public function up()
     {
-        Schema::create('contact_info', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-
-            $table->integer('primary')->unsigned();
-			$table->foreign('primary')
+        Schema::create('user_relationships', function (Blueprint $table) {
+            $table->integer('user_1')->unsigned();
+			$table->foreign('user_1')
                 ->references('id')->on('users')
                 ->onUpdate('cascade');
 
-            $table->integer('secondary')->unsigned();
-			$table->foreign('secondary')
+            $table->integer('user_2')->unsigned();
+			$table->foreign('user_2')
                 ->references('id')->on('users')
                 ->onUpdate('cascade');
 
-            $table->integer('relation')->unsigned();
-            $table->foreign('relation')
+            $table->primary(['user_1', 'user_2']);
+
+            $table->integer('relation_id')->unsigned();
+            $table->foreign('relation_id')
                 ->references('id')->on('codes')
                 ->onUpdate('cascade');
+
+            $table->timestamps();
         });
     }
 
@@ -40,6 +41,6 @@ class CreateTableContactInfo extends Migration
      */
     public function down()
     {
-        Schema::drop('contact_info');
+        Schema::drop('user_relationships');
     }
 }

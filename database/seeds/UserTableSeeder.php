@@ -39,6 +39,24 @@ class UserTableSeeder extends Seeder
         ]);
         $user->confirmEmail();
         $user->save();
+
+        $user = new User([
+            'first_name' => 'Pavlin',
+            'last_name' => 'Poličar',
+            'email' => 'pavlin.g.p@gmail.com',
+            'password' => Hash::make('password'),
+            'person_type' => Code::PATIENT()->id,
+            'address' => 'Address',
+            'birth_date' => \Carbon\Carbon::create(1994, 3, 12),
+        ]);
+        $user->confirmEmail();
+        $user->save();
+        $user->charges()->create([
+            'first_name' => 'Miran',
+            'last_name' => 'Slejkovič',
+            'address' => 'Address',
+            'birth_date' => \Carbon\Carbon::create(1996, 4, 9),
+        ]);
     }
 
 }

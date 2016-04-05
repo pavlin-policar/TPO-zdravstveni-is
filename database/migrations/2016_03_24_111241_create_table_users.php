@@ -35,20 +35,20 @@ class CreateTableUsers extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('set null');
 
-            $table->integer('personal_doctor')->unsigned()->nullable();
-			$table->foreign('personal_doctor')
+            $table->integer('personal_doctor_id')->unsigned()->nullable();
+			$table->foreign('personal_doctor_id')
                 ->references('id')->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
 
-            $table->integer('personal_dentist')->unsigned()->nullable();
-			$table->foreign('personal_dentist')
+            $table->integer('personal_dentist_id')->unsigned()->nullable();
+			$table->foreign('personal_dentist_id')
                 ->references('id')->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
 
-            $table->integer('caretaker')->unsigned()->nullable();
-            $table->foreign('caretaker')
+            $table->integer('caretaker_id')->unsigned()->nullable();
+            $table->foreign('caretaker_id')
                 ->references('id')->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('set null');

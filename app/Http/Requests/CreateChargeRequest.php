@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Repositories\GenderRepository;
+use App\Models\CodeType;
 
-class CreateProfileRequest extends Request
+class CreateChargeRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,16 +27,20 @@ class CreateProfileRequest extends Request
             'first_name' => 'required|alpha',
             'last_name' => 'required|alpha',
             'birth_date' => 'required|date|before:today',
-            'gender' =>'required|in:' .
+            'gender' => 'required|in:' .
                 CodeType::whereKey(CodeType::$codeTypes['GENDER'])->firstOrFail()
                     ->codes->lists('id')->implode(','),
 
-            'email' => 'required|email',
-            'phone_number' => 'required',
-            'post' => 'required|exists:posts,id',
-            'address' => 'required',
+            'email' => 'email',
+            'phone_number' => '',
+            'post' => 'exists:posts,id',
+            'address' => '',
 
             'zz_card_number' => 'required',
+
+            'relationship' => 'in:' .
+                CodeType::whereKey(CodeType::$codeTypes['PERSON_RELATIONSHIPS'])->firstOrFail()
+                    ->codes->lists('id')->implode(','),
         ];
     }
 }

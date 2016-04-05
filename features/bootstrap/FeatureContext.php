@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Code;
 use App\Models\Postcode;
 use App\Models\User;
 use App\Repositories\GenderRepository;
@@ -7,6 +8,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\MinkExtension\Context\MinkContext;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Laracasts\Behat\Context\Services\MailTrap;
 use PHPUnit_Framework_Assert as PHPUnit;
 
@@ -125,6 +127,58 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
             'email' => $email,
             'password' => 'password',
         ]);
+    }
+
+    /**
+     * Helper function that creates a full user and logs in as that user.
+     *
+     * @Given /^I am logged in$/
+     */
+    public function loggedIn()
+    {
+        $user = new User([
+            'first_name' => 'Janez',
+            'last_name' => 'Novak',
+            'birth_date' => Carbon::create(2000, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
+            'email' => 'janez.novak@gmail.com',
+            'password' => bcrypt('password'),
+            'phone_number' => '123456789',
+            'post' => Postcode::wherePostcode(1000)->first()->id,
+            'address' => 'Dunajska',
+            'zz_card_number' => '123',
+        ]);
+        $user->confirmEmail();
+        $user->save();
+
+        Auth::attempt([
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+    }
+
+    /**
+     * Make the authenticated user be the caretaker of a new user with name.
+     *
+     * @Given /^I am taking care of "([^"]+)"$/
+     */
+    public function iAmTakingCareOf($name)
+    {
+        $user = new User([
+            'first_name' => $name,
+            'last_name' => 'Novak',
+            'birth_date' => Carbon::create(2000, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
+            'email' => $name . '.novak@gmail.com',
+            'password' => bcrypt('password'),
+            'phone_number' => '123456789',
+            'post' => Postcode::wherePostcode(1000)->first()->id,
+            'address' => 'Dunajska',
+            'zz_card_number' => str_random(50),
+            'caretaker' => Auth::user()->id,
+        ]);
+        $user->confirmEmail();
+        $user->save();
     }
 
     /**

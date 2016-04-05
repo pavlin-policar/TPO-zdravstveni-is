@@ -14,7 +14,7 @@ class CreateTableCodes extends Migration
     {
         Schema::create('codes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('key')->unique();
+            $table->string('key')->unique()->nullable();
             $table->string('name');
             $table->text('description')->nullable();
             $table->double('min_value', 15, 6)->nullable();
