@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Http\Requests\CreateChargeRequest;
-use App\Models\CodeType;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,16 +59,7 @@ class ChargeController extends Controller
     public function show(User $user)
     {
         $this->authorize('can-view-profile', $user);
-        return view('charges.show')
-            ->with('charge', $user)
-            ->with(
-                'relations',
-                CodeType::whereKey(CodeType::$codeTypes['PERSON_RELATIONSHIPS'])->firstOrFail()
-                    ->codes->lists('name', 'id')->toArray())
-            ->with(
-                'relationId',
-                Auth::user()->relationships()->where('user_2', $user->id)->first()->pivot
-                    ->relation_id);
+        return view('charges.show')->with('charge', $user);
     }
 
     /**

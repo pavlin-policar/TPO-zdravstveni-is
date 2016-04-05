@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\CodeType;
 use App\Repositories\GenderRepository;
 
 class CreateProfileRequest extends Request

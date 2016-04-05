@@ -6,7 +6,7 @@ Feature: Caretakers
   Scenario: I want to visit the charges page to see who I am taking care of
     Given I am logged in
     And I am on "/dashboard"
-    When I follow "Oskrbljenci"
+    When I follow "Pregled oskrbljencev"
     Then I should be on "/charges"
     And I should see "Oskrbljenci"
 

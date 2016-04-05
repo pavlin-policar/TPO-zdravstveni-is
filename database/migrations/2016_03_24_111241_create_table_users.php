@@ -16,10 +16,10 @@ class CreateTableUsers extends Migration
             $table->increments('id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable()->unique();
             $table->string('address')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('password')->nullable();
+            $table->rememberToken()->nullable();
             $table->string('phone_number')->nullable();
 			$table->integer('zz_card_number')->unique()->unsigned()->nullable();
 			$table->date('birth_date')->nullable();

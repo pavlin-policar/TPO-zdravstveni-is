@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Repositories\GenderRepository;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -51,7 +50,7 @@ class User extends Authenticatable
         'zz_card_number',
         'personal_doctor',
         'personal_dentist',
-        'caretaker',
+        'caretaker_id',
         'password',
     ];
 
@@ -120,6 +119,22 @@ class User extends Authenticatable
         return
             $this->address !== null and
             $this->birth_date !== null;
+    }
+
+    /**
+     * Find the relation id between two users, if it exists.
+     *
+     * @param User $user
+     * @return null|int
+     */
+    public function getRelationIdWith(User $user)
+    {
+        $relationExists = $this->relationships()->where('user_2', $user->id)->first();
+        $relationId = null;
+        if ($relationExists !== null) {
+            $relationId = $relationExists->pivot->relation_id;
+        }
+        return $relationId;
     }
 
     /**
