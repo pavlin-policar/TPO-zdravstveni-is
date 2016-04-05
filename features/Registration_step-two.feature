@@ -13,8 +13,8 @@ Feature: Two step registration
   Scenario: I have already created my profile and I try to access the homepage
     Given I have an existing user with the email "user@gmail.com"
     And I log in as "user@gmail.com"
-    When I go to "/"
-    Then I should be on "/"
+    When I go to "/dashboard"
+    Then I should not be on "/registration/step-2"
 
   Scenario: I have already created my profile and I try to access the registration step-2 page
     Given I have an existing user with the email "user@gmail.com"
