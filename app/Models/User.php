@@ -95,6 +95,16 @@ class User extends Authenticatable
      */
 
     /**
+     * Set the email value.
+     *
+     * @param $value
+     */
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = empty($value) ? null : $value;
+    }
+
+    /**
      * HELPERS
      */
 

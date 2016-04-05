@@ -8,8 +8,6 @@
 
 namespace App\Http\Requests;
 
-use App\Repositories\GenderRepository;
-
 class ChangePasswordRequest extends Request
 {
     /**

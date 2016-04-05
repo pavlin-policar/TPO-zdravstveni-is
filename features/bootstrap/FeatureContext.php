@@ -3,7 +3,6 @@
 use App\Models\Code;
 use App\Models\Postcode;
 use App\Models\User;
-use App\Repositories\GenderRepository;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\MinkExtension\Context\MinkContext;
@@ -81,7 +80,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
             'first_name' => 'Janez',
             'last_name' => 'Novak',
             'birth_date' => Carbon::create(1994, 1, 1),
-            'gender' => app(GenderRepository::class)->getMale()->id,
+            'gender' => Code::MALE()->id,
             'email' => $email,
             'password' => bcrypt('password'),
             'phone_number' => '+386 40 123 123 123',
@@ -104,13 +103,13 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
             'first_name' => 'Janez',
             'last_name' => 'Novak',
             'birth_date' => Carbon::create(2000, 1, 1, 0, 0, 0),
-            'gender' => app(GenderRepository::class)->getMale()->id,
+            'gender' => Code::MALE()->id,
             'email' => 'janez.novak@gmail.com',
             'password' => bcrypt('password'),
             'phone_number' => '123456789',
             'post' => Postcode::wherePostcode(1000)->first()->id,
             'address' => 'Dunajska',
-            'zz_card_number' => '123',
+            'zz_card_number' => str_random(30),
         ]);
         $user->confirmEmail();
         $user->save();
@@ -146,7 +145,7 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
             'phone_number' => '123456789',
             'post' => Postcode::wherePostcode(1000)->first()->id,
             'address' => 'Dunajska',
-            'zz_card_number' => '123',
+            'zz_card_number' => str_random(30),
         ]);
         $user->confirmEmail();
         $user->save();
@@ -166,6 +165,15 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     {
         $user = new User([
             'first_name' => $name,
+            'last_name' => 'Novak',
+            'birth_date' => Carbon::create(2000, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
+            'email' => $name . '.novak@gmail.com',
+            'password' => bcrypt('password'),
+            'phone_number' => '123456789',
+            'post' => Postcode::wherePostcode(1000)->first()->id,
+            'address' => 'Dunajska',
+            'zz_card_number' => str_random(30),
             'caretaker_id' => Auth::user()->id,
         ]);
         $user->confirmEmail();
@@ -180,6 +188,23 @@ class FeatureContext extends MinkContext implements Context, SnippetAcceptingCon
     public function pageAddressNot($page)
     {
         $this->assertSession()->addressNotEquals($this->locatePath($page));
+    }
+
+    /**
+     * Select a radio button.
+     *
+     * @When /^I choose "([^"]*)"/
+     */
+    public function iCheckTheRadioButton($radio_label)
+    {
+        $radio_button = $this->getSession()->getPage()->findField($radio_label);
+        if (null === $radio_button) {
+            throw new ElementNotFoundException(
+                $this->getSession(), 'form field', 'id|name|label|value', $radio_label
+            );
+        }
+        $value = $radio_button->getAttribute('value');
+        $this->fillField($radio_label, $value);
     }
 
     /**

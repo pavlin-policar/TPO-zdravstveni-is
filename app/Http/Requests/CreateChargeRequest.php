@@ -33,12 +33,12 @@ class CreateChargeRequest extends Request
 
             'email' => 'email',
             'phone_number' => '',
-            'post' => 'exists:posts,id',
-            'address' => '',
+            'post' => 'required|exists:posts,id',
+            'address' => 'required',
 
             'zz_card_number' => 'required',
 
-            'relationship' => 'in:' .
+            'relation_id' => 'in:' .
                 CodeType::whereKey(CodeType::$codeTypes['PERSON_RELATIONSHIPS'])->firstOrFail()
                     ->codes->lists('id')->implode(','),
         ];

@@ -26,7 +26,7 @@ Feature: Profile page
     And I fill in "phone_number" with "321321321"
     And I fill in "birth_date" with "2000-01-02 00:00:00"
     And I press "Shrani spremembe"
-    And the "first_name" field should contain "Miran"
+    Then the "first_name" field should contain "Miran"
     And the "last_name" field should contain "Baloh"
     And the "phone_number" field should contain "321321321"
     And the "birth_date" field should contain "2000-01-02 00:00:00"

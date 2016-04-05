@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\CodeType;
-use App\Repositories\GenderRepository;
 
 class CreateProfileRequest extends Request
 {
@@ -28,7 +27,7 @@ class CreateProfileRequest extends Request
             'first_name' => 'required|alpha',
             'last_name' => 'required|alpha',
             'birth_date' => 'required|date|before:today',
-            'gender' =>'required|in:' .
+            'gender' => 'required|in:' .
                 CodeType::whereKey(CodeType::$codeTypes['GENDER'])->firstOrFail()
                     ->codes->lists('id')->implode(','),
 

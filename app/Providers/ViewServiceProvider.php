@@ -5,9 +5,7 @@ namespace App\Providers;
 use App\Models\Code;
 use App\Models\CodeType;
 use App\Models\Postcode;
-use App\Repositories\GenderRepository;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
