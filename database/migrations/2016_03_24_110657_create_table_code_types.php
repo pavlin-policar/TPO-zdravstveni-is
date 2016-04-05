@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableDoctorNurse extends Migration
+class CreateTableCodeTypes extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,12 @@ class CreateTableDoctorNurse extends Migration
      */
     public function up()
     {
-        Schema::create('doctorNurse', function (Blueprint $table) {
+        Schema::create('code_types', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('nurse')->unsigned();
-			$table->integer('doctor')->unsigned();
+            $table->string('key')->nullable()->unique();
+            $table->string('name');
+			$table->text('description')->nullable();
             $table->timestamps();
-			
-			$table->foreign('nurse')->references('id')->on('users');
-			$table->foreign('doctor')->references('id')->on('users');
         });
     }
 
@@ -30,6 +28,6 @@ class CreateTableDoctorNurse extends Migration
      */
     public function down()
     {
-        Schema::drop('doctorNurse');
+        Schema::drop('code_types');
     }
 }

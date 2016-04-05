@@ -13,6 +13,7 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('posts')->delete();
         // insert all postcodes from postcodes.sql
         DB::transaction(function () {
             DB::unprepared(File::get('database/seeds/sql/postcodes.sql'));

@@ -14,15 +14,17 @@ class CreateTableChecks extends Migration
     {
         Schema::create('checks', function (Blueprint $table) {
             $table->increments('id');
-   			$table->integer('patient')->unsigned();
-			$table->integer('doctor')->unsigned();
-			$table->integer('doctorDate')->unsigned()->nullable();
 			$table->text('note')->nullable();
             $table->timestamps();
-			
+
+            $table->integer('patient')->unsigned();
 			$table->foreign('patient')->references('id')->on('users');
+
+            $table->integer('doctor')->unsigned();
 			$table->foreign('doctor')->references('id')->on('users');
-			$table->foreign('doctorDate')->references('id')->on('doctorDates');
+
+            $table->integer('doctor_date')->unsigned()->nullable();
+			$table->foreign('doctor_date')->references('id')->on('doctor_dates');
         });
     }
 

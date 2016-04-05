@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UstvariTabeloPoste extends Migration
+class CreateTableDoctorNurse extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,14 @@ class UstvariTabeloPoste extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('doctor_nurse', function (Blueprint $table) {
             $table->increments('id');
-			$table->smallInteger('postcode')->unique()->unsigned();
-            $table->string('post');
+			$table->integer('nurse')->unsigned();
+			$table->integer('doctor')->unsigned();
             $table->timestamps();
+			
+			$table->foreign('nurse')->references('id')->on('users');
+			$table->foreign('doctor')->references('id')->on('users');
         });
     }
 
@@ -27,6 +30,6 @@ class UstvariTabeloPoste extends Migration
      */
     public function down()
     {
-        Schema::drop('posts');
+        Schema::drop('doctor_nurse');
     }
 }

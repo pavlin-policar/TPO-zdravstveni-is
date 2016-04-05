@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UstvariTabeloVrsteSifrantov extends Migration
+class CreateTablePostcodes extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,10 @@ class UstvariTabeloVrsteSifrantov extends Migration
      */
     public function up()
     {
-        Schema::create('codeTypes', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('codeItemName');
-			$table->text('codeItemDescription');
+			$table->smallInteger('postcode')->unique()->unsigned();
+            $table->string('post');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class UstvariTabeloVrsteSifrantov extends Migration
      */
     public function down()
     {
-        Schema::drop('codeTypes');
+        Schema::drop('posts');
     }
 }

@@ -17,7 +17,9 @@ class CreateTableCures extends Migration
 			$table->integer('manual')->unsigned();
 			$table->timestamps();
 			
-			$table->foreign('manual')->references('id')->on('cureManuals');
+			$table->foreign('manual')
+                ->references('id')->on('cure_manuals')
+                ->onUpdate('cascade');
         });
     }
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableCheckDiete extends Migration
+class CreateTableAllergiesAndDiseases extends Migration
 {
     /**
      * Run the migrations.
@@ -12,15 +12,9 @@ class CreateTableCheckDiete extends Migration
      */
     public function up()
     {
-        Schema::create('checkDiete', function (Blueprint $table) {
+        Schema::create('allergies_and_diseases', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('check')->unsigned();
-			$table->integer('diet')->unsigned();
-			$table->text('note')->nullable();
 			$table->timestamps();
-			
-			$table->foreign('check')->references('id')->on('checks');
-			$table->foreign('diet')->references('id')->on('diets');
         });
     }
 
@@ -31,6 +25,6 @@ class CreateTableCheckDiete extends Migration
      */
     public function down()
     {
-        Schema::drop('checkDiete');
+        Schema::drop('allergies_and_diseases');
     }
 }

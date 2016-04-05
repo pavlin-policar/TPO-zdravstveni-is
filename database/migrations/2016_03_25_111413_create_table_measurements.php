@@ -21,10 +21,10 @@ class CreateTableMeasurements extends Migration
 			$table->dateTime('time');
             $table->timestamps();
 			
-			$table->foreign('provider')->references('id')->on('users'); //izvajalec
-			$table->foreign('patient')->references('id')->on('users'); //pacient
-			$table->foreign('check')->references('id')->on('checks'); //pregled
-			$table->foreign('type')->references('id')->on('codes'); //tip meritve
+			$table->foreign('provider')->references('id')->on('users')->onUpdate('cascade'); //izvajalec
+			$table->foreign('patient')->references('id')->on('users')->onUpdate('cascade'); //pacient
+			$table->foreign('check')->references('id')->on('checks')->onUpdate('cascade'); //pregled
+			$table->foreign('type')->references('id')->on('codes')->onUpdate('cascade'); //tip meritve
         });
     }
 

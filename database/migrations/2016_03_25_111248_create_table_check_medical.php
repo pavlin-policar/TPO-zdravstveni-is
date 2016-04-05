@@ -12,15 +12,20 @@ class CreateTableCheckMedical extends Migration
      */
     public function up()
     {
-        Schema::create('checkMedical', function (Blueprint $table) {
+        Schema::create('check_medical', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('check')->unsigned();
-			$table->integer('cure')->unsigned();
 			$table->text('note')->nullable();
 			$table->timestamps();
-			
-			$table->foreign('check')->references('id')->on('checks');
-			$table->foreign('cure')->references('id')->on('cures');
+
+            $table->integer('check')->unsigned();
+			$table->foreign('check')
+                ->references('id')->on('checks')
+                ->onUpdate('cascade');
+
+            $table->integer('cure')->unsigned();
+			$table->foreign('cure')
+                ->references('id')->on('cures')
+                ->onUpdate('cascade');
         });
     }
 
@@ -31,6 +36,6 @@ class CreateTableCheckMedical extends Migration
      */
     public function down()
     {
-        Schema::drop('checkAllergyAndDisease');
+        Schema::drop('check_medical');
     }
 }

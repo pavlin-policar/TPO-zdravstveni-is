@@ -12,15 +12,15 @@ class CreateTableMeasurementResults extends Migration
      */
     public function up()
     {
-        Schema::create('measurementResults', function (Blueprint $table) {
+        Schema::create('measurement_results', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('measurement')->unsigned();
 			$table->integer('type')->unsigned();
 			$table->double('result', 15, 6);
             $table->timestamps();
 			
-			$table->foreign('measurement')->references('id')->on('measurements'); //izvajalec
-			$table->foreign('type')->references('id')->on('codes'); //tip meritve
+			$table->foreign('measurement')->references('id')->on('measurements')->onUpdate('cascade'); //izvajalec
+			$table->foreign('type')->references('id')->on('codes')->onUpdate('cascade'); //tip meritve
         });
     }
 
@@ -31,6 +31,6 @@ class CreateTableMeasurementResults extends Migration
      */
     public function down()
     {
-        Schema::drop('measurementResults');
+        Schema::drop('measurement_results');
     }
 }

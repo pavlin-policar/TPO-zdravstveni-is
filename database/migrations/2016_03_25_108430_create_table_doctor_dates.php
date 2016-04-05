@@ -12,16 +12,21 @@ class CreateTableDoctorDates extends Migration
      */
     public function up()
     {
-        Schema::create('doctorDates', function (Blueprint $table) {
+        Schema::create('doctor_dates', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('patient')->unsigned()->nullable();
-			$table->integer('doctor')->unsigned();
 			$table->text('note')->nullable();
 			$table->dateTime('time');
             $table->timestamps();
-			
-			$table->foreign('patient')->references('id')->on('users');
-			$table->foreign('doctor')->references('id')->on('users');
+
+            $table->integer('patient')->unsigned()->nullable();
+			$table->foreign('patient')
+                ->references('id')->on('users')
+                ->onUpdate('cascade');
+
+            $table->integer('doctor')->unsigned();
+			$table->foreign('doctor')
+                ->references('id')->on('users')
+                ->onUpdate('cascade');
         });
     }
 
@@ -32,6 +37,6 @@ class CreateTableDoctorDates extends Migration
      */
     public function down()
     {
-        Schema::drop('doctorDates');
+        Schema::drop('doctor_dates');
     }
 }

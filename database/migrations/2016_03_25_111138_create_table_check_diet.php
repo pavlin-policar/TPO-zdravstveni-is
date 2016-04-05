@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-class CreateTableDietManuals extends Migration
+class CreateTableCheckDiet extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,18 @@ class CreateTableDietManuals extends Migration
      */
     public function up()
     {
-        Schema::create('diet_manuals', function (Blueprint $table) {
+        Schema::create('check_diet', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('content');
-            $table->timestamps();
+			$table->text('note')->nullable();
+			$table->timestamps();
+
+            $table->integer('check')->unsigned();
+			$table->foreign('check')
+                ->references('id')->on('checks')
+                ->onUpdate('cascade');
 
             $table->integer('diet')->unsigned();
-            $table->foreign('diet')
+			$table->foreign('diet')
                 ->references('id')->on('diets')
                 ->onUpdate('cascade');
         });
@@ -31,6 +36,6 @@ class CreateTableDietManuals extends Migration
      */
     public function down()
     {
-        Schema::drop('diet_manuals');
+        Schema::drop('check_diet');
     }
 }
