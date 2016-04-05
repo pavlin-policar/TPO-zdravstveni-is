@@ -12,13 +12,19 @@ class Code extends Model
      * @var array
      */
     public static $codeTypes = [
+        // genders
         'MALE' => 'MALE',
         'FEMALE' => 'FEMALE',
 
+        // user types
         'ADMIN' => 'ADMINISTRATOR',
         'DOCTOR' => 'DOCTOR',
         'NURSE' => 'NURSE',
         'PATIENT' => 'PATIENT',
+
+        // doctor types
+        'PERSONAL_DOCTOR' => 'PERSONAL_DOCTOR',
+        'PERSONAL_DENTIST' => 'PERSONAL_DENTIST',
     ];
 
     /**
@@ -30,22 +36,22 @@ class Code extends Model
 
     public static function MALE()
     {
-        return static::whereKey(static::$codeTypes['MALE'])->first()->id;
+        return static::whereKey(static::$codeTypes['MALE'])->first();
     }
 
     public static function FEMALE()
     {
-        return static::whereKey(static::$codeTypes['FEMALE'])->first()->id;
+        return static::whereKey(static::$codeTypes['FEMALE'])->first();
     }
 
     public static function ADMIN()
     {
-        return static::whereKey(static::$codeTypes['ADMIN'])->first()->id;
+        return static::whereKey(static::$codeTypes['ADMIN'])->first();
     }
 
     public static function DOCTOR()
     {
-        return static::whereKey(static::$codeTypes['DOCTOR'])->first()->id;
+        return static::whereKey(static::$codeTypes['DOCTOR'])->first();
     }
 
     /**

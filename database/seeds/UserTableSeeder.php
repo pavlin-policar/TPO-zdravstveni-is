@@ -10,21 +10,25 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->delete();
-        User::create([
+        $user = new User([
             'first_name' => 'Admin',
             'last_name' => 'Admin',
             'email' => 'admin@zis.si',
             'password' => Hash::make('admin'),
-            'person_type' => Code::ADMIN(),
+            'person_type' => Code::ADMIN()->id,
         ]);
+        $user->confirmEmail();
+        $user->save();
 
-        User::create([
+        $user = new User([
             'first_name' => 'Doctor',
             'last_name' => '1',
             'email' => 'doctor1@zis.si',
             'password' => Hash::make('password'),
-            'person_type' => Code::DOCTOR(),
+            'person_type' => Code::DOCTOR()->id,
         ]);
+        $user->confirmEmail();
+        $user->save();
     }
 
 }

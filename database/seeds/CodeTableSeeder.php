@@ -58,5 +58,34 @@ class CodeTableSeeder extends Seeder
             'name' => 'Pacient',
             'description' => '',
         ]);
+
+        // DOCTOR TYPES
+        $doctorTypes = CodeType::create([
+            'key' => CodeType::$codeTypes['DOCTOR_TYPES'],
+            'name' => 'Vrste uporabnikov',
+            'description' => '',
+        ]);
+        $doctorTypes->codes()->create([
+            'key' => Code::$codeTypes['PERSONAL_DOCTOR'],
+            'name' => 'Administrator',
+            'description' => 'Glavni urednik strani',
+        ]);
+        $doctorTypes->codes()->create([
+            'key' => Code::$codeTypes['PERSONAL_DENTIST'],
+            'name' => 'Zdravnik',
+            'description' => 'Zdravnik ali zobozdravnik',
+        ]);
+
+        // BLOOD PRESSURE
+        $bloodPressureTypes = CodeType::create([
+            'name' => 'Krvni tlak',
+            'description' => '',
+        ]);
+
+        // HEART BEAT
+        $sugarLevelTypes = CodeType::create([
+            'name' => 'Raven sladkorja',
+            'description' => 'Raven sladkorja v krvi',
+        ]);
     }
 }

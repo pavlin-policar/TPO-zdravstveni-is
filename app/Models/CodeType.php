@@ -24,6 +24,7 @@ class CodeType extends Model
     public static $codeTypes = [
         'GENDER' => 'GENDER',
         'USER_TYPES' => 'USER_TYPES',
+        'DOCTOR_TYPES' => 'DOCTOR_TYPES',
     ];
 
     /**
@@ -32,6 +33,11 @@ class CodeType extends Model
      * @var string
      */
     protected $table = 'code_types';
+
+    public static function GENDERS()
+    {
+        return static::whereKey(static::$codeTypes['GENDER'])->first();
+    }
 
     /**
      * Get all the codes that belong to this codeType.

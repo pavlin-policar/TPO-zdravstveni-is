@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Code;
+use App\Models\CodeType;
 use App\Models\Postcode;
 use App\Repositories\GenderRepository;
 use Illuminate\Support\Facades\Auth;
@@ -51,8 +53,8 @@ class ViewServiceProvider extends ServiceProvider
     {
         view()->composer('partials.form-elements.radio-gender-buttons-hz', function ($view) {
             $view
-                ->with('male', app(GenderRepository::class)->getMale())
-                ->with('female', app(GenderRepository::class)->getFemale());
+                ->with('male', Code::MALE())
+                ->with('female', Code::FEMALE());
         });
     }
 

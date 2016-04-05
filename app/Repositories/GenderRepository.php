@@ -14,7 +14,7 @@ class GenderRepository
      */
     public function getGenders()
     {
-        return CodeType::where('codeItemName', 'Spol')->firstOrFail()->codes;
+        return CodeType::where('key', 'GENDER')->firstOrFail()->codes;
     }
 
     /**
@@ -25,7 +25,7 @@ class GenderRepository
     public function getMale()
     {
         return $this->getGenders()->filter(function (Code $code) {
-            return strcasecmp($code->codeName, 'Moški') === 0;
+            return strcasecmp($code->name, 'Moški') === 0;
         })->first();
     }
 
@@ -37,7 +37,7 @@ class GenderRepository
     public function getFemale()
     {
         return $this->getGenders()->filter(function (Code $code) {
-            return strcasecmp($code->codeName, 'Ženski') === 0;
+            return strcasecmp($code->name, 'Ženski') === 0;
         })->first();
     }
 }
