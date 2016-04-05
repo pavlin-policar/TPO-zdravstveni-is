@@ -34,9 +34,34 @@ class CodeType extends Model
      */
     protected $table = 'code_types';
 
+    /**
+     * Get the genders key type.
+     *
+     * @return mixed
+     */
     public static function GENDERS()
     {
         return static::whereKey(static::$codeTypes['GENDER'])->first();
+    }
+
+    /**
+     * Get the user types key type.
+     *
+     * @return mixed
+     */
+    public static function USER_TYPES()
+    {
+        return static::whereKey(static::$codeTypes['USER_TYPES'])->first();
+    }
+
+    /**
+     * Get the doctor types key type.
+     *
+     * @return mixed
+     */
+    public static function DOCTOR_TYPES()
+    {
+        return static::whereKey(static::$codeTypes['DOCTOR_TYPES'])->first();
     }
 
     /**

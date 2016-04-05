@@ -34,24 +34,84 @@ class Code extends Model
      */
     protected $table = 'codes';
 
+    /**
+     * Get the male key type.
+     *
+     * @return mixed
+     */
     public static function MALE()
     {
         return static::whereKey(static::$codeTypes['MALE'])->first();
     }
 
+    /**
+     * Get the female key type.
+     *
+     * @return mixed
+     */
     public static function FEMALE()
     {
         return static::whereKey(static::$codeTypes['FEMALE'])->first();
     }
 
+    /**
+     * Get the admin key type.
+     *
+     * @return mixed
+     */
     public static function ADMIN()
     {
         return static::whereKey(static::$codeTypes['ADMIN'])->first();
     }
 
+    /**
+     * Get the doctor key type.
+     *
+     * @return mixed
+     */
     public static function DOCTOR()
     {
         return static::whereKey(static::$codeTypes['DOCTOR'])->first();
+    }
+
+    /**
+     * Get the nurse key type.
+     *
+     * @return mixed
+     */
+    public static function NURSE()
+    {
+        return static::whereKey(static::$codeTypes['NURSE'])->first();
+    }
+
+    /**
+     * Get the patient key type.
+     *
+     * @return mixed
+     */
+    public static function PATIENT()
+    {
+        return static::whereKey(static::$codeTypes['PATIENT'])->first();
+    }
+
+    /**
+     * Get the personal doctor key type.
+     *
+     * @return mixed
+     */
+    public static function PERSONAL_DOCTOR()
+    {
+        return static::whereKey(static::$codeTypes['PERSONAL_DOCTOR'])->first();
+    }
+
+    /**
+     * Get the personal dentist key type.
+     *
+     * @return mixed
+     */
+    public static function PERSONAL_DENTIST()
+    {
+        return static::whereKey(static::$codeTypes['PERSONAL_DENTIST'])->first();
     }
 
     /**

@@ -29,6 +29,16 @@ class UserTableSeeder extends Seeder
         ]);
         $user->confirmEmail();
         $user->save();
+
+        $user = new User([
+            'first_name' => 'Doctor',
+            'last_name' => '2',
+            'email' => 'doctor2@zis.si',
+            'password' => Hash::make('password'),
+            'person_type' => Code::DOCTOR()->id,
+        ]);
+        $user->confirmEmail();
+        $user->save();
     }
 
 }
