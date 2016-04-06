@@ -263,6 +263,16 @@ class User extends Authenticatable
      */
 
     /**
+     * Get the person type assigned to the given user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function type()
+    {
+        return $this->belongsTo(Code::class, 'person_type');
+    }
+
+    /**
      * Get all the charges associated with the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -292,5 +302,15 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'user_relationships', 'user_1', 'user_2')
             ->withPivot('relation_id')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the doctor profile associated with the user if the user is indeed a doctor.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|null
+     */
+    public function doctorProfile()
+    {
+        return $this->isDoctor() ? $this->belongsTo(DoctorProfile::class, 'user_id') : null;
     }
 }

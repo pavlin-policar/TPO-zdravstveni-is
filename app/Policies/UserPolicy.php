@@ -29,4 +29,19 @@ class UserPolicy
     {
         return !$user->isAdmin();
     }
+
+    public function canSeeAllUsers(User $user)
+    {
+        return $user->isAdmin();
+    }
+
+    public function canSeeUserInfo(User $user)
+    {
+        return $user->isAdmin();
+    }
+
+    public function canCreateDoctor(User $user)
+    {
+        return $user->isAdmin();
+    }
 }
