@@ -65,4 +65,9 @@ class CodeController extends Controller
         return redirect()->route('code.edit', ['id' => $code->id]);
         //return redirect("codeType/".$codeType->codeType);
     }
+
+    public function exportCodeType($id)
+    {
+        return "EXPORTING ".$id;
+    }
 }

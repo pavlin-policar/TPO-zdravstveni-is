@@ -160,5 +160,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'uses' => 'CodeController@updateCode',
             'as' => 'code.update',
         ]);
+
+        Route::get('/export/pdf/codeType/{id}', [
+            'uses' => 'CodeController@exportCodeType',
+            'as' => 'codeType.exportToPDF',
+        ]);
     });
 });
