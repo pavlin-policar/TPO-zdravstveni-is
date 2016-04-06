@@ -17,7 +17,7 @@ class CodeController extends Controller
 
     public function showCodesForType($id)
     {
-        $data['codeType'] = CodeType::findOrFail($id)->codeItemName;
+        $data['codeType'] = CodeType::findOrFail($id)->name;
         $data['array'] = Code::where('code_type', $id)->get();
         $data['id'] = $id;
         return view('code.codes')->with($data);
@@ -64,5 +64,10 @@ class CodeController extends Controller
         $code->update($request->all());
         return redirect()->route('code.edit', ['id' => $code->id]);
         //return redirect("codeType/".$codeType->codeType);
+    }
+
+    public function exportCodeType($id)
+    {
+        return "EXPORTING ".$id;
     }
 }
