@@ -160,5 +160,26 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'uses' => 'CodeController@updateCode',
             'as' => 'code.update',
         ]);
+
+        Route::get('/users', [
+            'uses' => 'UserAdminController@index',
+            'as' => 'users.index',
+        ]);
+        Route::get('/users/create', [
+            'uses' => 'UserAdminController@create',
+            'as' => 'users.create',
+        ]);
+        Route::post('/users', [
+            'uses' => 'UserAdminController@store',
+            'as' => 'users.store',
+        ]);
+        Route::get('/users/create/{user}', [
+            'uses' => 'UserAdminController@show',
+            'as' => 'users.show',
+        ]);
+        Route::put('/users/create/{user}', [
+            'uses' => 'UserAdminController@update',
+            'as' => 'users.update',
+        ]);
     });
 });

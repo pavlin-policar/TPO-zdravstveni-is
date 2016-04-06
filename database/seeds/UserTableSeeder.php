@@ -55,6 +55,7 @@ class UserTableSeeder extends Seeder
             'first_name' => 'Miran',
             'last_name' => 'Slejkovič',
             'address' => 'Address',
+            'person_type' => Code::PATIENT()->id,
             'birth_date' => \Carbon\Carbon::create(1996, 4, 9),
         ]);
     }
