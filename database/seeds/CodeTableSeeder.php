@@ -91,14 +91,17 @@ class CodeTableSeeder extends Seeder
         $doctorTypes->codes()->create([
             'name' => 'Znanec',
             'description' => 'Osebi se med seboj poznata.',
-        ]);;
+        ]);
         $doctorTypes->codes()->create([
             'name' => 'Neznanec',
             'description' => 'Osebi se med seboj ne poznata.',
         ]);
 
         // BLOOD PRESSURE
-        $systolicBP = CodeType::create(['name' => 'Sistoličen krvni tlak'], 'description' => 'Meri se zjutraj in zvečer. Enota je millimeter živega srebra - mmHg');
+        $systolicBP = CodeType::create([
+            'name' => 'Sistoličen krvni tlak',
+            'description' => 'Meri se zjutraj in zvečer. Enota je millimeter živega srebra - mmHg'
+        ]);
         $systolicBP->codes()->create([
             'name' => 'Hipotenzija',
             'max_value' => '99',
@@ -122,7 +125,10 @@ class CodeTableSeeder extends Seeder
             'name' => 'Nenormalne vrednosti',
             'min_value' => '180',
         ]);
-        $diastoticBP = CodeType::create(['name' => 'Diastoličen krvni tlak', 'description' => 'Meri se zjutraj in zvečer. Enota je millimeter živega srebra - mmHg']);
+        $diastoticBP = CodeType::create([
+            'name' => 'Diastoličen krvni tlak',
+            'description' => 'Meri se zjutraj in zvečer. Enota je millimeter živega srebra - mmHg'
+        ]);
         $diastoticBP->codes()->create([
             'name' => 'Normalna vrednost',
 			'min_value' => '60',
@@ -275,77 +281,66 @@ class CodeTableSeeder extends Seeder
             'description' => 'ULICA PADLIH BORCEV 13 A',
 			'min_value' => '00016', //šifra
 			'max_value' => '5290', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD BREŽICE',
             'description' => 'ČERNELČEVA CESTA 8',
 			'min_value' => '00100', //šifra
 			'max_value' => '8250', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZDRAVSTVENI DOM NOVA GORICA',
             'description' => 'REJČEVA ULICA 4',
 			'min_value' => '00131', //šifra
 			'max_value' => '5000', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD TOLMIN',
             'description' => 'PREŠERNOVA ULICA 6 A',
 			'min_value' => '00133', //šifra
 			'max_value' => '5220', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD LENDAVA - EH LENDVA',
             'description' => 'KIDRIČEVA ULICA 34',
 			'min_value' => '00351', //šifra
 			'max_value' => '9220', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD METLIKA',
             'description' => 'C. BRATSTVA IN ENOTNOSTI 71',
 			'min_value' => '00371', //šifra
 			'max_value' => '8330', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD LJUTOMER',
             'description' => 'C. I. SLOVENSKEGA TABORA 2',
 			'min_value' => '00352', //šifra
 			'max_value' => '9240', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'DOM UPOKOJENCEV ŠMARJE PRI JELŠAH',
             'description' => 'RAKEŽEVA ULICA 8',
 			'min_value' => '02063', //šifra
 			'max_value' => '3240', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD RADEČE',
             'description' => 'ULICA OF 8',
 			'min_value' => '02968', //šifra
 			'max_value' => '1433', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZDRAVSTVENI DOM KOPER CASA DELLA SANITA CAPODISTRIA',
             'description' => 'DELLAVALLEJEVA ULICA 3',
 			'min_value' => '03401', //šifra
 			'max_value' => '6000', //pošta
-			
         ]);
 		$hospitals->codes()->create([
             'name' => 'SB JESENICE',
             'description' => 'CESTA MARŠALA TITA 112',
 			'min_value' => '04071', //šifra
 			'max_value' => '4270', //pošta
-			
         ]);
     }
 }
