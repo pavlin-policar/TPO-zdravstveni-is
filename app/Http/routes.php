@@ -164,6 +164,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'uses' => 'CodeController@exportCodeType',
             'as' => 'codeType.exportToPDF',
         ]);
+        Route::delete('/editCode/code/{id}', [
+            'uses' => 'CodeController@deleteCode',
+            'as' => 'code.deleteCode',
+        ]);
 
         Route::get('/users', [
             'uses' => 'UserAdminController@index',

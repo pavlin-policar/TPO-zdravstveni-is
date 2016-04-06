@@ -7,6 +7,9 @@
         <th>Minimalna vrdnost</th>
         <th>Maksimalna vrdnost</th>
         <th>Nazadnje spremenjen</th>
+        @if(!isset($hideFoot))
+            <th>Izbris</th>
+        @endif
     </tr>
     </thead>
     @if(!isset($hideFoot))
@@ -18,6 +21,7 @@
         <th>Minimalna vrdnost</th>
         <th>Maksimalna vrdnost</th>
         <th>Nazadnje spremenjen</th>
+        <th>Izbris</th>
     </tr>
     </tfoot>
     @endif
@@ -30,6 +34,13 @@
             <td>{{ $item['min_value'] }}</td>
             <td>{{ $item['max_value'] }}</td>
             <td>{{ $item['updated_at'] }}</td>
+            @if(!isset($hideFoot))
+                <td>
+                    {{ Form::open(['route' => ['code.deleteCode', $item['id']], 'method' => 'delete']) }}
+                    {!! Form::submit('Izbris', ['class' => 'btn btn-warning form-control']) !!}
+                    {{ Form::close() }}
+                </td>
+            @endif
         </tr>
     @endforeach
     </tbody>

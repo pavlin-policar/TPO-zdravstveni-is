@@ -76,6 +76,7 @@ class CodeController extends Controller
         $data['array'] = Code::where('code_type', $id)->get();
         $data['codeType'] = CodeType::findOrFail($id)->name;
         $data['hideFoot']=true;
+        //return view('code.pdfExport')->with($data);
         $pdf = Facade::loadView('code.pdfExport',$data);
         return $pdf->download('sifranti.pdf');
         /*$pdf = App::make('dompdf.wrapper');
@@ -83,5 +84,13 @@ class CodeController extends Controller
         $pdf->loadView('code.codeTable',$data);
         return $pdf->stream();
         return "EXPORTING ".$id;*/
+    }
+
+    public function deleteCode($id)
+    {
+        $code = Code::findOrFail($id);
+        $codeType = $code->code_type;
+        $code->delete();
+        return redirect()->route('codeTypes.show', ['id' => $codeType]);
     }
 }

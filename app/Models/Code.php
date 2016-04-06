@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Code extends Model
 {
+    use SoftDeletes;
     /**
      * Define the keys that are used to easier locate often used codes in the database.
      *
@@ -33,6 +35,7 @@ class Code extends Model
      * @var string
      */
     protected $table = 'codes';
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that are mass assignable.
