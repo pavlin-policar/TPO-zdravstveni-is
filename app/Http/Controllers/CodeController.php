@@ -6,6 +6,11 @@ use App\Http\Requests;
 use App\Models\Code;
 use App\Models\CodeType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Barryvdh\DomPDF\Facade;
+use Dompdf\Adapter\CPDF;
+use Dompdf\Dompdf;
+use Dompdf\Exception;
 
 class CodeController extends Controller
 {
@@ -68,6 +73,15 @@ class CodeController extends Controller
 
     public function exportCodeType($id)
     {
-        return "EXPORTING ".$id;
+        $data['array'] = Code::where('code_type', $id)->get();
+        $data['codeType'] = CodeType::findOrFail($id)->name;
+        $data['hideFoot']=true;
+        $pdf = Facade::loadView('code.pdfExport',$data);
+        return $pdf->download('sifranti.pdf');
+        /*$pdf = App::make('dompdf.wrapper');
+        //$pdf->loadHTML('<h1>Test</h1>');
+        $pdf->loadView('code.codeTable',$data);
+        return $pdf->stream();
+        return "EXPORTING ".$id;*/
     }
 }
