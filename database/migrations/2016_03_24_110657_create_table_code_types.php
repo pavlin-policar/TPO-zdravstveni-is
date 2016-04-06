@@ -17,6 +17,7 @@ class CreateTableCodeTypes extends Migration
             $table->string('key')->nullable()->unique();
             $table->string('name');
 			$table->text('description')->nullable();
+			$table->softDeletes();
             $table->timestamps();
         });
     }

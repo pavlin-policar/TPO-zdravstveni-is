@@ -19,6 +19,7 @@ class CreateTableCodes extends Migration
             $table->text('description')->nullable();
             $table->double('min_value', 15, 6)->nullable();
             $table->double('max_value', 15, 6)->nullable();
+			$table->softDeletes();
             $table->timestamps();
 
             $table->integer('code_type')->unsigned();
