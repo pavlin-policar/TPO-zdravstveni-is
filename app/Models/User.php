@@ -171,6 +171,11 @@ class User extends Authenticatable
      * Check if the user has ever been persisted to storage or if we are dealing with a fresh
      * instance.
      *
+     * This can be useful when dealing with dependency injection, if no user is found when
+     * requesting a user object with implicit resolution, a fresh User object is supplied. This can
+     * be used to check if the object has been fetched from the database or if a new instance was
+     * constructed.
+     *
      * @return bool
      */
     public function existsInStorage()

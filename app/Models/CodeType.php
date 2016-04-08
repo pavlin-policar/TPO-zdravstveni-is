@@ -26,6 +26,7 @@ class CodeType extends Model
         'USER_TYPES' => 'USER_TYPES',
         'DOCTOR_TYPES' => 'DOCTOR_TYPES',
         'PERSON_RELATIONSHIPS' => 'PERSON_RELATIONSHIPS',
+        'INSTITUTIONS' => 'INSTITUTIONS',
     ];
 
     /**

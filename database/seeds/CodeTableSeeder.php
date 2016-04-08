@@ -273,6 +273,7 @@ class CodeTableSeeder extends Seeder
         ]);
 		//Zdravstveni domovi
 		$hospitals = CodeType::create([
+            'key' => CodeType::$codeTypes['INSTITUTIONS'],
             'name' => 'Zdravstvene ustanove',
 			'description' => 'Seznam zdravstvenih domov in bolnišnic.',
         ]);

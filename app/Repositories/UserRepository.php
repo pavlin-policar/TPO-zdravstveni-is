@@ -43,7 +43,7 @@ class UserRepository
         $user->person_type = Code::DOCTOR()->id;
         $user->save();
         // then we need to insert a record into doctors table that references the user
-        $profile = new DoctorProfile($data);
+        $profile = new DoctorProfile;
         $user->doctorProfile()->save($profile);
 
         return $user;

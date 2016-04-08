@@ -30,9 +30,19 @@ class DoctorProfile extends Model
      *
      * @return mixed
      */
+    public function getDoctorNumberAttribute()
+    {
+        return $this->attributes['doctor_number'];
+    }
+
+    /**
+     * Max patients accessor.
+     *
+     * @return mixed
+     */
     public function getMaxPatientsAttribute()
     {
-        return $this->max_patients;
+        return $this->attributes['max_patients'];
     }
 
     /**
