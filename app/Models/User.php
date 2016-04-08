@@ -311,6 +311,6 @@ class User extends Authenticatable
      */
     public function doctorProfile()
     {
-        return $this->isDoctor() ? $this->belongsTo(DoctorProfile::class, 'user_id') : null;
+        return $this->isDoctor() ? $this->hasOne(DoctorProfile::class, 'user_id') : null;
     }
 }
