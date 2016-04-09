@@ -19,6 +19,11 @@
   color:Black;
 }
 
+.content > .title {
+  min-width: 145px;
+  max-width: 145px;
+}
+
 html {
   height: 100%; }
 
@@ -332,6 +337,8 @@ a:hover {
       padding-top: 70px; }
     .app-container .content-container .side-body.padding-top {
       padding-top: 84px; }
+    .dashboard-padding-top{
+      padding-top: 50px; }
 
 .app-container.expanded .app-footer {
   left: 250px; }
@@ -389,12 +396,12 @@ a:hover {
 /* Main body section */
 .app-container .side-body {
   margin-left: 75px;
-  margin-right: 15px;
+  margin-right: 5px;
   -webkit-transition: all 0.25s;
   transition: all 0.25s; }
 
 .app-container.expanded .side-body {
-  margin-left: 260px; }
+  margin-left: 120px; }
 
 /* small screen */
 @media (max-width: 768px) {

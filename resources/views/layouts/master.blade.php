@@ -47,6 +47,8 @@
 {{ Html::script('vendor/js/ace/ace.js') }}
 {{ Html::script('vendor/js/ace/mode-html.js') }}
 {{ Html::script('vendor/js/ace/theme-github.js') }}
+{{ Html::script('vendor/js/bootstrap-timepicker.min.js') }}
+
 {{-- App scripts --}}
 {{ Html::script('js/app.js') }}
 </body>

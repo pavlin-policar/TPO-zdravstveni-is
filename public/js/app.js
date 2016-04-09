@@ -13,14 +13,44 @@ $(document).ready(function(){
           $("#dash-user").show(1000);
       }
   });
+  $("#glyphicon-personal").click(function(){
+        if($('#dash-personal').is(":visible")){
+            $("#glyphicon-personal").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-personal").hide(1000);
+        }
+        else{
+            $("#glyphicon-personal").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-personal").show(1000);
+        }
+  });
+  $("#glyphicon-check").click(function(){
+        if($('#dash-check').is(":visible")){
+            $("#glyphicon-check").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-check").hide(1000);
+        }
+        else{
+            $("#glyphicon-check").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-check").show(1000);
+        }
+  });
+    $("#glyphicon-add-check").click(function(){
+        if($('#dash-add-check').is(":visible")){
+            $("#glyphicon-add-check").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-add-check").hide(1000);
+        }
+        else{
+            $("#glyphicon-add-check").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-add-check").show(1000);
+        }
+    });
   $("#glyphicon-medical").click(function(){
         if($('#dash-medical').is(":visible")){
             $("#glyphicon-medical").attr('class','fa fa-expand icon-arrow-right');
-            $("#dash-medical").fadeOut('slow');
+            $("#dash-medical").hide(1000);
         }
         else{
             $("#glyphicon-medical").attr('class','fa fa-compress icon-arrow-right');
-            $("#dash-medical").fadeIn('fast');
+            $("#dash-medical").show(1000);
         }
   });
   $("#glyphicon-measurments").click(function(){
@@ -52,6 +82,15 @@ $(document).ready(function(){
             $("#glyphicon-diet").attr('class','fa fa-compress icon-arrow-right');
             $("#dash-diet").show(1000);
         }
+    });
+
+    $('#timepicker2').timepicker({
+        minuteStep: 10,
+        template: 'modal',
+        appendWidgetTo: 'body',
+        showSeconds: true,
+        showMeridian: false,
+        defaultTime: false
     });
 
     $("#password").keyup(function() {
