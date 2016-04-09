@@ -134,6 +134,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'charges.show',
     ]);
 
+    Route::get('/patients/{user}', [
+        'uses' => 'PatientController@show',
+        'as' => 'patient.show',
+    ]);
+
     /**
      * Routes only available to the admin user.
      */

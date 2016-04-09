@@ -99,11 +99,11 @@
                                         </tr>
                                         <tr>
                                             <td>Osebni zdravnik:</td>
-                                            <td>{{ $user->personal_doctor }}</td>
+                                            <td>{{ $user->doctor !== null ? $user->doctor->fullName : 'Niste si še izbrali osebnega zdravnika' }}</td>
                                         </tr>
                                         <tr>
                                             <td>Osebni zobozdravnik:</td>
-                                            <td>{{ $user->personal_dentist }}</td>
+                                            <td>{{ $user->dentist !== null ? $user->dentist->fullName : 'Niste si še izbrali osebnega zobozdravnika' }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -221,6 +221,29 @@
                             </div>
                         </div>
                     </div>
+                    @if($user->isDoctor())
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <div class="title title-white">PACIENTI</div>
+                                        </div>
+                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
+                                    </div>
+                                    <div class="card-body no-padding" id="dash-diet">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                            @foreach($user->patients as $patient)
+                                                {!! link_to_route('patient.show', $patient->fullName, $patient->id)!!}
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

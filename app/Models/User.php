@@ -71,7 +71,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $dates = [
-        'birthDate',
+        'birth_date',
     ];
 
     /**
@@ -110,6 +110,16 @@ class User extends Authenticatable
      */
 
     /**
+     * Check if the user has a caretaker.
+     *
+     * @return bool
+     */
+    public function hasCaretaker()
+    {
+        return $this->caretaker_id !== null;
+    }
+
+    /**
      * Check if the current user is the caretaker of a given user.
      *
      * @param User $user
@@ -117,7 +127,10 @@ class User extends Authenticatable
      */
     public function isCaretakerOf(User $user)
     {
-        return $this->id === $user->caretaker->id;
+        if ($user->hasCaretaker()) {
+            return $this->id === $user->caretaker->id;
+        }
+        return false;
     }
 
     /**
@@ -249,6 +262,26 @@ class User extends Authenticatable
     public function isPatient()
     {
         return $this->person_type === Code::PATIENT()->id;
+    }
+
+    /**
+     * Check if the user has a personal doctor.
+     *
+     * @return bool
+     */
+    public function hasDoctor()
+    {
+        return $this->personal_doctor_id !== null;
+    }
+
+    /**
+     * Check if the user has a personal dentist.
+     *
+     * @return bool
+     */
+    public function hasDentist()
+    {
+        return $this->personal_dentist_id !== null;
     }
 
     /**
