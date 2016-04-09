@@ -16,6 +16,7 @@ class CreateTableCodes extends Migration
             $table->increments('id');
             $table->string('key')->unique()->nullable();
             $table->string('name');
+			$table->string('code')->nullable();
             $table->text('description')->nullable();
             $table->double('min_value', 15, 6)->nullable();
             $table->double('max_value', 15, 6)->nullable();

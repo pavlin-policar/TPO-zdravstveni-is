@@ -1,4 +1,9 @@
 <div class="form-group">
+    {!! Form::label('code', 'Šifra šifranta') !!}
+    {!! Form::text('code', $code['code'], ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
     {!! Form::label('name', 'Ime šifranta') !!}
     @if(isset($code))
         {!! Form::text('name', $code['name'], ['class' => 'form-control', 'required' => 'required']) !!}
