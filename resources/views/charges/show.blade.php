@@ -23,6 +23,7 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             {!! Form::submit('Shrani spremembe', ['class' => 'btn btn-primary']) !!}
+                            {!! link_to_route('charges.activate', 'Aktiviraj', [$charge->id], ['class' => 'btn btn-primary']) !!}
                         </div>
                     </div>
 
