@@ -311,6 +311,20 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the doctor is already treating the maximum amount of patients they have set in their
+     * profile.
+     *
+     * @return bool
+     */
+    public function acceptingPatients()
+    {
+        if (!$this->isDoctor()) {
+            return false;
+        }
+        return $this->patients->count() < $this->doctorProfile->max_patients;
+    }
+
+    /**
      * Get the users confirmation code.
      *
      * @return string

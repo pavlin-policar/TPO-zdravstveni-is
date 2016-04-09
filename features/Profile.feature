@@ -9,7 +9,7 @@ Feature: Profile page
     And I am on "/profile"
     Then the "first_name" field should contain "Janez"
     And the "last_name" field should contain "Novak"
-    And the "birth_date" field should contain "2000-01-01 00:00:00"
+    And the "birth_date" field should contain "2000-01-01"
     # And the "gender-male" checkbox should be checked
     And the "email" field should contain "janez.novak@gmail.com"
     And the "phone_number" field should contain "123456789"

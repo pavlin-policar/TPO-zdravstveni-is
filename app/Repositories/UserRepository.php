@@ -55,6 +55,18 @@ class UserRepository
      */
     public function updatePatient(User $user, array $data)
     {
+        // ignore malicious attempt to set personal doctor to one who isn't accepting any more ppl
+        if (array_key_exists('personal_doctor_id', $data)) {
+            if (!User::find($data['personal_doctor_id'])->acceptingPatients()) {
+                unset($data['personal_doctor_id']);
+            }
+        }
+        // ignore malicious attempt to set personal dentist to one who isn't accepting any more ppl
+        if (array_key_exists('personal_dentist_id', $data)) {
+            if (!User::find($data['personal_dentist_id'])->acceptingPatients()) {
+                unset($data['personal_dentist_id']);
+            }
+        }
         $user->update($data);
         return $user;
     }

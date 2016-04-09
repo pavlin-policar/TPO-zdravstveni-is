@@ -110,7 +110,7 @@ class ViewServiceProvider extends ServiceProvider
                 // get list of doctors in appropriate format
                 $profiles->each(function ($profile) use (&$doctors) {
                     $user = $profile->user;
-                    if ($profile->isValid()) {
+                    if ($profile->isValid() and $user->acceptingPatients()) {
                         $doctors[$user->id] = '[' . $profile->institution->name . '] '
                             . $user->fullName;
                     }
@@ -134,7 +134,7 @@ class ViewServiceProvider extends ServiceProvider
                 // get list of doctors in appropriate format
                 $profiles->each(function ($profile) use (&$doctors) {
                     $user = $profile->user;
-                    if ($profile->isValid()) {
+                    if ($profile->isValid() and $user->acceptingPatients()) {
                         $doctors[$user->id] = '[' . $profile->institution->name . '] '
                             . $user->fullName;
                     }
