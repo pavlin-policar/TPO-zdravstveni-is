@@ -76,7 +76,9 @@ class AuthController extends Controller
         $user->update([
             'last_login' => Carbon::now(),
         ]);
+        session(['user' => $user->id]);
         session(['showUser' => $user->id]);
+        session(['isMyProfile' => true]);
 
         return redirect()->intended($this->redirectPath());
     }

@@ -78,16 +78,16 @@
                                         <tbody>
                                         <tr>
                                             <td>Ime:</td>
-                                            <td>{{ $user->firstName }}</td>
+                                            <td>{{ $user->first_name }}</td>
 
                                         </tr>
                                         <tr>
                                             <td>Priimek:</td>
-                                            <td>{{ $user->lastName }}</td>
+                                            <td>{{ $user->last_name }}</td>
                                         </tr>
                                         <tr>
                                             <td>Datum rojstva:</td>
-                                            <td>{{ $user->birthDate }}</td>
+                                            <td>{{  date("d.m.Y", strtotime($user->birth_date)) }}</td>
                                         </tr>
                                         <tr>
                                             <td>Naslov:</td>
@@ -95,15 +95,15 @@
                                         </tr>
                                         <tr>
                                             <td>Številka kartice:</td>
-                                            <td>{{ $user->ZZCardNumber }}</td>
+                                            <td>{{ $user->zz_card_number }}</td>
                                         </tr>
                                         <tr>
                                             <td>Osebni zdravnik:</td>
-                                            <td>{{ $user->personalDoctor }}</td>
+                                            <td>{{ $user->personal_doctor }}</td>
                                         </tr>
                                         <tr>
                                             <td>Osebni zobozdravnik:</td>
-                                            <td>{{ $user->personalDentist }}</td>
+                                            <td>{{ $user->personal_dentist }}</td>
                                         </tr>
                                         </tbody>
                                     </table>

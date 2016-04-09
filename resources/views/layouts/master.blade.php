@@ -29,6 +29,21 @@
         @include('partials.sidebar')
         <div class="container-fluid">
             <div class="side-body">
+                @if(!session('isMyProfile'))
+                    <div class="list-group-item list-group-item-warning">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <h3>Pregledujete tuj profil</h3>
+                                <div class="description">
+                                    Trenutno pregledujete profil svojega oskrbovanca!
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                {!! link_to_route('charges.activate', 'Vrnite se na svoj profil', ['id' => session('user') ], ['class' => 'btn btn-primary pull-right']) !!}
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 @yield('content')
             </div>
         </div>
