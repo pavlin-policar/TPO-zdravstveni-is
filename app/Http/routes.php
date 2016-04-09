@@ -92,6 +92,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'UserController@updatePersonalInfo',
         'as' => 'profile.updatePersonal',
     ]);
+    Route::put('profile/{user}/update-doctor', [
+        'uses' => 'UserController@updateDoctorPersonalInfo',
+        'as' => 'profile.updateDoctorPersonal',
+    ]);
     Route::put('profile/{user}/password', [
         'uses' => 'UserController@changePassword',
         'as' => 'profile.changePassword',

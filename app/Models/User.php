@@ -12,22 +12,23 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string first_name
  * @property string last_name
  * @property string fullName
- * @property int    post            Postal code of the address
- * @property string address         Users address
+ * @property int post Postal code of the address
+ * @property string address Users address
  * @property string email
  * @property string password
  * @property string phoneNumber
- * @property int    zz_card_number
+ * @property int zz_card_number
  * @property Carbon birth_date
- * @property int    gender
+ * @property int gender
  * @property Carbon created_at
  * @property Carbon modified_at
  * @property Carbon deleted_at
  * @property Carbon last_login
- * @property bool   confirmed
+ * @property bool confirmed
  * @property string confirmation_code
- * @property User   caretaker
- * @property int    person_type
+ * @property User caretaker
+ * @property int person_type
+ * @property DoctorProfile doctorProfile If the user is a doctor, they also have a doctor profile.
  *
  * @package App\Models
  */
@@ -38,7 +39,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'first_name',
         'last_name',
         'birth_date',
@@ -124,11 +125,20 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function hasCompletedRegistration()
+    public function hasCreatedProfile()
     {
-        return
-            $this->address !== null and
-            $this->birth_date !== null;
+        // the doctor profile contains different data than the regular user profile.
+        if ($this->isDoctor()) {
+            $profile = $this->doctorProfile;
+            return
+                $profile->doctorNumber !== null and
+                $profile->maxPatients !== null and
+                $profile->institution_id !== null;
+        } else {
+            return
+                $this->address !== null and
+                $this->birth_date !== null;
+        }
     }
 
     /**

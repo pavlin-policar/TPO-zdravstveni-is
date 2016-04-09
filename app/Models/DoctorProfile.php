@@ -4,6 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class DoctorProfile
+ *
+ * @property string doctorNumber
+ * @property int    maxPatients
+ * @property Code   type
+ * @property User   user
+ * @property Code   institution
+ *
+ * @package App\Models
+ */
 class DoctorProfile extends Model
 {
     /**
@@ -18,7 +29,7 @@ class DoctorProfile extends Model
      *
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'doctor_number',
         'max_patients',
         'doctor_type_id',

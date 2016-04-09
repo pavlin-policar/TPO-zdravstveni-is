@@ -16,6 +16,23 @@ use App\Models\User;
 class UserRepository
 {
     /**
+     * Just update the user, handles the different user types automatically so you don't have to
+     * worry about shitty business logic.
+     *
+     * @param User $user
+     * @param array $data
+     * @return User
+     */
+    public function updateUser(User $user, array $data)
+    {
+        if ($user->isDoctor()) {
+            return $this->updateDoctor($user, $data);
+        } else {
+            return $this->updatePatient($user, $data);
+        }
+    }
+
+    /**
      * Add a patient to the database.
      *
      * @param array $data
@@ -31,20 +48,74 @@ class UserRepository
     }
 
     /**
-     * Add a doctor to the database.
+     * Update a given patient and persist changes to storage.
+     *
+     * @param User $user
+     * @param array $data
+     * @return User
+     */
+    public function updatePatient(User $user, array $data)
+    {
+        $user->update($data);
+        return $user;
+    }
+
+    /**
+     * Create a dentist and persist them to storage.
      *
      * @param array $data
      * @return User
      */
-    public function createDoctor(array $data)
+    public function createPersonalDentist(array $data)
+    {
+        return $this->createDoctor($data, true);
+    }
+
+    /**
+     * Create a dentist and persist them to storage.
+     *
+     * @param array $data
+     * @return User
+     */
+    public function createPersonalDoctor(array $data)
+    {
+        return $this->createDoctor($data, false);
+    }
+
+    /**
+     * Update a given doctor and persist changes to storage.
+     *
+     * @param User $user
+     * @param array $data
+     * @return User
+     */
+    public function updateDoctor(User $user, array $data)
+    {
+        $user->update($data);
+        $user->doctorProfile->update($data);
+        return $user;
+    }
+
+    /**
+     * Add a doctor to the database.
+     *
+     * @param array $data
+     * @param bool $dentist
+     * @return User
+     */
+    protected function createDoctor(array $data, $dentist = false)
     {
         // create the user object
         $user = new User($data);
         $user->person_type = Code::DOCTOR()->id;
+        if ($dentist) {
+            $user->doctor_type_id = Code::PERSONAL_DENTIST()->id;
+        } else {
+            $user->doctor_type_id = Code::PERSONAL_DOCTOR()->id;
+        }
         $user->save();
         // then we need to insert a record into doctors table that references the user
-        $profile = new DoctorProfile;
-        $user->doctorProfile()->save($profile);
+        $user->doctorProfile()->create($data);
 
         return $user;
     }

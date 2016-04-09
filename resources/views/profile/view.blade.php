@@ -48,7 +48,11 @@
                         </ul>
                         <div class="tab-content" style="width: 100%">
                             <div class="tab-pane fade in active" id="personal-info" aria-labelledby="personal-info-tab">
-                                @include('profile.tabs.profile-info', ['user' => $user])
+                                @if($user->isDoctor())
+                                    @include('profile.tabs.doctor-profile-info', ['user' => $user])
+                                @else
+                                    @include('profile.tabs.profile-info', ['user' => $user])
+                                @endif
                             </div>
                             <div class="tab-pane fade" id="doctors" aria-labelledby="doctors-tab">
                                 <p>2</p>

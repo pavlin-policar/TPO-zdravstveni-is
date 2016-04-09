@@ -11,8 +11,6 @@ class UserTableSeeder extends Seeder
 
     public function run()
     {
-        $repo = new UserRepository();
-
         DB::table('users')->delete();
         $user = new User([
             'first_name' => 'Admin',
@@ -26,25 +24,32 @@ class UserTableSeeder extends Seeder
         $user->confirmEmail();
         $user->save();
 
-        $user = $repo->createDoctor([
+        $doctor = new User([
+            'person_type' => Code::DOCTOR()->id,
             'first_name' => 'Doctor',
             'last_name' => 'Doctor',
             'email' => 'doctor@zis.si',
             'password' => Hash::make('password'),
         ]);
-        $user->confirmEmail();
-        $user->save();
+        $doctor->confirmEmail();
+        $doctor->save();
 
-        $user = $repo->createDoctor([
+        $doctor = new User([
+            'person_type' => Code::DOCTOR()->id,
             'first_name' => 'Doctor',
             'last_name' => 'Doctor',
             'email' => 'doctor2@zis.si',
             'password' => Hash::make('password'),
         ]);
-        $user->confirmEmail();
-        $user->save();
+        $doctor->confirmEmail();
+        $doctor->save();
+        $doctor->doctorProfile()->create([
+            'doctor_number' => 123123123,
+            'max_patients' => 10,
+        ]);
 
-        $user = $repo->createPatient([
+        $user = new User([
+            'person_type' => Code::PATIENT()->id,
             'first_name' => 'Pavlin',
             'last_name' => 'Poličar',
             'email' => 'pavlin.g.p@gmail.com',
@@ -54,16 +59,17 @@ class UserTableSeeder extends Seeder
         ]);
         $user->confirmEmail();
         $user->save();
-		
+
 		$user->charges()->create([
+            'person_type' => Code::PATIENT()->id,
             'first_name' => 'Miran',
             'last_name' => 'Slejkovič',
             'address' => 'Address',
-            'person_type' => Code::PATIENT()->id,
             'birth_date' => Carbon::create(1996, 4, 9),
         ]);
 		
-		$user = $repo->createPatient([
+		$user = new User([
+            'person_type' => Code::PATIENT()->id,
             'first_name' => 'Marko',
             'last_name' => 'Lavrinec',
             'email' => 'markolavrinec@gmail.com',
@@ -75,10 +81,10 @@ class UserTableSeeder extends Seeder
         $user->save();
 		
         $user->charges()->create([
+            'person_type' => Code::PATIENT()->id,
             'first_name' => 'Oskrbovanec',
             'last_name' => 'Oskrbovani',
             'address' => 'Address',
-            'person_type' => Code::PATIENT()->id,
             'birth_date' => Carbon::create(1949, 12, 11),
         ]);
     }
