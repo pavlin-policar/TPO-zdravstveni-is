@@ -129,11 +129,7 @@ class User extends Authenticatable
     {
         // the doctor profile contains different data than the regular user profile.
         if ($this->isDoctor()) {
-            $profile = $this->doctorProfile;
-            return
-                $profile->doctorNumber !== null and
-                $profile->maxPatients !== null and
-                $profile->institution_id !== null;
+            $this->doctorProfile->isValid();
         } else {
             return
                 $this->address !== null and
@@ -202,6 +198,17 @@ class User extends Authenticatable
     public function isSameUserAs(User $user)
     {
         return $this->id === $user->id;
+    }
+
+    /**
+     * Check if the given user is the doctor of a given patient.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isDoctorOf(User $user)
+    {
+        return $this->id === $user->personal_doctor_id or $this->id === $user->personal_dentist_id;
     }
 
     /**

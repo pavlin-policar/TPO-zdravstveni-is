@@ -18,17 +18,17 @@ class CreateTableDoctors extends Migration
 			$table->integer('max_patients')->unsigned()->nullable();
             $table->timestamps();
 
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unique()->unsigned();
             $table->foreign('user_id')
                 ->references('id')->on('users')
                 ->onUpdate('cascade');
 
-            $table->integer('doctor_type_id')->unique()->unsigned()->nullable();
+            $table->integer('doctor_type_id')->unsigned()->nullable();
 			$table->foreign('doctor_type_id')
                 ->references('id')->on('codes')
                 ->onUpdate('cascade');
 
-            $table->integer('institution_id')->unique()->unsigned()->nullable();
+            $table->integer('institution_id')->unsigned()->nullable();
 			$table->foreign('institution_id')
                 ->references('id')->on('codes')
                 ->onUpdate('cascade');

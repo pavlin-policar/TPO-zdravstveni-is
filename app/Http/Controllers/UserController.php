@@ -55,8 +55,7 @@ class UserController extends Controller
     public function updatePersonalInfo(User $user, CreateProfileRequest $request)
     {
         $this->authorize('canUpdatePersonalInfo', $user);
-        $this->users->updateUser($user, $request);
-        $user->update($request->all());
+        $this->users->updateUser($user, $request->all());
         return redirect()->back();
     }
 
@@ -170,10 +169,14 @@ class UserController extends Controller
      * Update the users personal doctor and dentist.
      *
      * @param UpdateDoctorsRequest $request
+     * @param User $user
      * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function updateDoctors(UpdateDoctorsRequest $request)
+    public function updateDoctors(UpdateDoctorsRequest $request, User $user)
     {
-
+        $this->authorize('canUpdatePersonalInfo', $user);
+        $this->users->updateUser($user, $request->all());
+        return redirect()->back();
     }
 }

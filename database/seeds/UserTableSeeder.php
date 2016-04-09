@@ -24,30 +24,81 @@ class UserTableSeeder extends Seeder
         $user->confirmEmail();
         $user->save();
 
-        $doctor = new User([
+        /**
+         * DOCTORS
+         */
+        $doctor1 = new User([
             'person_type' => Code::DOCTOR()->id,
-            'first_name' => 'Doctor',
-            'last_name' => 'Doctor',
-            'email' => 'doctor@zis.si',
+            'first_name' => 'Leon',
+            'last_name' => 'Bizjak',
+            'email' => 'doctor1@zis.si',
             'password' => Hash::make('password'),
         ]);
-        $doctor->confirmEmail();
-        $doctor->save();
-
-        $doctor = new User([
-            'person_type' => Code::DOCTOR()->id,
-            'first_name' => 'Doctor',
-            'last_name' => 'Doctor',
-            'email' => 'doctor2@zis.si',
-            'password' => Hash::make('password'),
-        ]);
-        $doctor->confirmEmail();
-        $doctor->save();
-        $doctor->doctorProfile()->create([
+        $doctor1->confirmEmail();
+        $doctor1->save();
+        $doctor1->doctorProfile()->create([
+            'doctor_type_id' => Code::PERSONAL_DOCTOR()->id,
             'doctor_number' => 123123123,
             'max_patients' => 10,
         ]);
 
+        $doctor2 = new User([
+            'person_type' => Code::DOCTOR()->id,
+            'first_name' => 'Miran',
+            'last_name' => 'Kopač',
+            'email' => 'doctor2@zis.si',
+            'password' => Hash::make('password'),
+        ]);
+        $doctor2->confirmEmail();
+        $doctor2->save();
+        $doctor2->doctorProfile()->create([
+            'doctor_type_id' => Code::PERSONAL_DOCTOR()->id,
+        ]);
+
+        $doctor3 = new User([
+            'person_type' => Code::DOCTOR()->id,
+            'first_name' => 'Franc',
+            'last_name' => 'Bole',
+            'email' => 'doctor3@zis.si',
+            'password' => Hash::make('password'),
+        ]);
+        $doctor3->confirmEmail();
+        $doctor3->save();
+        $doctor3->doctorProfile()->create([
+            'doctor_type_id' => Code::PERSONAL_DOCTOR()->id,
+        ]);
+
+        $dentist1 = new User([
+            'person_type' => Code::DOCTOR()->id,
+            'first_name' => 'Ana',
+            'last_name' => 'Novak',
+            'email' => 'dentist1@zis.si',
+            'password' => Hash::make('password'),
+        ]);
+        $dentist1->confirmEmail();
+        $dentist1->save();
+        $dentist1->doctorProfile()->create([
+            'doctor_number' => 8329842,
+            'max_patients' => 10,
+            'doctor_type_id' => Code::PERSONAL_DENTIST()->id,
+        ]);
+
+        $dentist2 = new User([
+            'person_type' => Code::DOCTOR()->id,
+            'first_name' => 'Mila',
+            'last_name' => 'Kunis',
+            'email' => 'dentist2@zis.si',
+            'password' => Hash::make('password'),
+        ]);
+        $dentist2->confirmEmail();
+        $dentist2->save();
+        $dentist2->doctorProfile()->create([
+            'doctor_type_id' => Code::PERSONAL_DENTIST()->id,
+        ]);
+
+        /**
+         * PATIENTS
+         */
         $user = new User([
             'person_type' => Code::PATIENT()->id,
             'first_name' => 'Pavlin',
