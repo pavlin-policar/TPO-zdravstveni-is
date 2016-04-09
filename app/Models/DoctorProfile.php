@@ -30,9 +30,19 @@ class DoctorProfile extends Model
      *
      * @return mixed
      */
+    public function getDoctorNumberAttribute()
+    {
+        return $this->attributes['doctor_number'];
+    }
+
+    /**
+     * Max patients accessor.
+     *
+     * @return mixed
+     */
     public function getMaxPatientsAttribute()
     {
-        return $this->max_patients;
+        return $this->attributes['max_patients'];
     }
 
     /**
@@ -42,7 +52,7 @@ class DoctorProfile extends Model
      */
     public function user()
     {
-        return $this->hasOne(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -52,7 +62,7 @@ class DoctorProfile extends Model
      */
     public function type()
     {
-        return $this->hasOne(Code::class, 'doctor_type');
+        return $this->belongsTo(Code::class, 'doctor_type');
     }
 
     /**
@@ -62,6 +72,6 @@ class DoctorProfile extends Model
      */
     public function institution()
     {
-        return $this->hasOne(Code::class, 'institution');
+        return $this->belongsTo(Code::class, 'institution');
     }
 }

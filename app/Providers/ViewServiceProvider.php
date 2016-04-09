@@ -18,6 +18,7 @@ class ViewServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->composerPostsSelectBox();
+        $this->composeInstitutionsSelectBox();
         $this->composeGenderRadioButtonsHz();
         $this->composeNavbar();
         $this->composeSidebar();
@@ -44,6 +45,17 @@ class ViewServiceProvider extends ServiceProvider
             $view->with(
                 'postcodes',
                 Postcode::orderBy('post', 'asc')->get()->lists('display', 'id')->toArray()
+            );
+        });
+    }
+
+    protected function composeInstitutionsSelectBox()
+    {
+        view()->composer('partials.form-elements.select-institutions', function ($view) {
+            $view->with(
+                'institutions',
+                CodeType::whereKey(CodeType::$codeTypes['INSTITUTIONS'])->first()->codes
+                    ->lists('name', 'id')->toArray()
             );
         });
     }

@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <p>Please fill out all the required fields. The required fields are denoted with
                         an asterix (*).</p>
-                    {!! Form::open(['route' => 'profile.postCreate', 'method' => 'post', 'class' => 'form-horizontal']) !!}
+                    {!! Form::open(['route' => 'profile.postCreatePatient', 'method' => 'post', 'class' => 'form-horizontal']) !!}
 
                     @include('profile.profile-data-form')
 

@@ -32,10 +32,15 @@ class HomeController extends Controller
     public function dashboard(User $user)
     {
         if (!$user->existsInStorage()) {
-            $user = Auth::user();
+            if(!empty(session('showUser')))
+                $user=User::findOrFail(session('showUser'));
+            else
+                $user = Auth::user();
         }
         $this->authorize('canViewProfile', $user);
-        return view('dashboard')->with('user', $user);
+        $data['user']=$user;
+        $data['isMyProfile']=session('isMyProfile');
+        return view('dashboard')->with($data);
     }
 
 }

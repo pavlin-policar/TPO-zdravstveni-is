@@ -2,28 +2,28 @@
 
 @section('content')
     <div class="page-title">
-        <div class="title">{{ $charge->fullName }}</div>
-        <div class="description">Urejanje in pregled oskrbljenčevega profila.</div>
+        <span class="title">Kreiraj profil</span>
+        <div class="description">Prosim, kreirajte profil.</div>
     </div>
-
     <div class="row">
         <div class="col-xs-12">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <span class="title">{{ $charge->fullName }}</span>
+                        <div class="title">Kreiraj profil</div>
                     </div>
                 </div>
                 <div class="card-body">
-                    {!! Form::open(['route' => ['charges.update', $charge->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
+                    <p>Please fill out all the required fields. The required fields are denoted with
+                        an asterix (*).</p>
+                    {!! Form::open(['route' => 'profile.postCreateDoctor', 'method' => 'post', 'class' => 'form-horizontal']) !!}
 
-                    @include('charges.charge-form', ['user' => $charge])
+                    @include('profile.doctor-profile-data-form')
 
                     {{-- Submit button --}}
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            {!! Form::submit('Shrani spremembe', ['class' => 'btn btn-primary']) !!}
-                            {!! link_to_route('charges.activate', 'Aktiviraj', [$charge->id], ['class' => 'btn btn-primary']) !!}
+                            {!! Form::submit('Kreiraj profil', ['class' => 'btn btn-primary']) !!}
                         </div>
                     </div>
 

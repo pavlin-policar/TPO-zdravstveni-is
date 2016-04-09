@@ -12,55 +12,6 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {
     /**
-     * Show the profile for the given user.
-     *
-     * @return Response
-     */
-    //$data['id']
-
-//    public function showProfile()
-//    {
-//        //$result = Array();
-//        //$result['firstName']= "test";
-//        $id = \Auth::user()->id;
-//        $result['user'] = User::findOrFail($id);
-//        //return var_dump($result);
-//        return view('partials.profile', $result);
-//    }
-
-    public function editProfile(Request $request)
-    {
-
-        $id = \Auth::user()->id;
-        //$user = User::findOrFail($id);
-        $result['user'] = User::findOrFail($id);
-
-        //TODO input validation
-        /*$this->validate($request, [
-            $request->input('firstName') => 'required|max:255',
-            $request->input('lastName') => 'required|max:255',
-            $request->input('email')  => 'required',
-            $request->input('address') => 'required|max:255',
-            $request->input('phoneNumber') => 'required',
-            $request->input('ZZCardNumber') => 'required|unique',
-        ]);*/
-
-
-        $result['user']->firstName = $request->input('firstName');
-        $result['user']->lastName = $request->input('lastName');
-        $result['user']->email = $request->input('email');
-        $result['user']->address = $request->input('address');
-        //$result['user']->post = $request->input('post');
-        $result['user']->phoneNumber = $request->input('phoneNumber');
-        $result['user']->ZZCardNumber = $request->input('ZZCardNumber');
-        //$user->gender = $request->input('gender');
-
-        $result['user']->save();
-
-        return view('partials.profile', $result);
-    }
-
-    /**
      * Show the users profile / settings page.
      *
      * @param User $user
@@ -106,25 +57,31 @@ class UserController extends Controller
     }
 
     /**
-     * Display the create profile page.
+     * Display the create profile page, only the first time the user logs in without the profile.
      *
      * @return mixed
      */
     public function showCreateProfile()
     {
-        if (Auth::user()->hasCompletedRegistration()) {
+        $user = Auth::user();
+        if ($user->hasCompletedRegistration()) {
             return redirect()->back();
         }
-        return view('profile.create')->with('user', Auth::user());
+        if ($user->isDoctor()) {
+            return view('profile.create-doctor')->with('user', $user);
+        } else {
+            return view('profile.create-patient')->with('user', $user);
+        }
     }
 
     /**
-     * Persist the users information to the database.
+     * Persist the users information to the database when completing profile creation for the first
+     * time.
      *
      * @param CreateProfileRequest $request
      * @return mixed
      */
-    public function createProfile(CreateProfileRequest $request)
+    public function createPatientProfile(CreateProfileRequest $request)
     {
         if (Auth::user()->hasCompletedRegistration()) {
             return redirect()->back();
@@ -133,7 +90,22 @@ class UserController extends Controller
         return redirect()->route('dashboard.show');
     }
 
-    //Change password
+    /**
+     * Persist the doctors information to the database when a doctor creates their profile for the
+     * first time.
+     *
+     * @param CreateDoctorProfileRequest $request
+     */
+    public function createDoctorProfile(CreateDoctorProfileRequest $request)
+    {
+    }
+
+    /**
+     * Change the users password if the old password was correct.
+     *
+     * @param ChangePasswordRequest $request
+     * @return mixed
+     */
     public function changePassword(ChangePasswordRequest $request)
     {
         $user = Auth::user();

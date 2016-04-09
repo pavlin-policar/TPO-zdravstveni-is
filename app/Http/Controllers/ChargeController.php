@@ -92,4 +92,19 @@ class ChargeController extends Controller
         // define the inverse
         $user2->relationships()->sync([$user1->id => ['relation_id' => $relationId]]);
     }
+
+    public function activate(User $user)
+    {
+        if (!$user->existsInStorage()) {
+            $user = Auth::user();
+        }
+        $this->authorize('canViewProfile', $user);
+        session(['showUser' => $user->id]);
+        if($user->id!=Auth::user()->id) {
+            session(['isMyProfile' => false]);
+            session(['simpleUserData' => $user->first_name.' '.$user->last_name]);
+        }else
+            session(['isMyProfile' => true]);
+        return redirect()->route('dashboard.show', [$user]);
+    }
 }

@@ -60,9 +60,13 @@ Route::group(['middleware' => ['web', 'auth', 'email-validated']], function () {
         'uses' => 'UserController@showCreateProfile',
         'as' => 'profile.getCreate',
     ]);
-    Route::post('profile/create', [
-        'uses' => 'UserController@createProfile',
-        'as' => 'profile.postCreate',
+    Route::post('profile/create-patient', [
+        'uses' => 'UserController@createPatientProfile',
+        'as' => 'profile.postCreatePatient',
+    ]);
+    Route::post('profile/create-doctor', [
+        'uses' => 'UserController@createDoctorProfile',
+        'as' => 'profile.postCreateDoctor',
     ]);
 });
 

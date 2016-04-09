@@ -87,7 +87,7 @@
                                         </tr>
                                         <tr>
                                             <td>Datum rojstva:</td>
-                                            <td>{{ $user->birth_date }}</td>
+                                            <td>{{  date("d.m.Y", strtotime($user->birth_date)) }}</td>
                                         </tr>
                                         <tr>
                                             <td>Naslov:</td>
@@ -118,10 +118,11 @@
                                         <tr>
                                             <td>Osebni zdravnik:</td>
                                             <td>{{ $user->personal_doctor_id }}</td>
+                                            <td>{{ $user->personal_doctor }}</td>
                                         </tr>
                                         <tr>
                                             <td>Osebni zobozdravnik:</td>
-                                            <td>{{ $user->personal_dentist_id }}</td>
+                                            <td>{{ $user->personal_dentist }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
