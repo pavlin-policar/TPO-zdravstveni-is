@@ -100,9 +100,10 @@ class ChargeController extends Controller
         }
         $this->authorize('canViewProfile', $user);
         session(['showUser' => $user->id]);
-        if($user->id!=Auth::user()->id)
+        if($user->id!=Auth::user()->id) {
             session(['isMyProfile' => false]);
-        else
+            session(['simpleUserData' => $user->first_name.' '.$user->last_name]);
+        }else
             session(['isMyProfile' => true]);
         return redirect()->route('dashboard.show', [$user]);
     }
