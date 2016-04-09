@@ -73,7 +73,7 @@ class DoctorProfile extends Model
      */
     public function type()
     {
-        return $this->belongsTo(Code::class, 'doctor_type');
+        return $this->belongsTo(Code::class, 'doctor_type_id');
     }
 
     /**
@@ -83,6 +83,6 @@ class DoctorProfile extends Model
      */
     public function institution()
     {
-        return $this->belongsTo(Code::class, 'institution');
+        return $this->belongsTo(Code::class, 'institution_id');
     }
 }

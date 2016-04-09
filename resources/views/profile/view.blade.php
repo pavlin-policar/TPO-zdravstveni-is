@@ -55,7 +55,7 @@
                                 @endif
                             </div>
                             <div class="tab-pane fade" id="doctors" aria-labelledby="doctors-tab">
-                                <p>2</p>
+                                @include('profile.tabs.doctors', ['user' => $user])
                             </div>
                             <div class="tab-pane fade" id="password-reset" aria-labelledby="password-reset-tab">
                                 @include('profile.tabs.profile-change-passwd', ['user' => $user])

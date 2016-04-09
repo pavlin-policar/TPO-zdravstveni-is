@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\CreateDoctorProfileRequest;
 use App\Http\Requests\CreateProfileRequest;
-use App\Models\DoctorProfile;
+use App\Http\Requests\UpdateDoctorsRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -148,8 +147,8 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $userdata = array(
-            'email'     => $user->email,
-            'password'  => $request['oldPassword']
+            'email' => $user->email,
+            'password' => $request['oldPassword']
         );
 
         // attempt to do the login
@@ -167,4 +166,14 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Update the users personal doctor and dentist.
+     *
+     * @param UpdateDoctorsRequest $request
+     * @return mixed
+     */
+    public function updateDoctors(UpdateDoctorsRequest $request)
+    {
+
+    }
 }

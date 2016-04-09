@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Code;
-use App\Models\DoctorProfile;
 use App\Models\User;
 
 /**

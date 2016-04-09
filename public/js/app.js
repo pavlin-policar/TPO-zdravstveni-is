@@ -93,6 +93,15 @@ $(function() {
 $(function() {
   return $('select').select2();
 });
+// This is needed so that when the select2 is in an invisible tab on lead, the width is calculated
+// when the select box is shown
+$(function() {
+  return $('[role="tab"]').click(function (e) {
+      setTimeout(function() {
+          return $('select').select2();
+      }, 200);
+  });
+});
 
 $(function() {
   return $('.toggle-checkbox').bootstrapSwitch({

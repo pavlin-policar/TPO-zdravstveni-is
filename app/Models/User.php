@@ -245,6 +245,32 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the doctor is a personal doctor.
+     *
+     * @return bool
+     */
+    public function isPersonalDoctor()
+    {
+        if (!$this->isDoctor()) {
+            return false;
+        }
+        return $this->doctorProfile->type->id === Code::PERSONAL_DOCTOR()->id;
+    }
+
+    /**
+     * Check if the doctor is a personal dentist.
+     *
+     * @return bool
+     */
+    public function isPersonalDentist()
+    {
+        if (!$this->isDoctor()) {
+            return false;
+        }
+        return $this->doctorProfile->type->id === Code::PERSONAL_DENTIST()->id;
+    }
+
+    /**
      * Get the users confirmation code.
      *
      * @return string
@@ -327,5 +353,39 @@ class User extends Authenticatable
     public function doctorProfile()
     {
         return $this->isDoctor() ? $this->hasOne(DoctorProfile::class, 'user_id') : null;
+    }
+
+    /**
+     * Get the patients who have this doctor listed as their personal doctor / dentist.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function patients()
+    {
+        if ($this->isPersonalDoctor()) {
+            return $this->hasMany(User::class, 'personal_doctor_id');
+        } else if ($this->isPersonalDentist()) {
+            return $this->hasMany(User::class, 'personal_dentist_id');
+        }
+    }
+
+    /**
+     * Get the users personal doctor.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function doctor()
+    {
+        return $this->belongsTo(User::class, 'personal_doctor_id');
+    }
+
+    /**
+     * Get the users personal dentist.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function dentist()
+    {
+        return $this->belongsTo(User::class, 'personal_dentist_id');
     }
 }
