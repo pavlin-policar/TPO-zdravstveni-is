@@ -64,10 +64,10 @@ class DoctorProfile extends Model
     public function isValid()
     {
         return
-            $this->institution() !== null
-            and $this->maxPatients !== null
-            and $this->doctorType !== null
-            and $this->doctorNumber !== null;
+            $this->institution_id !== null and
+            $this->max_patients !== null and
+            $this->doctor_type_id !== null and
+            $this->doctor_number !== null;
     }
 
     /**

@@ -49,8 +49,8 @@ class User extends Authenticatable
         'post',
         'address',
         'zz_card_number',
-        'personal_doctor',
-        'personal_dentist',
+        'personal_doctor_id',
+        'personal_dentist_id',
         'caretaker_id',
         'password',
     ];
@@ -129,7 +129,7 @@ class User extends Authenticatable
     {
         // the doctor profile contains different data than the regular user profile.
         if ($this->isDoctor()) {
-            $this->doctorProfile->isValid();
+            return $this->doctorProfile->isValid();
         } else {
             return
                 $this->address !== null and

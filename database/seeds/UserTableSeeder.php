@@ -33,6 +33,9 @@ class UserTableSeeder extends Seeder
             'last_name' => 'Bizjak',
             'email' => 'doctor1@zis.si',
             'password' => Hash::make('password'),
+            'phone_number' => '1348947312',
+            'birth_date' => Carbon::create(1970, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
         ]);
         $doctor1->confirmEmail();
         $doctor1->save();
@@ -48,6 +51,9 @@ class UserTableSeeder extends Seeder
             'last_name' => 'Kopač',
             'email' => 'doctor2@zis.si',
             'password' => Hash::make('password'),
+            'phone_number' => '1348947312',
+            'birth_date' => Carbon::create(1970, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
         ]);
         $doctor2->confirmEmail();
         $doctor2->save();
@@ -61,6 +67,9 @@ class UserTableSeeder extends Seeder
             'last_name' => 'Bole',
             'email' => 'doctor3@zis.si',
             'password' => Hash::make('password'),
+            'phone_number' => '1348947312',
+            'birth_date' => Carbon::create(1970, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
         ]);
         $doctor3->confirmEmail();
         $doctor3->save();
@@ -74,6 +83,9 @@ class UserTableSeeder extends Seeder
             'last_name' => 'Novak',
             'email' => 'dentist1@zis.si',
             'password' => Hash::make('password'),
+            'phone_number' => '1348947312',
+            'birth_date' => Carbon::create(1970, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
         ]);
         $dentist1->confirmEmail();
         $dentist1->save();
@@ -89,6 +101,9 @@ class UserTableSeeder extends Seeder
             'last_name' => 'Kunis',
             'email' => 'dentist2@zis.si',
             'password' => Hash::make('password'),
+            'phone_number' => '1348947312',
+            'birth_date' => Carbon::create(1970, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
         ]);
         $dentist2->confirmEmail();
         $dentist2->save();
