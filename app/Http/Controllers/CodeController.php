@@ -53,6 +53,8 @@ class CodeController extends Controller
     public function createCode(Request $request)
     {
         $code = Code::create($request->all());
+        $code->code = $request->code;
+        $code->save();
         return redirect()->route('code.getCreate', ['id' => $code->code_type]);
         //return redirect("codeType/addCode/".$request->input('codeType'));
     }

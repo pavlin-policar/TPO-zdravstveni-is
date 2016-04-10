@@ -19,6 +19,7 @@
                         <span class="icon fa fa-tachometer"></span><span class="title">Nadzorna plošča</span>
                     </a>
                 </li>
+                @can('can-see-delegates', App\Models\User::class)
                 <li class="panel panel-default dropdown">
                     <a data-toggle="collapse" href="#dropdown-charges">
                         <span class="icon fa fa-user-md"></span><span class="title">Oskrbljenci</span>
@@ -42,6 +43,7 @@
                         </div>
                     </div>
                 </li>
+                @endcan
                 <li class="inactive">
                     <a href="{{ route('profile.show') }}">
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
