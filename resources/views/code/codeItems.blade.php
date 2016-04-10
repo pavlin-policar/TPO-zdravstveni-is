@@ -26,5 +26,7 @@
     {!! Form::label('max_value', 'Maksimalna vrednost') !!}
     {!! Form::number('max_value', $code['max_value'], ['class' => 'form-control','step'=>'any']) !!}
 </div>
-
-{{ Form::hidden('code_type', $id) }}
+{{ Form::hidden('code_type', $codeTypeID) }}
+@if(isset($id))
+    {{ Form::hidden('id', $id) }}
+@endif

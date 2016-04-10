@@ -235,6 +235,21 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user has more than 18years.
+     *
+     * @return bool
+     */
+    public function isAdult()
+    {
+        $birth=strtotime($this->birth_date);
+        $past=strtotime( '-18 years' );
+        if($birth<$past)
+            return  true;
+        else
+            return false;
+    }
+
+    /**
      * Check if the user is an doctor.
      *
      * @return bool
