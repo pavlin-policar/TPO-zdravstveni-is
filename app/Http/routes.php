@@ -38,6 +38,11 @@ Route::group(['middleware' => 'web'], function () {
         'as' => 'registration.do-confirm-email',
         'uses' => 'Auth\AuthController@confirm',
     ]);
+
+    Route::post('registration/confirm/{token}', [
+        'as' => 'registration.do-confirm-via-email',
+        'uses' => 'Auth\AuthController@confirm',
+    ]);
 });
 
 /**
