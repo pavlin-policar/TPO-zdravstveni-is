@@ -2,7 +2,7 @@
     <nav class="navbar navbar-default" role="navigation">
         <div class="side-menu-container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="{{ route('dashboard.show') }}">
                     <div class="icon fa fa-paper-plane"></div>
                     <div class="title">TPO Zdravstveni IS</div>
                 </a>
