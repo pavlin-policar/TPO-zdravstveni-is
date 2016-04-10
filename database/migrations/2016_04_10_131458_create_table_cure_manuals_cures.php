@@ -19,7 +19,7 @@ class CreateTableCureManualsCures extends Migration
 
             $table->integer('cure_manual')->unsigned();
 			$table->foreign('cure_manual')
-                ->references('id')->on('codes')
+                ->references('id')->on('cure_manuals')
                 ->onUpdate('cascade');
 
             $table->integer('cure')->unsigned();
