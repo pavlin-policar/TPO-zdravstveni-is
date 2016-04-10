@@ -17,7 +17,7 @@
 <div class="form-group">
     {!! Form::label('time', 'Ura', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        {!! Form::time('time', date("H:i", strtotime("12:00")), ['class' => 'form-control', 'required']) !!}
+        {!! Form::time('time', date("H:i:s", strtotime("12:00")), ['class' => 'form-control', 'required']) !!}
     </div>
 </div>
 
@@ -26,7 +26,7 @@
     {!! Form::label('time2', 'Ura', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
         <div class="input-group bootstrap-timepicker timepicker">
-            <input id="timepicker2" name="time2" type="text" value="{!! date("H:i", strtotime("12:00")) !!}" class="form-control input-small">
+            <input id="timepicker2" name="time2" type="text" value="{!! date("H:i:s", strtotime("12:00")) !!}" class="form-control input-small">
                                                 <span class="input-group-addon">
                                                     <i class="glyphicon glyphicon-time"></i>
                                                 </span>

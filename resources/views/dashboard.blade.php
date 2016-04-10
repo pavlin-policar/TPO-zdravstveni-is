@@ -106,13 +106,55 @@
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="card card-no-padding">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">Vaše izbrano osebje</div>
+                                <a name="HCP">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <div class="title">Vaše izbrano osebje</div>
+                                        </div>
+                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-personal"></div>
                                     </div>
-                                    <div class="fa fa-compress icon-arrow-right" id="glyphicon-personal"></div>
-                                </div>
+                                </a>
                                 <div class="card-body no-padding" id="dash-personal">
+                                    <h4>Osebni zdravnik:</h4>
+                                    <li class="panel panel-default dropdown">
+                                        <a data-toggle="collapse" href="#dropdown-element-doctor">
+                                            <span class="icon fa fa-user-md"></span>
+                                            <span class="title"><strong>{{ $user->doctor !== null ? $user->doctor->fullName : 'Niste si še izbrali osebnega zdravnika' }}</strong></span>
+                                        </a>
+                                        @if( isset($doctorNurse) )
+                                            <div id="dropdown-element-doctor" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <h5>Medicinske sestre:</h5>
+                                                    <ul class="nav navbar-nav">
+                                                        @foreach ($doctorNurse as $nurse)
+                                                            <li><a href="#HCP"> {{ $doctorNurse[$nurse->id]->fullName }} </a></li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </li>
+
+                                    <h4>Osebni zobozdravnik:</h4>
+                                    <li class="panel panel-default dropdown">
+                                        <a data-toggle="collapse" href="#dropdown-element-dentist">
+                                            <span class="icon fa fa-user-md"></span>
+                                            <span class="title"><strong>{{ $user->dentist !== null ? $user->dentist->fullName : 'Niste si še izbrali osebnega zdravnika' }}</strong></span>
+                                        </a>
+                                        @if( isset($dentistNurse) )
+                                            <div id="dropdown-element-dentist" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <h5>Medicinske sestre:</h5>
+                                                    <ul class="nav navbar-nav">
+                                                        @foreach ($dentistNurse as $nurse)
+                                                            <li><a href="#HCP"> {{ $dentistNurse[$nurse->id]->fullName }} </a></li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </li>
+                                    <!--
                                     <table class="table table-hover">
                                         <tbody>
                                         <tr>
@@ -125,6 +167,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                    -->
                                 </div>
                             </div>
                         </div>
@@ -139,11 +182,25 @@
                                     <div class="fa fa-compress icon-arrow-right" id="glyphicon-check"></div>
                                 </div>
                                 <div class="card-body no-padding" id="dash-check">
-                                    <table class="table table-hover">
-                                        <tbody>
+                                    @if(count($checks) == 0)
+                                        </br>
+                                        <p><strong>Niste prijavljeni</strong> na pregled.</p></br>
+                                        <p>Na pregled se lahko prijavite v spodnjem obrazcu.</p>
 
-                                        </tbody>
-                                    </table>
+                                    @else
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                @foreach ($checks as $check)
+                                                    <tr>
+                                                        <td>{{ $check->time }}</td>
+                                                        <td>{{ $doktorCheck[$check->doctor]->fullName }}</td>
+                                                        <td>{{ $check->note }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
