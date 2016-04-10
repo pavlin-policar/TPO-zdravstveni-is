@@ -44,7 +44,7 @@ class CodeController extends Controller
     public function addCode(CodeType $codeType)
     {
         $data['codeType'] = $codeType->name;
-        $data['id'] = $codeType->id;
+        $data['codeTypeID'] = $codeType->id;
         $data['back'] = $codeType->id;
         $data['code'] = null;
         return view('code.addCode')->with($data);
@@ -63,11 +63,13 @@ class CodeController extends Controller
         $data['codeType'] = $code->type->name;
         $data['id'] = $code->id;
         $data['back'] = $code->type->id;
+        $data['codeTypeID'] = $code->type->id;
         return view('code.addCode')->with($data);
     }
 
     public function updateCode(Request $request, Code $code)
     {
+        $code->code = $request->code;
         $code->update($request->all());
         return redirect()->route('code.edit', ['id' => $code->id]);
         //return redirect("codeType/".$codeType->codeType);
