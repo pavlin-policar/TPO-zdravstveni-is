@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Models\CheckAllergyDisease;
 use App\Models\CheckMedical;
+use App\Models\CheckDiet;
 use App\Models\Checks;
 use App\Models\DoctorDates;
 use App\Models\DoctorNurse;
@@ -73,6 +75,20 @@ class HomeController extends Controller
                 if(count($data['checkMedical'][$check->id]) > 0){
                     foreach ($data['checkMedical'][$check->id] as $medical) {
                         $data['checkMedical'][$check->id][$medical->id] = Code::find($medical['cure']);
+                    }
+                }
+
+                $data['checkDiet'][$check->id] = CheckDiet::where('check', $check->id)->get();
+                if(count($data['checkDiet'][$check->id]) > 0){
+                    foreach ($data['checkDiet'][$check->id] as $diet) {
+                        $data['checkDiet'][$check->id][$diet->id] = Code::find($diet['diet']);
+                    }
+                }
+
+                $data['checkAllergy'][$check->id] = CheckAllergyDisease::where('check', $check->id)->get();
+                if(count($data['checkAllergy'][$check->id]) > 0){
+                    foreach ($data['checkAllergy'][$check->id] as $allergy) {
+                        $data['checkAllergy'][$check->id][$allergy->id] = Code::find($allergy['allergy_or_disease']);
                     }
                 }
             }
