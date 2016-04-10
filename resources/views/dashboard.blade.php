@@ -256,11 +256,13 @@
                                         </thead>
                                         <tbody>
                                         @foreach ($checkMedical as $medical)
-                                            <tr>
-                                                <td>{{ $medical[1]->name }}</td>
-                                                <td>{{ $medical[0]->start_takeing }}</td>
-                                                <td>{{ $medical[0]->end_takeing }}</td>
-                                            </tr>
+                                            @if(count($medical) > 0 )
+                                                <tr>
+                                                    <td>{{ $medical[$medical[0]->id]->name }}</td>
+                                                    <td>{{ $medical[0]->start_takeing }}</td>
+                                                    <td>{{ $medical[0]->end_takeing }}</td>
+                                                </tr>
+                                            @endif
                                         @endforeach
                                         @endif
                                         </tbody>
@@ -308,14 +310,30 @@
                                 </a>
                                 <div class="card-body no-padding" id="dash-allergy">
                                     <table class="table table-hover">
-                                        <tbody>
-                                        <tr>
-                                            <td>Ime:</td>
-                                            <td>{{ $user->firstName }}</td>
-
-                                        </tr>
-
-                                        </tbody>
+                                        @if(count($checks) == 0 )
+                                            <tr>
+                                                <td>
+                                                    Trenutno nimate alergij.
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <thead>
+                                                <tr>
+                                                    <td>Alergija:</td>
+                                                    <td>Odkritje alergije:</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($checkAllergy as $allergy)
+                                                    @if(count($allergy) > 0 )
+                                                        <tr>
+                                                            <td>{{ $allergy[$allergy[0]->id]->name }}</td>
+                                                            <td>{{ $allergy[0]->discovered_at }}</td>
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tbody>
+                                        @endif
                                     </table>
                                 </div>
                             </div>
@@ -334,14 +352,32 @@
                                 </a>
                                 <div class="card-body no-padding" id="dash-diet">
                                     <table class="table table-hover">
-                                        <tbody>
-                                        <tr>
-                                            <td>Ime:</td>
-                                            <td>{{ $user->firstName }}</td>
-
-                                        </tr>
-
-                                        </tbody>
+                                        @if(count($checks) == 0)
+                                            <tr>
+                                                <td>
+                                                    Trenutno niste na dieti
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <thead>
+                                                <tr>
+                                                    <td>Dieta:</td>
+                                                    <td>Začetek diete:</td>
+                                                    <td>Konec diete:</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($checkDiet as $diet)
+                                                    @if(count($diet) > 0 )
+                                                        <tr>
+                                                            <td>{{ $diet[$diet[0]->id]->name }}</td>
+                                                            <td>{{ $diet[0]->diet_start }}</td>
+                                                            <td>{{ $diet[0]->diet_end }}</td>
+                                                        </tr>
+                                                    @endif
+                                                @endforeach
+                                            </tbody>
+                                        @endif
                                     </table>
                                 </div>
                             </div>
