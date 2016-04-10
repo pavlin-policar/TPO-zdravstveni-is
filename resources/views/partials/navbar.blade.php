@@ -74,9 +74,9 @@
                             <h4 class="username">{{ $user->firstName }} {{ $user->lastName }}</h4>
                             <p>{{  $user->email }}</p>
                             <div class="btn-group margin-bottom-2x" role="group">
-                                <button type="button" class="btn btn-default" href="{{ url('/profile', $user->id) }}">
+                                <a type="button" class="btn btn-default" href="{{ route('profile.show', $user->id) }}">
                                     <i class="fa fa-user"></i> Profile
-                                </button>
+                                </a>
                                 <button type="button" class="btn btn-default">
                                     <a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
                                 </button>

@@ -4,6 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class DoctorProfile
+ *
+ * @property string doctorNumber
+ * @property int    maxPatients
+ * @property Code   type
+ * @property User   user
+ * @property Code   institution
+ *
+ * @package App\Models
+ */
 class DoctorProfile extends Model
 {
     /**
@@ -18,7 +29,7 @@ class DoctorProfile extends Model
      *
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'doctor_number',
         'max_patients',
         'doctor_type_id',
@@ -46,6 +57,20 @@ class DoctorProfile extends Model
     }
 
     /**
+     * Check if the doctor profile is actually valid.
+     *
+     * @return bool
+     */
+    public function isValid()
+    {
+        return
+            $this->institution_id !== null and
+            $this->max_patients !== null and
+            $this->doctor_type_id !== null and
+            $this->doctor_number !== null;
+    }
+
+    /**
      * Get the user object associated with the doctor profile.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -62,7 +87,7 @@ class DoctorProfile extends Model
      */
     public function type()
     {
-        return $this->belongsTo(Code::class, 'doctor_type');
+        return $this->belongsTo(Code::class, 'doctor_type_id');
     }
 
     /**
@@ -72,6 +97,6 @@ class DoctorProfile extends Model
      */
     public function institution()
     {
-        return $this->belongsTo(Code::class, 'institution');
+        return $this->belongsTo(Code::class, 'institution_id');
     }
 }

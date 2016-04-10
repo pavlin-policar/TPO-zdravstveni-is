@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use App\Models\CodeType;
 
 class CreateDoctorProfileRequest extends Request
 {
@@ -36,7 +37,7 @@ class CreateDoctorProfileRequest extends Request
 
             'doctor_number' => 'required',
             'max_patients' => 'required|numeric',
-            'institution' => 'required|in:codes,id',
+            'institution_id' => 'required|exists:codes,id',
         ];
     }
 }

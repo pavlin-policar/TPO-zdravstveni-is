@@ -16,7 +16,7 @@ class CheckIfRegistrationCompleted
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->hasCompletedRegistration()) {
+        if (Auth::user()->hasCreatedProfile()) {
             return $next($request);
         } else {
             return redirect()->route('registration.step-2');

@@ -92,6 +92,14 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'UserController@updatePersonalInfo',
         'as' => 'profile.updatePersonal',
     ]);
+    Route::put('profile/{user}/update-doctors', [
+        'uses' => 'UserController@updateDoctors',
+        'as' => 'profile.updateDoctors',
+    ]);
+    Route::put('profile/{user}/update-doctor', [
+        'uses' => 'UserController@updateDoctorPersonalInfo',
+        'as' => 'profile.updateDoctorPersonal',
+    ]);
     Route::put('profile/{user}/password', [
         'uses' => 'UserController@changePassword',
         'as' => 'profile.changePassword',
@@ -129,6 +137,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
     Route::get('/charges/{user}', [
         'uses' => 'ChargeController@show',
         'as' => 'charges.show',
+    ]);
+
+    Route::get('/patients/{user}', [
+        'uses' => 'PatientController@show',
+        'as' => 'patient.show',
     ]);
 
     /**

@@ -3,14 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\CreateDoctorProfileRequest;
 use App\Http\Requests\CreateProfileRequest;
+use App\Http\Requests\UpdateDoctorsRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    /**
+     * @var UserRepository
+     */
+    private $users;
+
+    /**
+     * UserController constructor.
+     *
+     * @param UserRepository $users
+     */
+    public function __construct(UserRepository $users)
+    {
+        $this->users = $users;
+    }
+
     /**
      * Show the users profile / settings page.
      *
@@ -39,7 +55,22 @@ class UserController extends Controller
     public function updatePersonalInfo(User $user, CreateProfileRequest $request)
     {
         $this->authorize('canUpdatePersonalInfo', $user);
-        $user->update($request->all());
+        $this->users->updateUser($user, $request->all());
+        return redirect()->back();
+    }
+
+    /**
+     * Update the doctors personal information.
+     *
+     * @param User $user
+     * @param CreateDoctorProfileRequest $request
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function updateDoctorPersonalInfo(User $user, CreateDoctorProfileRequest $request)
+    {
+        $this->authorize('canUpdatePersonalInfo', $user);
+        $this->users->updateDoctor($user, $request->all());
         return redirect()->back();
     }
 
@@ -50,7 +81,7 @@ class UserController extends Controller
      */
     public function showGotoCreateProfile()
     {
-        if (Auth::user()->hasCompletedRegistration()) {
+        if (Auth::user()->hasCreatedProfile()) {
             return redirect()->back();
         }
         return view('profile.goto-profile-create');
@@ -64,7 +95,7 @@ class UserController extends Controller
     public function showCreateProfile()
     {
         $user = Auth::user();
-        if ($user->hasCompletedRegistration()) {
+        if ($user->hasCreatedProfile()) {
             return redirect()->back();
         }
         if ($user->isDoctor()) {
@@ -83,10 +114,10 @@ class UserController extends Controller
      */
     public function createPatientProfile(CreateProfileRequest $request)
     {
-        if (Auth::user()->hasCompletedRegistration()) {
+        if (Auth::user()->hasCreatedProfile()) {
             return redirect()->back();
         }
-        Auth::user()->update($request->all());
+        $this->users->updatePatient(Auth::user(), $request->all());
         return redirect()->route('dashboard.show');
     }
 
@@ -98,6 +129,11 @@ class UserController extends Controller
      */
     public function createDoctorProfile(CreateDoctorProfileRequest $request)
     {
+        if (Auth::user()->hasCreatedProfile()) {
+            return redirect()->back();
+        }
+        $this->users->updateDoctor(Auth::user(), $request->all());
+        return redirect()->route('dashboard.show');
     }
 
     /**
@@ -110,8 +146,8 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $userdata = array(
-            'email'     => $user->email,
-            'password'  => $request['oldPassword']
+            'email' => $user->email,
+            'password' => $request['oldPassword']
         );
 
         // attempt to do the login
@@ -129,4 +165,18 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Update the users personal doctor and dentist.
+     *
+     * @param UpdateDoctorsRequest $request
+     * @param User $user
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function updateDoctors(UpdateDoctorsRequest $request, User $user)
+    {
+        $this->authorize('canUpdatePersonalInfo', $user);
+        $this->users->updateUser($user, $request->all());
+        return redirect()->back();
+    }
 }

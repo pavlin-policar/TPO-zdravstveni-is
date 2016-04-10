@@ -12,22 +12,23 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  * @property string first_name
  * @property string last_name
  * @property string fullName
- * @property int    post            Postal code of the address
- * @property string address         Users address
+ * @property int post Postal code of the address
+ * @property string address Users address
  * @property string email
  * @property string password
  * @property string phoneNumber
- * @property int    zz_card_number
+ * @property int zz_card_number
  * @property Carbon birth_date
- * @property int    gender
+ * @property int gender
  * @property Carbon created_at
  * @property Carbon modified_at
  * @property Carbon deleted_at
  * @property Carbon last_login
- * @property bool   confirmed
+ * @property bool confirmed
  * @property string confirmation_code
- * @property User   caretaker
- * @property int    person_type
+ * @property User caretaker
+ * @property int person_type
+ * @property DoctorProfile doctorProfile If the user is a doctor, they also have a doctor profile.
  *
  * @package App\Models
  */
@@ -38,7 +39,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    public $fillable = [
+    protected $fillable = [
         'first_name',
         'last_name',
         'birth_date',
@@ -48,8 +49,8 @@ class User extends Authenticatable
         'post',
         'address',
         'zz_card_number',
-        'personal_doctor',
-        'personal_dentist',
+        'personal_doctor_id',
+        'personal_dentist_id',
         'caretaker_id',
         'password',
     ];
@@ -70,7 +71,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $dates = [
-        'birthDate',
+        'birth_date',
     ];
 
     /**
@@ -109,6 +110,16 @@ class User extends Authenticatable
      */
 
     /**
+     * Check if the user has a caretaker.
+     *
+     * @return bool
+     */
+    public function hasCaretaker()
+    {
+        return $this->caretaker_id !== null;
+    }
+
+    /**
      * Check if the current user is the caretaker of a given user.
      *
      * @param User $user
@@ -116,7 +127,10 @@ class User extends Authenticatable
      */
     public function isCaretakerOf(User $user)
     {
-        return $this->id === $user->caretaker->id;
+        if ($user->hasCaretaker()) {
+            return $this->id === $user->caretaker->id;
+        }
+        return false;
     }
 
     /**
@@ -124,11 +138,16 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function hasCompletedRegistration()
+    public function hasCreatedProfile()
     {
-        return
-            $this->address !== null and
-            $this->birth_date !== null;
+        // the doctor profile contains different data than the regular user profile.
+        if ($this->isDoctor()) {
+            return $this->doctorProfile->isValid();
+        } else {
+            return
+                $this->address !== null and
+                $this->birth_date !== null;
+        }
     }
 
     /**
@@ -195,6 +214,17 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the given user is the doctor of a given patient.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isDoctorOf(User $user)
+    {
+        return $this->id === $user->personal_doctor_id or $this->id === $user->personal_dentist_id;
+    }
+
+    /**
      * Check if the user is an admin user.
      *
      * @return bool
@@ -232,6 +262,66 @@ class User extends Authenticatable
     public function isPatient()
     {
         return $this->person_type === Code::PATIENT()->id;
+    }
+
+    /**
+     * Check if the user has a personal doctor.
+     *
+     * @return bool
+     */
+    public function hasDoctor()
+    {
+        return $this->personal_doctor_id !== null;
+    }
+
+    /**
+     * Check if the user has a personal dentist.
+     *
+     * @return bool
+     */
+    public function hasDentist()
+    {
+        return $this->personal_dentist_id !== null;
+    }
+
+    /**
+     * Check if the doctor is a personal doctor.
+     *
+     * @return bool
+     */
+    public function isPersonalDoctor()
+    {
+        if (!$this->isDoctor()) {
+            return false;
+        }
+        return $this->doctorProfile->type->id === Code::PERSONAL_DOCTOR()->id;
+    }
+
+    /**
+     * Check if the doctor is a personal dentist.
+     *
+     * @return bool
+     */
+    public function isPersonalDentist()
+    {
+        if (!$this->isDoctor()) {
+            return false;
+        }
+        return $this->doctorProfile->type->id === Code::PERSONAL_DENTIST()->id;
+    }
+
+    /**
+     * Check if the doctor is already treating the maximum amount of patients they have set in their
+     * profile.
+     *
+     * @return bool
+     */
+    public function acceptingPatients()
+    {
+        if (!$this->isDoctor()) {
+            return false;
+        }
+        return $this->patients->count() < $this->doctorProfile->max_patients;
     }
 
     /**
@@ -317,5 +407,39 @@ class User extends Authenticatable
     public function doctorProfile()
     {
         return $this->isDoctor() ? $this->hasOne(DoctorProfile::class, 'user_id') : null;
+    }
+
+    /**
+     * Get the patients who have this doctor listed as their personal doctor / dentist.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function patients()
+    {
+        if ($this->isPersonalDoctor()) {
+            return $this->hasMany(User::class, 'personal_doctor_id');
+        } else if ($this->isPersonalDentist()) {
+            return $this->hasMany(User::class, 'personal_dentist_id');
+        }
+    }
+
+    /**
+     * Get the users personal doctor.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function doctor()
+    {
+        return $this->belongsTo(User::class, 'personal_doctor_id');
+    }
+
+    /**
+     * Get the users personal dentist.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function dentist()
+    {
+        return $this->belongsTo(User::class, 'personal_dentist_id');
     }
 }

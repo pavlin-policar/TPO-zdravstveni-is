@@ -12,7 +12,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <div class="title">{{ $user->fullName }}</div>
+                        <div class="title">{{ $patient->fullName }}</div>
                     </div>
                 </div>
                 <div class="card-body no-padding">
@@ -36,29 +36,13 @@
                                     </div>
                                 </a>
                             </li>
-                            <li role="step">
-                                <a href="#password-reset" id="password-reset-tab" role="tab" data-toggle="tab">
-                                    <div class="icon fa fa-key"></div>
-                                    <div class="step-title">
-                                        <div class="title">Sprememba gesla</div>
-                                        <div class="description">Za vašo varnost</div>
-                                    </div>
-                                </a>
-                            </li>
                         </ul>
                         <div class="tab-content" style="width: 100%">
                             <div class="tab-pane fade in active" id="personal-info" aria-labelledby="personal-info-tab">
-                                @if($user->isDoctor())
-                                    @include('profile.tabs.doctor-profile-info', ['user' => $user])
-                                @else
-                                    @include('profile.tabs.profile-info', ['user' => $user])
-                                @endif
+                                @include('patients.tabs.personal-info', ['patient' => $patient])
                             </div>
                             <div class="tab-pane fade" id="doctors" aria-labelledby="doctors-tab">
-                                @include('profile.tabs.doctors', ['user' => $user])
-                            </div>
-                            <div class="tab-pane fade" id="password-reset" aria-labelledby="password-reset-tab">
-                                @include('profile.tabs.profile-change-passwd', ['user' => $user])
+                                @include('patients.tabs.doctors', ['user' => $patient])
                             </div>
                         </div>
                     </div>
