@@ -47,13 +47,13 @@
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
                     </a>
                 </li>
-                @if($user->isAdmin())
+                @can('can-do-admin-stuff', App\Models\User::class)
                 <li class="inactive">
                     <a href="{{ route('code.index') }}">
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Urejanje šifrantov</span>
                     </a>
                 </li>
-                @endif
+                @endcan
             </ul>
         </div>
         <!-- /.navbar-collapse -->
