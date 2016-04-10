@@ -5,37 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Postcodes
+ * Class Checks
  *
- * @property int    postcode
- * @property string post
  *
  * @package App\Models
  */
-class DoctorDates extends Model
+class Checks extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'doctor_dates';
+    protected $table = 'checks';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['note', 'time', 'patient', 'doctor'];
+    protected $fillable = ['note', 'patient', 'doctor', 'doctor_date'];
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'time',
-    ];
 
     /**
      * Get the patients.
@@ -55,14 +45,24 @@ class DoctorDates extends Model
     {
         return $this->belongsTo(User::class, 'doctor');
     }
+    /**
+     * Get the doctorDates.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function doctorDate()
+    {
+        return $this->belongsTo(DoctorDates::class, 'doctor_date');
+    }
 
     /**
-     * Get all the checks.
+     * Get all the checkMedical.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function checks()
+    public function checkMedical()
     {
-        return $this->hasMany(Checks::class, 'doctor_date');
+        return $this->hasMany(CheckMedical::class, 'check');
     }
+
 }

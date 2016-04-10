@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Models\CheckMedical;
+use App\Models\Checks;
 use App\Models\DoctorDates;
 use App\Models\DoctorNurse;
+use App\Models\Code;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,9 +47,9 @@ class HomeController extends Controller
         $data['isMyProfile']=session('isMyProfile');
         $data['personal_doctor'] = User::find($user->personal_doctor_id);
         $data['personal_dentist'] = User::find($user->personal_dentist_id);
-        $data['checks'] = DoctorDates::where('patient', $user->id)->get();
-        if(count($data['checks']) > 0){
-            foreach ($data['checks'] as $check) {
+        $data['doctorDates'] = DoctorDates::where('patient', $user->id)->get();
+        if(count($data['doctorDates']) > 0){
+            foreach ($data['doctorDates'] as $check) {
                 $data['doktorCheck'][$check->doctor] = User::find($check->doctor);
             }
         }
@@ -60,6 +63,18 @@ class HomeController extends Controller
         if(count($nurses) > 0){
             foreach ($nurses as $nurse) {
                 $data['dentistNurse'][$nurse->nurse] = User::find($nurse->nurse);
+            }
+        }
+
+        $data['checks'] = Checks::where('patient', $user->id)->get();
+        if(count($data['checks']) > 0){
+            foreach ($data['checks'] as $check) {
+                $data['checkMedical'][$check->id] = CheckMedical::where('check', $check->id)->get();
+                if(count($data['checkMedical'][$check->id]) > 0){
+                    foreach ($data['checkMedical'][$check->id] as $medical) {
+                        $data['checkMedical'][$check->id][$medical->id] = Code::find($medical['cure']);
+                    }
+                }
             }
         }
 

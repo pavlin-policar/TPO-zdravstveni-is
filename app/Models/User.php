@@ -368,6 +368,46 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all the checks associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function patientChecks()
+    {
+        return $this->hasMany(Checks::class, 'patient');
+    }
+
+    /**
+     * Get all the checks associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function doctorChecks()
+    {
+        return $this->hasMany(Checks::class, 'doctor');
+    }
+
+    /**
+     * Get all the dates associated with the patient.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function patientDate()
+    {
+        return $this->hasMany(DoctorDates::class, 'patient');
+    }
+
+    /**
+     * Get all the dates associated with the doctor.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function doctorDate()
+    {
+        return $this->hasMany(DoctorDates::class, 'patient');
+    }
+
+    /**
      * Get all the charges associated with the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
