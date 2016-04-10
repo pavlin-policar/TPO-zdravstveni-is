@@ -118,18 +118,10 @@
                                         <tr>
                                             <td>Osebni zdravnik:</td>
                                             <td>{{ $user->doctor !== null ? $user->doctor->fullName : 'Niste si še izbrali osebnega zdravnika' }}</td>
-                                                @if($personal_doctor != null)
-                                                    {{ $personal_doctor->first_name }} {{ $personal_doctor->last_name }}
-                                                @endif
-                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Osebni zobozdravnik:</td>
                                             <td>{{ $user->dentist !== null ? $user->dentist->fullName : 'Niste si še izbrali osebnega zobozdravnika' }}</td>
-                                                @if($personal_dentist != null)
-                                                    {{ $personal_dentist->first_name }} {{ $personal_dentist->last_name }}
-                                                @endif
-                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -168,75 +160,8 @@
                                 <div class="card-body no-padding" id="dash-add-check">
                                     <div class="sub-title">Izpolnite spodnji obrazec</div>
 
+                                    @include('patients.addCheck')
 
-                                    {!! Form::open(['route' => ['doctor.addDate'], 'method' => 'create', 'class' => 'form-horizontal']) !!}
-
-                                    <?php $d=strtotime("tomorrow");?>
-                                    {{-- Date --}}
-                                    <div class="form-group">
-                                        {!! Form::label('date', 'Datum', ['class' => 'col-sm-2 control-label']) !!}
-                                        <div class="col-sm-10">
-                                            {!! Form::date('date', date("Y-m-d", $d), ['class' => 'form-control', 'required']) !!}
-                                        </div>
-                                    </div>
-
-                                    {{-- Time --}}
-                                    <div class="form-group">
-                                        {!! Form::label('time', 'Ura', ['class' => 'col-sm-2 control-label']) !!}
-                                        <div class="col-sm-10">
-                                            {!! Form::time('time', date("H:i", strtotime("12:00")), ['class' => 'form-control', 'required']) !!}
-                                        </div>
-                                    </div>
-
-                                    {{-- Time --}}
-                                    <div class="form-group">
-                                        {!! Form::label('time', 'Ura', ['class' => 'col-sm-2 control-label']) !!}
-                                        <div class="col-sm-10">
-                                            <div class="input-group bootstrap-timepicker timepicker">
-                                                <input id="timepicker2" type="text" value="{!! date("H:i", strtotime("12:00")) !!}" class="form-control input-small">
-                                                <span class="input-group-addon">
-                                                    <i class="glyphicon glyphicon-time"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {{-- Note --}}
-                                    <div class="form-group">
-                                        {!! Form::label('note', 'Opombe', ['class' => 'col-sm-2 control-label']) !!}
-                                        <div class="col-sm-10">
-                                            {!! Form::textarea('note', null, ['class' => 'form-control', 'required']) !!}
-                                        </div>
-                                    </div>
-
-                                    {{-- Patient --}}
-                                    <div class="form-group  {{ $errors->has('patient_id') ? ' has-error' : '' }}">
-                                        <div class="col-sm-10">
-                                            {!! Form::text('patient', $user->id, ['class' => 'form-control', 'required']) !!}
-                                            @if ($errors->has('patient_id'))
-                                                <span class="help-block">{{ $errors->first('patient_id') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    {{-- Doctor --}}
-                                    <div class="form-group  {{ $errors->has('personal_doctor_id') ? ' has-error' : '' }}">
-                                        <div class="col-sm-10">
-                                            {!! Form::text('doctor', $user->personal_doctor_id, ['class' => 'form-control', 'required']) !!}
-                                            @if ($errors->has('personal_doctor_id'))
-                                                <span class="help-block">{{ $errors->first('personal_doctor_id') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    {{-- Submit button --}}
-                                    <div class="form-group">
-                                        <div class="col-sm-offset-2 col-sm-10">
-                                            {!! Form::submit('Shrani spremembe', ['class' => 'btn btn-primary']) !!}
-                                        </div>
-                                    </div>
-
-                                    {!! Form::close() !!}
                                 </div>
                             </div>
                         </div>

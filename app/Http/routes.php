@@ -105,11 +105,6 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'profile.changePassword',
     ]);
 
-    Route::post('doctor/date', [
-        'uses' => 'UserController@addDate',
-        'as' => 'doctor.addDate',
-    ]);
-
     Route::get('/charges', [
         'uses' => 'ChargeController@index',
         'as' => 'charges.index',
@@ -142,6 +137,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
     Route::get('/patients/{user}', [
         'uses' => 'PatientController@show',
         'as' => 'patient.show',
+    ]);
+
+    Route::post('/patients/date', [
+        'uses' => 'PatientController@addDate',
+        'as' => 'patient.addDate',
     ]);
 
     /**
