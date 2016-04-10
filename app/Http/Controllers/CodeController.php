@@ -22,7 +22,9 @@ class CodeController extends Controller
 
     public function showCodesForType($id)
     {
-        $data['codeType'] = CodeType::findOrFail($id)->name;
+        $codeType = CodeType::findOrFail($id);
+        $data['codeType'] = $codeType->name;
+        $data['codeTypeDescription'] = $codeType->description;
         $data['array'] = Code::where('code_type', $id)->get();
         $data['id'] = $id;
         return view('code.codes')->with($data);

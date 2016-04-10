@@ -38,7 +38,10 @@ class UserController extends Controller
     {
         // If no user id was supplied, assume the user would like to edit their own profile.
         if (!$user->existsInStorage()) {
-            $user = Auth::user();
+            if(session('isMyProfile'))
+                $user = Auth::user();
+            else
+                $user = User::findOrFail(session('showUser'));
         }
         $this->authorize('canViewProfile', $user);
         return view('profile.view')->with('user', $user);

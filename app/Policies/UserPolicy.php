@@ -18,6 +18,12 @@ class UserPolicy
             $user->isAdmin();
     }
 
+    public function canDoAdminStuff(User $user)
+    {
+        return
+            $user->isAdmin();
+    }
+
     public function canUpdatePersonalInfo(User $user, User $victim)
     {
         return

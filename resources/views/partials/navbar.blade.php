@@ -77,9 +77,9 @@
                                 <a type="button" class="btn btn-default" href="{{ route('profile.show', $user->id) }}">
                                     <i class="fa fa-user"></i> Profile
                                 </a>
-                                <button type="button" class="btn btn-default">
-                                    <a href="{{ url('/logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
-                                </button>
+                                <a type="button" href="{{ url('/logout') }}" class="btn btn-default">
+                                    <i class="fa fa-sign-out"></i> Logout
+                                </a>
                             </div>
                         </div>
                     </li>

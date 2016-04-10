@@ -2,7 +2,7 @@
     <nav class="navbar navbar-default" role="navigation">
         <div class="side-menu-container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="{{ route('dashboard.show') }}">
                     <div class="icon fa fa-paper-plane"></div>
                     <div class="title">TPO Zdravstveni IS</div>
                 </a>
@@ -47,11 +47,13 @@
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
                     </a>
                 </li>
+                @can('can-do-admin-stuff', App\Models\User::class)
                 <li class="inactive">
                     <a href="{{ route('code.index') }}">
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Urejanje šifrantov</span>
                     </a>
                 </li>
+                @endcan
             </ul>
         </div>
         <!-- /.navbar-collapse -->
