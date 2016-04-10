@@ -3,7 +3,7 @@
         <div class="side-menu-container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="{{ route('dashboard.show') }}">
-                    <div class="icon fa fa-paper-plane"></div>
+                    <div class="icon fa fa-heartbeat"></div>
                     <div class="title">TPO Zdravstveni IS</div>
                 </a>
                 <button type="button" class="navbar-expand-toggle pull-right visible-xs">
