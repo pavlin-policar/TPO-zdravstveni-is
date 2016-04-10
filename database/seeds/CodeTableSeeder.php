@@ -280,67 +280,67 @@ class CodeTableSeeder extends Seeder
         $hospitals->codes()->create([
             'name' => 'SB NOVA GORICA',
             'description' => 'ULICA PADLIH BORCEV 13 A',
-			'min_value' => '00016', //šifra
+			'code' => '00016', //šifra
 			'max_value' => '5290', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD BREŽICE',
             'description' => 'ČERNELČEVA CESTA 8',
-			'min_value' => '00100', //šifra
+			'code' => '00100', //šifra
 			'max_value' => '8250', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZDRAVSTVENI DOM NOVA GORICA',
             'description' => 'REJČEVA ULICA 4',
-			'min_value' => '00131', //šifra
+			'code' => '00131', //šifra
 			'max_value' => '5000', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD TOLMIN',
             'description' => 'PREŠERNOVA ULICA 6 A',
-			'min_value' => '00133', //šifra
+			'code' => '00133', //šifra
 			'max_value' => '5220', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD LENDAVA - EH LENDVA',
             'description' => 'KIDRIČEVA ULICA 34',
-			'min_value' => '00351', //šifra
+			'code' => '00351', //šifra
 			'max_value' => '9220', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD METLIKA',
             'description' => 'C. BRATSTVA IN ENOTNOSTI 71',
-			'min_value' => '00371', //šifra
+			'code' => '00371', //šifra
 			'max_value' => '8330', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD LJUTOMER',
             'description' => 'C. I. SLOVENSKEGA TABORA 2',
-			'min_value' => '00352', //šifra
+			'code' => '00352', //šifra
 			'max_value' => '9240', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'DOM UPOKOJENCEV ŠMARJE PRI JELŠAH',
             'description' => 'RAKEŽEVA ULICA 8',
-			'min_value' => '02063', //šifra
+			'code' => '02063', //šifra
 			'max_value' => '3240', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZD RADEČE',
             'description' => 'ULICA OF 8',
-			'min_value' => '02968', //šifra
+			'code' => '02968', //šifra
 			'max_value' => '1433', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'ZDRAVSTVENI DOM KOPER CASA DELLA SANITA CAPODISTRIA',
             'description' => 'DELLAVALLEJEVA ULICA 3',
-			'min_value' => '03401', //šifra
+			'code' => '03401', //šifra
 			'max_value' => '6000', //pošta
         ]);
 		$hospitals->codes()->create([
             'name' => 'SB JESENICE',
             'description' => 'CESTA MARŠALA TITA 112',
-			'min_value' => '04071', //šifra
+			'code' => '04071', //šifra
 			'max_value' => '4270', //pošta
         ]);
 		

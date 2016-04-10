@@ -235,6 +235,21 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user has more than 18years.
+     *
+     * @return bool
+     */
+    public function isAdult()
+    {
+        $birth=strtotime($this->birth_date);
+        $past=strtotime( '-18 years' );
+        if($birth<$past)
+            return  true;
+        else
+            return false;
+    }
+
+    /**
      * Check if the user is an doctor.
      *
      * @return bool
@@ -365,6 +380,46 @@ class User extends Authenticatable
     public function type()
     {
         return $this->belongsTo(Code::class, 'person_type');
+    }
+
+    /**
+     * Get all the checks associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function patientChecks()
+    {
+        return $this->hasMany(Checks::class, 'patient');
+    }
+
+    /**
+     * Get all the checks associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function doctorChecks()
+    {
+        return $this->hasMany(Checks::class, 'doctor');
+    }
+
+    /**
+     * Get all the dates associated with the patient.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function patientDate()
+    {
+        return $this->hasMany(DoctorDates::class, 'patient');
+    }
+
+    /**
+     * Get all the dates associated with the doctor.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function doctorDate()
+    {
+        return $this->hasMany(DoctorDates::class, 'patient');
     }
 
     /**

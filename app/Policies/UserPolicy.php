@@ -24,6 +24,13 @@ class UserPolicy
             $user->isAdmin();
     }
 
+    public function canSeeDelegates(User $user)
+    {
+        return
+            $user->isAdult() and
+            !$user->isAdmin();
+    }
+
     public function canUpdatePersonalInfo(User $user, User $victim)
     {
         return
