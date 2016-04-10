@@ -117,12 +117,19 @@
                                         <tbody>
                                         <tr>
                                             <td>Osebni zdravnik:</td>
-                                            <td>{{ $user->personal_doctor_id }}</td>
-                                            <td>{{ $user->personal_doctor }}</td>
+                                            <td>
+                                                @if($personal_doctor != null)
+                                                    {{ $personal_doctor->first_name }} {{ $personal_doctor->last_name }}
+                                                @endif
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Osebni zobozdravnik:</td>
-                                            <td>{{ $user->personal_dentist }}</td>
+                                            <td>
+                                                @if($personal_dentist != null)
+                                                    {{ $personal_dentist->first_name }} {{ $personal_dentist->last_name }}
+                                                @endif
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>

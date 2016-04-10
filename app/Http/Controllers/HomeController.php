@@ -40,6 +40,9 @@ class HomeController extends Controller
         $this->authorize('canViewProfile', $user);
         $data['user']=$user;
         $data['isMyProfile']=session('isMyProfile');
+        $data['personal_doctor'] = User::find($user->personal_doctor_id);
+        $data['personal_dentist'] = User::find($user->personal_dentist_id);
+
         return view('dashboard')->with($data);
     }
 
