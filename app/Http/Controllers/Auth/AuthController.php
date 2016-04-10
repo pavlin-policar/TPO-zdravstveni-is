@@ -118,6 +118,8 @@ class AuthController extends Controller
             return redirect()->back();
         }
         return view('auth.confirm-email');
+        //return view('registration.confirm-email');
+
     }
 
     /**
@@ -127,11 +129,14 @@ class AuthController extends Controller
      * @param $confirmationCode
      * @return mixed
      */
-    public function confirm(Request $request, $confirmationCode)
+    public function confirm(Request $request)
     {
         if (Auth::user()->hasConfirmedEmail()) {
             return redirect()->back();
         }
+
+        $confirmationCode = $request->confirmationCode;
+
         $user = User::whereConfirmationCode($confirmationCode)->firstOrFail();
         $user->confirmEmail();
         $user->save();

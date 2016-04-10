@@ -34,7 +34,7 @@ Route::group(['middleware' => 'web'], function () {
         'uses' => 'Auth\AuthController@showConfirmationPage',
     ]);
 
-    Route::get('registration/confirm/{token}', [
+    Route::post('registration/confirm/', [
         'as' => 'registration.do-confirm-email',
         'uses' => 'Auth\AuthController@confirm',
     ]);
