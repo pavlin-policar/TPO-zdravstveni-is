@@ -15,6 +15,7 @@ class CreateTableCheckAllergyAndDisease extends Migration
         Schema::create('check_allergy_and_disease', function (Blueprint $table) {
             $table->increments('id');
             $table->text('note')->nullable();
+			$table->dateTime('discovered_at')->nullable();
             $table->timestamps();
 
             $table->integer('check')->unsigned();
@@ -24,7 +25,7 @@ class CreateTableCheckAllergyAndDisease extends Migration
 
             $table->integer('allergy_or_disease')->unsigned();
             $table->foreign('allergy_or_disease')
-                ->references('id')->on('allergies_and_diseases')
+                ->references('id')->on('codes')
                 ->onUpdate('cascade');
         });
     }

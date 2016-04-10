@@ -15,6 +15,8 @@ class CreateTableCheckMedical extends Migration
         Schema::create('check_medical', function (Blueprint $table) {
             $table->increments('id');
 			$table->text('note')->nullable();
+			$table->dateTime('start_takeing')->nullable();
+			$table->dateTime('end_takeing')->nullable();
 			$table->timestamps();
 
             $table->integer('check')->unsigned();
@@ -24,7 +26,7 @@ class CreateTableCheckMedical extends Migration
 
             $table->integer('cure')->unsigned();
 			$table->foreign('cure')
-                ->references('id')->on('cures')
+                ->references('id')->on('codes')
                 ->onUpdate('cascade');
         });
     }

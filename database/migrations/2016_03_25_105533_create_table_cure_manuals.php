@@ -14,7 +14,7 @@ class CreateTableCureManuals extends Migration
     {
         Schema::create('cure_manuals', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('content');
+            $table->text('description');
             $table->timestamps();
         });
     }

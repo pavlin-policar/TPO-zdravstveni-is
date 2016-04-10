@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableAllergiesAndDiseasesMedical extends Migration
+class CreateTableCureManualsCures extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,13 @@ class CreateTableAllergiesAndDiseasesMedical extends Migration
      */
     public function up()
     {
-        Schema::create('allergies_and_diseases_medical', function (Blueprint $table) {
+        Schema::create('cure_manuals_cures', function (Blueprint $table) { //connection table beetwen cure manuals andcures 
             $table->increments('id');
 			$table->text('note')->nullable();
-			$table->text('sideEffects')->nullable();
 			$table->timestamps();
 
-            $table->integer('allergy_or_disease')->unsigned();
-			$table->foreign('allergy_or_disease')
+            $table->integer('cure_manual')->unsigned();
+			$table->foreign('cure_manual')
                 ->references('id')->on('codes')
                 ->onUpdate('cascade');
 
@@ -37,6 +36,6 @@ class CreateTableAllergiesAndDiseasesMedical extends Migration
      */
     public function down()
     {
-        Schema::drop('allergies_and_diseases_medical');
+        Schema::drop('cure_manuals_cures');
     }
 }

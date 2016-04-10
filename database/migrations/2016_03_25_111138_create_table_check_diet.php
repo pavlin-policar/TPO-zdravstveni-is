@@ -15,6 +15,8 @@ class CreateTableCheckDiet extends Migration
         Schema::create('check_diet', function (Blueprint $table) {
             $table->increments('id');
 			$table->text('note')->nullable();
+			$table->dateTime('diet_start')->nullable();
+			$table->dateTime('diet_end')->nullable();
 			$table->timestamps();
 
             $table->integer('check')->unsigned();
@@ -24,7 +26,7 @@ class CreateTableCheckDiet extends Migration
 
             $table->integer('diet')->unsigned();
 			$table->foreign('diet')
-                ->references('id')->on('diets')
+                ->references('id')->on('codes')
                 ->onUpdate('cascade');
         });
     }

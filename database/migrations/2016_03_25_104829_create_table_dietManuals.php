@@ -19,7 +19,7 @@ class CreateTableDietManuals extends Migration
 
             $table->integer('diet')->unsigned();
             $table->foreign('diet')
-                ->references('id')->on('diets')
+                ->references('id')->on('codes')
                 ->onUpdate('cascade');
         });
     }
