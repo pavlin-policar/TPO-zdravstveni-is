@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -36,14 +37,17 @@ class AuthController extends Controller
 
 
     protected $maxLoginAttempts = 3;
+    private $users;
 
     /**
      * Create a new authentication controller instance.
      *
-     * @return void
+     * @param UserRepository $users
      */
-    public function __construct()
+    public function __construct(UserRepository $users)
     {
+        $this->users = $users;
+
         $this->middleware($this->guestMiddleware(), ['except' => [
             'logout',
             'showConfirmationPage',
@@ -91,7 +95,7 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        $user = new User([
+        $user = $this->users->createPatient([
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);

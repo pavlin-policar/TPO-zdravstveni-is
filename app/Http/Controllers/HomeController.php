@@ -44,7 +44,6 @@ class HomeController extends Controller
             else
                 $user = Auth::user();
         }
-        $this->authorize('canViewProfile', $user);
         $data['user']=$user;
         $data['isMyProfile']=session('isMyProfile');
         $data['personal_doctor'] = User::find($user->personal_doctor_id);
