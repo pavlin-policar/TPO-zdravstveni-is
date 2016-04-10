@@ -47,7 +47,7 @@
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
                     </a>
                 </li>
-                @if($user->isAdmin()))
+                @if($user->isAdmin())
                 <li class="inactive">
                     <a href="{{ route('code.index') }}">
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Urejanje šifrantov</span>
