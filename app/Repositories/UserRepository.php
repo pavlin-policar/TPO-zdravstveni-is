@@ -119,11 +119,13 @@ class UserRepository
         // create the user object
         $user = new User($data);
         $user->person_type = Code::DOCTOR()->id;
-        if ($dentist) {
+        /*if ($dentist) {
             $user->doctor_type_id = Code::PERSONAL_DENTIST()->id;
         } else {
             $user->doctor_type_id = Code::PERSONAL_DOCTOR()->id;
-        }
+        }*/
+        //^--Throws error, when saving to DB: can't find column doctor_type_id in table user
+        // (which makes sense, since it's supposed to be in table doctor).
         $user->save();
         // then we need to insert a record into doctors table that references the user
         $user->doctorProfile()->create($data);

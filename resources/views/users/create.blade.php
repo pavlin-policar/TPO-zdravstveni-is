@@ -20,6 +20,45 @@
                     {!! Form::hidden('person_type', $type->id) !!}
 
 
+                    {{-- Email --}}
+                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        {!! Form::label('email', 'Email*', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-md-4">
+                            {!! Form::email('email', '', ['class' => 'form-control', 'required']) !!}
+                        @if ($errors->has('email'))
+                                <span class="help-block">{{ $errors->first('email') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- Password --}}
+                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        {!! Form::label('password', 'Geslo*', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-md-4">
+                            {!! Form::password('password', ['class' => 'form-control', 'required']) !!}
+
+                            @if ($errors->has('password'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- Password Confirmation --}}
+                    <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                        {!! Form::label('password_confirmation', 'Ponovitev gesla*', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-md-4">
+                            {!! Form::password('password_confirmation', ['class' => 'form-control', 'required']) !!}
+
+                            @if ($errors->has('password_confirmation'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
+                                    </span>
+                            @endif
+                        </div>
+                    </div>
+
                     {{-- Submit button --}}
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
