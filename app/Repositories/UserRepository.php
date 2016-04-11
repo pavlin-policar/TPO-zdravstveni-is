@@ -104,6 +104,7 @@ class UserRepository
         // create the user object
         $user = new User($data);
         $user->person_type = Code::NURSE()->id;
+        $user->confirmation_code = str_random(30);
         $user->save();
 
         return $user;
@@ -135,6 +136,7 @@ class UserRepository
         // create the user object
         $user = new User($data);
         $user->person_type = Code::DOCTOR()->id;
+        $user->confirmation_code = str_random(30);
         $user->save();
         // then we need to insert a record into doctors table that references the user
         $user->doctorProfile()->create($data);

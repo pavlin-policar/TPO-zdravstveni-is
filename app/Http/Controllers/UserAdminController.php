@@ -6,6 +6,7 @@ use App\Models\Code;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserAdminController extends Controller
 {
@@ -70,23 +71,13 @@ class UserAdminController extends Controller
             ]);
         }
 
-
-        //$user->confirmation_code = str_random(30);
-
-        /*$this->sendPersonalDoctorActivationEmail($user, $request->password);
-        request()->session()->flash(
-            'message',
-            'Uspešno ste se registrirali. Zdaj morate še aktivirati svoj račun z aktivacijsko kodo,'
-            . ' ki smo vam jo poslali na elektronski naslov.'
-        );*/
-
+        $this->sendPersonalDoctorActivationEmail($user, $request->password);
         request()->session()->flash(
             'message',
             'Uspešno ste se registrirali. Zdaj morate še aktivirati svoj račun z aktivacijsko kodo,'
             . ' ki smo vam jo poslali na elektronski naslov.'
         );
 
-        //return $user;
         return redirect()->route('profile.show', $user->id);
     }
 
