@@ -139,4 +139,14 @@ class Code extends Model
     {
         return $this->belongsTo(CodeType::class, 'code_type');
     }
+
+    /**
+     * Get all the types from measurement.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function measurementType()
+    {
+        return $this->hasMany(Measurement::class, 'type');
+    }
 }

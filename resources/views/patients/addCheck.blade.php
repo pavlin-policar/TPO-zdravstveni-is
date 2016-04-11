@@ -22,7 +22,7 @@
 </div>
 
 {{-- Time --}}
-<div class="form-group">
+<div class="form-group hidden">
     {!! Form::label('time2', 'Ura', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
         <div class="input-group bootstrap-timepicker timepicker">

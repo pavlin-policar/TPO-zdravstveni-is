@@ -51,7 +51,7 @@
                     <a href="#diet">
                         <div class="card blue summary-inline">
                             <div class="card-body">
-                                <i class="icon fa fa-apple fa-4x"></i>
+                                <i class="glyphicon glyphicon-apple fa-4x"></i>
                                 <div class="content">
                                     <div class="title">Diete</div>
                                     <div class="sub-title">_</div>
@@ -262,6 +262,10 @@
                                                     <td>{{ $medical[0]->start_takeing }}</td>
                                                     <td>{{ $medical[0]->end_takeing }}</td>
                                                 </tr>
+                                            @else
+                                                <tr>
+                                                    <td>Ni podatkov</td>
+                                                </tr>
                                             @endif
                                         @endforeach
                                         @endif
@@ -284,14 +288,30 @@
                                 </a>
                                 <div class="card-body no-padding" id="dash-measurments">
                                     <table class="table table-hover">
-                                        <tbody>
-                                        <tr>
-                                            <td>Ime:</td>
-                                            <td>{{ $user->firstName }}</td>
-
-                                        </tr>
-
-                                        </tbody>
+                                        @if(count($measurements) == 0 )
+                                            <tr>
+                                                <td>
+                                                    Trenutno nimate meritev.
+                                                </td>
+                                            </tr>
+                                        @else
+                                            <thead>
+                                            <tr>
+                                                <td>Meritev:</td>
+                                                <td>Čas meritve:</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php $i=0; ?>
+                                            @foreach ($measurements as $measurement)
+                                                <tr>
+                                                    <td>{{ $measurement[$measurement->id]->name }}</td>
+                                                    <td>{{ $measurement->time }}</td>
+                                                </tr>
+                                                <?php $i=$i+1; ?>
+                                            @endforeach
+                                            </tbody>
+                                        @endif
                                     </table>
                                 </div>
                             </div>
@@ -329,6 +349,10 @@
                                                         <tr>
                                                             <td>{{ $allergy[$allergy[0]->id]->name }}</td>
                                                             <td>{{ $allergy[0]->discovered_at }}</td>
+                                                        </tr>
+                                                    @else
+                                                        <tr>
+                                                            <td>Ni podatkov</td>
                                                         </tr>
                                                     @endif
                                                 @endforeach
@@ -373,6 +397,10 @@
                                                             <td>{{ $diet[$diet[0]->id]->name }}</td>
                                                             <td>{{ $diet[0]->diet_start }}</td>
                                                             <td>{{ $diet[0]->diet_end }}</td>
+                                                        </tr>
+                                                    @else
+                                                        <tr>
+                                                            <td>Ni podatkov</td>
                                                         </tr>
                                                     @endif
                                                 @endforeach
