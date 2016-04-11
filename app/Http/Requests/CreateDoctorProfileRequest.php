@@ -35,7 +35,7 @@ class CreateDoctorProfileRequest extends Request
             'email' => 'required|email',
             'phone_number' => 'required',
 
-            'doctor_number' => 'required',
+            'doctor_number' => 'required|',
             'max_patients' => 'required|numeric',
             'institution_id' => 'required|exists:codes,id',
         ];
