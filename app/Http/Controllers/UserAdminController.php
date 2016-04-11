@@ -30,7 +30,8 @@ class UserAdminController extends Controller
     public function index()
     {
         $this->authorize('can-see-all-users', User::class);
-        $users = User::whereNotNull('first_name')->with('type')->get();
+        $users = User::with('type')->get();
+//        $users = User::whereNotNull('first_name')->with('type')->get();
         return view('users.index')->with('users', $users);
     }
 

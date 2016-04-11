@@ -95,7 +95,7 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        $user = $this->users->createPersonalDoctor([
+        $user = $this->users->createPatient([
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);

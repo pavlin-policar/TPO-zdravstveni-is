@@ -41,6 +41,7 @@
                                 <td>{{ $user->first_name }}</td>
                                 <td>{{ $user->last_name }}</td>
                                 <td>{{ $user->type->name }}</td>
+                                <td>{!! link_to_route('profile.show', 'Uredi profil', [$user->id]) !!}</td>
                             </tr>
                         @endforeach
                         </tbody>
