@@ -84,6 +84,17 @@ $(document).ready(function(){
         }
     });
 
+    if($("#profileChangePassword").html() != null) {
+        console.log("change password");
+        console.log($("#password-reset").html());
+        /*
+        $("#profileView").html($("#password-reset").html());
+        $("#li-personal-info").attr("class", "");
+        $("#li-password-reset").attr("class", "active");
+        */
+        $("#password-reset-tab").click();
+    }
+
     $('#timepicker2').timepicker({
         minuteStep: 10,
         template: 'modal',

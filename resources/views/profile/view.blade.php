@@ -18,7 +18,7 @@
                 <div class="card-body no-padding">
                     <div class="step tabs-left card-no-padding">
                         <ul class="nav nav-tabs">
-                            <li role="step" class="active">
+                            <li role="step" id="li-personal-info" class="active">
                                 <a href="#personal-info" id="personal-info-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">
                                     <div class="icon fa fa-user"></div>
                                     <div class="step-title">
@@ -27,7 +27,7 @@
                                     </div>
                                 </a>
                             </li>
-                            <li role="step">
+                            <li role="step" id="li-doctors-tab">
                                 <a href="#doctors" id="doctors-tab" role="tab" data-toggle="tab">
                                     <div class="icon fa fa-user-md"></div>
                                     <div class="step-title">
@@ -36,7 +36,7 @@
                                     </div>
                                 </a>
                             </li>
-                            <li role="step">
+                            <li role="step" id="li-password-reset">
                                 <a href="#password-reset" id="password-reset-tab" role="tab" data-toggle="tab">
                                     <div class="icon fa fa-key"></div>
                                     <div class="step-title">
@@ -46,7 +46,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="tab-content" style="width: 100%">
+                        <div class="tab-content" id="profileView" style="width: 100%">
                             <div class="tab-pane fade in active" id="personal-info" aria-labelledby="personal-info-tab">
                                 @if($user->isDoctor())
                                     @include('profile.tabs.doctor-profile-info', ['user' => $user])

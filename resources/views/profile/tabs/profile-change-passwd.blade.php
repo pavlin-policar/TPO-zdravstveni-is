@@ -1,10 +1,10 @@
 {!! Form::open(['route' => ['profile.changePassword', $user->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
 @if (Session::has('cahangePassError'))
-    <div class="alert alert-danger" role="alert">Sprememba gesla ni uspela!</div>
+    <div id="profileChangePassword" class="alert alert-danger" role="alert">Sprememba gesla ni uspela! Vnesli ste napačno trenutno geslo.</div>
 @endif
 @if (Session::has('cahangedPass'))
-    <div class="alert alert-success" role="alert">Geslo je spremenjeno!</div>
+    <div id="profileChangePassword" class="alert alert-success" role="alert">Geslo je spremenjeno!</div>
 @endif
 
 <div class="sub-title">Sprememba gesla</div>
@@ -24,7 +24,7 @@
     <div class="col-sm-10">
         {!! Form::password('password', null, $attributes = ['class' => 'form-control', 'id' => 'password', 'required']) !!}
         @if ($errors->has('password'))
-            <span class="help-block">{{ $errors->first('password') }}</span>
+            <span id="profileChangePassword" class="help-block">{{ $errors->first('password') }}</span>
         @endif
 
         @include('profile.tabs.passCheck')
@@ -38,7 +38,7 @@
     <div class="col-sm-10">
         {!! Form::password('password_confirmation', null, $attributes = ['class' => 'form-control', 'required']) !!}
         @if ($errors->has('password_confirmation'))
-            <span class="help-block">{{ $errors->first('password_confirmation') }}</span>
+            <span id="profileChangePassword" class="help-block">{{ $errors->first('password_confirmation') }}</span>
         @endif
     </div>
 </div>
