@@ -55,10 +55,22 @@ class UserAdminController extends Controller
 
     public function store(Request $request)
     {
-        $user = $this->users->createPersonalDoctor([
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
-        ]);
+        //var_dump($request->person_type);
+        if ($request->person_type == 1) {
+            $user = $this->users->createNurse([
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+        }
+        else if ($request->person_type == 0)
+        {
+            $user = $this->users->createPersonalDoctor([
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+        }
+
+
         //$user->confirmation_code = str_random(30);
 
         /*$this->sendPersonalDoctorActivationEmail($user, $request->password);
@@ -74,7 +86,8 @@ class UserAdminController extends Controller
             . ' ki smo vam jo poslali na elektronski naslov.'
         );
 
-        return $user;
+        //return $user;
+        return redirect()->route('profile.show', $user->id);
     }
 
     /**

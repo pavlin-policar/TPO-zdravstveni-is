@@ -94,6 +94,22 @@ class UserRepository
     }
 
     /**
+     * Create a nurse and persist her to storage.
+     *
+     * @param array $data
+     * @return User
+     */
+    public function createNurse(array $data)
+    {
+        // create the user object
+        $user = new User($data);
+        $user->person_type = Code::NURSE()->id;
+        $user->save();
+
+        return $user;
+    }
+
+    /**
      * Update a given doctor and persist changes to storage.
      *
      * @param User $user
@@ -123,9 +139,9 @@ class UserRepository
         // then we need to insert a record into doctors table that references the user
         $user->doctorProfile()->create($data);
         if ($dentist) {
-            $user->profile->doctor_type_id = Code::PERSONAL_DENTIST()->id;
+            $user->doctor_type_id = Code::PERSONAL_DENTIST()->id;
         } else {
-            $user->profile->doctor_type_id = Code::PERSONAL_DOCTOR()->id;
+            $user->doctor_type_id = Code::PERSONAL_DOCTOR()->id;
         }
 
         return $user;

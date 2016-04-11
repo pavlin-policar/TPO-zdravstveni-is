@@ -3,7 +3,7 @@
 @section('content')
     <div class="page-title">
         <span class="title">Dodajanje: {{ $type->name }}</span>
-        <div class="description">Dodajanje: {{ $type->name }}</div>
+        <div class="description">Dodajte zdravnika</div>
     </div>
 
     <div class="row">
@@ -27,6 +27,20 @@
                             {!! Form::email('email', '', ['class' => 'form-control', 'required']) !!}
                         @if ($errors->has('email'))
                                 <span class="help-block">{{ $errors->first('email') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- Job title --}}
+                    <div class="form-group{{ $errors->has('person_type') ? ' has-error' : '' }}">
+                        {!! Form::label('person_type', 'Poklic*', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-md-4">
+                            {!! Form::select('person_type', array(0 => 'zdravnik', 1 => 'medicinska sestra'), ['class' => 'form-control', 'required']) !!}
+
+                            @if ($errors->has('person_type'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('person_type') }}</strong>
+                                    </span>
                             @endif
                         </div>
                     </div>
