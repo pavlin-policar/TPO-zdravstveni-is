@@ -10,6 +10,7 @@ use App\Models\Checks;
 use App\Models\DoctorDates;
 use App\Models\DoctorNurse;
 use App\Models\Code;
+use App\Models\Measurement;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -90,6 +91,14 @@ class HomeController extends Controller
                         $data['checkAllergy'][$check->id][$allergy->id] = Code::find($allergy['allergy_or_disease']);
                     }
                 }
+            }
+        }
+        $data['measurements'] = Measurement::where('patient', $user->id)->get();
+        if(count($data['measurements']) > 0) {
+            $i=0;
+            foreach ($data['measurements'] as $measurement) {
+                $data['measurements'][$i][$measurement->id] = Code::find($measurement->type);
+                $i=$i+1;
             }
         }
 

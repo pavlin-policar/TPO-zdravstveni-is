@@ -10,22 +10,30 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class Checks extends Model
+class Measurement extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'checks';
+    protected $table = 'measurements';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['note', 'patient', 'doctor', 'doctor_date'];
+    protected $fillable = ['provider', 'patient', 'type', 'check', 'time'];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'time',
+    ];
 
     /**
      * Get the patients.
@@ -37,22 +45,31 @@ class Checks extends Model
         return $this->belongsTo(User::class, 'patient');
     }
     /**
-     * Get the doctors.
+     * Get the provider.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function doctor()
+    public function provider()
     {
-        return $this->belongsTo(User::class, 'doctor');
+        return $this->belongsTo(User::class, 'provider');
     }
     /**
-     * Get the doctorDates.
+     * Get the type.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function doctorDate()
+    public function type()
     {
-        return $this->belongsTo(DoctorDates::class, 'doctor_date');
+        return $this->belongsTo(Code::class, 'type');
+    }
+    /**
+     * Get the check.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function check()
+    {
+        return $this->belongsTo(Checks::class, 'check');
     }
 
     /**
@@ -63,16 +80,6 @@ class Checks extends Model
     public function checkMedical()
     {
         return $this->hasMany(CheckMedical::class, 'check');
-    }
-
-    /**
-     * Get all the types from measurement.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function measurementCheck()
-    {
-        return $this->hasMany(Measurement::class, 'check');
     }
 
 }

@@ -433,6 +433,25 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all the providers from measurement.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function measurementProvider()
+    {
+        return $this->hasMany(Measurement::class, 'provider');
+    }
+    /**
+     * Get all the patients from measurement.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function measurementPatient()
+    {
+        return $this->hasMany(Measurement::class, 'patient');
+    }
+
+    /**
      * Get the users caretaker, if they have one.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
