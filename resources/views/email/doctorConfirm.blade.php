@@ -14,7 +14,7 @@
         <b>Aktivacijska koda:</b> {{ $confirmationCode }}
     </p>
 
-    <p>Vaše začasno geslo je {{ $password }}. Prosimo vas, da ga čim prej po aktivaciji računa spremenite.</p>
+    <p>Vaše začasno geslo je <b> {{ $password }} </b>. Prosimo vas, da ga čim prej po aktivaciji računa spremenite.</p>
 
     <p>Če ste prejeli to elektronsko sporočilo ne da bi se registrirali na ZIS-RS, ignorirajte to sporočilo.</p>
 </div>
