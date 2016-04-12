@@ -47,7 +47,7 @@
                         </tbody>
                     </table>
                     {!! link_to_route('users.create', 'Dodaj zdravnika', ['type' => 'doctor'], ['class' => 'btn btn-primary']) !!}
-                    {!! link_to_route('users.create', 'Dodaj pacienta', ['type' => 'patient'], ['class' => 'btn btn-default']) !!}
+                    <!-- {!! link_to_route('users.create', 'Dodaj pacienta', ['type' => 'patient'], ['class' => 'btn btn-default']) !!} -->
                 </div>
             </div>
         </div>

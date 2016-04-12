@@ -55,6 +55,11 @@
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Urejanje šifrantov</span>
                     </a>
                 </li>
+                <li class="inactive">
+                    <a href="{{ route('users.index') }}">
+                        <span class="icon glyphicon glyphicon-cog"></span><span class="title">Urejanje uporabnikov</span>
+                    </a>
+                </li>
                 @endcan
             </ul>
         </div>

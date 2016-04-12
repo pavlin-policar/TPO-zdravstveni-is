@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 
 class UserAdminController extends Controller
 {
@@ -47,6 +48,8 @@ class UserAdminController extends Controller
     {
         // TODO figure out a way to handle this if the user type method is not defined
         $userType = $request->get('type', 'patient');
+        // Lahko bi nastavili neko default vrednost, samo ne vem kako? Spodaj je nedelujoč poskus.
+        //if ($userType == NULL || $userType == '') $userType = 'doctor';
         $permissionName = 'can-create-' . strtolower($userType);
         $this->authorize($permissionName, User::class);
         // get the corresponding person type
@@ -56,6 +59,15 @@ class UserAdminController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return view('users.create')->withErrors($validator)->withInput();
+        }
+
         //var_dump($request->person_type);
         if ($request->person_type == 1) {
             $user = $this->users->createNurse([
