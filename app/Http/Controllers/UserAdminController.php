@@ -8,6 +8,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
 
 class UserAdminController extends Controller
 {
@@ -65,7 +66,8 @@ class UserAdminController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return view('users.create')->withErrors($validator)->withInput();
+            return view('users.create')->with('type', Code::DOCTOR())->withErrors($validator);
+            //return view('users.create')->with('type', 'doctor')->withErrors($validator)->withInput();
         }
 
         //var_dump($request->person_type);

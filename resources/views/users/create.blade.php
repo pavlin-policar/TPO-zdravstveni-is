@@ -2,8 +2,9 @@
 
 @section('content')
     <div class="page-title">
-        <span class="title">Dodajanje: {{ $type->name }}</span>
-        <div class="description">Dodajte zdravnika</div>
+        <!--span-- class="title">Dodajanje: {{ $type->name }}</span-->
+        <span class="title">Dodajanje: zdravnik/medicinska sestra</span>
+        <div class="description">Dodajte zdravnika ali medicinsko sestro</div>
     </div>
 
     <div class="row">
@@ -11,12 +12,13 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <span class="title">Dodajanje: {{ $type->name }}</span>
+                        <!--span class="title">Dodajanje: {{ $type->name }}</span-->
+                        <span class="title">Dodajanje: zdravnik/medicinska sestra</span>
                     </div>
                 </div>
                 <div class="card-body">
                     <p>Prosimo, izpolnite vsa zahtevana polja. Zahtevana polja so označena s zvezdico (*).</p>
-                    {!! Form::open(['route' => 'users.store', 'method' => 'post', 'class' => 'form-horizontal']) !!}
+                    {!! Form::open(['route' => ['users.store', 'type' => 'doctor'], 'method' => 'post', 'class' => 'form-horizontal']) !!}
                     {!! Form::hidden('person_type', $type->id) !!}
 
 

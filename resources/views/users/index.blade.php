@@ -17,6 +17,7 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    {!! link_to_route('users.create', 'Dodaj zdravnika/medicinsko sestro', ['type' => 'doctor'], ['class' => 'btn btn-primary']) !!}
                     <table class="datatable table table-striped" cellspacing="0" width="100%">
                         <thead>
                         <tr>
@@ -46,7 +47,7 @@
                         @endforeach
                         </tbody>
                     </table>
-                    {!! link_to_route('users.create', 'Dodaj zdravnika', ['type' => 'doctor'], ['class' => 'btn btn-primary']) !!}
+                    {!! link_to_route('users.create', 'Dodaj zdravnika/medicinsko sestro', ['type' => 'doctor'], ['class' => 'btn btn-primary']) !!}
                     <!-- {!! link_to_route('users.create', 'Dodaj pacienta', ['type' => 'patient'], ['class' => 'btn btn-default']) !!} -->
                 </div>
             </div>
