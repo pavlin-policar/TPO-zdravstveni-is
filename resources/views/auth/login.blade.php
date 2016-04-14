@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Flat Admin V.2 - Free Bootstrap Admin Templates</title>
+    <title>Zdravstveni informacijski sistem</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {{-- Fonts --}}
     {{ Html::style('http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400') }}
