@@ -130,12 +130,7 @@ class AuthController extends Controller
      */
     public function showConfirmationPage()
     {
-        if (Auth::user()->hasConfirmedEmail()) {
-            return redirect()->back();
-        }
         return view('auth.confirm-email');
-        //return view('registration.confirm-email');
-
     }
 
     /**
@@ -147,12 +142,8 @@ class AuthController extends Controller
      */
     public function confirm(Request $request)
     {
-        $user = Auth::user();
-        if ($user->hasConfirmedEmail()) {
-            return redirect()->back();
-        }
-
-        if (!$user->getConfirmationCode() !== $request->get('confirmationCode', '-1')) {
+        $user = User::whereConfirmationCode($request->get('confirmationCode'))->first();
+        if ($user === null) {
             throw new InvalidActivationCodeException;
         }
         $user->confirmEmail();

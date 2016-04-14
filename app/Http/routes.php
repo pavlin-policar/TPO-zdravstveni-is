@@ -34,6 +34,11 @@ Route::group(['middleware' => 'web'], function () {
         'uses' => 'Auth\AuthController@showConfirmationPage',
     ]);
 
+    Route::get('registration/resend', [
+        'as' => 'registration.resend-email',
+        'uses' => 'Auth\AuthController@resendEmail',
+    ]);
+
     Route::post('registration/confirm/', [
         'as' => 'registration.do-confirm-email',
         'uses' => 'Auth\AuthController@confirm',
