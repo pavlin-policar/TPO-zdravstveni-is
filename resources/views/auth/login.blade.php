@@ -38,9 +38,11 @@
                                     <input type="checkbox" name="remember">Zapomni si me
                                 </label>
                             </div>
-                            <div class="login-button text-center">
-                                <input type="submit" class="btn btn-primary" value="Prijavi se">
-                                <a href="{{ url('/register') }}" class="btn btn-default">Registracija</a>
+                            <div class="row">
+                                <div class="col-xs-12 text-center" style="margin-bottom: 0">
+                                    <button type="submit" class="btn btn-primary">Prijavi se</button>
+                                    <a href="{{ url('/register') }}" class="btn btn-default">Registracija</a>
+                                </div>
                             </div>
                         </form>
                     </div>
