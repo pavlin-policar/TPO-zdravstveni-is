@@ -68,8 +68,17 @@ class AuthController extends Controller
     {
         return Validator::make($data, [
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8|confirmed',
-        ]);
+            'password' => 'required|min:8|confirmed|regex:/^(?=.*[\d,.;:]).+$/',
+        ],
+            [
+                'required' => 'Polje ne sme ostati prazno!',
+                'max' => 'Elektronski naslov je lahko dolg največ 255 znakov!',
+                'min'  => 'Geslo mora biti dolgo vsaj 8 znakov!',
+                'unique' => 'Elektronski naslov že obstaja v naši bazi!',
+                'confirmed'  => 'Geslo se ne ujema s potrditvijo!',
+                'email' => 'Elektronski naslov je napačne oblike!',
+                'regex'  => 'Geslo mora vsebovati vsaj en numeričen znak!',
+            ]);
     }
 
     /**
