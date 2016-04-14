@@ -29,7 +29,7 @@
         @include('partials.sidebar')
         <div class="container-fluid">
             <div class="side-body">
-                @if(!session('isMyProfile'))
+                @if(session('isMyProfile')==false&&!empty(session('simpleUserData')))
                     <div class="list-group-item list-group-item-warning">
                         <div class="row">
                             <div class="col-md-8 col-sm-12">
