@@ -44,23 +44,23 @@
                     </div>
                 </li>
                 @endcan
+                @can('can-do-admin-stuff', App\Models\User::class)
+                <li class="inactive">
+                    <a href="{{ route('code.index') }}">
+                        <span class="icon fa fa-database"></span><span class="title">Urejanje šifrantov</span>
+                    </a>
+                </li>
+                <li class="inactive">
+                    <a href="{{ route('users.index') }}">
+                        <span class="icon fa fa-users"></span><span class="title">Urejanje uporabnikov</span>
+                    </a>
+                </li>
+                @endcan
                 <li class="inactive">
                     <a href="{{ route('profile.show') }}">
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
                     </a>
                 </li>
-                @can('can-do-admin-stuff', App\Models\User::class)
-                <li class="inactive">
-                    <a href="{{ route('code.index') }}">
-                        <span class="icon glyphicon glyphicon-cog"></span><span class="title">Urejanje šifrantov</span>
-                    </a>
-                </li>
-                <li class="inactive">
-                    <a href="{{ route('users.index') }}">
-                        <span class="icon glyphicon glyphicon-cog"></span><span class="title">Urejanje uporabnikov</span>
-                    </a>
-                </li>
-                @endcan
             </ul>
         </div>
         <!-- /.navbar-collapse -->
