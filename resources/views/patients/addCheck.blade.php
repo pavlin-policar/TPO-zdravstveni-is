@@ -55,7 +55,7 @@
 {{-- Doctor --}}
 <div class="form-group hidden {{ $errors->has('personal_doctor_id') ? ' has-error' : '' }}">
     <div class="col-sm-10">
-        {!! Form::text('doctor', $user->personal_doctor_id, ['class' => 'form-control', 'required']) !!}
+        {!! Form::text('doctor', $user->personal_doctor_id, ['class' => 'form-control', 'required', 'oninvalid' => "setCustomValidity('Nimate osebnega zdravnika!')"]) !!}
         @if ($errors->has('personal_doctor_id'))
             <span class="help-block">{{ $errors->first('personal_doctor_id') }}</span>
         @endif

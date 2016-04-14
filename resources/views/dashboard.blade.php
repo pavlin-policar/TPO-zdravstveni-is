@@ -425,7 +425,7 @@
                                         <table class="table table-hover">
                                             <tbody>
                                             @foreach($user->patients as $patient)
-                                                {!! link_to_route('patient.show', $patient->fullName, $patient->id)!!}
+                                                {!! link_to_route('patient.show', $patient->fullName, $patient->id, ['class' => 'btn btn-default'])!!}&nbsp;
                                             @endforeach
                                             </tbody>
                                         </table>
