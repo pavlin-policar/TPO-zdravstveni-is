@@ -1,3 +1,15 @@
+
+body.login-page {
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.7)
+  ), url(https://pixabay.com/get/ec33b20b2af31c22d9584518a33219c8b66ae3d11fb1174296f8c071/medical-563427_1920.jpg);
+}
+
+/*
+ * THE STUFF BELOW HERE WAS VENDOR MADE
+ */
+
 #meter_wrapper {
   border:1px solid grey;
   width:200px;
