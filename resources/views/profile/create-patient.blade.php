@@ -3,21 +3,18 @@
 @section('content')
     <div class="page-title">
         <span class="title">Kreiraj profil</span>
-        <div class="description">Create a profile so you and your doctors have access to your
-            personal information.
-        </div>
+        <div class="description">Opis</div>
     </div>
     <div class="row">
         <div class="col-xs-12">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <div class="title">Create profile</div>
+                        <div class="title">Kreiraj profil</div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p>Please fill out all the required fields. The required fields are denoted with
-                        an asterix (*).</p>
+                    <p>Prosim izpolnite zahtevana polja, ki so označena z zvezdico (*).</p>
                     {!! Form::open(['route' => 'profile.postCreatePatient', 'method' => 'post', 'class' => 'form-horizontal']) !!}
 
                     @include('profile.profile-data-form')

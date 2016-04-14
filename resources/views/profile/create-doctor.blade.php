@@ -3,7 +3,7 @@
 @section('content')
     <div class="page-title">
         <span class="title">Kreiraj profil</span>
-        <div class="description">Prosim, kreirajte profil.</div>
+        <div class="description">Opis</div>
     </div>
     <div class="row">
         <div class="col-xs-12">
