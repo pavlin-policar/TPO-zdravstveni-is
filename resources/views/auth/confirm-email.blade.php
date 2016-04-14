@@ -23,6 +23,11 @@
         <button type="submit" class="btn btn-primary">
             <i class="fa fa-btn fa-sign-in"></i>&nbsp;Aktiviraj račun
         </button>
-        {!! link_to('/logout', 'Odjava', ['class' => 'btn btn-default']) !!}
+        <div>
+            @if (Auth::check() != null)
+                {!!  link_to('/logout', 'Odjava', ['class' => 'btn btn-default']) !!}
+                {!!  link_to_route('registration.resend-email', 'Ponovno pošlji kodo', [], ['class' => 'btn btn-default']) !!}
+            @endif
+        </div>
     </form>
 @endsection

@@ -174,4 +174,44 @@ class AuthController extends Controller
                 ->subject('Zaključite registracijo');
         });
     }
+
+    /**
+     * View the form that lets you resend account activation code, necessary for
+     * successful registration process.
+     *
+     *
+     */
+    protected function resendEmail()
+    {
+        return view('auth.resend-email');
+    }
+
+    /**
+     * Resend an activation email to a given user with the activation code they can use to complete
+     * the registration process.
+     *
+     *
+     */
+    protected function resendInputEmail(Request $request)
+    {
+        $user = Auth::user();
+        if ($user != null)
+        {
+            $this->sendActivationEmail($user);
+            //TODO adjust redirect and add success/failure messages
+            return view('auth.resend-email');
+        }
+        else
+        {
+            $user = User::whereEmail($request->email)->first();
+            //return $user;
+            if ($user != null) {
+                $this->sendActivationEmail($user);
+                //TODO adjust redirect and add success/failure messages
+                return view('auth.resend-email');
+            }
+        }
+    }
+
+
 }
