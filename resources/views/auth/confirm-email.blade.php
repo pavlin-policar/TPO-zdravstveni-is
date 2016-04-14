@@ -1,39 +1,28 @@
-@extends('layouts.app')
+@extends('layouts.showcase-split-logo')
 
-@section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Aktiviraj račun</div>
-                    <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ route('registration.do-confirm-email') }}">
+@section('panel-title')
+    <span class="title">Aktiviraj račun</span>
+@endsection
 
-                            {!! csrf_field() !!}
+@section('panel-content')
+    <p>Prosim vnesite aktivacijsko kodo, ki ste jo prejeli na elektronski naslov, ki
+        ste ga vnesli ob registraciji.</p>
+    <p>Če niste prejeli elektronskega naslova se obrnite na skrbnika informacijskega
+        sistema.</p>
 
-                            <div class="form-group{{ $errors->has('confirmationCode') ? ' has-error' : '' }}">
-                                <label class="col-md-4 control-label" for="confirmationCode">Aktivacijska koda</label>
-                                <div class="col-md-6">
-                                    <input type="confirmationCode" class="form-control" name="confirmationCode" id="confirmationCode" placeholder="Aktivacijska koda">
-                                    @if ($errors->has('confirmationCode'))
-                                        <span class="help-block">
+    <form class="form-inline" role="form" method="POST" action="{{ route('registration.do-confirm-email') }}">
+        {!! csrf_field() !!}
+        <div class="form-group{{ $errors->has('confirmationCode') ? ' has-error' : '' }}">
+            <input type="confirmationCode" class="form-control" name="confirmationCode" id="confirmationCode" placeholder="Aktivacijska koda" size="30">
+            @if ($errors->has('confirmationCode'))
+                <span class="help-block">
                                         <strong>{{ $errors->first('confirmationCode') }}</strong>
                                     </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-btn fa-sign-in"></i>Aktiviraj račun
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            @endif
         </div>
-    </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-btn fa-sign-in"></i>&nbsp;Aktiviraj račun
+        </button>
+        {!! link_to('/logout', 'Odjava', ['class' => 'btn btn-default']) !!}
+    </form>
 @endsection
