@@ -4,7 +4,7 @@
     <div class="col-sm-10">
         {!! Form::select('personal_doctor_id', [-1 => 'Select one'] + $doctors, $selectedDoctor, ['class' => 'form-control', 'required']) !!}
         @if ($errors->has('personal_doctor_id'))
-            <span class="help-block">{{ $errors->first('personal_doctor_id') }}</span>
+            <span id="profileChangeDoctor" class="help-block">{{ $errors->first('personal_doctor_id') }}</span>
         @endif
     </div>
 </div>
