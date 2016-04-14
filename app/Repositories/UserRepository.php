@@ -139,12 +139,10 @@ class UserRepository
         $user->confirmation_code = str_random(30);
         $user->save();
         // then we need to insert a record into doctors table that references the user
-        $user->doctorProfile()->create($data);
-        if ($dentist) {
-            $user->doctor_type_id = Code::PERSONAL_DENTIST()->id;
-        } else {
-            $user->doctor_type_id = Code::PERSONAL_DOCTOR()->id;
-        }
+        $user->doctorProfile()->create($data + [
+                'doctor_type_id' => $dentist ? Code::PERSONAL_DENTIST()->id :
+                    Code::PERSONAL_DOCTOR()->id
+            ]);
 
         return $user;
     }
