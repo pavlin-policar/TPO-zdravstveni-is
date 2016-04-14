@@ -127,10 +127,19 @@ class AuthController extends Controller
     /**
      * Show the page where users can manually enter the activation code to their email that they
      * received from us.
+     *
+     * @param Request $request
+     * @return
+     * @throws \App\Exceptions\InvalidActivationCodeException
      */
-    public function showConfirmationPage()
+    public function showConfirmationPage(Request $request)
     {
-        return view('auth.confirm-email');
+        if ($request->has('activation-code')) {
+            $this->confirmUserEmail($request->get('activation-code'));
+            return redirect('/logout');
+        } else {
+            return view('auth.confirm-email');
+        }
     }
 
     /**
@@ -142,12 +151,7 @@ class AuthController extends Controller
      */
     public function confirm(Request $request)
     {
-        $user = User::whereConfirmationCode($request->get('confirmationCode'))->first();
-        if ($user === null) {
-            throw new InvalidActivationCodeException;
-        }
-        $user->confirmEmail();
-        $user->save();
+        $this->confirmUserEmail($request->get('confirmationCode'));
 
         $request->session()->flash(
             'message',
@@ -155,6 +159,22 @@ class AuthController extends Controller
         );
 
         return redirect('/login');
+    }
+
+    /**
+     * Check if the given token exists, and if it does, confirm the email.
+     *
+     * @param $token
+     * @throws InvalidActivationCodeException
+     */
+    protected function confirmUserEmail($token)
+    {
+        $user = User::whereConfirmationCode($token)->first();
+        if ($user === null) {
+            throw new InvalidActivationCodeException;
+        }
+        $user->confirmEmail();
+        $user->save();
     }
 
     /**

@@ -16,8 +16,8 @@
             <input type="confirmationCode" class="form-control" name="confirmationCode" id="confirmationCode" placeholder="Aktivacijska koda" size="30">
             @if ($errors->has('confirmationCode'))
                 <span class="help-block">
-                                        <strong>{{ $errors->first('confirmationCode') }}</strong>
-                                    </span>
+                    <strong>{{ $errors->first('confirmationCode') }}</strong>
+                </span>
             @endif
         </div>
         <button type="submit" class="btn btn-primary">
