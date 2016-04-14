@@ -76,6 +76,24 @@ class UserTableSeeder extends Seeder
         $doctor3->doctorProfile()->create([
             'doctor_type_id' => Code::PERSONAL_DOCTOR()->id,
         ]);
+		
+		$doctor4 = new User([
+            'person_type' => Code::DOCTOR()->id,
+            'first_name' => 'Jože',
+            'last_name' => 'Jarc',
+            'email' => 'doctor007@zis.si',
+            'password' => Hash::make('password'),
+            'phone_number' => '1348947312',
+            'birth_date' => Carbon::create(1970, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
+        ]);
+        $doctor4->confirmEmail();
+        $doctor4->save();
+        $doctor4->doctorProfile()->create([
+            'doctor_type_id' => Code::PERSONAL_DOCTOR()->id,
+            'doctor_number' => 12312323,
+            'max_patients' => 19,
+        ]);
 
         $dentist1 = new User([
             'person_type' => Code::DOCTOR()->id,
@@ -108,6 +126,24 @@ class UserTableSeeder extends Seeder
         $dentist2->confirmEmail();
         $dentist2->save();
         $dentist2->doctorProfile()->create([
+            'doctor_type_id' => Code::PERSONAL_DENTIST()->id,
+        ]);
+		
+		$dentist1 = new User([
+            'person_type' => Code::DOCTOR()->id,
+            'first_name' => 'Zobni',
+            'last_name' => 'Dohtar',
+            'email' => 'dentist007@zis.si',
+            'password' => Hash::make('password'),
+            'phone_number' => '1348947312',
+            'birth_date' => Carbon::create(1970, 1, 1, 0, 0, 0),
+            'gender' => Code::MALE()->id,
+        ]);
+        $dentist1->confirmEmail();
+        $dentist1->save();
+        $dentist1->doctorProfile()->create([
+            'doctor_number' => 8329742,
+            'max_patients' => 10,
             'doctor_type_id' => Code::PERSONAL_DENTIST()->id,
         ]);
 
