@@ -14,7 +14,7 @@ class CreateTableDoctors extends Migration
     {
         Schema::create('doctor', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('doctor_number')->unique()->unsigned()->nullable();
+			$table->string('doctor_number')->unique()->nullable();
 			$table->integer('max_patients')->unsigned()->nullable();
             $table->timestamps();
 

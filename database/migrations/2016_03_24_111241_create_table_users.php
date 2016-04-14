@@ -21,7 +21,7 @@ class CreateTableUsers extends Migration
             $table->string('password')->nullable();
             $table->rememberToken()->nullable();
             $table->string('phone_number')->nullable();
-			$table->integer('zz_card_number')->unique()->unsigned()->nullable();
+			$table->string('zz_card_number')->unique()->nullable();
 			$table->date('birth_date')->nullable();
 			$table->boolean('confirmed')->nullable();
 			$table->string('confirmation_code')->nullable();
