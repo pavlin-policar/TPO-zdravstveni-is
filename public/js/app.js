@@ -94,6 +94,10 @@ $(document).ready(function(){
         */
         $("#password-reset-tab").click();
     }
+	
+	if($("#profileChangeDoctor").html() != null) {
+        $("#doctors-tab").click();
+    }
 
     $('#timepicker2').timepicker({
         minuteStep: 10,
