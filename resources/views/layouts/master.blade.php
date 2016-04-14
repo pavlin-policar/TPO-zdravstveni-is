@@ -66,5 +66,6 @@
 
 {{-- App scripts --}}
 {{ Html::script('js/app.js') }}
+{{ Html::script('js/zis-compiled.js') }}
 </body>
 </html>

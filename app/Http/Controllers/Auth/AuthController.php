@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Exceptions\InvalidActivationCodeException;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Auth;
 use Carbon\Carbon;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
@@ -130,18 +132,19 @@ class AuthController extends Controller
      * Confirm the users email with their confirmation code.
      *
      * @param Request $request
-     * @param $confirmationCode
      * @return mixed
+     * @throws \App\Exceptions\InvalidActivationCodeException
      */
     public function confirm(Request $request)
     {
-        if (Auth::user()->hasConfirmedEmail()) {
+        $user = Auth::user();
+        if ($user->hasConfirmedEmail()) {
             return redirect()->back();
         }
 
-        $confirmationCode = $request->confirmationCode;
-
-        $user = User::whereConfirmationCode($confirmationCode)->firstOrFail();
+        if (!$user->getConfirmationCode() !== $request->get('confirmationCode', '-1')) {
+            throw new InvalidActivationCodeException;
+        }
         $user->confirmEmail();
         $user->save();
 

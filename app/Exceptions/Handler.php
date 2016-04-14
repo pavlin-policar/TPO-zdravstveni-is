@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -45,6 +46,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof InvalidActivationCodeException) {
+            return response()->view('errors.confirmation-code', [], Response::HTTP_BAD_REQUEST);
+        }
         return parent::render($request, $e);
     }
 }
