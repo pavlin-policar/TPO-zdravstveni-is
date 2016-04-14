@@ -11,7 +11,7 @@
                 <div class="card-header">
 
                     <div class="card-title">
-                        <div class="title">Table</div>
+                        <div class="title">Tabela</div>
                         {!! link_to_route('codeTypes.getCreate', 'Dodaj vrsto šifranta', [], ['class' => 'btn btn-primary']) !!}
                     </div>
                 </div>

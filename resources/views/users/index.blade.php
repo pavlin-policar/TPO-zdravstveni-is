@@ -24,7 +24,9 @@
                             <th>Id</th>
                             <th>Ime</th>
                             <th>Priimek</th>
+                            <th>Mail</th>
                             <th>Type</th>
+                            <th>Uredi</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -32,7 +34,9 @@
                             <th>Id</th>
                             <th>Ime</th>
                             <th>Priimek</th>
+                            <th>Mail</th>
                             <th>Type</th>
+                            <th>Uredi</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -41,6 +45,7 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->first_name }}</td>
                                 <td>{{ $user->last_name }}</td>
+                                <td>{{ $user->email }}</td>
                                 <td>{{ $user->type->name }}</td>
                                 <td>{!! link_to_route('profile.show', 'Uredi profil', [$user->id]) !!}</td>
                             </tr>
