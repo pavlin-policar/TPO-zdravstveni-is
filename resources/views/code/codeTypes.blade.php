@@ -39,7 +39,7 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{!! link_to_route('codeTypes.show', $item->name, ['id' => $item->id]) !!}</td>
                                 <td>{{ $item->description }}</td>
-                                <td>{{ $item->updated_at }}</td>
+                                <td>{{ date("d.m.Y H:i",strtotime($item->updated_at)) }}</td>
                             </tr>
                         @endforeach
                         </tbody>

@@ -7,8 +7,8 @@
         <th>Opis šifrante</th>
         <th>Minimalna vrdnost</th>
         <th>Maksimalna vrdnost</th>
-        <th>Nazadnje spremenjen</th>
         @if(!isset($hideFoot))
+            <th>Nazadnje spremenjen</th>
             <th>Izbris</th>
         @endif
     </tr>
@@ -36,8 +36,8 @@
             <td>{{ $item['description'] }}</td>
             <td>{{ $item['min_value'] }}</td>
             <td>{{ $item['max_value'] }}</td>
-            <td>{{ $item['updated_at'] }}</td>
             @if(!isset($hideFoot))
+                <td>{{ date("d.m.Y H:i",strtotime($item['updated_at'])) }}</td>
                 <td>
                     {{ Form::open(['route' => ['code.deleteCode', $item['id']], 'method' => 'delete']) }}
                     {!! Form::submit('Izbris', ['class' => 'btn btn-warning form-control']) !!}
