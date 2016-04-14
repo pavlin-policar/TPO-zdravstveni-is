@@ -53,6 +53,7 @@ class User extends Authenticatable
         'personal_dentist_id',
         'caretaker_id',
         'password',
+        'last_login',
     ];
 
     /**
@@ -72,6 +73,7 @@ class User extends Authenticatable
      */
     protected $dates = [
         'birth_date',
+        'last_login',
     ];
 
     /**

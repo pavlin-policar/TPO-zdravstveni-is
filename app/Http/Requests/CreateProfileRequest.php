@@ -24,8 +24,8 @@ class CreateProfileRequest extends Request
     public function rules()
     {
         return [
-            'first_name' => 'required|alpha',
-            'last_name' => 'required|alpha',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'birth_date' => 'required|date|before:today',
             'gender' => 'required|in:' .
                 CodeType::whereKey(CodeType::$codeTypes['GENDER'])->firstOrFail()

@@ -39,6 +39,7 @@ class AuthController extends Controller
 
 
     protected $maxLoginAttempts = 3;
+    
     private $users;
 
     /**

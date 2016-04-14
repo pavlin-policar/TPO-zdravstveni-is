@@ -73,6 +73,7 @@
                         <div class="profile-info">
                             <h4 class="username">{{ $user->fullName }}</h4>
                             <p>{{  $user->email }}</p>
+                            <p>Zadnja prijava {{ $user->last_login->format('d.m.Y H:i:s') }}</p>
                             <div class="btn-group margin-bottom-2x" role="group">
                                 <a type="button" class="btn btn-info" href="{{ route('profile.show', $user->id) }}">
                                     <i class="fa fa-user"></i> Profile
