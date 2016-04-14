@@ -5,10 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Requests\CreateChargeRequest;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 
 class ChargeController extends Controller
 {
+    private $users;
+
+    /**
+     * ChargeController constructor.
+     *
+     * @param UserRepository $users
+     */
+    public function __construct(UserRepository $users)
+    {
+        $this->users = $users;
+    }
+
     /**
      * Get a listing of all your charges.
      *
@@ -44,7 +57,7 @@ class ChargeController extends Controller
     public function store(CreateChargeRequest $request)
     {
         $this->authorize('can-be-caretaker', User::class);
-        $user = Auth::user()->charges()->create($request->all());
+        $user = Auth::user()->charges()->save($this->users->createPatient($request->all()));
         $this->createRelation(Auth::user(), $user, $request->get('relation_id'));
         return redirect()->route('charges.index');
     }

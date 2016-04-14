@@ -8,7 +8,6 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Input;
 
 class UserAdminController extends Controller
 {
@@ -30,7 +29,7 @@ class UserAdminController extends Controller
      * @return mixed
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('can-see-all-users', User::class);
         $users = User::with('type')->get();
@@ -76,9 +75,7 @@ class UserAdminController extends Controller
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
             ]);
-        }
-        else if ($request->person_type == 0)
-        {
+        } else if ($request->person_type == 0) {
             $user = $this->users->createPersonalDoctor([
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
