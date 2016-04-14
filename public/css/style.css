@@ -17,6 +17,21 @@ body.login-page {
   font-size: 2rem;
 }
 
+.has-error .checkbox,
+.has-error .checkbox-inline,
+.has-error .control-label,
+.has-error .help-block,
+.has-error .radio,
+.has-error .radio-inline,
+.has-error.checkbox label,
+.has-error.checkbox-inline label,
+.has-error.radio label,
+.has-error.radio-inline label,
+.has-error .form-control {
+  color: #FF3636;
+  border-color: #FF3636;
+}
+
 /*
  * THE STUFF BELOW HERE WAS VENDOR MADE
  */

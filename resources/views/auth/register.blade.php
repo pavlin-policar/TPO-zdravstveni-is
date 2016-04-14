@@ -55,6 +55,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="fa fa-btn fa-user"></i>&nbsp;Registracija
                 </button>
+                {!! link_to('/login', 'Že imate račun?', ['class' => 'btn btn-default']) !!}
             </div>
         </div>
     </form>
