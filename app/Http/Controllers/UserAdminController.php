@@ -61,7 +61,7 @@ class UserAdminController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:8|confirmed',
+            'password' => 'required|min:8|confirmed|regex:/^(?=.*[\d,.;:]).+$/',
         ],
             [
                 'required' => 'Polje ne sme ostati prazno!',
