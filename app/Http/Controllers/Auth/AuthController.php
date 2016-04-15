@@ -165,7 +165,7 @@ class AuthController extends Controller
      */
     protected function sendActivationEmail($user)
     {
-        Mail::send('email.confirm', [
+        return Mail::send('email.confirm', [
             'confirmationCode' => $user->confirmation_code
         ], function ($message) use ($user) {
             $message
@@ -197,17 +197,32 @@ class AuthController extends Controller
         $user = Auth::user();
         if ($user != null)
         {
-            $this->sendActivationEmail($user);
-            //TODO adjust redirect and add success/failure messages
-            return view('auth.resend-email');
+            if ($this->sendActivationEmail($user)) {
+                $request->session()->flash('resend_success', 'Sporočilo poslano. Aktivirajte račun!');
+                return redirect()->route('registration.confirm-email');
+            }
+            else {
+                $request->session()->flash('resend_success', 'Prišlo je do napake! Poskusite znova');
+                return view('auth.resend-email');
+            }
         }
         else
         {
             $user = User::whereEmail($request->email)->first();
             //return $user;
             if ($user != null) {
-                $this->sendActivationEmail($user);
-                //TODO adjust redirect and add success/failure messages
+                if ($this->sendActivationEmail($user)) {
+                    $request->session()->flash('resend_success', 'Sporočilo poslano. Aktivirajte račun!');
+                    return redirect()->route('registration.confirm-email');
+                }
+                else {
+                    $request->session()->flash('resend_success', 'Prišlo je do napake! Poskusite znova');
+                    return view('auth.resend-email');
+                }
+            }
+            else
+            {
+                $request->session()->flash('resend_success', 'Uporabnik s tem elektronskim sporočilom ne obstaja!');
                 return view('auth.resend-email');
             }
         }

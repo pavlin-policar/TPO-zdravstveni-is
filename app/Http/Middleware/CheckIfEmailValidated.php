@@ -17,6 +17,7 @@ class CheckIfEmailValidated
      */
     public function handle($request, Closure $next)
     {
+        //TODO find a way to let through resend email requests
         if (!Auth::user()->hasConfirmedEmail()) {
             return redirect()->route('registration.confirm-email');
         }
