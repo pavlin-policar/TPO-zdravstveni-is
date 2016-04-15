@@ -3,6 +3,7 @@
 <head>
     <title>TPO Zdravstveni IS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="{{ asset('img/favicon-heartbeat.ico') }}">
     {{-- Fonts --}}
     {{ Html::style('http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400') }}
     {{ Html::style('http://fonts.googleapis.com/css?family=Lato:300,400,700,900') }}
