@@ -192,7 +192,7 @@
                                             <tbody>
                                                 @foreach ($doctorDates as $doctorDate)
                                                     <tr>
-                                                        <td>{{ $doctorDate->time }}</td>
+                                                        <td>{{ date("d.m.Y H:i",strtotime($doctorDate->time)) }}</td>
                                                         <td>{{ $doktorCheck[$doctorDate->doctor]->fullName }}</td>
                                                         <td>{{ $doctorDate->note }}</td>
                                                     </tr>
@@ -259,8 +259,8 @@
                                             @if(count($medical) > 0 )
                                                 <tr>
                                                     <td>{{ $medical[$medical[0]->id]->name }}</td>
-                                                    <td>{{ $medical[0]->start_takeing }}</td>
-                                                    <td>{{ $medical[0]->end_takeing }}</td>
+                                                    <td>{{ date("d.m.Y H:i",strtotime($medical[0]->start_takeing)) }}</td>
+                                                    <td>{{ date("d.m.Y H:i",strtotime($medical[0]->end_takeing)) }}</td>
                                                 </tr>
                                             @else
                                                 <tr>
@@ -306,7 +306,7 @@
                                             @foreach ($measurements as $measurement)
                                                 <tr>
                                                     <td>{{ $measurement[$measurement->id]->name }}</td>
-                                                    <td>{{ $measurement->time }}</td>
+                                                    <td>{{ date("d.m.Y H:i",strtotime($measurement->time)) }}</td>
                                                 </tr>
                                                 <?php $i=$i+1; ?>
                                             @endforeach
@@ -348,7 +348,7 @@
                                                     @if(count($allergy) > 0 )
                                                         <tr>
                                                             <td>{{ $allergy[$allergy[0]->id]->name }}</td>
-                                                            <td>{{ $allergy[0]->discovered_at }}</td>
+                                                            <td>{{ date("d.m.Y H:i",strtotime($allergy[0]->discovered_at)) }}</td>
                                                         </tr>
                                                     @else
                                                         <tr>
@@ -395,8 +395,8 @@
                                                     @if(count($diet) > 0 )
                                                         <tr>
                                                             <td>{{ $diet[$diet[0]->id]->name }}</td>
-                                                            <td>{{ $diet[0]->diet_start }}</td>
-                                                            <td>{{ $diet[0]->diet_end }}</td>
+                                                            <td>{{ date("d.m.Y H:i",strtotime($diet[0]->diet_start)) }}</td>
+                                                            <td>{{ date("d.m.Y H:i",strtotime($diet[0]->diet_end)) }}</td>
                                                         </tr>
                                                     @else
                                                         <tr>
