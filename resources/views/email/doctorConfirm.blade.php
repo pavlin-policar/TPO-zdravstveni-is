@@ -9,7 +9,7 @@
 <div>
     <p>Ustvarjen je bil vaš račun na portalu ZIS-RS.</p>
 
-    <p>Da bi zaključili registracijo, morate potrditi elektronski naslov. To lahko storite tako, da sledite povezavi {!! link_to_route('registration.do-confirm-email', 'TUKAJ', [$confirmationCode]) !!} ali pa ročno vnesite aktivacijsko kodo:
+    <p>Da bi zaključili registracijo, morate potrditi elektronski naslov. To lahko storite tako, da sledite povezavi {!! link_to_route('registration.do-confirm-email', 'TUKAJ', ['activation-code' => $confirmationCode]) !!} ali pa ročno vnesite aktivacijsko kodo:
         <br>
         <b>Aktivacijska koda:</b> {{ $confirmationCode }}
     </p>
