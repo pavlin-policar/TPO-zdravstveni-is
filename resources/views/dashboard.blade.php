@@ -39,7 +39,7 @@
                             <div class="card-body">
                                 <i class="icon fa fa-plus-square fa-4x"></i>
                                 <div class="content">
-                                    <div class="title">Alergije</div>
+                                    <div class="title">Bolezni</div>
                                     <div class="sub-title">_</div>
                                 </div>
                                 <div class="clear-both"></div>
@@ -262,10 +262,6 @@
                                                     <td>{{ date("d.m.Y H:i",strtotime($medical[0]->start_takeing)) }}</td>
                                                     <td>{{ date("d.m.Y H:i",strtotime($medical[0]->end_takeing)) }}</td>
                                                 </tr>
-                                            @else
-                                                <tr>
-                                                    <td>Ni podatkov</td>
-                                                </tr>
                                             @endif
                                         @endforeach
                                         @endif
@@ -323,7 +319,7 @@
                                 <a name="allergy">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <div class="title title-white">Alergije</div>
+                                            <div class="title title-white">Bolezni in alergije</div>
                                         </div>
                                         <div class="fa fa-compress icon-arrow-right" id="glyphicon-allergy"></div>
                                     </div>
@@ -333,14 +329,14 @@
                                         @if(count($checks) == 0 )
                                             <tr>
                                                 <td>
-                                                    Trenutno nimate alergij.
+                                                    Trenutno nimate bolezni in alergij.
                                                 </td>
                                             </tr>
                                         @else
                                             <thead>
                                                 <tr>
-                                                    <td>Alergija:</td>
-                                                    <td>Odkritje alergije:</td>
+                                                    <td>Nolezen:</td>
+                                                    <td>Datum odkritja:</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -349,10 +345,6 @@
                                                         <tr>
                                                             <td>{{ $allergy[$allergy[0]->id]->name }}</td>
                                                             <td>{{ date("d.m.Y H:i",strtotime($allergy[0]->discovered_at)) }}</td>
-                                                        </tr>
-                                                    @else
-                                                        <tr>
-                                                            <td>Ni podatkov</td>
                                                         </tr>
                                                     @endif
                                                 @endforeach
@@ -397,10 +389,6 @@
                                                             <td>{{ $diet[$diet[0]->id]->name }}</td>
                                                             <td>{{ date("d.m.Y H:i",strtotime($diet[0]->diet_start)) }}</td>
                                                             <td>{{ date("d.m.Y H:i",strtotime($diet[0]->diet_end)) }}</td>
-                                                        </tr>
-                                                    @else
-                                                        <tr>
-                                                            <td>Ni podatkov</td>
                                                         </tr>
                                                     @endif
                                                 @endforeach
