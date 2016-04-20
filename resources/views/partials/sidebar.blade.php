@@ -55,6 +55,11 @@
                         <span class="icon fa fa-users"></span><span class="title">Urejanje uporabnikov</span>
                     </a>
                 </li>
+                <li class="inactive">
+                    <a href="{{ route('medicalDiseases.list') }}">
+                        <span class="icon fa fa-medkit"></span><span class="title">Urejanje zdravil za bolezni</span>
+                    </a>
+                </li>
                 @endcan
                 <li class="inactive">
                     <a href="{{ route('profile.show') }}">

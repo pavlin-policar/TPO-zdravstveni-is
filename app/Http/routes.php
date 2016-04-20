@@ -153,7 +153,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
      * Routes only available to the admin user.
      */
     Route::group(['middleware' => 'admin'], function () {
-        
+
+        Route::get('/medicals-diseases', [
+            'uses' => 'MedicalDiseases@showDiseases',
+            'as' => 'medicalDiseases.list',
+        ]);
         Route::get('/code-types', [
             'uses' => 'CodeController@showCodeTypes',
             'as' => 'code.index',
