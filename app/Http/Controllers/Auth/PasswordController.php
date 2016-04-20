@@ -29,6 +29,7 @@ class PasswordController extends Controller
      */
     public function __construct()
     {
+        $this->subject = 'Pozabljeno geslo';
         $this->middleware('guest');
     }
 
