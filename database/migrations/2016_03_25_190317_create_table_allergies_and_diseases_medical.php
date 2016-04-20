@@ -16,6 +16,7 @@ class CreateTableAllergiesAndDiseasesMedical extends Migration
             $table->increments('id');
 			$table->text('note')->nullable();
 			$table->text('sideEffects')->nullable();
+			$table->softDeletes();
 			$table->timestamps();
 
             $table->integer('allergy_or_disease')->unsigned();
