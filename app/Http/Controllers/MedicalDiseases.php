@@ -14,8 +14,7 @@ class MedicalDiseases extends Controller
         $codeType = CodeType::findOrFail(14);
         $data['codeType'] = $codeType->name;
         $data['codeTypeDescription'] = $codeType->description;
-        $data['array'] = Code::where('code_type', 14)->get();
-        $data['id'] = 14;
-        return view('code.codes')->with($data);
+        $data['array'] = Code::where('code_type', 13)->get();
+        return view('medicalDiseases.DiseasesList')->with($data);
     }
 }
