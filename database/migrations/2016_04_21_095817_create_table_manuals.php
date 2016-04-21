@@ -16,6 +16,7 @@ class CreateTableManuals extends Migration
             $table->increments('id');
             $table->text('description')->nullable();
 			$table->text('url_link')->nullable();
+			$table->softDeletes();
             $table->timestamps();
         });
     }
