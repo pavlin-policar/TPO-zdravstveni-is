@@ -149,6 +149,12 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'patient.addDate',
     ]);
 
+    Route::get('/check/{id?}', [
+        'uses' => 'CheckController@show',
+        'as' => 'check.show'
+    ]);
+
+
     /**
      * Routes only available to the admin user.
      */

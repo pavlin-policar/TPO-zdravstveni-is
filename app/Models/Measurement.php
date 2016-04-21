@@ -73,13 +73,12 @@ class Measurement extends Model
     }
 
     /**
-     * Get all the checkMedical.
+     * Get all the measurementResults.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function checkMedical()
+    public function measurementResults()
     {
-        return $this->hasMany(CheckMedical::class, 'check');
+        return $this->hasMany(MeasurementResult::class, 'measurement');
     }
-
 }

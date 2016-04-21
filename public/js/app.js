@@ -33,6 +33,16 @@ $(document).ready(function(){
             $("#dash-check").show(1000);
         }
   });
+  $("#glyphicon-check-old").click(function(){
+        if($('#dash-check-old').is(":visible")){
+            $("#glyphicon-check-old").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-check-old").hide(1000);
+        }
+        else{
+            $("#glyphicon-check-old").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-check-old").show(1000);
+        }
+  });
     $("#glyphicon-add-check").click(function(){
         if($('#dash-add-check').is(":visible")){
             $("#glyphicon-add-check").attr('class','fa fa-expand icon-arrow-right');

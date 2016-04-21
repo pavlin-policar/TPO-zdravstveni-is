@@ -149,4 +149,14 @@ class Code extends Model
     {
         return $this->hasMany(Measurement::class, 'type');
     }
+
+    /**
+     * Get all the measurementResults.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function measurementResults()
+    {
+        return $this->hasMany(MeasurementResult::class, 'measurement');
+    }
 }

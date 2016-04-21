@@ -6,6 +6,10 @@ body.login-page {
   ), url(../img/medical-563427_1920.jpg) center;
 }
 
+.icon-arrow-right {
+  cursor: pointer;
+}
+
 .offset-y {
   position: relative;
   top: 25vh;

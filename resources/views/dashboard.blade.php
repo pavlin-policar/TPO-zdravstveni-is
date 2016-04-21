@@ -177,6 +177,36 @@
                             <div class="card card-no-padding">
                                 <div class="card-header">
                                     <div class="card-title">
+                                        <div class="title">Vaši pretekli pregledi</div>
+                                    </div>
+                                    <div class="fa fa-compress icon-arrow-right" id="glyphicon-check-old"></div>
+                                </div>
+                                <div class="card-body no-padding" id="dash-check-old">
+                                    @if(count($checksOld) == 0)
+                                    </br>
+                                    <p>Do sedaj še niste bili na pregledu.</p>
+                                    @else
+                                        @for ($x=0; $x < count($checksOld); $x++)
+                                            <a href="{{ url('/check', $checksOld[$x]->id) }}">
+                                                <table class="table table-hover table-responsive">
+                                                    <tr>
+                                                        <td>{{ date("d.m.Y H:i",strtotime($checksOld[$x]->time)) }}</td>
+                                                        <td>{{ $checksOld[$x]->first_name }} {{ $checksOld[$x]->last_name }}</td>
+                                                        <td>{{ $checksOld[$x]->note }}</td>
+                                                    </tr>
+                                                </table>
+                                            </a>
+                                        @endfor
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="card card-no-padding">
+                                <div class="card-header">
+                                    <div class="card-title">
                                         <div class="title">Vaši prihajajoči pregledi</div>
                                     </div>
                                     <div class="fa fa-compress icon-arrow-right" id="glyphicon-check"></div>
@@ -237,35 +267,31 @@
                                     </div>
                                 </a>
                                 <div class="card-body no-padding" id="dash-medical">
-                                    <table class="table table-hover">
-                                        @if(count($checks) == 0)
-                                            <tbody>
-                                                <tr>
-                                                    <td>
-                                                        Trenutno ne jemljete zdravil
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+                                    <table class="table table-hover table-responsive">
+                                        @if(count($checkMedical) == 0)
+                                            <tr>
+                                                <td>
+                                                    Trenutno ne jemljete zdravil.
+                                                </td>
+                                            </tr>
                                         @else
-                                        <thead>
+                                            <thead>
                                             <tr>
                                                 <td>Zdravilo:</td>
                                                 <td>Začetek jemanja:</td>
                                                 <td>Konec jemanja:</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach ($checkMedical as $medical)
-                                            @if(count($medical) > 0 )
+                                            </thead>
+                                            <tbody>
+                                            @for ($x=0; $x < count($checkMedical); $x++)
                                                 <tr>
-                                                    <td>{{ $medical[$medical[0]->id]->name }}</td>
-                                                    <td>{{ date("d.m.Y H:i",strtotime($medical[0]->start_takeing)) }}</td>
-                                                    <td>{{ date("d.m.Y H:i",strtotime($medical[0]->end_takeing)) }}</td>
+                                                    <td>{{ $checkMedical[$x]->name }}</td>
+                                                    <td>{{ date("d.m.Y H:i",strtotime($checkMedical[$x]->start_takeing)) }}</td>
+                                                    <td>{{ date("d.m.Y H:i",strtotime($checkMedical[$x]->end_takeing)) }}</td>
                                                 </tr>
-                                            @endif
-                                        @endforeach
+                                            @endfor
+                                            </tbody>
                                         @endif
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -283,8 +309,8 @@
                                     </div>
                                 </a>
                                 <div class="card-body no-padding" id="dash-measurments">
-                                    <table class="table table-hover">
-                                        @if(count($measurements) == 0 )
+                                    <table class="table table-hover table-responsive">
+                                        @if(count($checkMeasurement) == 0)
                                             <tr>
                                                 <td>
                                                     Trenutno nimate meritev.
@@ -294,18 +320,16 @@
                                             <thead>
                                             <tr>
                                                 <td>Meritev:</td>
-                                                <td>Čas meritve:</td>
+                                                <td>Datum meritve:</td>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <?php $i=0; ?>
-                                            @foreach ($measurements as $measurement)
+                                            @for ($x=0; $x < count($checkMeasurement); $x++)
                                                 <tr>
-                                                    <td>{{ $measurement[$measurement->id]->name }}</td>
-                                                    <td>{{ date("d.m.Y H:i",strtotime($measurement->time)) }}</td>
+                                                    <td>{{ $checkMeasurement[$x]->name }}</td>
+                                                    <td>{{ date("d.m.Y H:i",strtotime($checkMeasurement[$x]->time)) }}</td>
                                                 </tr>
-                                                <?php $i=$i+1; ?>
-                                            @endforeach
+                                            @endfor
                                             </tbody>
                                         @endif
                                     </table>
@@ -325,29 +349,27 @@
                                     </div>
                                 </a>
                                 <div class="card-body no-padding" id="dash-allergy">
-                                    <table class="table table-hover">
-                                        @if(count($checks) == 0 )
+                                    <table class="table table-hover table-responsive">
+                                        @if(count($checkAllergyDisease) == 0)
                                             <tr>
                                                 <td>
-                                                    Trenutno nimate bolezni in alergij.
+                                                    Trenutno nimate alergije ali bolezni.
                                                 </td>
                                             </tr>
                                         @else
                                             <thead>
-                                                <tr>
-                                                    <td>Nolezen:</td>
-                                                    <td>Datum odkritja:</td>
-                                                </tr>
+                                            <tr>
+                                                <td>Bolezen ali alergija:</td>
+                                                <td>Datum odkritja:</td>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($checkAllergy as $allergy)
-                                                    @if(count($allergy) > 0 )
-                                                        <tr>
-                                                            <td>{{ $allergy[$allergy[0]->id]->name }}</td>
-                                                            <td>{{ date("d.m.Y H:i",strtotime($allergy[0]->discovered_at)) }}</td>
-                                                        </tr>
-                                                    @endif
-                                                @endforeach
+                                            @for ($x=0; $x < count($checkAllergyDisease); $x++)
+                                                <tr>
+                                                    <td>{{ $checkAllergyDisease[$x]->name }}</td>
+                                                    <td>{{ date("d.m.Y H:i",strtotime($checkAllergyDisease[$x]->discovered_at)) }}</td>
+                                                </tr>
+                                            @endfor
                                             </tbody>
                                         @endif
                                     </table>
@@ -367,8 +389,8 @@
                                     </div>
                                 </a>
                                 <div class="card-body no-padding" id="dash-diet">
-                                    <table class="table table-hover">
-                                        @if(count($checks) == 0)
+                                    <table class="table table-hover table-responsive">
+                                        @if(count($checkDiet) == 0)
                                             <tr>
                                                 <td>
                                                     Trenutno niste na dieti
@@ -383,15 +405,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($checkDiet as $diet)
-                                                    @if(count($diet) > 0 )
-                                                        <tr>
-                                                            <td>{{ $diet[$diet[0]->id]->name }}</td>
-                                                            <td>{{ date("d.m.Y H:i",strtotime($diet[0]->diet_start)) }}</td>
-                                                            <td>{{ date("d.m.Y H:i",strtotime($diet[0]->diet_end)) }}</td>
-                                                        </tr>
-                                                    @endif
-                                                @endforeach
+                                                @for ($x=0; $x < count($checkDiet); $x++)
+                                                    <tr>
+                                                        <td>{{ $checkDiet[$x]->name }}</td>
+                                                        <td>{{ date("d.m.Y H:i",strtotime($checkDiet[$x]->diet_start)) }}</td>
+                                                        <td>{{ date("d.m.Y H:i",strtotime($checkDiet[$x]->diet_end)) }}</td>
+                                                    </tr>
+                                                @endfor
                                             </tbody>
                                         @endif
                                     </table>
@@ -410,7 +430,7 @@
                                         <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
                                     </div>
                                     <div class="card-body no-padding" id="dash-diet">
-                                        <table class="table table-hover">
+                                        <table class="table table-hover table-responsive">
                                             <tbody>
                                             @foreach($user->patients as $patient)
                                                 {!! link_to_route('patient.show', $patient->fullName, $patient->id, ['class' => 'btn btn-default'])!!}&nbsp;

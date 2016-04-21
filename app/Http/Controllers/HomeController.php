@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use DB;
 use App\Http\Requests;
 use App\Models\CheckAllergyDisease;
 use App\Models\CheckMedical;
@@ -68,39 +70,43 @@ class HomeController extends Controller
             }
         }
 
-        $data['checks'] = Checks::where('patient', $user->id)->get();
-        if(count($data['checks']) > 0){
-            foreach ($data['checks'] as $check) {
-                $data['checkMedical'][$check->id] = CheckMedical::where('check', $check->id)->get();
-                if(count($data['checkMedical'][$check->id]) > 0){
-                    foreach ($data['checkMedical'][$check->id] as $medical) {
-                        $data['checkMedical'][$check->id][$medical->id] = Code::find($medical['cure']);
-                    }
-                }
 
-                $data['checkDiet'][$check->id] = CheckDiet::where('check', $check->id)->get();
-                if(count($data['checkDiet'][$check->id]) > 0){
-                    foreach ($data['checkDiet'][$check->id] as $diet) {
-                        $data['checkDiet'][$check->id][$diet->id] = Code::find($diet['diet']);
-                    }
-                }
 
-                $data['checkAllergy'][$check->id] = CheckAllergyDisease::where('check', $check->id)->get();
-                if(count($data['checkAllergy'][$check->id]) > 0){
-                    foreach ($data['checkAllergy'][$check->id] as $allergy) {
-                        $data['checkAllergy'][$check->id][$allergy->id] = Code::find($allergy['allergy_or_disease']);
-                    }
-                }
-            }
-        }
-        $data['measurements'] = Measurement::where('patient', $user->id)->get();
-        if(count($data['measurements']) > 0) {
-            $i=0;
-            foreach ($data['measurements'] as $measurement) {
-                $data['measurements'][$i][$measurement->id] = Code::find($measurement->type);
-                $i=$i+1;
-            }
-        }
+        $data['checkMedical'] = DB::table('check_medical')
+                                ->join('checks', 'check_medical.check', '=', 'checks.id')
+                                ->join('codes', 'check_medical.cure', '=', 'codes.id')
+                                ->select('check_medical.*', 'codes.name')
+                                ->where('checks.patient', '=', $user->id)
+                                ->get();
+
+        $data['checkMeasurement'] = DB::table('codes')
+                                ->join('code_types', 'codes.code_type', '=', 'code_types.id')
+                                ->join('measurements', 'codes.id', '=', 'measurements.type')
+                                ->select('measurements.*', 'code_types.name')
+                                ->where('measurements.patient', '=', $user->id)
+                                ->get();
+
+        $data['checkAllergyDisease'] = DB::table('check_allergy_and_disease')
+                                ->join('checks', 'check_allergy_and_disease.check', '=', 'checks.id')
+                                ->join('codes', 'check_allergy_and_disease.allergy_or_disease', '=', 'codes.id')
+                                ->select('check_allergy_and_disease.*', 'codes.name')
+                                ->where('checks.patient', '=', $user->id)
+                                ->get();
+
+        $data['checkDiet'] = DB::table('check_diet')
+                                ->join('checks', 'check_diet.check', '=', 'checks.id')
+                                ->join('codes', 'check_diet.diet', '=', 'codes.id')
+                                ->select('check_diet.*', 'codes.name')
+                                ->where('checks.patient', '=', $user->id)
+                                ->get();
+
+        $data['checksOld'] = DB::table('checks')
+                                ->join('users', 'checks.doctor', '=', 'users.id')
+                                ->join('doctor_dates', 'checks.doctor_date', '=', 'doctor_dates.id')
+                                ->select('checks.id', 'users.first_name', 'users.last_name', 'doctor_dates.note', 'doctor_dates.time')
+                                ->where('checks.patient', $user->id)
+                                ->where('doctor_dates.time', '<', Carbon::now())
+                                ->get();
 
         return view('dashboard')->with($data);
     }
