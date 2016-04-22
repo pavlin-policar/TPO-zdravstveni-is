@@ -72,32 +72,61 @@ class HomeController extends Controller
 
 
 
-        $data['checkMedical'] = DB::table('check_medical')
-                                ->join('checks', 'check_medical.check', '=', 'checks.id')
-                                ->join('codes', 'check_medical.cure', '=', 'codes.id')
-                                ->select('check_medical.*', 'codes.name')
+        $data['checkData'] = DB::table('checks_codes')
+                                ->join('checks', 'checks_codes.check', '=', 'checks.id')
+                                ->join('codes', 'checks_codes.code', '=', 'codes.id')
+                                ->select('checks_codes.*', 'codes.name', 'codes.code_type')
                                 ->where('checks.patient', '=', $user->id)
+                                ->where('checks_codes.start', '<', Carbon::now())
+                                ->where(function($query){
+                                    return $query->where('checks_codes.end', '>', Carbon::now())
+                                        ->orWhere('checks_codes.end', '=', null);
+                                })
                                 ->get();
+
+        $data['checkCountMedical'] = DB::table('checks_codes')
+                                ->join('checks', 'checks_codes.check', '=', 'checks.id')
+                                ->join('codes', 'checks_codes.code', '=', 'codes.id')
+                                ->select('checks_codes.id')
+                                ->where('codes.code_type', 14)
+                                ->where('checks.patient', '=', $user->id)
+                                ->where(function($query){
+                                return $query->where('checks_codes.end', '>', Carbon::now())
+                                        ->orWhere('checks_codes.end', '=', null);
+                                })
+                                ->count();
+
+        $data['checkCountDisease'] = DB::table('checks_codes')
+                                ->join('checks', 'checks_codes.check', '=', 'checks.id')
+                                ->join('codes', 'checks_codes.code', '=', 'codes.id')
+                                ->select('checks_codes.*')
+                                ->where('codes.code_type', 13)
+                                ->where('checks.patient', '=', $user->id)
+                                ->where('checks_codes.start', '<', Carbon::now())
+                                ->where(function($query){
+                                    return $query->where('checks_codes.end', '>', Carbon::now())
+                                        ->orWhere('checks_codes.end', '=', null);
+                                })
+                                ->count();
+
+        $data['checkCountDiet'] = DB::table('checks_codes')
+                                ->join('checks', 'checks_codes.check', '=', 'checks.id')
+                                ->join('codes', 'checks_codes.code', '=', 'codes.id')
+                                ->select('checks_codes.*')
+                                ->where('codes.code_type', 12)
+                                ->where('checks.patient', '=', $user->id)
+                                ->where('checks_codes.start', '<', Carbon::now())
+                                ->where(function($query){
+                                    return $query->where('checks_codes.end', '>', Carbon::now())
+                                        ->orWhere('checks_codes.end', '=', null);
+                                })
+                                ->count();
 
         $data['checkMeasurement'] = DB::table('codes')
                                 ->join('code_types', 'codes.code_type', '=', 'code_types.id')
                                 ->join('measurements', 'codes.id', '=', 'measurements.type')
                                 ->select('measurements.*', 'code_types.name')
                                 ->where('measurements.patient', '=', $user->id)
-                                ->get();
-
-        $data['checkAllergyDisease'] = DB::table('check_allergy_and_disease')
-                                ->join('checks', 'check_allergy_and_disease.check', '=', 'checks.id')
-                                ->join('codes', 'check_allergy_and_disease.allergy_or_disease', '=', 'codes.id')
-                                ->select('check_allergy_and_disease.*', 'codes.name')
-                                ->where('checks.patient', '=', $user->id)
-                                ->get();
-
-        $data['checkDiet'] = DB::table('check_diet')
-                                ->join('checks', 'check_diet.check', '=', 'checks.id')
-                                ->join('codes', 'check_diet.diet', '=', 'codes.id')
-                                ->select('check_diet.*', 'codes.name')
-                                ->where('checks.patient', '=', $user->id)
                                 ->get();
 
         $data['checksOld'] = DB::table('checks')

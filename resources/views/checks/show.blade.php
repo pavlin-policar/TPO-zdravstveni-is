@@ -35,42 +35,41 @@
             </div>
         </div>
         <div class="col-sm-6 col-xs-12">
-            @if($checkMedical != null)
+            @if($checkCountMedical > 0)
             <div class="row">
                 <div class="col-xs-12">
                     <div class="card">
-                        <a name="medical">
-                            <div class="card red card-header">
-                                <div class="card-title">
-                                    <div class="title title-white">Zdravila</div>
-                                </div>
-                                <div class="fa fa-compress icon-arrow-right" id="glyphicon-medical"></div>
+                        <div class="card red card-header">
+                            <div class="card-title">
+                                <div class="title title-white">Zdravila</div>
                             </div>
-                        </a>
+                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-medical"></div>
+                        </div>
                         <div class="card-body no-padding" id="dash-medical">
                             <table class="table table-hover">
-                                @for ($x=0; $x < count($checkMedical); $x++)
-                                    <tr>
-                                        <td>Zdravilo: </td>
-                                        <td>{{ $checkMedical[$x]->name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Začetek jemanja: </td>
-                                        <td>{{ date("d.m.Y H:i",strtotime($checkMedical[$x]->start_takeing)) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Konec jemanja: </td>
-                                        <td>{{ date("d.m.Y H:i",strtotime($checkMedical[$x]->end_takeing)) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Opombe: </td>
-                                        <td>{{ $checkMedical[$x]->note }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Podatki o zdravilu: </td>
-                                        <td>{{ $checkMedical[$x]->description }}</td>
-                                    </tr>
-
+                                @for ($x=0; $x < count($checkData); $x++)
+                                    @if($checkData[$x]->code_type == 14)
+                                        <tr>
+                                            <td>Zdravilo: </td>
+                                            <td>{{ $checkData[$x]->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Začetek jemanja: </td>
+                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Konec jemanja: </td>
+                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Opombe: </td>
+                                            <td>{{ $checkData[$x]->note }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Podatki o zdravilu: </td>
+                                            <td><a href ='{{ $checkData[$x]->description }}' target="_blank">{{ $checkData[$x]->description }}</a></td>
+                                        </tr>
+                                    @endif
                                 @endfor
                             </table>
                         </div>
@@ -78,18 +77,16 @@
                 </div>
             </div>
             @endif
-            @if($checkMeasurement != null || true)
+            @if($checkMeasurement != null)
             <div class="row">
                 <div class="col-xs-12">
                     <div class="card">
-                        <a name="measurment">
-                            <div class="card yellow card-header">
-                                <div class="card-title">
-                                    <div class="title title-white">Meritve</div>
+                        <div class="card yellow card-header">
+                            <div class="card-title">
+                                <div class="title title-white">Meritve</div>
                                 </div>
-                                <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
-                            </div>
-                        </a>
+                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
+                        </div>
                         <div class="card-body no-padding" id="dash-measurments">
                             <table class="table table-hover">
                                 @for ($x=0; $x < count($checkMeasurement); $x++)
@@ -121,88 +118,94 @@
                 </div>
             </div>
             @endif
+            @if($checkCountDisease > 0)
             <div class="row">
                 <div class="col-xs-12">
                     <div class="card card-success">
-                        <a name="allergy">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <div class="title title-white">Bolezni in alergije</div>
-                                </div>
-                                <div class="fa fa-compress icon-arrow-right" id="glyphicon-allergy"></div>
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="title title-white">Bolezni in alergije</div>
                             </div>
-                        </a>
+                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-allergy"></div>
+                        </div>
                         <div class="card-body no-padding" id="dash-allergy">
                             <table class="table table-hover">
-                                @if(count($checkAllergyDisease) == 0)
-                                    <tr>
-                                        <td>
-                                            Trenutno nimate alergije ali bolezni.
-                                        </td>
-                                    </tr>
-                                @else
-                                    <thead>
-                                    <tr>
-                                        <td>Bolezen ali alergija:</td>
-                                        <td>Datum odkritja:</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @for ($x=0; $x < count($checkAllergyDisease); $x++)
+                                @for ($x=0; $x < count($checkData); $x++)
+                                    @if($checkData[$x]->code_type == 13)
                                         <tr>
-                                            <td>{{ $checkAllergyDisease[$x]->name }}</td>
-                                            <td>{{ date("d.m.Y H:i",strtotime($checkAllergyDisease[$x]->discovered_at)) }}</td>
+                                            <td>Bolezen ali alergija: </td>
+                                            <td>{{ $checkData[$x]->name }}</td>
                                         </tr>
-                                    @endfor
-                                    </tbody>
-                                @endif
+                                        <tr>
+                                            <td>Pojavitev bolezni ali alergije: </td>
+                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Izginotje bolezni ali alergije: </td>
+                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Opombe: </td>
+                                            <td>{{ $checkData[$x]->note }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Podatki o bolezni ali alergiji: </td>
+                                            <td>{{ $checkData[$x]->description }}</td>
+                                        </tr>
+                                    @endif
+                                @endfor
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
+            @if($checkCountDiet > 0)
             <div class="row">
                 <div class="col-xs-12">
                     <div class="card card-info">
-                        <a name="diet">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <div class="title title-white">Diete</div>
-                                </div>
-                                <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="title title-white">Diete</div>
                             </div>
-                        </a>
+                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
+                        </div>
                         <div class="card-body no-padding" id="dash-diet">
                             <table class="table table-hover">
-                                @if(count($checkDiet) == 0)
-                                    <tr>
-                                        <td>
-                                            Trenutno niste na dieti
-                                        </td>
-                                    </tr>
-                                @else
-                                    <thead>
-                                    <tr>
-                                        <td>Dieta:</td>
-                                        <td>Začetek diete:</td>
-                                        <td>Konec diete:</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @for ($x=0; $x < count($checkDiet); $x++)
+                                @for ($x=0; $x < count($checkData); $x++)
+                                    @if($checkData[$x]->code_type == 12)
                                         <tr>
-                                            <td>{{ $checkDiet[$x]->name }}</td>
-                                            <td>{{ date("d.m.Y H:i",strtotime($checkDiet[$x]->diet_start)) }}</td>
-                                            <td>{{ date("d.m.Y H:i",strtotime($checkDiet[$x]->diet_end)) }}</td>
+                                            <td>Dieta: </td>
+                                            <td>{{ $checkData[$x]->name }}</td>
                                         </tr>
-                                    @endfor
-                                    </tbody>
-                                @endif
+                                        <tr>
+                                            <td>Začetek diete: </td>
+                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Konec diete: </td>
+                                            @if($checkData[$x]->end == null)
+                                                <td></td>
+                                            @else
+                                                <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td>Opombe: </td>
+                                            <td>{{ $checkData[$x]->note }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Podatki o dieti: </td>
+                                            <td>{{ $checkData[$x]->description }}</td>
+                                        </tr>
+                                    @endif
+                                @endfor
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 

@@ -149,11 +149,25 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'patient.addDate',
     ]);
 
-    Route::get('/check/{id?}', [
+    Route::get('/check/medical/{user?}', [
+        'uses' => 'CheckController@showMedical',
+        'as' => 'check.medical'
+    ]);
+
+    Route::get('/check/disease/{user?}', [
+        'uses' => 'CheckController@showDisease',
+        'as' => 'check.disease'
+    ]);
+
+    Route::get('/check/diet/{user?}', [
+        'uses' => 'CheckController@showDiet',
+        'as' => 'check.diet'
+    ]);
+
+    Route::get('/check/{id}', [
         'uses' => 'CheckController@show',
         'as' => 'check.show'
     ]);
-
 
     /**
      * Routes only available to the admin user.

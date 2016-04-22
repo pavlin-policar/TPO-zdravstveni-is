@@ -6,7 +6,7 @@
         <div class="dashboard-padding-top">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <a href="#medical">
+                    <a href="{{ url('/check/medical') }}">
                         <div class="card red summary-inline">
                             <div class="card-body">
                                 <i class="icon fa fa-medkit fa-4x"></i>
@@ -34,7 +34,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <a href="#allergy">
+                    <a href="{{ url('/check/disease') }}">
                         <div class="card green summary-inline">
                             <div class="card-body">
                                 <i class="icon fa fa-plus-square fa-4x"></i>
@@ -48,7 +48,7 @@
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <a href="#diet">
+                    <a href="{{ url('/check/diet') }}">
                         <div class="card blue summary-inline">
                             <div class="card-body">
                                 <i class="glyphicon glyphicon-apple fa-4x"></i>
@@ -268,7 +268,8 @@
                                 </a>
                                 <div class="card-body no-padding" id="dash-medical">
                                     <table class="table table-hover table-responsive">
-                                        @if(count($checkMedical) == 0)
+                                        {{ $checkCountMedical }}
+                                        @if($checkCountMedical == 0)
                                             <tr>
                                                 <td>
                                                     Trenutno ne jemljete zdravil.
@@ -283,12 +284,14 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @for ($x=0; $x < count($checkMedical); $x++)
-                                                <tr>
-                                                    <td>{{ $checkMedical[$x]->name }}</td>
-                                                    <td>{{ date("d.m.Y H:i",strtotime($checkMedical[$x]->start_takeing)) }}</td>
-                                                    <td>{{ date("d.m.Y H:i",strtotime($checkMedical[$x]->end_takeing)) }}</td>
-                                                </tr>
+                                            @for ($x=0; $x < count($checkData); $x++)
+                                                @if($checkData[$x]->code_type == 14)
+                                                    <tr>
+                                                        <td>{{ $checkData[$x]->name }}</td>
+                                                        <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
+                                                        <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                                    </tr>
+                                                @endif
                                             @endfor
                                             </tbody>
                                         @endif
@@ -350,7 +353,8 @@
                                 </a>
                                 <div class="card-body no-padding" id="dash-allergy">
                                     <table class="table table-hover table-responsive">
-                                        @if(count($checkAllergyDisease) == 0)
+                                        {{ $checkCountDisease }}
+                                        @if($checkCountDisease == 0)
                                             <tr>
                                                 <td>
                                                     Trenutno nimate alergije ali bolezni.
@@ -364,11 +368,13 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @for ($x=0; $x < count($checkAllergyDisease); $x++)
-                                                <tr>
-                                                    <td>{{ $checkAllergyDisease[$x]->name }}</td>
-                                                    <td>{{ date("d.m.Y H:i",strtotime($checkAllergyDisease[$x]->discovered_at)) }}</td>
-                                                </tr>
+                                            @for ($x=0; $x < count($checkData); $x++)
+                                                @if($checkData[$x]->code_type == 13)
+                                                    <tr>
+                                                        <td>{{ $checkData[$x]->name }}</td>
+                                                        <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
+                                                    </tr>
+                                                @endif
                                             @endfor
                                             </tbody>
                                         @endif
@@ -390,7 +396,8 @@
                                 </a>
                                 <div class="card-body no-padding" id="dash-diet">
                                     <table class="table table-hover table-responsive">
-                                        @if(count($checkDiet) == 0)
+                                        {{ $checkCountDiet }}
+                                        @if($checkCountDiet == 0)
                                             <tr>
                                                 <td>
                                                     Trenutno niste na dieti
@@ -405,12 +412,18 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @for ($x=0; $x < count($checkDiet); $x++)
-                                                    <tr>
-                                                        <td>{{ $checkDiet[$x]->name }}</td>
-                                                        <td>{{ date("d.m.Y H:i",strtotime($checkDiet[$x]->diet_start)) }}</td>
-                                                        <td>{{ date("d.m.Y H:i",strtotime($checkDiet[$x]->diet_end)) }}</td>
-                                                    </tr>
+                                                @for ($x=0; $x < count($checkData); $x++)
+                                                    @if($checkData[$x]->code_type == 12)
+                                                        <tr>
+                                                            <td>{{ $checkData[$x]->name }}</td>
+                                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
+                                                            @if($checkData[$x]->end == null)
+                                                                <td></td>
+                                                            @else
+                                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                                            @endif
+                                                        </tr>
+                                                    @endif
                                                 @endfor
                                             </tbody>
                                         @endif
