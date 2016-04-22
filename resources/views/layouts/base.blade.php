@@ -8,6 +8,7 @@
     {{ Html::style('http://fonts.googleapis.com/css?family=Roboto+Condensed:300,400') }}
     {{ Html::style('http://fonts.googleapis.com/css?family=Lato:300,400,700,900') }}
     {{-- Vendor stylesheets --}}
+    {{ Html::style('vendor/css/dragdrop.css') }}
     {{ Html::style('vendor/css/bootstrap.min.css') }}
     {{ Html::style('vendor/css/font-awesome.min.css') }}
     {{ Html::style('vendor/css/animate.min.css') }}

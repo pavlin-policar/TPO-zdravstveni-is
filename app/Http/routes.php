@@ -164,6 +164,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'uses' => 'MedicalDiseases@showDiseases',
             'as' => 'medicalDiseases.list',
         ]);
+        Route::get('/medicals-diseases/disease/{code}', [
+            'uses' => 'MedicalDiseases@editMedicals',
+            'as' => 'diseases.editList',
+        ]);
         Route::get('/code-types', [
             'uses' => 'CodeController@showCodeTypes',
             'as' => 'code.index',

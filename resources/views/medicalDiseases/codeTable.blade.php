@@ -22,7 +22,7 @@
         <tr>
             <td>{{ $item['id'] }}</td>
             <td>{{ $item['code'] }}</td>
-            <td>{!! link_to_route('code.edit', $item['name'], ['id' => $item['id']]) !!}</td>
+            <td>{!! link_to_route('diseases.editList', $item['name'], ['code' => $item]) !!}</td>
             <td><a href="{{ $item['description'] }}" target="_blank">{{ $item['description'] }}</a></td>
         </tr>
     @endforeach
