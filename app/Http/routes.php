@@ -182,6 +182,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'uses' => 'MedicalDiseases@editMedicals',
             'as' => 'diseases.editList',
         ]);
+        Route::post('/medicals-diseases/disease/update', [
+            'uses' => 'MedicalDiseases@editMedicalsList',
+            'as' => 'diseases.editMedicalList',
+        ]);
         Route::get('/code-types', [
             'uses' => 'CodeController@showCodeTypes',
             'as' => 'code.index',

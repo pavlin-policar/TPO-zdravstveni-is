@@ -17,20 +17,6 @@ p {margin-bottom: 1em;}
 
 
 /*
-	Forms
-------------------------------------------------------------------- */
-
-.input-button {
-	background-color: #E2E2E2;
-	border: 1px outset #AAA;
-	color: #123;
-	font-weight: bold;
-	padding: 4px 5px;
-}
-.input-button:active {border-style: inset;}
-
-
-/*
 	Alignment
 ------------------------------------------------------------------- */
 
@@ -64,7 +50,8 @@ p {margin-bottom: 1em;}
 
 .column {
 	margin-left: 2%;
-	width: 32%;
+	width: 49%;
+	max-width: 480px;
 }
 .column.first {margin-left: 0;}
 
@@ -88,9 +75,3 @@ p {margin-bottom: 1em;}
 	padding: 20px 0;
 	text-align: center;
 }
-
-
-/* Disabled list */
-
-#example-2-4 .sortable-list {background-color: #CCC;}
-#example-2-4 .sortable-item {cursor: default;}

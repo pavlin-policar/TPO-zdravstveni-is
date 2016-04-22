@@ -1338,5 +1338,15 @@ Tekočino pijemo šele po obroku.',
 			'description' => 'http://rxed.eu/sl/i/Imatinib+Teva/5/',
 			'code' => '145204',
         ]);
+		$diseases->codes()->create([
+            'name' => 'Gastritis',
+			'description' => '',
+			'code' => 'MKB10K29',
+        ]);
+		$diseases->codes()->create([
+            'name' => 'Bolečina v trebuhu ali medenici',
+			'description' => '',
+			'code' => 'MKB10R10.0',
+        ]);
     }
 }
