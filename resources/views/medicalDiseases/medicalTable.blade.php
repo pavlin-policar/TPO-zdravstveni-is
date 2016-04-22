@@ -2,8 +2,10 @@
     <div class="dhe-example-section-content">
 
         <!-- BEGIN: XHTML for example 2.1 -->
-        <input type="text" />
-        <div id="example-2-1">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Iskanje">
+        </div>
+        <div class="text-center" id="example-2-1">
             <div class="column left first">
                 <ul id="result" class="sortable-list">
                     @foreach($goodMedicals as $medical)

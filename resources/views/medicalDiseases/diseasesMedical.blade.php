@@ -9,8 +9,9 @@
         <div class="col-xs-12">
             <div class="card">
                 <div class="card-header">
-                    <div id="example-2-2">
-                        <p><input type="submit" class="input-button" id="btn-save" value="Shrani" /></p>
+                    <div id="example-2-2" class="pull-right">
+                        <input type="submit" class="btn btn-success" id="btn-save" value="Shrani" />
+                        {!! link_to_route('medicalDiseases.list', 'Vrnite se nazaj', [], ['class' => 'btn btn-primary']) !!}
                     </div>
                 </div>
                 <div class="card-body">
