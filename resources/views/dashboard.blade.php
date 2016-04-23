@@ -12,7 +12,7 @@
                                 <i class="icon fa fa-medkit fa-4x"></i>
                                 <div class="content">
                                     <div class="title">Zdravila</div>
-                                    <div class="sub-title">_</div>
+                                    <div class="sub-title">{{ $checkCountMedical }}</div>
                                 </div>
                                 <div class="clear-both"></div>
                             </div>
@@ -40,7 +40,7 @@
                                 <i class="icon fa fa-plus-square fa-4x"></i>
                                 <div class="content">
                                     <div class="title">Bolezni</div>
-                                    <div class="sub-title">_</div>
+                                    <div class="sub-title">{{ $checkCountDisease }}</div>
                                 </div>
                                 <div class="clear-both"></div>
                             </div>
@@ -54,7 +54,7 @@
                                 <i class="glyphicon glyphicon-apple fa-4x"></i>
                                 <div class="content">
                                     <div class="title">Diete</div>
-                                    <div class="sub-title">_</div>
+                                    <div class="sub-title">{{ $checkCountDiet }}</div>
                                 </div>
                                 <div class="clear-both"></div>
                             </div>
@@ -268,7 +268,6 @@
                                 </a>
                                 <div class="card-body no-padding" id="dash-medical">
                                     <table class="table table-hover table-responsive">
-                                        {{ $checkCountMedical }}
                                         @if($checkCountMedical == 0)
                                             <tr>
                                                 <td>
@@ -353,7 +352,6 @@
                                 </a>
                                 <div class="card-body no-padding" id="dash-allergy">
                                     <table class="table table-hover table-responsive">
-                                        {{ $checkCountDisease }}
                                         @if($checkCountDisease == 0)
                                             <tr>
                                                 <td>
@@ -396,7 +394,6 @@
                                 </a>
                                 <div class="card-body no-padding" id="dash-diet">
                                     <table class="table table-hover table-responsive">
-                                        {{ $checkCountDiet }}
                                         @if($checkCountDiet == 0)
                                             <tr>
                                                 <td>
