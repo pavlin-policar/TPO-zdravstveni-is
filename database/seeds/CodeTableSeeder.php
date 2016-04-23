@@ -1348,5 +1348,48 @@ Tekočino pijemo šele po obroku.',
 			'description' => '',
 			'code' => 'MKB10R10.0',
         ]);
+		
+		//MERITVE
+		// HEART BEAT
+        $meritve = CodeType::create([
+            'name' => 'Meritve',
+            'description' => 'Seznam meritev, ki se izvajajo in minimalnih vrednosti.',
+        ]);
+		$meritve->codes()->create([
+            'name' => 'Merjenje glukoze',
+			'description' => '7-krat na dan: pred in po obrokih in pred spanjem',
+			'min_value' => '-50',
+            'max_value' => '100',
+        ]);
+		$meritve->codes()->create([
+            'name' => 'Sistolični krvni tlak',
+			'description' => 'Meri se zjutraj in zvečer',
+			'min_value' => '0',
+            'max_value' => '600',
+        ]);
+		$meritve->codes()->create([
+            'name' => 'Diastolični krvni tlak',
+			'description' => 'Meri se zjutraj in zvečer',
+			'min_value' => '0',
+            'max_value' => '500',
+        ]);
+		$meritve->codes()->create([
+            'name' => 'Merjenje srčnega utripa',
+			'description' => 'Meri se skupaj z pritiskom',
+			'min_value' => '0',
+            'max_value' => '500',
+        ]);
+		$meritve->codes()->create([
+            'name' => 'Merjenje telesne temperature',
+			'description' => 'Meri se 2 – 3 na dan',
+			'min_value' => '30',
+            'max_value' => '50',
+        ]);
+		$meritve->codes()->create([
+            'name' => 'Merjenje telesne teže',
+			'description' => 'Meri se običajno enkrat na teden (pri bolnikih s srčnim popuščanjem se meri enkrat na dan)',
+			'min_value' => '1',
+            'max_value' => '250',
+        ]);
     }
 }
