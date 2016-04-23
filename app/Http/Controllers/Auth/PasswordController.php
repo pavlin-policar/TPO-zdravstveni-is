@@ -49,4 +49,15 @@ class PasswordController extends Controller
                 'regex'  => 'Geslo mora vsebovati vsaj en numeričen znak!',
             ]);
     }
+
+    use ResetsPasswords;
+
+    protected function getResetValidationRules()
+    {
+        return [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed|regex:/^(?=.*[\d,.;:]).+$/',
+        ];
+    }
 }
