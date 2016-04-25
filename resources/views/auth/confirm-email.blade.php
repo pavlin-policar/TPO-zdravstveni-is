@@ -10,6 +10,14 @@
     <p>Če niste prejeli elektronskega naslova se obrnite na skrbnika informacijskega
         sistema.</p>
 
+    <div class="form-group{{ Session::has('resend_success') ? ' has-error' : '' }}">
+        @if (Session::has('resend_success'))
+            <span class="help-block">
+                        <strong>{!! session('resend_success') !!}</strong>
+                    </span>
+        @endif
+    </div>
+
     <form class="form-inline" role="form" method="POST" action="{{ route('registration.do-confirm-email') }}">
         {!! csrf_field() !!}
         <div class="form-group{{ $errors->has('confirmationCode') ? ' has-error' : '' }}">
@@ -23,6 +31,10 @@
         <button type="submit" class="btn btn-primary">
             <i class="fa fa-btn fa-sign-in"></i>&nbsp;Aktiviraj račun
         </button>
-        {!! link_to('/logout', 'Odjava', ['class' => 'btn btn-default']) !!}
+        <div>
+            @if (Auth::check() != null)
+                {!!  link_to('/logout', 'Odjava', ['class' => 'btn btn-default']) !!}
+            @endif
+        </div>
     </form>
 @endsection

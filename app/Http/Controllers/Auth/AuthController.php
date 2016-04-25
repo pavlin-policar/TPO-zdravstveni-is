@@ -95,6 +95,7 @@ class AuthController extends Controller
         session(['user' => $user->id]);
         session(['showUser' => $user->id]);
         session(['isMyProfile' => true]);
+        //if (!$user->confirmed) session(['resendMail' => true]);
 
         return redirect()->intended($this->redirectPath());
     }
@@ -185,7 +186,7 @@ class AuthController extends Controller
      */
     protected function sendActivationEmail($user)
     {
-        Mail::send('email.confirm', [
+        return Mail::send('email.confirm', [
             'confirmationCode' => $user->confirmation_code
         ], function ($message) use ($user) {
             $message
@@ -194,4 +195,45 @@ class AuthController extends Controller
                 ->subject('Zaključite registracijo');
         });
     }
+
+    /**
+     * View the form that lets you resend account activation code, necessary for
+     * successful registration process.
+     *
+     *
+     */
+    protected function resendEmail()
+    {
+        return view('auth.resend-email');
+    }
+
+    /**
+     * Resend an activation email to a given user with the activation code they can use to complete
+     * the registration process.
+     *
+     *
+     */
+    protected function resendInputEmail(Request $request)
+    {
+        $user = User::whereEmail($request->email)->first();
+        //return $user;
+        if ($user != null) {
+            if ($this->sendActivationEmail($user)) {
+                $request->session()->flash('resend_success', 'Sporočilo poslano. Aktivirajte račun!');
+                return redirect()->route('registration.confirm-email');
+            }
+            else {
+                $request->session()->flash('resend_success', 'Prišlo je do napake! Poskusite znova');
+                return view('auth.resend-email');
+            }
+        }
+        else
+        {
+            $request->session()->flash('resend_success', 'Uporabnik s tem elektronskim sporočilom ne obstaja!');
+            return view('auth.resend-email');
+        }
+    }
+
+
+
 }

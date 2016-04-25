@@ -40,6 +40,7 @@ class UserRepository
     public function createPatient(array $data)
     {
         $user = new User($data);
+        $user->confirmed = 0;
         $user->person_type = Code::PATIENT()->id;
         $user->save();
 
