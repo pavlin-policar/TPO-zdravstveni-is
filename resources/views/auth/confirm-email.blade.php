@@ -34,7 +34,6 @@
         <div>
             @if (Auth::check() != null)
                 {!!  link_to('/logout', 'Odjava', ['class' => 'btn btn-default']) !!}
-                {!!  link_to_route('registration.resend-email', 'Ponovno pošlji kodo', [], ['class' => 'btn btn-default']) !!}
             @endif
         </div>
     </form>

@@ -26,6 +26,7 @@ Route::get('/layout', function () {
 |
 */
 
+
 Route::group(['middleware' => 'web'], function () {
     Route::auth();
 
@@ -54,14 +55,14 @@ Route::group(['middleware' => 'web'], function () {
  * Routes that only authenticated users can access, but they needn't have activated their email or
  * completed the registration process yet.
  */
-Route::group(['middleware' => ['web', 'auth']], function () {
-});
+Route::group(['middleware' => ['web', 'auth']], function () {});
 
 /**
  * Routes that only authenticated users with activated emails can access, but they needn't have
  * completed the registration process.
  */
 Route::group(['middleware' => ['web', 'auth', 'email-validated']], function () {
+
     Route::get('registration/step-2', [
         'uses' => 'UserController@showGotoCreateProfile',
         'as' => 'registration.step-2',

@@ -95,6 +95,7 @@ class AuthController extends Controller
         session(['user' => $user->id]);
         session(['showUser' => $user->id]);
         session(['isMyProfile' => true]);
+        //if (!$user->confirmed) session(['resendMail' => true]);
 
         return redirect()->intended($this->redirectPath());
     }
@@ -194,9 +195,9 @@ class AuthController extends Controller
      */
     protected function resendInputEmail(Request $request)
     {
-        $user = Auth::user();
-        if ($user != null)
-        {
+        $user = User::whereEmail($request->email)->first();
+        //return $user;
+        if ($user != null) {
             if ($this->sendActivationEmail($user)) {
                 $request->session()->flash('resend_success', 'Sporočilo poslano. Aktivirajte račun!');
                 return redirect()->route('registration.confirm-email');
@@ -208,25 +209,11 @@ class AuthController extends Controller
         }
         else
         {
-            $user = User::whereEmail($request->email)->first();
-            //return $user;
-            if ($user != null) {
-                if ($this->sendActivationEmail($user)) {
-                    $request->session()->flash('resend_success', 'Sporočilo poslano. Aktivirajte račun!');
-                    return redirect()->route('registration.confirm-email');
-                }
-                else {
-                    $request->session()->flash('resend_success', 'Prišlo je do napake! Poskusite znova');
-                    return view('auth.resend-email');
-                }
-            }
-            else
-            {
-                $request->session()->flash('resend_success', 'Uporabnik s tem elektronskim sporočilom ne obstaja!');
-                return view('auth.resend-email');
-            }
+            $request->session()->flash('resend_success', 'Uporabnik s tem elektronskim sporočilom ne obstaja!');
+            return view('auth.resend-email');
         }
     }
+
 
 
 }

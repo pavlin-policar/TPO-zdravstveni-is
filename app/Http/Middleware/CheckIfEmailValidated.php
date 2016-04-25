@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
+use App\Models\User;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class CheckIfEmailValidated
 {
@@ -17,7 +19,6 @@ class CheckIfEmailValidated
      */
     public function handle($request, Closure $next)
     {
-        //TODO find a way to let through resend email requests
         if (!Auth::user()->hasConfirmedEmail()) {
             return redirect()->route('registration.confirm-email');
         }
