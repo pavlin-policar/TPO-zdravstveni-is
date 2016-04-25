@@ -174,6 +174,26 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
      */
     Route::group(['middleware' => 'admin'], function () {
 
+        Route::get('/manuals', [
+            'uses' => 'ManualController@showList',
+            'as' => 'manuals.list',
+        ]);
+        Route::get('/manual/create', [
+            'uses' => 'ManualController@addManual',
+            'as' => 'manuals.getCreate',
+        ]);
+        Route::post('/manuals', [
+            'uses' => 'ManualController@createManual',
+            'as' => 'manuals.postCreate',
+        ]);
+        Route::get('/manual/{manual}', [
+            'uses' => 'ManualController@editManual',
+            'as' => 'manuals.edit',
+        ]);
+        Route::post('/manual/{manual}', [
+            'uses' => 'ManualController@updateManual',
+            'as' => 'manuals.update',
+        ]);
         Route::get('/medicals-diseases', [
             'uses' => 'MedicalDiseases@showDiseases',
             'as' => 'medicalDiseases.list',

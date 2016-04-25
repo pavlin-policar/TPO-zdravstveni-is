@@ -14,6 +14,7 @@ class CreateTableManuals extends Migration
     {
         Schema::create('manuals', function (Blueprint $table) {
             $table->increments('id');
+			$table->string('name', 100)->nullable();
             $table->text('description')->nullable();
 			$table->text('url_link')->nullable();
 			$table->softDeletes();
