@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Http\Requests\CheckRequest;
+use App\Http\Requests\CheckCodeRequest;
 use App\Models\Checks;
+use App\Models\CheckCodes;
+use App\Models\DoctorDates;
 use DB;
 use App\Models\User;
+use App\Models\Code;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -126,5 +131,86 @@ class CheckController extends Controller
                 ->get();
         return view('checks.diet')->with($data);
     }
+
+    public function doctorDate($id)
+    {
+        $data['dates'] =  DoctorDates::findOrFail($id);
+        $data['patient'] = User::find($data['dates']->patient);
+        $data['doctors'] = User::where('person_type', 4)->get();
+        $data['checks'] = Checks::where('doctor_date', $id)->get();
+        $data['codesMedical'] = Code::where('code_type', 14)->get();
+        $data['codesDisease'] = Code::where('code_type', 13)->get();
+        $data['codesDiet'] = Code::where('code_type', 12)->get();
+
+        if(count($data['checks']) > 0){
+            foreach ($data['checks'] as $check) {
+                $data['checkData'][$check->id] = DB::table('checks_codes')
+                    ->join('checks', 'checks_codes.check', '=', 'checks.id')
+                    ->join('codes', 'checks_codes.code', '=', 'codes.id')
+                    ->select('checks_codes.*', 'codes.name', 'codes.description', 'codes.code_type')
+                    ->where('checks.id', '=', $check->id)
+                    ->get();
+            }
+        }
+
+        return view('checks.doctor')->with($data);
+    }
+
+    public function checkUpdate(CheckRequest $request, $id)
+    {
+        $check = Checks::find($id);
+        $check->note = $request['note'];
+        $check->patient = $request['patient'];
+        $check->doctor = $request['doctor'];
+        $check->doctor_date = $request['doctor_date'];
+
+        $check->update();
+
+        return redirect()->back()->with('Check', 'CheckUpdated');
+    }
+
+    public function checkUpdateCode(CheckCodeRequest $request, $id)
+    {
+        $checkCode = CheckCodes::find($id);
+        $checkCode->note = $request['note'];
+        $checkCode->start = $request['start'];
+        $checkCode->end = $request['end'];
+        $checkCode->check = $request['check'];
+        $checkCode->code = $request['code'];
+
+        $checkCode->update();
+
+        $check = Checks::find($checkCode->check);
+
+        return redirect()->route('check.doctor', $check->doctor_date);
+    }
+
+    public function checkAdd(CheckRequest $request)
+    {
+        $check = new Checks();
+        $check->note = $request['note'];
+        $check->patient = $request['patient'];
+        $check->doctor = $request['doctor'];
+        $check->doctor_date = $request['doctor_date'];
+
+        $check->save();
+
+        return redirect()->back()->with('Check', 'CheckAdded');
+    }
+
+    public function checkAddCode(CheckCodeRequest $request)
+    {
+        $checkCode = new CheckCodes();
+        $checkCode->note = $request['note'];
+        $checkCode->start = $request['start'];
+        $checkCode->end = $request['end'];
+        $checkCode->check = $request['check'];
+        $checkCode->code = $request['code'];
+
+        $checkCode->save();
+
+        return redirect()->back()->with('Check', 'CheckCodeAdded');
+    }
+
 
 }

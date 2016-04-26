@@ -60,9 +60,9 @@ class Checks extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function checkMedical()
+    public function checkCodes()
     {
-        return $this->hasMany(CheckMedical::class, 'check');
+        return $this->hasMany(CheckCodes::class, 'check');
     }
 
     /**

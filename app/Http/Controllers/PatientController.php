@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Models\DoctorDates;
 use App\Models\User;
-use App\Http\Requests\AddCheckRequest;
+use App\Http\Requests\DoctorDateRequest;
 
 class PatientController extends Controller
 {
@@ -21,7 +21,7 @@ class PatientController extends Controller
         return view('patients.view')->with('patient', $user);
     }
 
-    public function addDate(AddCheckRequest $request)
+    public function addDate(DoctorDateRequest $request)
     {
         $date = new DoctorDates();
         $date->note = $request['note'];

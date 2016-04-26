@@ -10,21 +10,21 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package App\Models
  */
-class CheckAllergyDisease extends Model
+class CheckCodes extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'check_allergy_and_disease';
+    protected $table = 'checks_codes';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['note', 'discovered_at', 'check', 'allergy_or_disease'];
+    protected $fillable = ['note', 'start', 'end', 'check', 'code'];
 
     /**
      * The attributes that should be mutated to dates.
@@ -32,7 +32,8 @@ class CheckAllergyDisease extends Model
      * @var array
      */
     protected $dates = [
-        'diet_start',
+        'start',
+        'end',
     ];
 
     /**
@@ -49,9 +50,10 @@ class CheckAllergyDisease extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function diet()
+    public function code()
     {
-        return $this->belongsTo(Code::class, 'allergy_or_disease');
+        return $this->belongsTo(Code::class, 'code');
     }
+
 
 }

@@ -19,6 +19,29 @@
                         <span class="icon fa fa-tachometer"></span><span class="title">Nadzorna plošča</span>
                     </a>
                 </li>
+                <li class="panel panel-default dropdown">
+                    <a data-toggle="collapse" href="#dropdown-check">
+                        <span class="icon fa fa-hospital-o"></span><span class="title">Pregledi</span>
+                    </a>
+                    <div id="dropdown-check" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    {!! link_to_route('check.medical', 'Zdravila') !!}
+                                </li>
+                                <li>
+                                    {!! link_to_route('dashboard.show', 'Meritve') !!}
+                                </li>
+                                <li>
+                                    {!! link_to_route('check.disease', 'Bolezni in alergije') !!}
+                                </li>
+                                <li>
+                                    {!! link_to_route('check.diet', 'Diete') !!}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
                 @can('can-see-delegates', App\Models\User::class)
                 <li class="panel panel-default dropdown">
                     <a data-toggle="collapse" href="#dropdown-charges">

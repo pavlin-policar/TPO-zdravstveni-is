@@ -93,6 +93,27 @@ $(document).ready(function(){
             $("#dash-diet").show(1000);
         }
     });
+    $("#glyphicon-patient").click(function(){
+        if($('#dash-patient').is(":visible")){
+            $("#glyphicon-patient").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-patient").hide(1000);
+        }
+        else{
+            $("#glyphicon-patient").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-patient").show(1000);
+        }
+    });
+    $("#glyphicon-doctor-dates").click(function(){
+        if($('#dash-doctor-dates').is(":visible")){
+            $("#glyphicon-doctor-dates").attr('class','fa fa-expand icon-arrow-right');
+            $("#dash-doctor-dates").hide(1000);
+        }
+        else{
+            $("#glyphicon-doctor-dates").attr('class','fa fa-compress icon-arrow-right');
+            $("#dash-doctor-dates").show(1000);
+        }
+    });
+
 
     if($("#profileChangePassword").html() != null) {
         console.log("change password");

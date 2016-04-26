@@ -170,6 +170,37 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
     ]);
 
     /**
+     * Routes only available to the doctor user.
+     */
+    Route::group(['middleware' => 'doctor'], function () {
+
+        Route::post('/doctor/check', [
+            'uses' => 'CheckController@checkAdd',
+            'as' => 'check.create'
+        ]);
+
+        Route::post('/doctor/check/code', [
+            'uses' => 'CheckController@checkAddCode',
+            'as' => 'check.createCode'
+        ]);
+
+        Route::put('/doctor/check/{id}', [
+            'uses' => 'CheckController@checkUpdate',
+            'as' => 'check.update'
+        ]);
+
+        Route::put('/doctor/check/code/{id}', [
+            'uses' => 'CheckController@checkUpdateCode',
+            'as' => 'check.updateCode'
+        ]);
+
+        Route::get('/doctor/check/{id}', [
+            'uses' => 'CheckController@doctorDate',
+            'as' => 'check.doctor'
+        ]);
+    });
+
+    /**
      * Routes only available to the admin user.
      */
     Route::group(['middleware' => 'admin'], function () {

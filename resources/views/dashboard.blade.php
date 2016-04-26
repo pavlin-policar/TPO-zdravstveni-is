@@ -218,19 +218,28 @@
                                         <p>Na pregled se lahko prijavite v spodnjem obrazcu.</p>
 
                                     @else
-                                        <table class="table table-hover">
-                                            <tbody>
-                                                @foreach ($doctorDates as $doctorDate)
+                                        @foreach ($doctorDates as $doctorDate)
+                                            @if($user->isDoctor() || true)
+                                                <a href="{{ url('/doctor/check', $doctorDate->id ) }}">
+                                                    <table class="table table-hover">
+                                                        <tr>
+                                                            <td>{{ date("d.m.Y H:i",strtotime($doctorDate->time)) }}</td>
+                                                            <td>{{ $doktorCheck[$doctorDate->doctor]->fullName }}</td>
+                                                            <td>{{ $doctorDate->note }}</td>
+                                                        </tr>
+                                                    </table>
+                                                </a>
+                                            @else
+                                                <table class="table table-hover">
                                                     <tr>
                                                         <td>{{ date("d.m.Y H:i",strtotime($doctorDate->time)) }}</td>
                                                         <td>{{ $doktorCheck[$doctorDate->doctor]->fullName }}</td>
                                                         <td>{{ $doctorDate->note }}</td>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </table>
+                                            @endif
+                                        @endforeach
                                     @endif
-
                                 </div>
                             </div>
                         </div>
@@ -437,15 +446,48 @@
                                         <div class="card-title">
                                             <div class="title title-white">PACIENTI</div>
                                         </div>
-                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
+                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-patient"></div>
                                     </div>
-                                    <div class="card-body no-padding" id="dash-diet">
+                                    <div class="card-body no-padding" id="dash-patient">
                                         <table class="table table-hover table-responsive">
                                             <tbody>
                                             @foreach($user->patients as $patient)
                                                 {!! link_to_route('patient.show', $patient->fullName, $patient->id, ['class' => 'btn btn-default'])!!}&nbsp;
                                             @endforeach
                                             </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @if($user->isDoctor())
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="card card-info">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <div class="title title-white">Pregledi</div>
+                                        </div>
+                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-doctor-dates"></div>
+                                    </div>
+                                    <div class="card-body no-padding" id="dash-doctor-dates">
+                                        <table class="table table-responsive">
+                                            @foreach($allDatesDoctor as $date)
+                                                <tr>
+                                                    <td class="no-padding">
+                                                        <a href="{{ url('/doctor/check', $date->id ) }}">
+                                                            <table class="table table-hover no-margin-bottom">
+                                                                <tr>
+                                                                    <td>{{ date("d.m.Y H:i",strtotime($date->time)) }}</td>
+                                                                    <td>{{ $date->first_name }}</td>
+                                                                    <td>{{ $date->note }}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </table>
                                     </div>
                                 </div>

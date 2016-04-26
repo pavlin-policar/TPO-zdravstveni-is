@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 
-class AddCheckRequest extends Request
+class CheckRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class AddCheckRequest extends Request
     {
         return [
             'note' => 'required',
-            'time' => 'required',
             'patient' => 'required',
-            'doctor' => 'required'
+            'doctor' => 'required',
+            'doctor_date' => 'required'
         ];
     }
 }

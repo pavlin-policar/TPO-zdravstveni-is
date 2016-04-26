@@ -137,6 +137,14 @@ class HomeController extends Controller
                                 ->where('doctor_dates.time', '<', Carbon::now())
                                 ->get();
 
+        $data['allDatesDoctor'] = DB::table('doctor_dates')
+                                ->join('users', 'doctor_dates.patient', '=', 'users.id')
+                                ->select('doctor_dates.note', 'doctor_dates.time', 'users.*', 'doctor_dates.id')
+                                ->where('doctor_dates.doctor', $user->id)
+                                ->orderBy('doctor_dates.time', 'desc')
+                                ->take(20)
+                                ->get();
+
         return view('dashboard')->with($data);
     }
 
