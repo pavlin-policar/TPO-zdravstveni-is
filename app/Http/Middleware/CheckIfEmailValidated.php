@@ -4,6 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
+use App\Models\User;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class CheckIfEmailValidated
 {

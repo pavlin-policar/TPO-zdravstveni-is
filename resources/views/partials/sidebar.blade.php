@@ -83,6 +83,11 @@
                         <span class="icon fa fa-medkit"></span><span class="title">Urejanje zdravil za bolezni</span>
                     </a>
                 </li>
+                <li class="inactive">
+                    <a href="{{ route('manuals.list') }}">
+                        <span class="icon fa fa-book"></span><span class="title">Urejanje člankov in navodil</span>
+                    </a>
+                </li>
                 @endcan
                 <li class="inactive">
                     <a href="{{ route('profile.show') }}">

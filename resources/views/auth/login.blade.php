@@ -49,6 +49,7 @@
                     <div class="login-footer">
                         <span class="text-right"><a href="{{ url('/password/reset') }}" class="color-white">Pozabljeno
                                 geslo?</a></span>
+                        <span class="text-right"><a href="{{ url('/registration/resend') }}" class="color-white">Aktivacijski mail?</a></span>
                     </div>
                 </div>
             </div>
