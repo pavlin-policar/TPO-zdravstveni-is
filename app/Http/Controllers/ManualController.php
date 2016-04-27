@@ -30,4 +30,10 @@ class ManualController extends Controller
         $data['id'] = $manual->id;
         return view('manuals.addManual')->with($data);
     }
+    public function updateManual(Request $request, Manual $manual)
+    {
+        $manual->update($request->all());
+        return redirect()->route('manuals.edit', ['id' => $manual->id]);
+        //return redirect("codeType/".$codeType->codeType);
+    }
 }
