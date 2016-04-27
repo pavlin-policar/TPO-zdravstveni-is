@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Code;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -26,15 +27,60 @@ class UserAdminController extends Controller
     /**
      * Show a listing of all the registered users in the system.
      *
+     * @param Request $request
+     * @param null $extension
      * @return mixed
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Request $request)
+    public function index(Request $request, $extension = null)
     {
         $this->authorize('can-see-all-users', User::class);
-        $users = User::with('type')->get();
-//        $users = User::whereNotNull('first_name')->with('type')->get();
-        return view('users.index')->with('users', $users);
+
+        $query = User::with('type');
+        $viewName = 'index';
+        $filter = $request->query('filter', 'all');
+
+        switch ($filter) {
+            // users that have not finished the registration process
+            case 'not-finished':
+                $query = $query->notCreatedProfile();
+                $viewName = 'index-not-finished';
+                break;
+            // users registered within a certain time period
+            case 'new-users':
+                break;
+            default:
+                $query = $query->createdProfile();
+                break;
+        }
+        $data = $query->get();
+
+        if ($extension !== null) {
+            return $this->generateUsersFile($data, $extension, $viewName);
+        } else {
+            return view('users.' . $viewName)->with('users', $data)->with('filter', $filter);
+        }
+    }
+
+    /**
+     * Generate the appropriate file for the given data and file type for user data.
+     *
+     * @param $data
+     * @param $extension
+     * @return mixed
+     */
+    protected function generateUsersFile($data, $extension, $viewName)
+    {
+        $extension = substr($extension, 1);
+        switch ($extension) {
+            case 'json':
+                return $data;
+            case 'pdf':
+                $pdf = PDF::loadView('users.pdf.' . $viewName, ['users' => $data]);
+                return $pdf->stream(md5(time()) . '.pdf');
+            default:
+                break;
+        }
     }
 
     /**

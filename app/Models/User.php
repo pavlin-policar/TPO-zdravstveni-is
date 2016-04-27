@@ -371,6 +371,54 @@ class User extends Authenticatable
     }
 
     /**
+     * SCOPES
+     */
+
+    /**
+     * Get only non admin users.
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeNoAdmin($query)
+    {
+        return $query->where('person_type', '!=', Code::ADMIN()->id);
+    }
+
+    /**
+     * Get only the users that have confirmed their email.
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeNotConfirmedEmail($query)
+    {
+        return $query->where('confirmed', false);
+    }
+
+    /**
+     * Get only the users that have created their profile.
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeNotCreatedProfile($query)
+    {
+        return $query->whereNull('first_name');
+    }
+
+    /**
+     * Get only the users that have created their profile.
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function scopeCreatedProfile($query)
+    {
+        return $query->whereNotNull('first_name');
+    }
+
+    /**
      * RELATIONSHIPS
      */
 

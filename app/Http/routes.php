@@ -285,7 +285,7 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'as' => 'code.deleteCode',
         ]);
 
-        Route::get('/users', [
+        Route::get('/users{extension?}', [
             'uses' => 'UserAdminController@index',
             'as' => 'users.index',
         ]);
