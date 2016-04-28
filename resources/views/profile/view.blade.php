@@ -45,6 +45,14 @@
                                     </div>
                                 </a>
                             </li>
+                            <li role="step" id="li-account-delete">
+                                <a href="#account-delete" id="account-delete-tab" role="tab" data-toggle="tab">
+                                    <div class="icon fa fa-lock"></div>
+                                    <div class="step-title">
+                                        <div class="title">Izbris računa</div>
+                                    </div>
+                                </a>
+                            </li>
                         </ul>
                         <div class="tab-content" id="profileView" style="width: 100%">
                             <div class="tab-pane fade in active" id="personal-info" aria-labelledby="personal-info-tab">
@@ -59,6 +67,9 @@
                             </div>
                             <div class="tab-pane fade" id="password-reset" aria-labelledby="password-reset-tab">
                                 @include('profile.tabs.profile-change-passwd', ['user' => $user])
+                            </div>
+                            <div class="tab-pane fade" id="account-delete" aria-labelledby="account-delete-tab">
+                                @include('profile.tabs.account-delete', ['user' => $user])
                             </div>
                         </div>
                     </div>

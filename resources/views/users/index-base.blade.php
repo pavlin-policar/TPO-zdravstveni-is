@@ -19,6 +19,7 @@
                 <div class="card-body">
                     {!! link_to_route('users.index', 'Vsi uporabniki', [], ['class' => 'btn btn-default']) !!}
                     {!! link_to_route('users.index', 'Nedokončane registracije', ['extension' => null, 'filter' => 'not-finished'], ['class' => 'btn btn-default']) !!}
+                    {!! link_to_route('users.index', 'Izbrisani uporabniki', ['extension' => null, 'filter' => 'deleted'], ['class' => 'btn btn-default']) !!}
 
                     <div class="btn-group pull-right">
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Izvozi... <span class="caret"></span></button>

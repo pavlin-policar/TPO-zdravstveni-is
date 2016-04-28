@@ -49,6 +49,11 @@ Route::group(['middleware' => 'web'], function () {
         'as' => 'registration.do-confirm-email',
         'uses' => 'Auth\AuthController@confirm',
     ]);
+
+    Route::get('profile/delete-success', [
+        'as' => 'profile.deleted',
+        'uses' => 'UserController@accountDeletedPage',
+    ]);
 });
 
 /**
@@ -114,6 +119,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
     Route::put('profile/{user}/password', [
         'uses' => 'UserController@changePassword',
         'as' => 'profile.changePassword',
+    ]);
+    Route::delete('profile/{user}', [
+        'uses' => 'UserController@deleteAccount',
+        'as' => 'profile.delete-account',
     ]);
 
     Route::get('/charges', [
@@ -304,6 +313,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         Route::put('/users/create/{user}', [
             'uses' => 'UserAdminController@update',
             'as' => 'users.update',
+        ]);
+        Route::get('/users/restore/{deletedUser}', [
+            'uses' => 'UserAdminController@restore',
+            'as' => 'users.restore',
         ]);
     });
 });

@@ -46,6 +46,10 @@ class UserAdminController extends Controller
                 $query = $query->notCreatedProfile();
                 $viewName = 'index-not-finished';
                 break;
+            case 'deleted':
+                $query = User::onlyTrashed()->with('type');
+                $viewName = 'index-deleted';
+                break;
             // users registered within a certain time period
             case 'new-users':
                 break;
@@ -145,6 +149,19 @@ class UserAdminController extends Controller
         );
 
         return redirect()->route('profile.show', $user->id);
+    }
+
+    /**
+     * Un-delete a deleted user.
+     *
+     * @param User $user
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function restore($user)
+    {
+        $this->authorize('can-restore-user', $user);
+        $user->restore();
+        return redirect()->back();
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateDoctorsRequest;
 use App\Models\User;
 use App\Repositories\UserRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -181,5 +182,35 @@ class UserController extends Controller
         $this->authorize('canUpdatePersonalInfo', $user);
         $this->users->updateUser($user, $request->all());
         return redirect()->back();
+    }
+
+    /**
+     * Delete a users account.
+     *
+     * @param User $user
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Exception
+     */
+    public function deleteAccount(Request $request, User $user)
+    {
+        $this->authorize('canDeleteUser', $user);
+        if (!password_verify($request->get('rm-password'), $user->password)) {
+            return redirect()->back()
+                ->withErrors(['rm-password' => 'Geslo se ne ujema z vašim obstoječim geslom.']);
+        }
+        $user->delete();
+        Auth::logout();
+        return redirect()->route('profile.deleted');
+    }
+
+    /**
+     * Display the account successfully deleted page when deletion is successful.
+     *
+     * @return mixed
+     */
+    public function accountDeletedPage()
+    {
+        return view('profile.account-deleted');
     }
 }

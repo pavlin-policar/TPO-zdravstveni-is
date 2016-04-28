@@ -66,4 +66,18 @@ class UserPolicy
     {
         return $user->isAdmin();
     }
+
+    public function canDeleteUser(User $user, User $victim)
+    {
+        return
+            !$victim->isAdmin() or
+            $user->isAdmin() or
+            $user->isCaretakerOf($victim) or
+            $user->isSameUserAs($victim);
+    }
+
+    public function canRestoreUser(User $user)
+    {
+        return $user->isAdmin();
+    }
 }
