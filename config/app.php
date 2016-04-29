@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Set the default output date format.
+ */
+\Carbon\Carbon::setToStringFormat('d.m.Y H:i');
+
 return [
 
     /*

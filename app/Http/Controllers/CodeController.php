@@ -5,19 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Models\Code;
 use App\Models\CodeType;
-use Barryvdh\DomPDF\Facade;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 class CodeController extends Controller
 {
-    private $request;
-
-    public function __construct(Request $request)
-    {
-        $this->request = $request;
-    }
-
     public function showCodeTypes()
     {
         return view('code.codeTypes')
