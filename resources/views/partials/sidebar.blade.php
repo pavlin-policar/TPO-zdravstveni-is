@@ -45,13 +45,13 @@
                 @can('can-see-delegates', App\Models\User::class)
                 <li class="panel panel-default dropdown">
                     <a data-toggle="collapse" href="#dropdown-charges">
-                        <span class="icon fa fa-user-md"></span><span class="title">Oskrbljenci</span>
+                        <span class="icon fa fa-user-md"></span><span class="title">Oskrbovanci</span>
                     </a>
                     <div id="dropdown-charges" class="panel-collapse collapse">
                         <div class="panel-body">
                             <ul class="nav navbar-nav">
                                 <li>
-                                    {!! link_to_route('charges.index', 'Pregled oskrbljencev') !!}
+                                    {!! link_to_route('charges.index', 'Pregled oskrbovancev') !!}
                                 </li>
                                 <hr>
                                 @foreach($user->charges as $charge)
@@ -60,7 +60,7 @@
                                     </li>
                                 @endforeach
                                 <li>
-                                    {!! link_to_route('charges.create', 'Dodaj oskrbljenca') !!}
+                                    {!! link_to_route('charges.create', 'Dodaj oskrbovanca') !!}
                                 </li>
                             </ul>
                         </div>

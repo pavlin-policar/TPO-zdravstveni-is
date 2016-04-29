@@ -3,7 +3,7 @@
 @section('content')
     <div class="page-title">
         <div class="title">{{ $charge->fullName }}</div>
-        <div class="description">Urejanje in pregled oskrbljenčevega profila.</div>
+        <div class="description">Urejanje in pregled oskrbovancovega profila.</div>
     </div>
 
     <div class="row">

@@ -5,7 +5,7 @@
 
 
     <div class="form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">First Name</label>
+        <label class="col-md-4 control-label">Ime</label>
 
         <div class="col-md-6">
             <input type="firstName" @if(isset($user)) value="{{ $user["firstName"] }}" @endif class="form-control" name="firstName">
@@ -18,7 +18,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('lastName') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">Last Name</label>
+        <label class="col-md-4 control-label">Priimek</label>
 
         <div class="col-md-6">
             <input type="lastName" @if(isset($user)) value="{{ $user["lastName"] }}" @endif class="form-control" name="lastName">
@@ -31,7 +31,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">Address</label>
+        <label class="col-md-4 control-label">Naslov</label>
 
         <div class="col-md-6">
             <input type="address" @if(isset($user)) value="{{ $user["address"] }}" @endif class="form-control" name="address">
@@ -44,7 +44,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('post') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">Post</label>
+        <label class="col-md-4 control-label">Poštna številka</label>
 
         <div class="col-md-6">
             <input type="post" @if(isset($user)) value="{{ $user["post"] }}" @endif class="form-control" name="post">
@@ -57,7 +57,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">E-Mail Address</label>
+        <label class="col-md-4 control-label">Elektronski naslov</label>
 
         <div class="col-md-6">
             <input type="email" @if(isset($user)) value="{{ $user["email"] }}" @endif class="form-control" name="email" value="{{ old('email') }}">
@@ -70,7 +70,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('phoneNumber') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">Phone Number</label>
+        <label class="col-md-4 control-label">Telefonska številka</label>
 
         <div class="col-md-6">
             <input type="phoneNumber" @if(isset($user)) value="{{ $user["phoneNumber"] }}" @endif class="form-control" name="phoneNumber">
@@ -83,7 +83,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('ZZCardNumber') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">ZZ Card Number</label>
+        <label class="col-md-4 control-label">Številka zdravstvenega zavarovanja</label>
 
         <div class="col-md-6">
             <input type="ZZCardNumber" @if(isset($user)) value="{{ $user["ZZCardNumber"] }}" @endif class="form-control" name="ZZCardNumber">
@@ -96,7 +96,7 @@
     </div>
 
     <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">Gender</label>
+        <label class="col-md-4 control-label">Spol</label>
 
         <div class="col-md-6">
             <select name="gender" type="gender" class="form-control input-sm">

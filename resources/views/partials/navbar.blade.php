@@ -5,7 +5,7 @@
                 <i class="fa fa-bars icon"></i>
             </button>
             <ol class="breadcrumb navbar-breadcrumb">
-                <li class="active">Dashboard</li>
+                <li class="active">Nadzorna plošča</li>
             </ol>
             <button type="button" class="navbar-right-expand-toggle pull-right visible-xs">
                 <i class="fa fa-th icon"></i>
@@ -73,13 +73,13 @@
                         <div class="profile-info">
                             <h4 class="username">{{ $user->fullName }}</h4>
                             <p>{{  $user->email }}</p>
-                            <p>Zadnja prijava @if($user->last_login != null) {{ $user->last_login->format('d.m.Y H:i:s') }} @endif</p>
+                            <p>Zadnja prijava @if($user->last_login != null) {{ $user->last_login }} @endif</p>
                             <div class="btn-group margin-bottom-2x" role="group">
                                 <a type="button" class="btn btn-info" href="{{ route('profile.show', $user->id) }}">
-                                    <i class="fa fa-user"></i> Profile
+                                    <i class="fa fa-user"></i> Profil
                                 </a>
                                 <a type="button" href="{{ url('/logout') }}" class="btn btn-danger">
-                                    <i class="fa fa-sign-out"></i> Logout
+                                    <i class="fa fa-sign-out"></i> Izpiši me
                                 </a>
                             </div>
                         </div>

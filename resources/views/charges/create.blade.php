@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="page-title">
-        <span class="title">Dodaj oskrbljenca</span>
-        <div class="description">Dodajte novega oskrbljenca, za katerega boste skrbeli.</div>
+        <span class="title">Dodaj oskrbovanca</span>
+        <div class="description">Dodajte novega oskrbovanca, za katerega boste skrbeli.</div>
     </div>
 
     <div class="row">
@@ -11,7 +11,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">
-                        <span class="title">Dodaj oskrbljenca</span>
+                        <span class="title">Dodaj oskrbovanca</span>
                     </div>
                 </div>
                 <div class="card-body">
@@ -23,7 +23,7 @@
                     {{-- Submit button --}}
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            {!! Form::submit('Dodaj oskrbljenca', ['class' => 'btn btn-primary']) !!}
+                            {!! Form::submit('Dodaj oskrbovanca', ['class' => 'btn btn-primary']) !!}
                         </div>
                     </div>
 
