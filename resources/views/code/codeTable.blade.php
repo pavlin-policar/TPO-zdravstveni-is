@@ -8,6 +8,7 @@
         <th>Minimalna vrdnost</th>
         <th>Maksimalna vrdnost</th>
         <th>Nazadnje spremenjen</th>
+        <th>Dodajanje navodil</th>
         <th>Izbris</th>
     </tr>
     </thead>
@@ -20,6 +21,7 @@
         <th>Minimalna vrdnost</th>
         <th>Maksimalna vrdnost</th>
         <th>Nazadnje spremenjen</th>
+        <th>Dodajanje navodil</th>
         <th>Izbris</th>
     </tr>
     </tfoot>
@@ -33,6 +35,7 @@
             <td>{{ $item['min_value'] }}</td>
             <td>{{ $item['max_value'] }}</td>
             <td>{{ date('d.m.Y H:i', strtotime($item['updated_at'])) }}</td>
+            <td>{!! link_to_route('code.addManuals', "Uredi navodila", ['code' => $item], ['class' => 'btn btn-primary form-control']) !!}</td>
             <td>
                 {{ Form::open(['route' => ['code.deleteCode', $item['id'], 'extension' => null], 'method' => 'delete']) }}
                 {!! Form::submit('Izbris', ['class' => 'btn btn-warning form-control']) !!}

@@ -11,15 +11,15 @@
                 <div class="card-header">
                     <div id="example-2-2" class="pull-right">
                         <input type="submit" class="btn btn-success" id="btn-save" value="Shrani" />
-                        {!! link_to_route('medicalDiseases.list', 'Vrnite se nazaj', [], ['class' => 'btn btn-primary']) !!}
+                        {!! link_to_route($back, 'Vrnite se nazaj', [], ['class' => 'btn btn-primary']) !!}
                     </div>
                 </div>
                 <div class="card-body">
                     @include('medicalDiseases.medicalTable')
-                    {!! Form::open(array('route' => 'diseases.editMedicalList')) !!}
+                    {!! Form::open(array('route' => $save)) !!}
                     {{ csrf_field() }}
                     {{ Form::hidden('id', $code->id) }}
-                    {{ Form::hidden('medicals', "") }}
+                    {{ Form::hidden($postParameter, "") }}
                     {!! Form::close() !!}
                 </div>
             </div>

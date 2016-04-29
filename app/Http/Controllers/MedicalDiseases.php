@@ -33,6 +33,9 @@ class MedicalDiseases extends Controller
         } //kompliciranje, ce znas bol, poprav
         $data['allMedicals'] = Code::where('code_type', 14)->whereNotIn('id', $notIn)->get();
         //die(var_dump($disease));
+        $data['back'] = "medicalDiseases.list";
+        $data['save'] = "diseases.editMedicalList";
+        $data['postParameter'] = "medicals";
         return view('medicalDiseases.diseasesMedical')->with($data);
     }
 

@@ -252,6 +252,14 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'uses' => 'MedicalDiseases@editMedicalsList',
             'as' => 'diseases.editMedicalList',
         ]);
+        Route::get('/code/{code}/manuals', [
+            'uses' => 'ManualController@editCodeManual',
+            'as' => 'code.addManuals',
+        ]);
+        Route::post('/code/manuals/update', [
+            'uses' => 'ManualController@updateManualsList',
+            'as' => 'manuals.editManualsList',
+        ]);
         Route::get('/code-types', [
             'uses' => 'CodeController@showCodeTypes',
             'as' => 'code.index',

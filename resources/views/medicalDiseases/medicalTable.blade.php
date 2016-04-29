@@ -59,9 +59,9 @@
                 niz+=$( this ).attr('id') +",";
             });
             niz=niz.slice(0, -1);
-            $('input[name="medicals"]').val(niz);
+            $('input[name="{{ $postParameter }}"]').val(niz);
             //alert(niz);
-            $('input[name="medicals"]').parent().submit();
+            $('input[name="{{ $postParameter }}"]').parent().submit();
         });
 
     });
