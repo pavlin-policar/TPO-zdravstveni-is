@@ -1,7 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    {{ Html::style('vendor/css/bootstrap.min.css') }}
+    {{--{{ Html::style('vendor/css/bootstrap.min.css') }}--}}
     <style>
         html {
             font-family: DejaVu Sans, sans-serif;
