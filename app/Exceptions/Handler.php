@@ -49,6 +49,9 @@ class Handler extends ExceptionHandler
         if ($e instanceof InvalidActivationCodeException) {
             return response()->view('errors.confirmation-code', [], Response::HTTP_BAD_REQUEST);
         }
+        if ($e instanceof UnsupportedFileFormatException) {
+            return response()->view('errors.file-format', [], Response::HTTP_BAD_REQUEST);
+        }
         return parent::render($request, $e);
     }
 }

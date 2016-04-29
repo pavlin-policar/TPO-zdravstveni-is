@@ -1,8 +1,8 @@
 @extends('pdf.base')
 
 @section('content')
-  <h3>{{ $codeType->name }}</h3>
-  <p>{{ $codeType->description }}</p>
+  <h3>{{ $data->name }}</h3>
+  <p>{{ $data->description }}</p>
 
   <table class="datatable table table-striped" cellspacing="0" width="100%">
     <thead>
@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($codeType->codes as $code)
+    @foreach($data->codes as $code)
       <tr>
         <td>{{ $code['id'] }}</td>
         <td>{{ $code['code'] }}</td>

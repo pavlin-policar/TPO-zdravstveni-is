@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Models\Code;
 use App\Models\CodeType;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 class CodeController extends Controller
@@ -22,6 +21,7 @@ class CodeController extends Controller
      * @param CodeType $codeType
      * @param string $extension
      * @return mixed
+     * @throws \App\Exceptions\UnsupportedFileFormatException
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function showCodesForType(CodeType $codeType, $extension = null)
@@ -29,31 +29,9 @@ class CodeController extends Controller
         $this->authorize('can-see-code-type-codes', $codeType);
 
         if ($extension !== null) {
-            return $this->generateCodeTypeFile($codeType, $extension, 'codes');
+            return $this->generateExportFile($codeType, $extension, 'code.pdf.codes');
         } else {
             return view('code.codes')->with('codeType', $codeType);
-        }
-    }
-
-    /**
-     * Generate the appropriate file for the given data and file type for code type data.
-     *
-     * @param CodeType $codeType
-     * @param $extension
-     * @param $viewName
-     * @return mixed
-     */
-    protected function generateCodeTypeFile(CodeType $codeType, $extension, $viewName)
-    {
-        $extension = substr($extension, 1);
-        switch ($extension) {
-            case 'json':
-                return $codeType;
-            case 'pdf':
-                $pdf = PDF::loadView('code.pdf.' . $viewName, ['codeType' => $codeType]);
-                return $pdf->stream(md5(time()) . '.pdf');
-            default:
-                break;
         }
     }
 

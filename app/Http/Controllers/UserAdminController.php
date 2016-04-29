@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Code;
 use App\Models\User;
 use App\Repositories\UserRepository;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -30,6 +29,7 @@ class UserAdminController extends Controller
      * @param Request $request
      * @param null $extension
      * @return mixed
+     * @throws \App\Exceptions\UnsupportedFileFormatException
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request, $extension = null)
@@ -69,31 +69,9 @@ class UserAdminController extends Controller
         $data = $query->get();
 
         if ($extension !== null) {
-            return $this->generateUsersFile($data, $extension, $viewName);
+            return $this->generateExportFile($data, $extension, 'users.pdf.' . $viewName);
         } else {
             return view('users.' . $viewName)->with('users', $data)->with('filter', $filter);
-        }
-    }
-
-    /**
-     * Generate the appropriate file for the given data and file type for user data.
-     *
-     * @param $data
-     * @param $extension
-     * @param $viewName
-     * @return mixed
-     */
-    protected function generateUsersFile($data, $extension, $viewName)
-    {
-        $extension = substr($extension, 1);
-        switch ($extension) {
-            case 'json':
-                return $data;
-            case 'pdf':
-                $pdf = PDF::loadView('users.pdf.' . $viewName, ['users' => $data]);
-                return $pdf->stream(md5(time()) . '.pdf');
-            default:
-                break;
         }
     }
 

@@ -14,7 +14,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($users as $user)
+        @foreach($data as $user)
             <tr>
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->email }}</td>
