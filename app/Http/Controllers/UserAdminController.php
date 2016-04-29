@@ -80,6 +80,7 @@ class UserAdminController extends Controller
      *
      * @param $data
      * @param $extension
+     * @param $viewName
      * @return mixed
      */
     protected function generateUsersFile($data, $extension, $viewName)

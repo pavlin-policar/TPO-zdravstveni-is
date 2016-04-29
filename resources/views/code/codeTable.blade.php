@@ -7,13 +7,10 @@
         <th>Opis šifrante</th>
         <th>Minimalna vrdnost</th>
         <th>Maksimalna vrdnost</th>
-        @if(!isset($hideFoot))
-            <th>Nazadnje spremenjen</th>
-            <th>Izbris</th>
-        @endif
+        <th>Nazadnje spremenjen</th>
+        <th>Izbris</th>
     </tr>
     </thead>
-    @if(!isset($hideFoot))
     <tfoot>
     <tr>
         <th>ID</th>
@@ -26,9 +23,8 @@
         <th>Izbris</th>
     </tr>
     </tfoot>
-    @endif
     <tbody>
-    @foreach($array as $item)
+    @foreach($codeType->codes as $item)
         <tr>
             <td>{{ $item['id'] }}</td>
             <td>{{ $item['code'] }}</td>
@@ -36,14 +32,12 @@
             <td>{{ $item['description'] }}</td>
             <td>{{ $item['min_value'] }}</td>
             <td>{{ $item['max_value'] }}</td>
-            @if(!isset($hideFoot))
-                <td>{{ date("d.m.Y H:i",strtotime($item['updated_at'])) }}</td>
-                <td>
-                    {{ Form::open(['route' => ['code.deleteCode', $item['id']], 'method' => 'delete']) }}
-                    {!! Form::submit('Izbris', ['class' => 'btn btn-warning form-control']) !!}
-                    {{ Form::close() }}
-                </td>
-            @endif
+            <td>{{ date('d.m.Y H:i', strtotime($item['updated_at'])) }}</td>
+            <td>
+                {{ Form::open(['route' => ['code.deleteCode', $item['id'], 'extension' => null], 'method' => 'delete']) }}
+                {!! Form::submit('Izbris', ['class' => 'btn btn-warning form-control']) !!}
+                {{ Form::close() }}
+            </td>
         </tr>
     @endforeach
     </tbody>

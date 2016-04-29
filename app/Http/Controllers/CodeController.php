@@ -5,29 +5,64 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Models\Code;
 use App\Models\CodeType;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Barryvdh\DomPDF\Facade;
-use Dompdf\Adapter\CPDF;
-use Dompdf\Dompdf;
-use Dompdf\Exception;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Http\Request;
 
 class CodeController extends Controller
 {
+    private $request;
+
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     public function showCodeTypes()
     {
         return view('code.codeTypes')
             ->with('codeTypes', CodeType::all());
     }
 
-    public function showCodesForType($id)
+    /**
+     * Get a listing of codes for the given code type.
+     *
+     * @param CodeType $codeType
+     * @param string $extension
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function showCodesForType(CodeType $codeType, $extension = null)
     {
-        $codeType = CodeType::findOrFail($id);
-        $data['codeType'] = $codeType->name;
-        $data['codeTypeDescription'] = $codeType->description;
-        $data['array'] = Code::where('code_type', $id)->get();
-        $data['id'] = $id;
-        return view('code.codes')->with($data);
+        $this->authorize('can-see-code-type-codes', $codeType);
+
+        if ($extension !== null) {
+            return $this->generateCodeTypeFile($codeType, $extension, 'codes');
+        } else {
+            return view('code.codes')->with('codeType', $codeType);
+        }
+    }
+
+    /**
+     * Generate the appropriate file for the given data and file type for code type data.
+     *
+     * @param CodeType $codeType
+     * @param $extension
+     * @param $viewName
+     * @return mixed
+     */
+    protected function generateCodeTypeFile(CodeType $codeType, $extension, $viewName)
+    {
+        $extension = substr($extension, 1);
+        switch ($extension) {
+            case 'json':
+                return $codeType;
+            case 'pdf':
+                $pdf = PDF::loadView('code.pdf.' . $viewName, ['codeType' => $codeType]);
+                return $pdf->stream(md5(time()) . '.pdf');
+            default:
+                break;
+        }
     }
 
     public function addCodeType()
@@ -76,22 +111,6 @@ class CodeController extends Controller
         return redirect()->route('code.edit', ['id' => $code->id]);
         //return redirect("codeType/".$codeType->codeType);
     }
-
-    public function exportCodeType($id)
-    {
-        $data['array'] = Code::where('code_type', $id)->get();
-        $data['codeType'] = CodeType::findOrFail($id)->name;
-        $data['hideFoot']=true;
-        //return view('code.pdfExport')->with($data);
-        $pdf = Facade::loadView('code.pdfExport',$data);
-        return $pdf->download('sifranti.pdf');
-        /*$pdf = App::make('dompdf.wrapper');
-        //$pdf->loadHTML('<h1>Test</h1>');
-        $pdf->loadView('code.codeTable',$data);
-        return $pdf->stream();
-        return "EXPORTING ".$id;*/
-    }
-
     public function deleteCode($id)
     {
         $code = Code::findOrFail($id);

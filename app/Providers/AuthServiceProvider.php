@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\CodeType;
 use App\Models\User;
+use App\Policies\CodeTypePolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         User::class => UserPolicy::class,
+        CodeType::class => CodeTypePolicy::class,
     ];
 
     /**

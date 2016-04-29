@@ -260,10 +260,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'uses' => 'CodeController@addCodeType',
             'as' => 'codeTypes.getCreate',
         ]);
-        Route::get('/code-types/{id}', [
+        Route::get('/code-types/{codeType}{extension?}', [
             'uses' => 'CodeController@showCodesForType',
             'as' => 'codeTypes.show',
-        ]);
+        ])->where(['codeType' => '[0-9]+', 'extension' => '\..+']);
         Route::post('/code-types', [
             'uses' => 'CodeController@createCodeType',
             'as' => 'codeTypes.postCreate',

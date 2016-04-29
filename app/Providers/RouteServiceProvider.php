@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\CodeType;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
@@ -27,6 +28,11 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router->bind('deletedUser', function ($value) {
             return User::withTrashed()->whereId($value)->firstOrFail();
+        });
+        // code types are almost always used in conjunction with their codes, also, when exporting
+        // data to json, this makes the data available, also makes various loops faster.
+        $router->bind('codeType', function ($value) {
+            return CodeType::with('codes')->whereId($value)->firstOrFail();
         });
 
         parent::boot($router);
