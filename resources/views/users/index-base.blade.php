@@ -18,14 +18,15 @@
                 </div>
                 <div class="card-body">
                     {!! link_to_route('users.index', 'Vsi uporabniki', [], ['class' => 'btn btn-default']) !!}
-                    {!! link_to_route('users.index', 'Nedokončane registracije', ['extension' => null, 'filter' => 'not-finished'], ['class' => 'btn btn-default']) !!}
+                    {!! link_to_route('users.index', 'Nedokončane registracije', ['extension' => null,'filter' => 'not-finished'], ['class' => 'btn btn-default']) !!}
                     {!! link_to_route('users.index', 'Izbrisani uporabniki', ['extension' => null, 'filter' => 'deleted'], ['class' => 'btn btn-default']) !!}
+                    {!! link_to_route('users.index', 'Išči po registracijah', ['extension' => null, 'filter' => 'new-users'], ['class' => 'btn btn-default']) !!}
 
                     <div class="btn-group pull-right">
                         <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Izvozi... <span class="caret"></span></button>
                         <ul class="dropdown-menu" role="menu">
-                            <li>{!! link_to_route('users.index', 'JSON', ['extension' => '.json', 'filter' => $filter]) !!}</li>
-                            <li>{!! link_to_route('users.index', 'PDF', ['extension' => '.pdf', 'filter' => $filter]) !!}</li>
+                            <li>{!! link_to_route('users.index', 'JSON', array_merge(['extension' => '.json'], Request::query())) !!}</li>
+                            <li>{!! link_to_route('users.index', 'PDF', array_merge(['extension' => '.pdf'], Request::query())) !!}</li>
                         </ul>
                     </div>
                     <br>

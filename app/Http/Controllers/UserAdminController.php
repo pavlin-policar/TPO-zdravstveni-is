@@ -52,6 +52,15 @@ class UserAdminController extends Controller
                 break;
             // users registered within a certain time period
             case 'new-users':
+                $startDate = $request->query('start-date', null);
+                if (strcasecmp($startDate, '') !== 0) {
+                    $query = $query->where('created_at', '>=', $startDate);
+                }
+                $endDate = $request->query('end-date', null);
+                if (strcasecmp($endDate, '') !== 0) {
+                    $query = $query->where('created_at', '<=', $endDate);
+                }
+                $viewName = 'index-search-registered';
                 break;
             default:
                 $query = $query->createdProfile();

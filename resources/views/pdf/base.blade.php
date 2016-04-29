@@ -5,6 +5,7 @@
     <style>
         html {
             font-family: DejaVu Sans, sans-serif;
+            font-size: 10px;
         }
         thead {
             border-bottom: 2px solid #ccc;
