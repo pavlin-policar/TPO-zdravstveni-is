@@ -94,6 +94,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
     Route::get('/', function () {
         return redirect()->route('dashboard.show');
     });
+	
+	    Route::get('/calendar', [
+        'as' => 'calendar.user',
+        'uses' => 'CalendarController@index',
+    ]);
 
     Route::get('/dashboard/{user?}', [
         'uses' => 'HomeController@dashboard',
