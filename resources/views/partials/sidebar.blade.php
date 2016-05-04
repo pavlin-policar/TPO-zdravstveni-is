@@ -30,7 +30,7 @@
                                     {!! link_to_route('check.medical', 'Zdravila') !!}
                                 </li>
                                 <li>
-                                    {!! link_to_route('dashboard.show', 'Meritve') !!}
+                                    {!! link_to_route('check.measurement', 'Meritve') !!}
                                 </li>
                                 <li>
                                     {!! link_to_route('check.disease', 'Bolezni in alergije') !!}

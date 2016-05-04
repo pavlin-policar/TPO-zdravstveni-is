@@ -174,6 +174,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'check.medical'
     ]);
 
+    Route::get('/check/measurement/{user?}', [
+        'uses' => 'CheckController@showMeasurement',
+        'as' => 'check.measurement'
+    ]);
+
     Route::get('/check/disease/{user?}', [
         'uses' => 'CheckController@showDisease',
         'as' => 'check.disease'
@@ -204,6 +209,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'as' => 'check.createCode'
         ]);
 
+        Route::post('/doctor/check/measurement', [
+            'uses' => 'CheckController@checkAddMeasurement',
+            'as' => 'check.createMeasurement'
+        ]);
+
         Route::put('/doctor/check/{id}', [
             'uses' => 'CheckController@checkUpdate',
             'as' => 'check.update'
@@ -212,6 +222,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         Route::put('/doctor/check/code/{id}', [
             'uses' => 'CheckController@checkUpdateCode',
             'as' => 'check.updateCode'
+        ]);
+
+        Route::put('/doctor/check/measurement/{id}', [
+            'uses' => 'CheckController@checkUpdateMeasurement',
+            'as' => 'check.updateMeasurement'
         ]);
 
         Route::get('/doctor/check/{id}', [

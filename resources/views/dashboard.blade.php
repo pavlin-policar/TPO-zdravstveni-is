@@ -20,13 +20,13 @@
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                    <a href="#measurment">
+                    <a href="{{ url('/check/measurement') }}">
                         <div class="card yellow summary-inline">
                             <div class="card-body">
                                 <i class="icon fa fa-hospital-o fa-4x"></i>
                                 <div class="content">
                                     <div class="title">Meritve</div>
-                                    <div class="sub-title">_</div>
+                                    <div class="sub-title">{{ count($checkMeasurement) }}</div>
                                 </div>
                                 <div class="clear-both"></div>
                             </div>
@@ -331,6 +331,7 @@
                                             <thead>
                                             <tr>
                                                 <td>Meritev:</td>
+                                                <td>Opis:</td>
                                                 <td>Datum meritve:</td>
                                             </tr>
                                             </thead>
@@ -338,6 +339,7 @@
                                             @for ($x=0; $x < count($checkMeasurement); $x++)
                                                 <tr>
                                                     <td>{{ $checkMeasurement[$x]->name }}</td>
+                                                    <td>{{ $checkMeasurement[$x]->description }}</td>
                                                     <td>{{ date("d.m.Y H:i",strtotime($checkMeasurement[$x]->time)) }}</td>
                                                 </tr>
                                             @endfor

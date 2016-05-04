@@ -77,7 +77,7 @@
                 </div>
             </div>
             @endif
-            @if($checkMeasurement != null)
+            @if(count($checkMeasurement) > 0)
             <div class="row">
                 <div class="col-xs-12">
                     <div class="card">
@@ -95,8 +95,12 @@
                                         <td>{{ $checkMeasurement[$x]->name }}</td>
                                     </tr>
                                     <tr>
+                                        <td>Opis: </td>
+                                        <td>{{ $checkMeasurement[$x]->description }}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Podatki: </td>
-                                        <td>{{ $checkMeasurement[$x]->result }}</td>
+                                        <td>{{ $checkMeasurement[$x]->result }} mmol/l</td>
                                     </tr>
                                     <tr>
                                         <td>Datum meritve: </td>

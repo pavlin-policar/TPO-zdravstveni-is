@@ -1357,37 +1357,37 @@ Tekočino pijemo šele po obroku.',
         ]);
 		$meritve->codes()->create([
             'name' => 'Merjenje glukoze',
-			'description' => '7-krat na dan: pred in po obrokih in pred spanjem',
+			'description' => 'Merimo 7-krat na dan: pred in po obrokih in pred spanjem. Enota je milimol na liter - mmol/l',
 			'min_value' => '-50',
             'max_value' => '100',
         ]);
 		$meritve->codes()->create([
             'name' => 'Sistolični krvni tlak',
-			'description' => 'Meri se zjutraj in zvečer',
+			'description' => 'Meri se zjutraj in zvečer. Enota je millimeter živega srebra - mmHg',
 			'min_value' => '0',
             'max_value' => '600',
         ]);
 		$meritve->codes()->create([
             'name' => 'Diastolični krvni tlak',
-			'description' => 'Meri se zjutraj in zvečer',
+			'description' => 'Meri se zjutraj in zvečer. Enota je millimeter živega srebra - mmHg',
 			'min_value' => '0',
             'max_value' => '500',
         ]);
 		$meritve->codes()->create([
             'name' => 'Merjenje srčnega utripa',
-			'description' => 'Meri se skupaj z pritiskom',
+			'description' => 'Meri se skupaj z pritiskom. Enota je število srčnih utripov v minuti – BPM (beats per minute)',
 			'min_value' => '0',
             'max_value' => '500',
         ]);
 		$meritve->codes()->create([
             'name' => 'Merjenje telesne temperature',
-			'description' => 'Meri se 2 – 3 na dan',
+			'description' => 'Meri se 2 – 3 na dan. Enota je stopinja Celzija - °C',
 			'min_value' => '30',
             'max_value' => '50',
         ]);
 		$meritve->codes()->create([
             'name' => 'Merjenje telesne teže',
-			'description' => 'Meri se običajno enkrat na teden (pri bolnikih s srčnim popuščanjem se meri enkrat na dan)',
+			'description' => 'Meri se običajno enkrat na teden (pri bolnikih s srčnim popuščanjem se meri enkrat na dan). Enota je kilogram - kg. Normalne vrednosti so vrednosti indeksa telesne mase – BMI (body mass index)',
 			'min_value' => '1',
             'max_value' => '250',
         ]);

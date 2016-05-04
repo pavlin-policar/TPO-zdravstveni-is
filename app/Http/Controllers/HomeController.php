@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CheckCodes;
 use Carbon\Carbon;
 use DB;
 use App\Http\Requests;
@@ -72,8 +73,7 @@ class HomeController extends Controller
 
 
 
-        $data['checkData'] = DB::table('checks_codes')
-                                ->join('checks', 'checks_codes.check', '=', 'checks.id')
+        $data['checkData'] = CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
                                 ->join('codes', 'checks_codes.code', '=', 'codes.id')
                                 ->select('checks_codes.*', 'codes.name', 'codes.code_type')
                                 ->where('checks.patient', '=', $user->id)
@@ -84,8 +84,7 @@ class HomeController extends Controller
                                 })
                                 ->get();
 
-        $data['checkCountMedical'] = DB::table('checks_codes')
-                                ->join('checks', 'checks_codes.check', '=', 'checks.id')
+        $data['checkCountMedical'] = CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
                                 ->join('codes', 'checks_codes.code', '=', 'codes.id')
                                 ->select('checks_codes.id')
                                 ->where('codes.code_type', 14)
@@ -96,8 +95,7 @@ class HomeController extends Controller
                                 })
                                 ->count();
 
-        $data['checkCountDisease'] = DB::table('checks_codes')
-                                ->join('checks', 'checks_codes.check', '=', 'checks.id')
+        $data['checkCountDisease'] = CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
                                 ->join('codes', 'checks_codes.code', '=', 'codes.id')
                                 ->select('checks_codes.*')
                                 ->where('codes.code_type', 13)
@@ -109,8 +107,7 @@ class HomeController extends Controller
                                 })
                                 ->count();
 
-        $data['checkCountDiet'] = DB::table('checks_codes')
-                                ->join('checks', 'checks_codes.check', '=', 'checks.id')
+        $data['checkCountDiet'] = CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
                                 ->join('codes', 'checks_codes.code', '=', 'codes.id')
                                 ->select('checks_codes.*')
                                 ->where('codes.code_type', 12)
@@ -122,23 +119,22 @@ class HomeController extends Controller
                                 })
                                 ->count();
 
-        $data['checkMeasurement'] = DB::table('codes')
-                                ->join('code_types', 'codes.code_type', '=', 'code_types.id')
-                                ->join('measurements', 'codes.id', '=', 'measurements.type')
-                                ->select('measurements.*', 'code_types.name')
+        $lastMonth = new Carbon('last month');
+        $data['checkMeasurement'] = Measurement::join('codes', 'measurements.type', '=', 'codes.id')
+                                ->select('measurements.*', 'codes.name', 'codes.description')
                                 ->where('measurements.patient', '=', $user->id)
+                                ->where('measurements.time', '>', $lastMonth)
                                 ->get();
 
-        $data['checksOld'] = DB::table('checks')
-                                ->join('users', 'checks.doctor', '=', 'users.id')
+        $data['checksOld'] = Checks::join('users', 'checks.doctor', '=', 'users.id')
                                 ->join('doctor_dates', 'checks.doctor_date', '=', 'doctor_dates.id')
                                 ->select('checks.id', 'users.first_name', 'users.last_name', 'doctor_dates.note', 'doctor_dates.time')
                                 ->where('checks.patient', $user->id)
                                 ->where('doctor_dates.time', '<', Carbon::now())
+                                ->orderBy('doctor_dates.time', 'desc')
                                 ->get();
 
-        $data['allDatesDoctor'] = DB::table('doctor_dates')
-                                ->join('users', 'doctor_dates.patient', '=', 'users.id')
+        $data['allDatesDoctor'] = DoctorDates::join('users', 'doctor_dates.patient', '=', 'users.id')
                                 ->select('doctor_dates.note', 'doctor_dates.time', 'users.*', 'doctor_dates.id')
                                 ->where('doctor_dates.doctor', $user->id)
                                 ->orderBy('doctor_dates.time', 'desc')
