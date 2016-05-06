@@ -100,6 +100,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'CalendarController@index',
     ]);
 
+    Route::get('/calendar/cancelEvent/{time}/{user}', [
+        'as' => 'calendar.cancel',
+        'uses' => 'CalendarController@cancel',
+    ]);
+
     Route::get('/dashboard/{user?}', [
         'uses' => 'HomeController@dashboard',
         'as' => 'dashboard.show',

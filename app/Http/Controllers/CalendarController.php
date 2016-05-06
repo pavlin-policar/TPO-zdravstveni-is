@@ -27,35 +27,35 @@ class CalendarController extends Controller
 
     public function index()
     {
-
-        // TODO Differentiate data: doctor VS user (title for doc gives user and their input)
-        // TODO Maybe display current users events separately, with option to cancel them
-        // TODO Add event functionality (addClick with AJAX?)
-
         $user = Auth::user();
-        $userType = $user->person_type;
-
         $docDates = new DoctorDates();
         $checkups = $docDates->checks();
         //dd($checkups);
         
         $events = [];
 
-        // Uporabniški dogodki:
         foreach ($checkups as $checkup) {
+
+            //TODO discard events before today's date
+
             $backgroundClr = '#300';
+            $url = '#';
+            $start = $checkup->time;
+            $end = $start + '00:30:00';
+            $note = $checkup->note;
+            $doctor = $checkup->doctor;
+
             if ($user == $checkup->patient) {
-                echo $title = $checkup->patient;
-                echo $backgroundClr = '#800';
-                //$url = LINK TO CANCEL APPOINTMENT?
+                $title = $checkup->patient;
+                $backgroundClr = '#800';
+                $url = Route('/calendar/cancelEvent?time=' . $start . '&user=' . $user);
+            }
+            elseif (null == $checkup->patitent) {
+                $title = 'Prost termin';
+                $backgroundClr = '#500';
+                $url = Route('/calendar/registerEvent?time=' . $start . '&user=' . $user);
             }
             else $title = 'Zaseden termin';
-
-            echo $start = $checkup->time;
-            echo $end = $start + '00:30';
-
-            echo $note = $checkup->note;
-            echo $doctor = $checkup->doctor;
 
             $events[] = \Calendar::event(
                 $title,
@@ -64,7 +64,7 @@ class CalendarController extends Controller
                 $end,
                 'stringEventId',
                 [
-                    'url' => '#',
+                    'url' => $url,
                     'color' => $backgroundClr,
                 ]
             );
@@ -136,40 +136,51 @@ class CalendarController extends Controller
             ]
         );
 
-        /*
-         * {
-                "title":"Free Pizza",
-                "allday":"false",
-                "description":"<p>This is just a fake description for the Free Pizza.</p><p>Nothing to see!</p>",
-                "start":moment().subtract('days',14),
-                "end":moment().subtract('days',14),
-                "url":"http://www.mikesmithdev.com/blog/coding-without-music-vs-coding-with-music/"
-            },
-         */
-
         $calendar = \Calendar::addEvents($events);//->setOptions([ //set fullcalendar options
-            //'lang' => 'sl',
             //]);  //add an array with addEvents
 
         $today = new \DateTime();
         return view('calendar', compact('calendar', 'events', 'today'));
         //View::make('calendar', compact('calendar'));
     }
+    
+    public function cancel($time, $user) {
 
+        $docDates = new DoctorDates();
+        $checkups = $docDates->checks();
+        //dd($checkups);
 
-    /**
-     * Add the relation between two users to the database.
-     *
-     * @param User $user1
-     * @param User $user2
-     * @param $relationId
-     */
-    protected function createRelation(User $user1, User $user2, $relationId)
-    {
-        // add relation to pivot table
-        $user1->relationships()->sync([$user2->id => ['relation_id' => $relationId]]);
-        // define the inverse
-        $user2->relationships()->sync([$user1->id => ['relation_id' => $relationId]]);
+        foreach ($checkups as $checkup) {
+            if ($checkup->time == $time) {
+                $checkup->patient = null;
+                $checkup->note = null;
+
+                $checkup->save();
+                break;
+            }
+        }
+
+        return redirect()->route('calendar.user');
     }
 
+    public function register($time, $user) {
+
+        $docDates = new DoctorDates();
+        $checkups = $docDates->checks();
+        //dd($checkups);
+
+        foreach ($checkups as $checkup) {
+            if ($checkup->start == $time) {
+                $checkup->patient = $user;
+                
+                //TODO How to add notes?
+                $checkup->note = null;
+
+                $checkup->save();
+                break;
+            }
+        }
+
+        return redirect()->route('calendar.user');
+    }
 }

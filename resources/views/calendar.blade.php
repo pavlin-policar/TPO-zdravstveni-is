@@ -23,16 +23,11 @@
         {!! $calendar->script() !!}
     </div>
 
+    <!--Doctor's input schedule form for each day. Input field for repetition vs end date of repetition?-->
+
     <style>
         #calendar {
             width: 900px;
         }
     </style>
-
-    <div id="eventContent" title="Event Details", style="display:none;">
-        <div id="eventInfo"></div>
-        <p><strong><a id="eventLink" target="_blank">Read More</a></strong></p>
-    </div>
-
-
 @endsection
