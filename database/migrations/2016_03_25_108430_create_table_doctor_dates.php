@@ -27,6 +27,11 @@ class CreateTableDoctorDates extends Migration
 			$table->foreign('doctor')
                 ->references('id')->on('users')
                 ->onUpdate('cascade');
+				
+			$table->integer('who_inserted')->unsigned()->nullable();
+			$table->foreign('who_inserted')
+                ->references('id')->on('users')
+                ->onUpdate('cascade');
         });
     }
 
