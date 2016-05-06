@@ -28,9 +28,16 @@ class CalendarController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $docDates = new DoctorDates();
-        $checkups = $docDates->checks();
-        //dd($checkups);
+        $checkups = null;
+        if ($user->isDoctor()) {
+            $checkups = DoctorDates::where('doctor', '=', $user->id)->get();
+            //doctorChecks!!!
+            //patientChecks!!!
+        }
+        elseif ($user->hasDoctors()){
+            $checkups = DoctorDates::where('patient', '=', $user->id)->get();
+            $checkups += DoctorDates::where('doctor', '=', $user->personal_doctor_id)->where('patient', '=', null)->get();
+        }
         
         $events = [];
 
@@ -41,19 +48,21 @@ class CalendarController extends Controller
             $backgroundClr = '#300';
             $url = '#';
             $start = $checkup->time;
-            $end = $start + '00:30:00';
-            $note = $checkup->note;
-            $doctor = $checkup->doctor;
+            $end = $start->addMinutes(30);
 
-            if ($user == $checkup->patient) {
+            if ($user->id == $checkup->patient) {
                 $title = $checkup->patient;
                 $backgroundClr = '#800';
-                $url = Route('/calendar/cancelEvent?time=' . $start . '&user=' . $user);
+                //TODO fix URLs
+                $url = Route('calendar.cancelEvent', ['method' => 'POST', $user->id, $start]);
+                //$url = Route('/calendar/cancelEvent/' . $start . '/' . $user->id, ['method' => 'POST']);
             }
             elseif (null == $checkup->patitent) {
                 $title = 'Prost termin';
                 $backgroundClr = '#500';
-                $url = Route('/calendar/registerEvent?time=' . $start . '&user=' . $user);
+                //TODO fix URLs
+                if ($user->isDoctor()) $url = Route('calendar.cancelEvent', [$user->id, $start]);
+                else $url = Route('calendar.registerEvent', ['method' => 'POST', $user->id, $start]);
             }
             else $title = 'Zaseden termin';
 
@@ -140,8 +149,12 @@ class CalendarController extends Controller
             //]);  //add an array with addEvents
 
         $today = new \DateTime();
-        return view('calendar', compact('calendar', 'events', 'today'));
+        return view('calendarEvents.calendar', compact('calendar', 'events', 'today'));
         //View::make('calendar', compact('calendar'));
+    }
+
+    public function manageSchedule() {
+        dd(Auth::user()->id);
     }
     
     public function cancel($time, $user) {
@@ -167,7 +180,7 @@ class CalendarController extends Controller
 
         $docDates = new DoctorDates();
         $checkups = $docDates->checks();
-        //dd($checkups);
+        dd($checkups);
 
         foreach ($checkups as $checkup) {
             if ($checkup->start == $time) {

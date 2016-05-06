@@ -112,8 +112,5 @@
 
     </div>
 
-    <!-- TODO 1. change Post, so it corresponds with DB values; 2. add birthDate, personalDoctor and personalDentist; 3. figure out how does ZZCardNumber work? -->
-    <!-- TODO fix gender and post number insertion (foreign key!) -->
-
 @endsection
 

@@ -95,15 +95,31 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         return redirect()->route('dashboard.show');
     });
 	
-	    Route::get('/calendar', [
+    Route::get('/calendar', [
         'as' => 'calendar.user',
         'uses' => 'CalendarController@index',
     ]);
 
-    Route::get('/calendar/cancelEvent/{time}/{user}', [
-        'as' => 'calendar.cancel',
+    Route::get('/calendar/schedule', [
+        'as' => 'calendar.schedule',
+        'uses' => 'CalendarController@manageSchedule',
+    ]);
+
+    Route::post('/calendar/schedule', [
+        'as' => 'calendar.schedule',
+        'uses' => 'CalendarController@createSchedule',
+    ]);
+
+    Route::post('/calendar/cancelEvent', [
+        'as' => 'calendar.cancelEvent',
         'uses' => 'CalendarController@cancel',
     ]);
+
+    Route::post('/calendar/registerEvent', [
+        'as' => 'calendar.registerEvent',
+        'uses' => 'CalendarController@registerEvent',
+    ]);
+
 
     Route::get('/dashboard/{user?}', [
         'uses' => 'HomeController@dashboard',

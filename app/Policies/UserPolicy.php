@@ -80,4 +80,8 @@ class UserPolicy
     {
         return $user->isAdmin();
     }
+
+    public function canDoDoctoryStuff(User $user) {
+        return $user->isDoctor();
+    }
 }
