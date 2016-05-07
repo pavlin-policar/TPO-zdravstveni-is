@@ -6,8 +6,12 @@
         @can('canDoDoctoryStuff', App\Models\User::class)
             <span class="title">Pregled</span>
             <div class="description">Podatki o pregledu</div>
+        @elseif ($creator != null && $creator->who_inserted == Auth::user()->id)
+            <span class="title">Pregled</span>
+            <div class="description">Podatki o pregledu</div>
         @else
             <div class="page-title">
+
                 <span class="title">Naročanje</span>
                 <div class="description">Naročite se na prost termin</div>
             </div>

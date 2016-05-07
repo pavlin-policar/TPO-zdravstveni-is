@@ -61,38 +61,40 @@ class CalendarController extends Controller
             foreach ($checkups as $checkup) {
                 //dd($checkup);
 
-                //TODO discard events before today's date
+                //TODO discard events before today's date?
 
                 $backgroundClr = '#300';
                 $start = $checkup->time;
                 $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
 
+                //dd($title);
+
                 // We're the patient
                 if ($user->id == $checkup->patient) {
-                    $title = $checkup->patient;
+                    $title = User::where('id', '=', $checkup->patient)->first();
+                    $title = $title->fullName;
                     $backgroundClr = '#800';
                     //if ($user->isDoctor()) $backgroundClr = '#1200';
                 } // We're the ones who registered the appointment
                 elseif ($user->id == $checkup->who_inserted) {
-                    $title = $checkup->patient;
+                    $title = User::where('id', '=', $checkup->patient)->first();
+                    $title = $title->fullName;
                     $backgroundClr = '#700';
                 } // The event is still open
                 elseif (null == $checkup->patitent) {
                     $title = 'Prost termin';
                     $backgroundClr = '#500';
 
-                    if ($user->isDoctor() && $checkup->doctor == $user->id) {
+                    /*if ($user->isDoctor() && $checkup->doctor == $user->id) {
                         $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
                         //$url = Route('/calendar/cancelEvent/' . $start . '/' . $user->id);
                     } else {
                         $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
-                    }
+                    }*/
 
                 }
 
-                //$ends = clone($start);
-                //TODO read interval from DB
-                //$ends->addMinutes(15);
+                //dd($title);
                 $ends = $checkup->time_end;
                 $end = Carbon::createFromFormat('Y-m-d H:i:s',$ends);
 
@@ -202,9 +204,12 @@ class CalendarController extends Controller
 
     public function registerEventForm($time, $user, $doctor) {
         $patient = User::where('id', '=', $user)->first();
+
         // Ali je dogodek že zaseden? Potem ga morda ta oseba lahko izbriše!
-        $creator = DoctorDates::where('patient', '=', $user)->where('time', '=', $time)->first();
+        $start = Carbon::createFromFormat('d.m.Y H:i', $time);
+        $creator = DoctorDates::where('patient', '=', $user)->where('time', '=', $start)->first();
         //dd($creator);
+        //dd(Auth::user()->id);
         return view('calendarEvents.registerFreeEvent', ['time' => $time, 'patient' => $patient, 'creator' => $creator, 'doctor' => $doctor]);
     }
 
@@ -231,18 +236,45 @@ class CalendarController extends Controller
         }
     }
 
-    public function cancel($time, $user) {
+    public function cancel($time, $userId, $doctorId) {
 
-        //TODO is event empty? -> is this user the same one who created empty event? -> is the event stil far enough away? ALLOW DELETE
+        //TODO is event empty? -> is this user the same one who created empty event? -> is the event still far enough away? ALLOW DELETE
         //TODO             \-> not empty -> is this user the same one, who registered the appointment? -> is the event still far enough away? ALLOW RELEASE OF THE EVENT
 
+        $formatedTime = Carbon::createFromFormat('d.m.Y H:i', $time);
+
         // 1. Get the event
+        $event = DoctorDates::where('doctor', '=', $doctorId)->where('time', '=', $formatedTime)->first();
 
         // 2. Is event empty?
+        if ($event->patient == null) {
+            if ($event->doctor == Auth::user()->id) {
+                // Check event's date
+                $today = Carbon::now();
+                $time = Carbon::parse($time);
+                //dd($time);
+                $date = $today->diff($time);
+                //dd($date);
+                if ($date->days > 1) $event->delete();
+            }
+        }
+        else {
+            // 3. Did I sign someone/myself up for this appointment?
+            if ($event->who_inserted == Auth::user()->id) {
+                // Check event's date
+                $today = Carbon::now();
+                $time = Carbon::parse($time);
+                $date = $today->diff($time);
+                if ($date->days > 1) {
+                    if ($date->h > 12) {
+                        $event->patient = null;
+                        $event->who_inserted = null;
+                        $event->save();
+                    }
+                }
+            }
 
-        // 3. Am I creator of said event?
-
-        dd('sup');
+        }
 
         return redirect()->route('calendar.user');
     }
