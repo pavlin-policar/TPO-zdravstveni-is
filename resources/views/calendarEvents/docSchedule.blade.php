@@ -1,51 +1,133 @@
 @extends('layouts.master')
 @section('content')
 
-    <div class="form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">Ime</label>
-
-        <div class="col-md-6">
-            <input type="firstName" @if(isset($user)) value="{{ $user["firstName"] }}" @endif class="form-control" name="firstName">
-            @if ($errors->has('firstName'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('firstName') }}</strong>
-                </span>
-            @endif
-        </div>
+    <div class="page-title">
+        <span class="title">Naročanje - termini</span>
+        <div class="description">Ustvari urnik prostih terminov</div>
     </div>
 
-    <div class="form-group{{ $errors->has('gender') ? ' has-error' : '' }}">
-        <label class="col-md-4 control-label">Spol</label>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="title">Termini</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>Prosimo, izpolnite vsa zahtevana polja. Zahtevana polja so označena s zvezdico (*).</p>
+                    {!! Form::open(['route' => 'calendar.schedule', 'method' => 'post', 'class' => 'form-horizontal']) !!}
 
-        <div class="col-md-6">
-            <select name="gender" type="gender" class="form-control input-sm">
-                <option @if(isset($user->gender) == 0) selected="selected" @endif value="male">male</option>
-                <option @if(isset($user->gender) == 1) selected="selected" @endif value="female">female</option>
-            </select>
-            @if ($errors->has('gender'))
-                <span class="help-block">
-                    <strong>{{ $errors->first('gender') }}</strong>
-                </span>
-            @endif
+
+                        <div class="form-group{{ $errors->has('days') ? ' has-error' : '' }}">
+                            {!! Form::label('days[]', 'Ponovite termine za vse:', ['class' => 'col-sm-2 control-label']) !!}
+
+                            <div class="col-sm-10">
+                                {!! Form::checkbox('days[]', 1) !!}
+                                {!! Form::label('days[]', 'PON', ['class' => 'control-label']) !!}
+                                {!! Form::checkbox('days[]', 2) !!}
+                                {!! Form::label('days[]', 'TOR', ['class' => 'control-label']) !!}
+                                {!! Form::checkbox('days[]', 3) !!}
+                                {!! Form::label('days[]', 'SRE', ['class' => 'control-label']) !!}
+                                {!! Form::checkbox('days[]', 4) !!}
+                                {!! Form::label('days[]', 'ČET', ['class' => 'control-label']) !!}
+                                {!! Form::checkbox('days[]', 5) !!}
+                                {!! Form::label('days[]', 'PET', ['class' => 'control-label']) !!}
+                                @if ($errors->has('days'))
+                                    <span class="help-block">{{ $errors->first('days') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('hourStart') ? ' has-error' : '' }}">
+                            {!! Form::label('days[]', 'Začetek in konec pregledov:', ['class' => 'col-sm-2 control-label']) !!}
+
+                            <div class="col-sm-10">
+                                {!! Form::label('hourStart', 'OD ure:', ['class' => 'control-label']) !!}
+                                {!! Form::date('hourStart', '') !!} <br />
+
+                                @if ($errors->has('hourStart'))
+                                    <span class="help-block">{{ $errors->first('hourStart') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('hourEnd') ? ' has-error' : '' }}">
+
+                            <div class="col-lg-offset-2 col-sm-10">
+                                {!! Form::label('hourEnd', 'DO ure:', ['class' => 'control-label']) !!}
+                                {!! Form::date('hourEnd', '') !!} <br />
+
+                                @if ($errors->has('hourEnd'))
+                                    <span class="help-block">{{ $errors->first('hourEnd') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('dayStart') ? ' has-error' : '' }}">
+                            {!! Form::label('dayStart', 'Prvi delovni dan:', ['class' => 'col-sm-2 control-label']) !!}
+
+                            <div class="col-sm-10">
+                                {!! Form::date('dayStart', '') !!} <br />
+
+                                @if ($errors->has('dayStart'))
+                                    <span class="help-block">{{ $errors->first('dayStart') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('dayEnd') ? ' has-error' : '' }}">
+                            {!! Form::label('dayEnd', 'Zadnji delovni dan:', ['class' => 'col-sm-2 control-label']) !!}
+
+                            <div class="col-sm-10">
+                                {!! Form::date('dayEnd', '') !!} <br />
+
+                                @if ($errors->has('dayEnd'))
+                                    <span class="help-block">{{ $errors->first('dayEnd') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!--div class="form-group{{ $errors->has('interval') ? ' has-error' : '' }}">
+                            {!! Form::label('intervalLabel', 'Interval terminov:', ['class' => 'col-sm-2 control-label']) !!}
+
+                            <div class="col-sm-10">
+                                {!! Form::label('interval', 'Dolžina termina (v minutah):', ['class' => 'control-label']) !!}
+                                {!! Form::date('interval', '') !!} <br />
+
+                                @if ($errors->has('interval'))
+                                    <span class="help-block">{{ $errors->first('interval') }}</span>
+                                @endif
+                            </div>
+                        </--div-->
+
+                        <div class="form-group{{ $errors->has('optionalBreakStart') ? ' has-error' : '' }}">
+                            {!! Form::label('', '', ['class' => 'col-sm-2 control-label']) !!}
+
+                            <div class="col-sm-10">
+                                {!! Form::checkbox('break') !!}
+                                {!! Form::label('optionalBreakStart', 'Začetek odmora:', ['class' => 'control-label']) !!}
+                                {!! Form::time('breakBreakStart', '') !!} <br />
+
+                                @if ($errors->has('optionalBreakStart'))
+                                    <span class="help-block">{{ $errors->first('optionalBreakStart') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
+
+
+                        {{-- Submit button --}}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                {!! Form::submit('Ustvari urnik pregledov', ['class' => 'btn btn-primary']) !!}
+                            </div>
+                        </div>
+
+                    {!! Form::close() !!}
+                </div>
+            </div>
         </div>
-
     </div>
-
-    <form action="demo_form.asp" method="get">
-        VSAK:<br>
-        <input type="checkbox" name="vehicle" value="Bike"> PON<br>
-        <input type="checkbox" name="vehicle" value="Car" checked> TOR<br>
-        <input type="checkbox" name="vehicle" value="Car" checked> SRE<br>
-        <input type="checkbox" name="vehicle" value="Car" checked> ČET<br>
-        <input type="checkbox" name="vehicle" value="Car" checked> PET<br>
-
-        OD dne: <input type="date" name="dan" value=""><br>
-        DO dne: <input type="date" name="dan" value=""><br>
-        OD ure: <input type="time" name="dan" value=""><br>
-        DO ure: <input type="time" name="dan" value=""><br>
-        ČAS termina: <input type="time" name="dan" value=""><br>
-        <input type="checkbox" name="vehicle" value="Car" checked> PAVZA OB <input type="time" name="dan" value=""><br>
-        <input type="submit" value="Submit">
-    </form>
 
 @endsection
