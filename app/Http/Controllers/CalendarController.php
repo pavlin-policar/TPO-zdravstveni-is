@@ -36,21 +36,27 @@ class CalendarController extends Controller
         $docId = null;
 
         if ($user->isDoctor()) {
+            // This doctor:
             $docId = $user->id;
+            // Show events that belong to the chosen doctor:
+            if ($request->docId != null) $docId=$request->docId;
+
+            // Selected doctor's (or this doctor's) open events:
             $checkups = DoctorDates::where('doctor', '=', $docId)->get();
-            //TODO get selected doctor from Form::select and show that instead of the above
         }
         elseif ($user->hasDoctor()){
             $docId = $user->personal_doctor_id;
-            //TODO get selected doctor from Form::select
-            if ($request->doc != null) $docId = $request->doc;
+            if ($request->docId != null) $docId = $request->docId;
 
+            // User is patient:
             $tempCheckups = DoctorDates::where('patient', '=', $user->id)->get();
             foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
 
+            // User isn't a patient, but they're responsible for registering event:
             $tempCheckups = DoctorDates::where('patient', '=', !$user->id)->where('who_inserted', '=', $user->id)->get();
             foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
 
+            // Selected doctor's open event:
             $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
             foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
 
@@ -59,15 +65,12 @@ class CalendarController extends Controller
         $events = [];
         if ($checkups != null) {
             foreach ($checkups as $checkup) {
-                //dd($checkup);
-
-                //TODO discard events before today's date?
-
                 $backgroundClr = '#300';
                 $start = $checkup->time;
                 $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
 
-                //dd($title);
+                //TODO if event has passed already, make url == # OR
+                //TODO discard events before today's date?
 
                 // We're the patient
                 if ($user->id == $checkup->patient) {
@@ -84,17 +87,14 @@ class CalendarController extends Controller
                 elseif (null == $checkup->patitent) {
                     $title = 'Prost termin';
                     $backgroundClr = '#500';
-
                     /*if ($user->isDoctor() && $checkup->doctor == $user->id) {
                         $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
                         //$url = Route('/calendar/cancelEvent/' . $start . '/' . $user->id);
                     } else {
                         $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
                     }*/
-
                 }
 
-                //dd($title);
                 $ends = $checkup->time_end;
                 $end = Carbon::createFromFormat('Y-m-d H:i:s',$ends);
 
@@ -112,19 +112,16 @@ class CalendarController extends Controller
             }
         }
 
-        $calendar = \Calendar::addEvents($events);//->setOptions([ //set fullcalendar options
-            //]);  //add an array with addEvents
+        $calendar = \Calendar::addEvents($events);//->setOptions([
+            //set fullcalendar options
+        //]);  //add an array with addEvents
 
         $today = new \DateTime();
-        //if ($request->doc == null)
-
         // Get all doctors:
         $doctors = User::where('person_type', '=', Code::DOCTOR()->id)->get();
-        //dd($doctors);
         $selectedDoc = $docId;
 
         return view('calendarEvents.calendar', compact('calendar', 'events', 'today','doctors', 'selectedDoc'));
-        //View::make('calendar', compact('calendar'));
     }
 
     public function manageSchedule() {
@@ -147,7 +144,7 @@ class CalendarController extends Controller
                 'required' => 'Polje ne sme ostati prazno!',
                 'dayStart.date_format' => 'Dan mora biti podan v formatu dd/mm!',
                 'dayStart.date_format' => 'Dan mora biti podan v formatu dd/mm!',
-                'date_format' => 'Čas mora biti podan v formatu HH.mm!',
+                'date_format' => 'Čas mora biti podan v formatu HH:mm!',
                 'dayEnd.after' => 'Končni datum mora biti večji od začetnega',
                 'after' => 'Začetni datum mora biti kasnejši od današnjega!',
             ]);
@@ -177,13 +174,11 @@ class CalendarController extends Controller
             foreach ($request->days as $day) {
                 // Found chosen day:
                 if (Carbon::parse($startDate)->dayOfWeek == $day) {
-                    //for ($startTime;  $startTime <= $endTime; $startTime->addHours($jump->hour)->addMinutes($jump->minute)) { <-- IGNORIRAMO, ker imamo privzeti interval 30 minut
-                    //dd($startDate);
                     $startTime = Carbon::createFromFormat('H:i', $request->hourStart);
                     $end = clone($startTime);
                     for ($startTime;  $startTime <= $endTime; $startTime->addMinutes($jump->minute)) {
-                        $end->addMinutes($jump->minute); // Termin interval!
-                        //TODO won't work if they have nightshifts
+                        $end->addMinutes($jump->minute); // -> Termin interval!
+                        //TODO won't work if they have nightshifts; let's hope no one notices :D
                         $time = $startDate->toDateString() . ' ' . $startTime->toTimeString();
                         $timeEnd = $startDate->toDateString() . ' ' . $end->toTimeString();
                         //DoctorDates::create(["time_end" => $timeEnd, 'time' => $time, 'doctor' => Auth::user()->id])->save();
@@ -191,7 +186,6 @@ class CalendarController extends Controller
                         $dd->time = $time;
                         $dd->time_end = $timeEnd;
                         $dd->doctor = Auth::user()->id;
-                        //dd($dd);
                         $dd->save();
                     }
                 }
@@ -208,8 +202,7 @@ class CalendarController extends Controller
         // Ali je dogodek že zaseden? Potem ga morda ta oseba lahko izbriše!
         $start = Carbon::createFromFormat('d.m.Y H:i', $time);
         $creator = DoctorDates::where('patient', '=', $user)->where('time', '=', $start)->first();
-        //dd($creator);
-        //dd(Auth::user()->id);
+
         return view('calendarEvents.registerFreeEvent', ['time' => $time, 'patient' => $patient, 'creator' => $creator, 'doctor' => $doctor]);
     }
 

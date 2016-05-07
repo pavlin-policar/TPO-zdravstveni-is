@@ -16,21 +16,36 @@
         @else
             <span class="title">
                 Naročanje</span>
-            <div class="description">Naročite se tako, da kliknete na prost termin</div>
+            <div class="description">Naročite se tako, da kliknete na prost termin</div><br />
 
-            <div class="col-sm-10 form-group">
-                {!! Form::label('docId', 'Izberite zdravnika:', ['class' => 'col-sm-2 control-label']) !!}
-                <select class="col-sm-8 form-control" name="docId">
-                    @if ($doctors->count())
-                        @foreach($doctors as $doctor)
-                            <option value="{{ $doctor->id }}" {{ $selectedDoc == $doctor->id ? 'selected="selected"' : '' }}>{{ $doctor->fullName }}</option>
-                        @endforeach
-                    @endif
-                </select>
+            <div class="col-sm-6 form-group">
+                {!! Form::open(['route' => 'calendar.user', 'method' => 'get', 'class' => 'form-horizontal']) !!}
+                    <div class="col-sm-10">
+                        {!! Form::label('docId', 'Izberite zdravnika:') !!}
+                    </div>
+
+
+                    <select class="col-sm-1 form-control" name="docId">
+                        @if ($doctors->count())
+                            @foreach($doctors as $doctor)
+                                <option value="{{ $doctor->id }}" {{ $selectedDoc == $doctor->id ? 'selected="selected"' : '' }}>{{ $doctor->fullName }}</option>
+                            @endforeach
+                        @endif
+                    </select>
+
+                    {{-- Submit button --}}
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            {!! Form::submit('Osvežite koledar', ['class' => 'btn btn-primary']) !!}
+                        </div>
+                    </div>
+
+                {!! Form::close() !!}
             </div>
         @endcan
     </div>
 
+    <br />
 
     <div id='calendar'>
         {!! $calendar->calendar() !!}

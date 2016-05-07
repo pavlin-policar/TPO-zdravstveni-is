@@ -38,6 +38,9 @@
                                 <li>
                                     {!! link_to_route('check.diet', 'Diete') !!}
                                 </li>
+                                <li>
+                                    {!! link_to_route('calendar.user', 'Naročanje na preglede') !!}
+                                </li>
                             </ul>
                         </div>
                     </div>
