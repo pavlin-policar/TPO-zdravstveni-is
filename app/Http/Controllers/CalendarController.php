@@ -202,10 +202,9 @@ class CalendarController extends Controller
 
     public function registerEventForm($time, $user, $doctor) {
         $patient = User::where('id', '=', $user)->first();
-
         // Ali je dogodek že zaseden? Potem ga morda ta oseba lahko izbriše!
         $creator = DoctorDates::where('patient', '=', $user)->where('time', '=', $time)->first();
-
+        //dd($creator);
         return view('calendarEvents.registerFreeEvent', ['time' => $time, 'patient' => $patient, 'creator' => $creator, 'doctor' => $doctor]);
     }
 
@@ -234,13 +233,16 @@ class CalendarController extends Controller
 
     public function cancel($time, $user) {
 
-        //TODO differentiate between user and doctor
-        //TODO allow doc to kill empty events
-        //TODO only allow people who registered events to also cancel them (needs DB fix first)
-        $docDates = new DoctorDates();
-        $checkups = $docDates->checks();
-        dd($checkups);
+        //TODO is event empty? -> is this user the same one who created empty event? -> is the event stil far enough away? ALLOW DELETE
+        //TODO             \-> not empty -> is this user the same one, who registered the appointment? -> is the event still far enough away? ALLOW RELEASE OF THE EVENT
 
+        // 1. Get the event
+
+        // 2. Is event empty?
+
+        // 3. Am I creator of said event?
+
+        dd('sup');
 
         return redirect()->route('calendar.user');
     }

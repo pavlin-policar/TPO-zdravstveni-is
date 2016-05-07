@@ -20,7 +20,11 @@
                 <div class="card-header">
                     <div class="card-title">
                         <span class="title">Termin: <strong>{!! $time !!}</strong></span><br />
-                        <span class="title">Pacient: <strong>{!! $patient->fullName !!}</strong></span>
+                        @if ($creator == null && $doctor == Auth::user()->id)
+                            <span class="title">Upravljalec: <strong>{!! $patient->fullName !!}</strong></span>
+                        @else
+                            <span class="title">Pacient: <strong>{!! $patient->fullName !!}</strong></span>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">
@@ -33,14 +37,10 @@
                     {!! Form::open(['route' => array('calendar.registerEvent', 'time' => $time, 'user' => $patient, 'doctor' => $doctor), 'method' => 'post', 'class' => 'form-horizontal']) !!}
 
 
-                    <div class="form-group{{ $errors->has('days') ? ' has-error' : '' }}">
-                        {!! Form::label('note', 'Opombe pacienta:', ['class' => 'col-sm-2 control-label']) !!}
-
+                    <div class="form-group">
+                        {!! Form::label('note', 'Opombe pregleda:', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
                             {!! Form::textarea('note', '', ['class' => 'field']) !!}
-                            @if ($errors->has('note'))
-                                <span class="help-block">{{ $errors->first('note') }}</span>
-                            @endif
                         </div>
                     </div>
 
@@ -49,14 +49,14 @@
                         <div class="col-sm-offset-2 col-sm-10">
                             @if ($creator != null && $creator->who_inserted == Auth::user()->id)
                                 {!! Form::submit('Dodaj opombe', ['class' => 'btn btn-primary']) !!}
-                                {!! link_to_route('calendar.cancelEvent', 'Sprostite termin', ['time' => $time, 'user' => $user], ['class' => 'btn btn-primary']) !!}
+                                {!! link_to_route('calendar.cancelEvent', 'Sprostite termin', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
                             @elseif ($creator != null)
                                 @can('canDoDoctoryStuff', App\Models\User::class)
                                     {!! Form::submit('Dodaj opombe', ['class' => 'btn btn-primary']) !!}
                                 @endcan
                             @elseif ($creator == null)
                                 @can('canDoDoctoryStuff', App\Models\User::class)
-                                    {!! link_to_route('calendar.cancelEvent', 'Sprostite termin', ['time' => $time, 'user' => $user], ['class' => 'btn btn-primary']) !!}
+                                    {!! link_to_route('calendar.cancelEvent', 'Odstranite termin', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
                                 @else
                                     {!! Form::submit('Rezerviraj termin', ['class' => 'btn btn-primary']) !!}
                                 @endcan

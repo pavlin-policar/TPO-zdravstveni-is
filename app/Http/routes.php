@@ -110,12 +110,12 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'CalendarController@createSchedule',
     ]);
 
-    Route::get('/calendar/cancelEvent/{time}/{user}', [
+    Route::get('/calendar/cancelEvent/{time}/{user}/{doctor}', [
         'as' => 'calendar.cancelEvent',
         'uses' => 'CalendarController@cancel',
     ]);
 
-    Route::post('/calendar/cancelEvent/{time}/{user}', [
+    Route::post('/calendar/cancelEvent/{time}/{user}/{doctor}', [
         'as' => 'calendar.cancelEvent',
         'uses' => 'CalendarController@cancel',
     ]);
