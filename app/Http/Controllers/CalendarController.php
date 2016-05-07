@@ -41,18 +41,18 @@ class CalendarController extends Controller
             $checkups = DoctorDates::where('patient', '=', $user->id)->get();
             $checkups += DoctorDates::where('doctor', '=', $user->personal_doctor_id)->where('patient', '=', null)->get();
         }
-        
+        //dd($checkups);
         $events = [];
 
         foreach ($checkups as $checkup) {
 
             //TODO discard events before today's date
+            //TODO izpis je za pol ure zamaknjen + termini izpadejo daljši od pol ure; zakaj??
+            //TODO kako priti do opomb pacientov?
 
             $backgroundClr = '#300';
             $url = '#';
             $start = $checkup->time;
-            //TODO zaenkrat imamo kar privzeti interval, lahko popravimo
-            $end = $start->addMinutes(30); 
 
             if ($user->id == $checkup->patient) {
                 $title = $checkup->patient;
@@ -63,21 +63,25 @@ class CalendarController extends Controller
             elseif (null == $checkup->patitent) {
                 $title = 'Prost termin';
                 $backgroundClr = '#500';
-                //TODO fix URLs
+
                 if ($user->isDoctor()) $url = Route('calendar.cancelEvent', [$start, $user->id]); //$url = Route('/calendar/cancelEvent/' . $start . '/' . $user->id);
                 else $url = Route('/calendar/registerEvent/' . $start . '/' . $user->id); //view('calendar.registerEvent'); //Route('calendar.registerEvent', ['method' => 'POST', $user->id, $start]);
             }
             else $title = 'Zaseden termin';
 
+            //echo $start;
+            $description = 'bla';
+
             $events[] = \Calendar::event(
                 $title,
                 false,
                 $start,
-                $end,
+                $start->addMinutes(30),
                 'stringEventId',
                 [
                     'url' => $url,
                     'color' => $backgroundClr,
+                    'description' => $description,
                 ]
             );
         }
@@ -91,30 +95,6 @@ class CalendarController extends Controller
             false, //full day event?
             new \DateTime('2016-05-2 10:00:00'), //start time (you can also use Carbon instead of DateTime)
             new \DateTime('2016-05-2 10:30:00'), //end time (you can also use Carbon instead of DateTime)
-            'stringEventId' //optionally, you can specify an event ID
-        );
-
-        $events[] = \Calendar::event(
-            $title = "Prost termin", //event title
-            false, //full day event?
-            new \DateTime('2016-05-3 10:00:00'), //start time (you can also use Carbon instead of DateTime)
-            new \DateTime('2016-05-3 10:30:00'), //end time (you can also use Carbon instead of DateTime)
-            'stringEventId' //optionally, you can specify an event ID
-        );
-
-        $events[] = \Calendar::event(
-            $title = "Prost termin", //event title
-            false, //full day event?
-            new \DateTime('2016-05-3 10:30:00'), //start time (you can also use Carbon instead of DateTime)
-            new \DateTime('2016-05-3 11:0:00'), //end time (you can also use Carbon instead of DateTime)
-            'stringEventId' //optionally, you can specify an event ID
-        );
-
-        $events[] = \Calendar::event(
-            $title = "Prost termin", //event title
-            false, //full day event?
-            new \DateTime('2016-05-3 11:00:00'), //start time (you can also use Carbon instead of DateTime)
-            new \DateTime('2016-05-3 11:30:00'), //end time (you can also use Carbon instead of DateTime)
             'stringEventId' //optionally, you can specify an event ID
         );
 
@@ -138,18 +118,8 @@ class CalendarController extends Controller
             [
                 'url' => route('calendar.user'),
             ]
-        );
-        $events[] = \Calendar::event(
-            $title = "Pacient 1234, redni pregled", //event title
-            false, //full day event?
-            new \DateTime('2016-05-4 11:30'), //start time (you can also use Carbon instead of DateTime)
-            new \DateTime('2016-05-4 12:00'), //end time (you can also use Carbon instead of DateTime)
-            'stringEventId', //optionally, you can specify an event ID
-            [
-                'url' => route('calendar.user'),
-            ]
         );*/
-
+        //die();
         $calendar = \Calendar::addEvents($events);//->setOptions([ //set fullcalendar options
             //]);  //add an array with addEvents
 
@@ -227,6 +197,9 @@ class CalendarController extends Controller
     
     public function cancel($time, $user) {
 
+        //TODO differentiate between user and doctor
+        //TODO allow doc to kill empty events
+        //TODO only allow people who registered events to also cancel them (needs DB fix first)
         $docDates = new DoctorDates();
         $checkups = $docDates->checks();
         //dd($checkups);
@@ -248,11 +221,24 @@ class CalendarController extends Controller
         return view('calendarEvents.registerFreeEvent', ['time' => $time, 'user' => $user]);
     }
 
-    public function register($time, $user) {
+    public function register($time, $userId) {
 
-        $docDates = new DoctorDates();
-        $checkups = $docDates->checks();
-        dd($checkups);
+        //TODO everything -> differentiate between user and doctor
+        //TODO            -> format time, registering user, and registered patient
+        //TODO            -> find corresponding event in DB, add missing details, save, and redirect back to Calendar
+        $user = Auth::user();
+        $checkups = null;
+        if ($user->isDoctor()) {
+            $checkups = DoctorDates::where('doctor', '=', $user->id)->get();
+            //doctorChecks!!!
+            //patientChecks!!!
+        }
+        elseif ($user->hasDoctors()){
+            $checkups = DoctorDates::where('patient', '=', $user->id)->get();
+            $checkups += DoctorDates::where('doctor', '=', $user->personal_doctor_id)->where('patient', '=', null)->get();
+        }
+
+        $events = [];
 
         foreach ($checkups as $checkup) {
             if ($checkup->start == $time) {
