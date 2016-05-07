@@ -88,34 +88,17 @@
                             </div>
                         </div>
 
-                        <!--div class="form-group{{ $errors->has('interval') ? ' has-error' : '' }}">
-                            {!! Form::label('intervalLabel', 'Interval terminov:', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="form-group{{ $errors->has('interval') ? ' has-error' : '' }}">
+                            {!! Form::label('intervalLabel', 'Interval terminov (min):', ['class' => 'col-sm-2 control-label']) !!}
 
                             <div class="col-sm-10">
-                                {!! Form::label('interval', 'Dolžina termina (v minutah):', ['class' => 'control-label']) !!}
-                                {!! Form::date('interval', '') !!} <br />
+                                {!! Form::select('interval', ['00:15' => '15', '00:20' => '20', '00:30' => '30'], ['class' => 'control-label']) !!}<br />
 
                                 @if ($errors->has('interval'))
                                     <span class="help-block">{{ $errors->first('interval') }}</span>
                                 @endif
                             </div>
-                        </--div-->
-
-                        <div class="form-group{{ $errors->has('optionalBreakStart') ? ' has-error' : '' }}">
-                            {!! Form::label('', '', ['class' => 'col-sm-2 control-label']) !!}
-
-                            <div class="col-sm-10">
-                                {!! Form::checkbox('break') !!}
-                                {!! Form::label('optionalBreakStart', 'Začetek odmora:', ['class' => 'control-label']) !!}
-                                {!! Form::time('breakBreakStart', '') !!} <br />
-
-                                @if ($errors->has('optionalBreakStart'))
-                                    <span class="help-block">{{ $errors->first('optionalBreakStart') }}</span>
-                                @endif
-                            </div>
                         </div>
-
-
 
                         {{-- Submit button --}}
                         <div class="form-group">

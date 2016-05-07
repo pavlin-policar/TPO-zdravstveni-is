@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreateChargeRequest;
 use App\Models\DoctorDates;
 use App\Models\User;
+use App\Models\Code;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -28,27 +29,32 @@ class CalendarController extends Controller
         $this->users = $users;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $checkups = null;
+        $docId = null;
         if ($user->isDoctor()) {
-            $checkups = DoctorDates::where('doctor', '=', $user->id)->get();
+            $docId = $user->id;
+            $checkups = DoctorDates::where('doctor', '=', $docId)->get();
             //doctorChecks!!!
             //patientChecks!!!
         }
-        elseif ($user->hasDoctors()){
-            $checkups = DoctorDates::where('patient', '=', $user->id)->get();
-            $checkups += DoctorDates::where('doctor', '=', $user->personal_doctor_id)->where('patient', '=', null)->get();
-        }
-        //dd($checkups);
-        $events = [];
+        elseif ($user->hasDoctor()){
+            $docId = $user->personal_doctor_id;
+            if ($request->doc != null) $docId = $request->doc;
 
+
+            //TODO append, somehow
+            $checkups = DoctorDates::where('patient', '=', $user->id)->get();
+            $checkups = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
+        }
+        $events = [];
+        //dd($checkups);
         foreach ($checkups as $checkup) {
 
             //TODO discard events before today's date
-            //TODO izpis je za pol ure zamaknjen + termini izpadejo daljši od pol ure; zakaj??
-            //TODO kako priti do opomb pacientov?
+            //TODO kako priti do opomb pacientov? => nov layout: če zdravnik klikne na zaseden dogodek, ki mu pripada, se odprejo opombe, z opcijo sprostitve dogodka, v primeru, da je dogodek rezerviral sam
 
             $backgroundClr = '#300';
             $url = '#';
@@ -65,23 +71,24 @@ class CalendarController extends Controller
                 $backgroundClr = '#500';
 
                 if ($user->isDoctor()) $url = Route('calendar.cancelEvent', [$start, $user->id]); //$url = Route('/calendar/cancelEvent/' . $start . '/' . $user->id);
-                else $url = Route('/calendar/registerEvent/' . $start . '/' . $user->id); //view('calendar.registerEvent'); //Route('calendar.registerEvent', ['method' => 'POST', $user->id, $start]);
+                else $url = $url = Route('calendar.registerEvent', [$start, $user->id]);
+                //Route('/calendar/registerEvent/' . $start . '/' . $user->id); //view('calendar.registerEvent'); //Route('calendar.registerEvent', ['method' => 'POST', $user->id, $start]);
             }
-            else $title = 'Zaseden termin';
+            //else $title = 'Zaseden termin';
 
-            //echo $start;
-            $description = 'bla';
+            $ends = clone($start);
+            //TODO read interval from DB
+            $ends->addMinutes(15);
 
             $events[] = \Calendar::event(
                 $title,
                 false,
                 $start,
-                $start->addMinutes(30),
+                $ends,
                 'stringEventId',
                 [
                     'url' => $url,
                     'color' => $backgroundClr,
-                    'description' => $description,
                 ]
             );
         }
@@ -124,7 +131,14 @@ class CalendarController extends Controller
             //]);  //add an array with addEvents
 
         $today = new \DateTime();
-        return view('calendarEvents.calendar', compact('calendar', 'events', 'today'));
+        //if ($request->doc == null)
+
+        // Get all doctors:
+        $doctors = User::where('person_type', '=', Code::DOCTOR()->id)->get();
+        //dd($doctors);
+        $selectedDoc = $docId;
+
+        return view('calendarEvents.calendar', compact('calendar', 'events', 'today','doctors', 'selectedDoc'));
         //View::make('calendar', compact('calendar'));
     }
 
@@ -140,7 +154,7 @@ class CalendarController extends Controller
             'hourEnd' => 'required|date_format:"H:i"',
             'dayStart' => 'required|date_format:"d/m"|after:today',
             'dayEnd' => 'required|date_format:"d/m"|after:"dayStart"',
-            //'interval' => 'required|date_format:"H:i"',
+            'interval' => 'required',
             'optionalBreakStart' => 'date_format:"H:i"'
         ],
             [
@@ -164,7 +178,8 @@ class CalendarController extends Controller
         //$endDate = Carbon::parse($request->dayEnd)->toDateString();//->dayOfWeek;
 
         //dd(Carbon::parse($startDate)->dayOfWeek); // 1 = PON
-        //$jump = Carbon::parse($request->interval); //$request->interval;
+        $jump = Carbon::createFromFormat('H:i', $request->interval);
+        //dd($jump->minute);
 
         //$startTime = Carbon::parse($request->hourStart)->toTimeString(); //$request->hourStart;
         //$startTime = Carbon::createFromFormat('H:i', $request->hourStart);
@@ -173,6 +188,7 @@ class CalendarController extends Controller
 
         //dd($endDate);
 
+        //TODO double check times, maybe use clone?
         for ($startDate; $startDate <= $endDate; $startDate = $startDate->addDay()) {
             foreach ($request->days as $day) {
                 // Found chosen day:
@@ -180,8 +196,7 @@ class CalendarController extends Controller
                     //for ($startTime;  $startTime <= $endTime; $startTime->addHours($jump->hour)->addMinutes($jump->minute)) { <-- IGNORIRAMO, ker imamo privzeti interval 30 minut
                     //dd($startDate);
                     $startTime = Carbon::createFromFormat('H:i', $request->hourStart);
-                    for ($startTime;  $startTime <= $endTime; $startTime=$startTime->addMinutes(30)) {
-                        //TODO add optional lunch break
+                    for ($startTime=$startTime->subMinutes($jump->minute);  $startTime <= $endTime; $startTime=$startTime->addMinutes($jump->minute)) {
                         //$end = $startTime->addHours($jump->hour)->addMinutes($jump->minute); <-- IGNORIRAMO, ker imamo privzeti interval 30 minut
                         $time = $startDate->toDateString() . ' ' . $startTime->toTimeString();
                         DoctorDates::create(['time' => $time, 'doctor' => Auth::user()->id ])->save();

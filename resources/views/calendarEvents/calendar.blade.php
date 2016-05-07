@@ -8,7 +8,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
     <script src='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/lang/sl.js'></script>
 
-
     <div class="page-title">
         @can('canDoDoctoryStuff', App\Models\User::class)
             <span class="title">
@@ -21,8 +20,27 @@
             <span class="title">
                 Naročanje</span>
             <div class="description">Naročite se tako, da kliknete na prost termin</div>
+
+            <br />
+            <br />
+
+            <div class="col-sm-10 form-group">
+                {!! Form::label('docId', 'Izberite zdravnika:', ['class' => 'col-sm-2 control-label']) !!}
+                <select class="col-sm-8 form-control" name="docId">
+                    @if ($doctors->count())
+                        @foreach($doctors as $doctor)
+                            <option value="{{ $doctor->id }}" {{ $selectedDoc == $doctor->id ? 'selected="selected"' : '' }}>{{ $doctor->fullName }}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
         @endcan
     </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
 
     <div id='calendar'>
         {!! $calendar->calendar() !!}
