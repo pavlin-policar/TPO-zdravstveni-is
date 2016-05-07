@@ -34,45 +34,58 @@ class CalendarController extends Controller
         $user = Auth::user();
         $checkups = null;
         $docId = null;
+
         if ($user->isDoctor()) {
             $docId = $user->id;
             $checkups = DoctorDates::where('doctor', '=', $docId)->get();
-            //doctorChecks!!!
-            //patientChecks!!!
+            //TODO get selected doctor from Form::select and show that instead of the above
         }
         elseif ($user->hasDoctor()){
             $docId = $user->personal_doctor_id;
+            //TODO get selected doctor from Form::select
             if ($request->doc != null) $docId = $request->doc;
-
 
             //TODO append, somehow
             $checkups = DoctorDates::where('patient', '=', $user->id)->get();
+            $checkups = DoctorDates::where('who_inserted', '=', $user->id)->get();
             $checkups = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
+
         }
+
         $events = [];
-        //dd($checkups);
         foreach ($checkups as $checkup) {
 
             //TODO discard events before today's date
-            //TODO kako priti do opomb pacientov? => nov layout: če zdravnik klikne na zaseden dogodek, ki mu pripada, se odprejo opombe, z opcijo sprostitve dogodka, v primeru, da je dogodek rezerviral sam
 
             $backgroundClr = '#300';
-            $url = '#';
             $start = $checkup->time;
+            $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
 
+            //We're the patient
             if ($user->id == $checkup->patient) {
                 $title = $checkup->patient;
                 $backgroundClr = '#800';
-                if ($user->isDoctor()) $backgroundClr = '#1200';
-                $url = Route('calendar.cancelEvent', [$start, $user->id]);
+                //if ($user->isDoctor()) $backgroundClr = '#1200';
+            }
+            elseif ($user->id == $checkup->who_inserted) {
+                $title = $checkup->patient;
+                $backgroundClr = '#700';
             }
             elseif (null == $checkup->patitent) {
                 $title = 'Prost termin';
                 $backgroundClr = '#500';
 
-                if ($user->isDoctor()) $url = Route('calendar.cancelEvent', [$start, $user->id]); //$url = Route('/calendar/cancelEvent/' . $start . '/' . $user->id);
-                else $url = $url = Route('calendar.registerEvent', [$start, $user->id]);
-                //Route('/calendar/registerEvent/' . $start . '/' . $user->id); //view('calendar.registerEvent'); //Route('calendar.registerEvent', ['method' => 'POST', $user->id, $start]);
+                if ($user->isDoctor() && $checkup->doctor == $user->id) {
+                    $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
+                    //$url = Route('/calendar/cancelEvent/' . $start . '/' . $user->id);
+                }
+                else {
+                    $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
+                    //Route('/calendar/registerEvent/' . $start . '/' . $user->id);
+                    //view('calendar.registerEvent');
+                    //Route('calendar.registerEvent', ['method' => 'POST', $user->id, $start]);
+                }
+
             }
             //else $title = 'Zaseden termin';
 
@@ -94,39 +107,6 @@ class CalendarController extends Controller
         }
 
         //dd(Route('calendar.registerEvent', ['time=0020', 'user=2']));
-
-        /*// TESTNI DOGODKI:
-
-        $events[] = \Calendar::event(
-            $title = "Valentine's Day - pacient 1234, redni pregled", //event title
-            false, //full day event?
-            new \DateTime('2016-05-2 10:00:00'), //start time (you can also use Carbon instead of DateTime)
-            new \DateTime('2016-05-2 10:30:00'), //end time (you can also use Carbon instead of DateTime)
-            'stringEventId' //optionally, you can specify an event ID
-        );
-
-        $events[] = \Calendar::event(
-            $title = "Pacient 1234, redni pregled", //event title
-            false, //full day event?
-            new \DateTime('2016-05-4 10:00'), //start time (you can also use Carbon instead of DateTime)
-            new \DateTime('2016-05-4 10:30'), //end time (you can also use Carbon instead of DateTime)
-            'stringEventId', //optionally, you can specify an event ID
-            [
-                'url' => Route('calendar.registerEvent', ['0020', '2']),
-                'color' => '#800',
-            ]
-        );
-        $events[] = \Calendar::event(
-            $title = "Pacient 1234, redni pregled", //event title
-            false, //full day event?
-            new \DateTime('2016-05-4 10:30'), //start time (you can also use Carbon instead of DateTime)
-            new \DateTime('2016-05-4 11:00'), //end time (you can also use Carbon instead of DateTime)
-            'stringEventId', //optionally, you can specify an event ID
-            [
-                'url' => route('calendar.user'),
-            ]
-        );*/
-        //die();
         $calendar = \Calendar::addEvents($events);//->setOptions([ //set fullcalendar options
             //]);  //add an array with addEvents
 
@@ -209,7 +189,60 @@ class CalendarController extends Controller
         return redirect()->route('calendar.user');
 
     }
-    
+
+    public function registerEventForm($time, $user, $doctor) {
+        $patient = User::where('id', '=', $user)->first();
+
+        // Ali je dogodek že zaseden? Potem ga morda ta oseba lahko izbriše!
+        $creator = DoctorDates::where('patient', '=', $user)->where('time', '=', $time)->first();
+
+        return view('calendarEvents.registerFreeEvent', ['time' => $time, 'patient' => $patient, 'creator' => $creator, 'doctor' => $doctor]);
+    }
+
+    public function register($time, $userId) {
+
+        //TODO everything -> differentiate between user and doctor
+        //TODO            -> format time, registering user, and registered patient
+        //TODO            -> find corresponding event in DB, add missing details, save, and redirect back to Calendar
+        //TODO            -> allow only one registered event per user per doctor
+
+        //Does even already have a user? -> YES, save notes and return to calendar view
+        //                               ->  NO, save patient and notes, return to calendar view
+
+        //We get patient's ID and time of event, who_registered comes from Auth::user()->id
+        
+
+        // Current user:
+        $user = Auth::user();
+
+        // Is event already full?
+        $checkups = DoctorDates::where('patient', '=', $user->id)->get();
+        if ($checkups != null) {
+            //TODO event already exists, we're just updating notes and returning at the end
+        }
+
+        // The event is still free, so this is user trying to register:
+        //TODO how fo we know which doctor this is, since user can change a different one?
+        $checkups = DoctorDates::where('time', '=', $time)->where('patient', '=', null)->get();
+
+
+        $events = [];
+
+        foreach ($checkups as $checkup) {
+            if ($checkup->start == $time) {
+                $checkup->patient = $user;
+                
+
+                $checkup->note = null;
+
+                $checkup->save();
+                break;
+            }
+        }
+
+        return redirect()->route('calendar.user');
+    }
+
     public function cancel($time, $user) {
 
         //TODO differentiate between user and doctor
@@ -222,44 +255,6 @@ class CalendarController extends Controller
         foreach ($checkups as $checkup) {
             if ($checkup->time == $time) {
                 $checkup->patient = null;
-                $checkup->note = null;
-
-                $checkup->save();
-                break;
-            }
-        }
-
-        return redirect()->route('calendar.user');
-    }
-
-    public function registerEventForm($time, $user) {
-        return view('calendarEvents.registerFreeEvent', ['time' => $time, 'user' => $user]);
-    }
-
-    public function register($time, $userId) {
-
-        //TODO everything -> differentiate between user and doctor
-        //TODO            -> format time, registering user, and registered patient
-        //TODO            -> find corresponding event in DB, add missing details, save, and redirect back to Calendar
-        $user = Auth::user();
-        $checkups = null;
-        if ($user->isDoctor()) {
-            $checkups = DoctorDates::where('doctor', '=', $user->id)->get();
-            //doctorChecks!!!
-            //patientChecks!!!
-        }
-        elseif ($user->hasDoctors()){
-            $checkups = DoctorDates::where('patient', '=', $user->id)->get();
-            $checkups += DoctorDates::where('doctor', '=', $user->personal_doctor_id)->where('patient', '=', null)->get();
-        }
-
-        $events = [];
-
-        foreach ($checkups as $checkup) {
-            if ($checkup->start == $time) {
-                $checkup->patient = $user;
-                
-                //TODO How to add notes?
                 $checkup->note = null;
 
                 $checkup->save();
