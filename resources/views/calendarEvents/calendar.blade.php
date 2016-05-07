@@ -10,19 +10,13 @@
 
     <div class="page-title">
         @can('canDoDoctoryStuff', App\Models\User::class)
-            <span class="title">
-                        Pregled terminov</span>
+            <span class="title">Pregled terminov</span>
             <div class="description">Pregled prostih in zasedenih terminov</div>
             {!! link_to_route('calendar.schedule', 'Uredite svoj urnik', [], ['class' => 'btn btn-primary']) !!}
-            <br />
-            <br />
         @else
             <span class="title">
                 Naročanje</span>
             <div class="description">Naročite se tako, da kliknete na prost termin</div>
-
-            <br />
-            <br />
 
             <div class="col-sm-10 form-group">
                 {!! Form::label('docId', 'Izberite zdravnika:', ['class' => 'col-sm-2 control-label']) !!}
@@ -37,10 +31,6 @@
         @endcan
     </div>
 
-    <br />
-    <br />
-    <br />
-    <br />
 
     <div id='calendar'>
         {!! $calendar->calendar() !!}

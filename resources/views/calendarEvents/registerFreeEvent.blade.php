@@ -37,7 +37,7 @@
                         {!! Form::label('note', 'Opombe pacienta:', ['class' => 'col-sm-2 control-label']) !!}
 
                         <div class="col-sm-10">
-                            {!! Form::textarea('note', '', ['class' => 'control-label']) !!}
+                            {!! Form::textarea('note', '', ['class' => 'field']) !!}
                             @if ($errors->has('note'))
                                 <span class="help-block">{{ $errors->first('note') }}</span>
                             @endif
