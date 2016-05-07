@@ -16,6 +16,7 @@ class CreateTableDoctorDates extends Migration
             $table->increments('id');
 			$table->text('note')->nullable();
 			$table->dateTime('time');
+			$table->dateTime('time_end')->nullable();
             $table->timestamps();
 
             $table->integer('patient')->unsigned()->nullable();
