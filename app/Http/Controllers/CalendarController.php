@@ -202,8 +202,9 @@ class CalendarController extends Controller
         // Ali je dogodek že zaseden? Potem ga morda ta oseba lahko izbriše!
         $start = Carbon::createFromFormat('d.m.Y H:i', $time);
         $creator = DoctorDates::where('patient', '=', $user)->where('time', '=', $start)->first();
+        $date = DoctorDates::where('time', '=', $start)->first();
 
-        return view('calendarEvents.registerFreeEvent', ['time' => $time, 'patient' => $patient, 'creator' => $creator, 'doctor' => $doctor]);
+        return view('calendarEvents.registerFreeEvent', ['time' => $time, 'patient' => $patient, 'creator' => $creator, 'doctor' => $doctor, 'date' => $date]);
     }
 
     public function register($time, $userId, $doctorId, Request $request) {

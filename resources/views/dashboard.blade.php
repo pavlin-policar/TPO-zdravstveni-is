@@ -215,7 +215,6 @@
                                     @if(count($doctorDates) == 0)
                                         </br>
                                         <p><strong>Niste prijavljeni</strong> na pregled.</p></br>
-                                        <p>Na pregled se lahko prijavite v spodnjem obrazcu.</p>
 
                                     @else
                                         @foreach ($doctorDates as $doctorDate)
@@ -240,24 +239,6 @@
                                             @endif
                                         @endforeach
                                     @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="card card-no-padding">
-                                <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">Prijava na pregled</div>
-                                    </div>
-                                    <div class="fa fa-compress icon-arrow-right" id="glyphicon-add-check"></div>
-                                </div>
-                                <div class="card-body no-padding" id="dash-add-check">
-                                    <div class="sub-title">Izpolnite spodnji obrazec</div>
-
-                                    @include('patients.addCheck')
-
                                 </div>
                             </div>
                         </div>
@@ -454,7 +435,7 @@
                                         <table class="table table-hover table-responsive">
                                             <tbody>
                                             @foreach($user->patients as $patient)
-                                                {!! link_to_route('patient.show', $patient->fullName, $patient->id, ['class' => 'btn btn-default'])!!}&nbsp;
+                                                {!! link_to_route('dashboard.show', $patient->fullName, $patient->id, ['class' => 'btn btn-default'])!!}&nbsp;
                                             @endforeach
                                             </tbody>
                                         </table>
