@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 
 class CalendarController extends Controller
@@ -31,21 +32,30 @@ class CalendarController extends Controller
 
     public function index(Request $request)
     {
+        //TODO preveri, če to deluje za prijavo oskrbovanca
         $user = Auth::user();
         $checkups = null;
         $docId = null;
 
+        // Doctors get to see (their OR chosen doc's schedule) AND any events where they show up under who_inserted
         if ($user->isDoctor()) {
             // This doctor:
             $docId = $user->id;
-            // Show events that belong to the chosen doctor:
+            // If there's a chosen doctor instead:
             if ($request->docId != null) $docId=$request->docId;
 
             // Selected doctor's (or this doctor's) open events:
-            $checkups = DoctorDates::where('doctor', '=', $docId)->get();
-        }
-        elseif ($user->hasDoctor()){
+            $tempCheckups = DoctorDates::where('doctor', '=', $docId)->get();
+            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+
+            // This (The-Not-Chosen) doctor's who_inserted events:
+            $tempCheckups = DoctorDates::where('who_inserted', '=', $user->id)->get();
+            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+
+        } elseif ($user->hasDoctor()){
+            // Default -> user's personal doc:
             $docId = $user->personal_doctor_id;
+            // Chosen doctor's schedule instead:
             if ($request->docId != null) $docId = $request->docId;
 
             // User is patient:
@@ -83,6 +93,8 @@ class CalendarController extends Controller
                     $title = User::where('id', '=', $checkup->patient)->first();
                     $title = $title->fullName;
                     $backgroundClr = '#700';
+                    //TODO check if this URL is alright
+                    $url = Route('calendar.registerEvent', [$start, $checkup->patient, $docId]);
                 } // The event is still open
                 elseif (null == $checkup->patitent) {
                     $title = 'Prost termin';
@@ -119,9 +131,113 @@ class CalendarController extends Controller
         $today = new \DateTime();
         // Get all doctors:
         $doctors = User::where('person_type', '=', Code::DOCTOR()->id)->get();
+        //dd($doctors);
         $selectedDoc = $docId;
 
         return view('calendarEvents.calendar', compact('calendar', 'events', 'today','doctors', 'selectedDoc'));
+    }
+
+    public function cloneWeek(){
+
+        // Get current week's events:
+        $today = Carbon::now('Europe/Amsterdam');
+        $date = Carbon::parse($today);
+
+
+        $monday = $date->startOfWeek()->toDateTimeString();
+        $saturday = $date->endOfWeek()->toDateTimeString();
+
+        $docsCurrentWeek = DoctorDates::where('doctor', '=', Auth::user()->id)
+                                ->where('time', '>=', $monday)
+                                ->where('time', '<=', $saturday)
+                                ->get();
+
+        //dd($docsCurrentWeek);
+
+        // Is this week's schedule empty? Then we're done here.
+        if ($docsCurrentWeek->count() == 0) {
+            request()->session()->flash(
+                'cloneMessage',
+                'V tem tednu nimate razpisanih terminov!'
+            );
+            return redirect()->route('calendar.user');
+        }
+
+
+
+        // Get next week's events:
+        $nextMonday = Carbon::parse($monday)->addDays(7)->toDateTimeString();
+        $nextSaturday = Carbon::parse($saturday)->addDays(7)->toDateTimeString();
+        $docsNextWeek = DoctorDates::where('doctor', '=', Auth::user()->id)
+            ->where('time', '>=', $nextMonday)
+            ->where('time', '<=', $nextSaturday)
+            ->get();
+        if ($docsNextWeek != null) {
+            // Check for collision:
+            $detection = $this->checkForCollision($docsCurrentWeek, $docsNextWeek);
+            if ($detection) {
+                // Collision, redirect back with a warning message:
+                request()->session()->flash(
+                    'cloneMessage',
+                    'Kopiranje urnika ni mogoče zaradi kolizije terminov!'
+                );
+                return redirect()->route('calendar.user');
+            }
+        }
+
+        // Clone the week:
+        foreach ($docsCurrentWeek as $cloneTemplate) {
+            // Weird PHP/Laravel shenanigans O___O
+            if (count($docsCurrentWeek) == 1) $cloneTemplate = $docsCurrentWeek;
+
+            $dd = new DoctorDates();
+            $dd->time = Carbon::parse($cloneTemplate->time)->addDays(7);
+            $dd->time_end = Carbon::parse($cloneTemplate->time_end)->addDays(7);;
+            $dd->doctor = $cloneTemplate->doctor;
+            $dd->save();
+        }
+
+        request()->session()->flash(
+            'cloneMessage',
+            'Urnik ponovljen v prihodnjem tednu!'
+        );
+        return redirect()->route('calendar.user');
+
+    }
+
+    public function checkForCollision($current, $next) {
+
+        //dd($current->count());
+        foreach ($current as $firstEvent) {
+
+            // Weird PHP/Laravel shenanigans O___O
+            if (count($current) == 1) $firstEvent = $current;
+
+            foreach ($next as $secondEvent) {
+
+                // Weird PHP/Laravel shenanigans O___O
+                if (count($next) == 1) $secondEvent = $next;
+
+                // Compare days of the week:
+                $firstA = Carbon::parse($firstEvent->time);
+                $firstB = Carbon::parse($secondEvent->time);
+
+                if ($firstA->dayOfWeek == $firstA->dayOfWeek) {
+                    // Compare days:
+                    if ($firstA->toDateString() == $firstB->toDateString()) {
+                        // Compare hours:
+                        // (StartA <= EndB) and (EndA >= StartB) -> OVERLAP!
+                        $secondA = Carbon::parse($firstEvent->time_end);
+                        $secondB = Carbon::parse($secondEvent->time_end);
+
+                        if (($firstA->lte($secondB)) && ($secondA->gte($firstB))) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public function manageSchedule() {
@@ -143,17 +259,18 @@ class CalendarController extends Controller
                 'days.required' => 'Izbrati morate vsaj en dan!',
                 'required' => 'Polje ne sme ostati prazno!',
                 'dayStart.date_format' => 'Dan mora biti podan v formatu dd/mm!',
-                'dayStart.date_format' => 'Dan mora biti podan v formatu dd/mm!',
+                'dayEnd.date_format' => 'Dan mora biti podan v formatu dd/mm!',
                 'date_format' => 'Čas mora biti podan v formatu HH:mm!',
                 'dayEnd.after' => 'Končni datum mora biti večji od začetnega',
                 'after' => 'Začetni datum mora biti kasnejši od današnjega!',
             ]);
 
+        // Validate user input:
         if ($validator->fails()) {
-            //dd($validator);
             return view('calendarEvents.docSchedule')->withErrors($validator);
         }
 
+        // Get properly formated input:
         $startDate = Carbon::createFromFormat('d/m', $request->dayStart);
         $endDate = Carbon::createFromFormat('d/m', $request->dayEnd);
         //$startDate = Carbon::parse($request->dayStart)->toDateString();//->dayOfWeek;
@@ -161,14 +278,22 @@ class CalendarController extends Controller
 
         //dd(Carbon::parse($startDate)->dayOfWeek); // 1 = PON
         $jump = Carbon::createFromFormat('H:i', $request->interval);
-        //dd($jump->minute);
 
         //$startTime = Carbon::parse($request->hourStart)->toTimeString(); //$request->hourStart;
         //$startTime = Carbon::createFromFormat('H:i', $request->hourStart);
         //$endTime = Carbon::parse($request->hourEnd)->toTimeString(); //$request->hourEnd;
         $endTime = Carbon::createFromFormat('H:i', $request->hourEnd);
 
-        //dd($endDate);
+        // Create query that checks for doc's events within the allocated time slot:
+        $queryStartTime = $startDate->toDateString() . ' ' . Carbon::createFromFormat('H:i', $request->hourStart)->toTimeString();
+        $queryEndTime = $endDate->toDateString() . ' ' . $endTime->toTimeString();
+
+        $collisionCandidates = DoctorDates::where('doctor', '=', Auth::user()->id)
+            ->where('time', '>=', $queryStartTime)
+            ->where('time', '<=', $queryEndTime)
+            ->get();
+
+        //dd($collisionCandidates);
 
         for ($startDate; $startDate <= $endDate; $startDate = $startDate->addDay()) {
             foreach ($request->days as $day) {
@@ -186,7 +311,18 @@ class CalendarController extends Controller
                         $dd->time = $time;
                         $dd->time_end = $timeEnd;
                         $dd->doctor = Auth::user()->id;
-                        $dd->save();
+
+                        // Check for collision before saving event:
+                        if (!$this->checkForCollision($dd, $collisionCandidates)) {
+                            // No collision, save event:
+                            $dd->save();
+                        } elseif (request()->session()->get('cloneMessage') == null) {
+                            //dd(request()->session()->get('cloneMessage'));
+                            request()->session()->flash(
+                                'cloneMessage',
+                                'Nekateri termini niso bili dodani zaradi kolizije!'
+                            );
+                        }
                     }
                 }
             }
@@ -197,6 +333,7 @@ class CalendarController extends Controller
     }
 
     public function registerEventForm($time, $user, $doctor) {
+
         $patient = User::where('id', '=', $user)->first();
 
         // Ali je dogodek že zaseden? Potem ga morda ta oseba lahko izbriše!
@@ -232,8 +369,8 @@ class CalendarController extends Controller
 
     public function cancel($time, $userId, $doctorId) {
 
-        //TODO is event empty? -> is this user the same one who created empty event? -> is the event still far enough away? ALLOW DELETE
-        //TODO             \-> not empty -> is this user the same one, who registered the appointment? -> is the event still far enough away? ALLOW RELEASE OF THE EVENT
+        //is event empty? -> is this user the same one who created empty event? -> is the event still far enough away? ALLOW DELETE
+        //             \-> not empty -> is this user the same one, who registered the appointment? -> is the event still far enough away? ALLOW RELEASE OF THE EVENT
 
         $formatedTime = Carbon::createFromFormat('d.m.Y H:i', $time);
 

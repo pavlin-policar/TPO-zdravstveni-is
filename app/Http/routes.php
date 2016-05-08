@@ -110,6 +110,11 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'CalendarController@createSchedule',
     ]);
 
+    Route::get('/calendar/cloner', [
+        'as' => 'calendar.cloneWeek',
+        'uses' => 'CalendarController@cloneWeek',
+    ]);
+
     Route::get('/calendar/cancelEvent/{time}/{user}/{doctor}', [
         'as' => 'calendar.cancelEvent',
         'uses' => 'CalendarController@cancel',

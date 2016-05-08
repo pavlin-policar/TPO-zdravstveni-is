@@ -59,11 +59,11 @@
                                     {!! Form::submit('Dodaj opombe', ['class' => 'btn btn-primary']) !!}
                                 @endcan
                             @elseif ($creator == null)
-                                @can('canDoDoctoryStuff', App\Models\User::class)
+                                @if ($doctor == Auth::user()->id)
                                     {!! link_to_route('calendar.cancelEvent', 'Odstranite termin', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
                                 @else
                                     {!! Form::submit('Rezerviraj termin', ['class' => 'btn btn-primary']) !!}
-                                @endcan
+                                @endif
                             @endif
                         </div>
 

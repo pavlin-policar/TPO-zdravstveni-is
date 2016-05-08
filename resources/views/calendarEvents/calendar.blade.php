@@ -12,12 +12,17 @@
         @can('canDoDoctoryStuff', App\Models\User::class)
             <span class="title">Pregled terminov</span>
             <div class="description">Pregled prostih in zasedenih terminov</div>
+            {!! Session::pull('cloneMessage') !!}
+            <div class>
             {!! link_to_route('calendar.schedule', 'Uredite svoj urnik', [], ['class' => 'btn btn-primary']) !!}
+            {!! link_to_route('calendar.cloneWeek', 'Ponovite tekoči teden', [], ['class' => 'btn btn-primary']) !!}
+            </div>
+            <br />
         @else
             <span class="title">
                 Naročanje</span>
             <div class="description">Naročite se tako, da kliknete na prost termin</div><br />
-
+        @endcan
             <div class="col-sm-6 form-group">
                 {!! Form::open(['route' => 'calendar.user', 'method' => 'get', 'class' => 'form-horizontal']) !!}
                     <div class="col-sm-10">
@@ -42,7 +47,7 @@
 
                 {!! Form::close() !!}
             </div>
-        @endcan
+
     </div>
 
     <br />
