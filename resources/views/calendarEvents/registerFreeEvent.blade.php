@@ -3,19 +3,25 @@
 
 
     <div class="page-title">
-        @can('canDoDoctoryStuff', App\Models\User::class)
-            <span class="title">Pregled</span>
-            <div class="description">Podatki o pregledu</div>
-        @elseif ($creator != null && $creator->who_inserted == Auth::user()->id)
-            <span class="title">Pregled</span>
-            <div class="description">Podatki o pregledu</div>
+        @if(Auth::user()->id == Session('showUser'))
+            @can('canDoDoctoryStuff', App\Models\User::class)
+                    <span class="title">Pregled</span>
+                    <div class="description">Podatki o pregledu</div>
+            @elseif ($creator != null && $creator->who_inserted == Auth::user()->id)
+                <span class="title">Pregled</span>
+                <div class="description">Podatki o pregledu</div>
+            @else
+                <div class="page-title">
+                    <span class="title">Naročanje</span>
+                    <div class="description">Naročite se na prost termin</div>
+                </div>
+            @endcan
         @else
             <div class="page-title">
-
                 <span class="title">Naročanje</span>
                 <div class="description">Naročite se na prost termin</div>
             </div>
-        @endcan
+        @endif
     </div>
 
     <div class="row">
@@ -24,7 +30,7 @@
                 <div class="card-header">
                     <div class="card-title">
                         <span class="title">Termin: <strong>{!! $time !!}</strong></span><br />
-                        @if ($creator == null && $doctor == Auth::user()->id)
+                        @if ($creator == null && $doctor == Auth::user()->id && Session('showUser') == Auth::user()->id)
                             <span class="title">Upravljalec: <strong>{!! $patient->fullName !!}</strong></span>
                         @else
                             <span class="title">Pacient: <strong>{!! $patient->fullName !!}</strong></span>
@@ -32,11 +38,11 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    @can('canDoDoctoryStuff', App\Models\User::class)
+                    @if(Session('showUser') == Auth::user()->id && $doctor == Auth::user()->id)
                         <p>Spodaj lahko vnesete nove opombe.</p>
                     @else
                         <p>Prosimo, potrdite rezervacijo termina za pregled.</p>
-                    @endcan
+                    @endif
 
                     {!! Form::open(['route' => array('calendar.registerEvent', 'time' => $time, 'user' => $patient, 'doctor' => $doctor), 'method' => 'post', 'class' => 'form-horizontal']) !!}
 
@@ -59,7 +65,7 @@
                                     {!! Form::submit('Dodaj opombe', ['class' => 'btn btn-primary']) !!}
                                 @endcan
                             @elseif ($creator == null)
-                                @if ($doctor == Auth::user()->id)
+                                @if ($doctor == Auth::user()->id && Session('showUser') == Auth::user()->id)
                                     {!! link_to_route('calendar.cancelEvent', 'Odstranite termin', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
                                 @else
                                     {!! Form::submit('Rezerviraj termin', ['class' => 'btn btn-primary']) !!}

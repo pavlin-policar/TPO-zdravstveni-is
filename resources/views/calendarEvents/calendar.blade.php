@@ -9,44 +9,51 @@
     <script src='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/lang/sl.js'></script>
 
     <div class="page-title">
-        @can('canDoDoctoryStuff', App\Models\User::class)
-            <span class="title">Pregled terminov</span>
-            <div class="description">Pregled prostih in zasedenih terminov</div>
-            {!! Session::pull('cloneMessage') !!}
-            <div class>
-            {!! link_to_route('calendar.schedule', 'Uredite svoj urnik', [], ['class' => 'btn btn-primary']) !!}
-            {!! link_to_route('calendar.cloneWeek', 'Ponovite tekoči teden', [], ['class' => 'btn btn-primary']) !!}
-            </div>
-            <br />
+        @if (Auth::user()->id == Session::get('showUser'))
+            @can('canDoDoctoryStuff', App\Models\User::class)
+                <span class="title">Pregled terminov</span>
+                <div class="description">Pregled prostih in zasedenih terminov</div>
+                <div class="help-block">{!! Session::pull('cloneMessage') !!}</div>
+                <div class>
+                    {!! link_to_route('calendar.schedule', 'Uredite svoj urnik', [], ['class' => 'btn btn-primary']) !!}
+                    {!! link_to_route('calendar.cloneWeek', 'Ponovite tekoči teden', [], ['class' => 'btn btn-primary']) !!}
+                </div>
+                <br />
+            @else
+                <span class="title">
+                    Naročanje</span>
+                <div class="description">Naročite se tako, da kliknete na prost termin</div><br />
+            @endcan
         @else
             <span class="title">
                 Naročanje</span>
             <div class="description">Naročite se tako, da kliknete na prost termin</div><br />
-        @endcan
-            <div class="col-sm-6 form-group">
-                {!! Form::open(['route' => 'calendar.user', 'method' => 'get', 'class' => 'form-horizontal']) !!}
+        @endif
+
+        <div class="col-sm-6 form-group">
+            {!! Form::open(['route' => 'calendar.user', 'method' => 'get', 'class' => 'form-horizontal']) !!}
+                <div class="col-sm-10">
+                    {!! Form::label('docId', 'Izberite zdravnika:') !!}
+                </div>
+
+
+                <select class="col-sm-1 form-control" name="docId">
+                    @if ($doctors->count())
+                        @foreach($doctors as $doctor)
+                            <option value="{{ $doctor->id }}" {{ $selectedDoc == $doctor->id ? 'selected="selected"' : '' }}>{{ $doctor->fullName }}</option>
+                        @endforeach
+                    @endif
+                </select>
+
+                {{-- Submit button --}}
+                <div class="form-group">
                     <div class="col-sm-10">
-                        {!! Form::label('docId', 'Izberite zdravnika:') !!}
+                        {!! Form::submit('Osvežite koledar', ['class' => 'btn btn-primary']) !!}
                     </div>
+                </div>
 
-
-                    <select class="col-sm-1 form-control" name="docId">
-                        @if ($doctors->count())
-                            @foreach($doctors as $doctor)
-                                <option value="{{ $doctor->id }}" {{ $selectedDoc == $doctor->id ? 'selected="selected"' : '' }}>{{ $doctor->fullName }}</option>
-                            @endforeach
-                        @endif
-                    </select>
-
-                    {{-- Submit button --}}
-                    <div class="form-group">
-                        <div class="col-sm-10">
-                            {!! Form::submit('Osvežite koledar', ['class' => 'btn btn-primary']) !!}
-                        </div>
-                    </div>
-
-                {!! Form::close() !!}
-            </div>
+            {!! Form::close() !!}
+        </div>
 
     </div>
 

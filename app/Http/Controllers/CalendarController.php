@@ -32,10 +32,13 @@ class CalendarController extends Controller
 
     public function index(Request $request)
     {
-        //TODO preveri, če to deluje za prijavo oskrbovanca
         $user = Auth::user();
+
         $checkups = null;
         $docId = null;
+        if (session('showUser') != $user->id) {
+            $user = User::where('id', '=', session('showUser'))->first();
+        }
 
         // Doctors get to see (their OR chosen doc's schedule) AND any events where they show up under who_inserted
         if ($user->isDoctor()) {
@@ -52,7 +55,8 @@ class CalendarController extends Controller
             $tempCheckups = DoctorDates::where('who_inserted', '=', $user->id)->get();
             foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
 
-        } elseif ($user->hasDoctor()){
+        } // User has a personal doctor and is not a doctor themselves:
+        elseif ($user->hasDoctor()){
             // Default -> user's personal doc:
             $docId = $user->personal_doctor_id;
             // Chosen doctor's schedule instead:
@@ -66,21 +70,37 @@ class CalendarController extends Controller
             $tempCheckups = DoctorDates::where('patient', '=', !$user->id)->where('who_inserted', '=', $user->id)->get();
             foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
 
-            // Selected doctor's open event:
+            // Selected doctor's open events:
             $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
             foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
 
+        } // User is not a doc and does not have a personal doctor, but can still view doctors schedules:
+        elseif (!$user->hasDoctor()) {
+            if ($request->docId != null) {
+                $docId = $request->docId;
+
+                // Selected doctor's open events:
+                $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
+                foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+            }
+
+            // Users registered events:
+            $tempCheckups = DoctorDates::where('patient', '=', $user->id)->get();
+            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+
         }
+
 
         $events = [];
         if ($checkups != null) {
             foreach ($checkups as $checkup) {
                 $backgroundClr = '#300';
                 $start = $checkup->time;
-                $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
 
-                //TODO if event has passed already, make url == # OR
-                //TODO discard events before today's date?
+                $today = Carbon::now('Europe/Amsterdam');
+                $date = Carbon::parse($today);
+                if ($date->gt($start)) $url = null;
+                else $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
 
                 // We're the patient
                 if ($user->id == $checkup->patient) {
@@ -332,16 +352,16 @@ class CalendarController extends Controller
 
     }
 
-    public function registerEventForm($time, $user, $doctor) {
+    public function registerEventForm($time, $userId, $doctorId) {
 
-        $patient = User::where('id', '=', $user)->first();
+        $patient = User::where('id', '=', $userId)->first();
 
         // Ali je dogodek že zaseden? Potem ga morda ta oseba lahko izbriše!
         $start = Carbon::createFromFormat('d.m.Y H:i', $time);
-        $creator = DoctorDates::where('patient', '=', $user)->where('time', '=', $start)->first();
+        $creator = DoctorDates::where('patient', '=', $userId)->where('time', '=', $start)->first();
         $date = DoctorDates::where('time', '=', $start)->first();
 
-        return view('calendarEvents.registerFreeEvent', ['time' => $time, 'patient' => $patient, 'creator' => $creator, 'doctor' => $doctor, 'date' => $date]);
+        return view('calendarEvents.registerFreeEvent', ['time' => $time, 'patient' => $patient, 'creator' => $creator, 'doctor' => $doctorId, 'date' => $date]);
     }
 
     public function register($time, $userId, $doctorId, Request $request) {
