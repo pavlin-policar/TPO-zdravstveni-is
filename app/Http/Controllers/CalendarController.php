@@ -162,9 +162,19 @@ class CalendarController extends Controller
             }
         }
 
-        $calendar = \Calendar::addEvents($events);//->setOptions([
+        $calendar = \Calendar::addEvents($events)->setOptions([
             //set fullcalendar options
-        //]);  //add an array with addEvents
+            'header' => [
+                'left' => 'prev,next today',
+                'center' => 'title',
+                'left' => 'month,agendaWeek,agendaDay',
+            ],
+            'minTime' => '06:00',
+            'eventLimit' => true,
+            'defaultView' => 'agendaWeek',
+            'allDaySlot' => false,
+            'eventTextColor' => 'white',
+        ]);  //add an array with addEvents
 
         $today = new \DateTime();
         // Get all doctors:
@@ -363,7 +373,7 @@ class CalendarController extends Controller
     public function register($time, $userId, $doctorId, Request $request) {
 
         // Does this patient already have a checkup scheduled?
-        // TODO
+        //TODO
 
         $start = Carbon::createFromFormat('d.m.Y H:i', $time);
 
