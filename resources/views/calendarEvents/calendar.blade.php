@@ -13,7 +13,9 @@
             @can('canDoDoctoryStuff', App\Models\User::class)
                 <span class="title">Pregled terminov</span>
                 <div class="description">Pregled prostih in zasedenih terminov</div>
-                <div class="help-block">{!! Session::pull('cloneMessage') !!}</div>
+                <div class="form-group has-error">
+                    <span class="help-block">{!! Session::pull('cloneMessage') !!}</span>
+                </div>
                 <div class>
                     {!! link_to_route('calendar.schedule', 'Uredite svoj urnik', [], ['class' => 'btn btn-primary']) !!}
                     {!! link_to_route('calendar.cloneWeek', 'Ponovite tekoči teden', [], ['class' => 'btn btn-primary']) !!}
@@ -49,6 +51,7 @@
                 <div class="form-group">
                     <div class="col-sm-10">
                         {!! Form::submit('Osvežite koledar', ['class' => 'btn btn-primary']) !!}
+                        {!! link_to_route('calendar.user', 'Moj urnik', [], ['class' => 'btn btn-primary']) !!}
                     </div>
                 </div>
 
@@ -66,7 +69,7 @@
 
     <style>
         #calendar {
-            width: 900px;
+            width: 50%;
         }
     </style>
 @endsection
