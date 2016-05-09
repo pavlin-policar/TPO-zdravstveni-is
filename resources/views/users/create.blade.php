@@ -38,7 +38,6 @@
                         {!! Form::label('person_type', 'Poklic*', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-md-4">
                             {!! Form::select('person_type', array(0 => 'zdravnik', 1 => 'medicinska sestra'), ['class' => 'form-control', 'required']) !!}
-
                             @if ($errors->has('person_type'))
                                 <span class="help-block">
                                         <strong>{{ $errors->first('person_type') }}</strong>

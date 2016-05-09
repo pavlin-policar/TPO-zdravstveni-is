@@ -20,19 +20,14 @@
 
 
                         <div class="form-group{{ $errors->has('days') ? ' has-error' : '' }}">
-                            {!! Form::label('days[]', 'Ponovite termine za vse:', ['class' => 'col-sm-2 control-label']) !!}
+                            {!! Form::label('days', 'Ponovite termine za vse:', ['class' => 'col-sm-2 control-label']) !!}
 
                             <div class="col-sm-10">
-                                {!! Form::checkbox('days[]', 1) !!}
-                                {!! Form::label('days[]', 'PON', ['class' => 'control-label']) !!}
-                                {!! Form::checkbox('days[]', 2) !!}
-                                {!! Form::label('days[]', 'TOR', ['class' => 'control-label']) !!}
-                                {!! Form::checkbox('days[]', 3) !!}
-                                {!! Form::label('days[]', 'SRE', ['class' => 'control-label']) !!}
-                                {!! Form::checkbox('days[]', 4) !!}
-                                {!! Form::label('days[]', 'ČET', ['class' => 'control-label']) !!}
-                                {!! Form::checkbox('days[]', 5) !!}
-                                {!! Form::label('days[]', 'PET', ['class' => 'control-label']) !!}
+                                <?php $labelDays = ['PON', 'TOR', 'SRE', 'ČET', 'PET']; ?>
+                                @foreach (range(1,5) as $i)
+                                    {!! Form::checkbox('days[]', $i, null, ['id' => 'days-' . $i]) !!}
+                                    {!! Form::label('days-' . $i, $labelDays[$i-1]) !!}
+                                @endforeach
                                 @if ($errors->has('days'))
                                     <span class="help-block">{{ $errors->first('days') }}</span>
                                 @endif
@@ -44,7 +39,7 @@
 
                             <div class="col-sm-10">
                                 {!! Form::label('hourStart', 'OD ure:', ['class' => 'control-label']) !!}
-                                {!! Form::date('hourStart', '') !!} <br />
+                                {!! Form::time('hourStart', '') !!} <br />
 
                                 @if ($errors->has('hourStart'))
                                     <span class="help-block">{{ $errors->first('hourStart') }}</span>
@@ -56,7 +51,7 @@
 
                             <div class="col-lg-offset-2 col-sm-10">
                                 {!! Form::label('hourEnd', 'DO ure:', ['class' => 'control-label']) !!}
-                                {!! Form::date('hourEnd', '') !!} <br />
+                                {!! Form::time('hourEnd', '') !!} <br />
 
                                 @if ($errors->has('hourEnd'))
                                     <span class="help-block">{{ $errors->first('hourEnd') }}</span>

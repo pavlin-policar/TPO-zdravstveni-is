@@ -266,7 +266,7 @@ class CalendarController extends Controller
     }
 
     public function createSchedule(Request $request) {
- 
+
         $validator = Validator::make($request->all(), [
             'days' => 'required',
             'hourStart' => 'required|date_format:"H:i"',
