@@ -36,6 +36,7 @@ class CalendarController extends Controller
         $checkups = null;
         $docId = null;
         if ($request->docId != null) $docId = $request->docId;
+        $selectedDoc = $docId;
 
         // Session user is not the same as logged user:
         if (session('showUser') != $actualUser->id) {
@@ -147,9 +148,7 @@ class CalendarController extends Controller
 
         $today = new \DateTime();
         // Get all doctors:
-        $doctors = User::where('person_type', '=', Code::DOCTOR()->id)->get();
-        //dd($doctors);
-        $selectedDoc = $docId;
+        $doctors = User::where('person_type', '=', Code::DOCTOR()->id)->get(); //->prepend('flavourText', '');
 
         return view('calendarEvents.calendar', compact('calendar', 'events', 'today','doctors', 'selectedDoc'));
     }
@@ -344,6 +343,9 @@ class CalendarController extends Controller
 
     public function register($time, $userId, $doctorId, Request $request) {
 
+        // Does this patient already have a checkup scheduled?
+        // TODO
+
         $start = Carbon::createFromFormat('d.m.Y H:i', $time);
 
         // Is event already full?
@@ -370,42 +372,35 @@ class CalendarController extends Controller
         //is event empty? -> is this user the same one who created empty event? -> is the event still far enough away? ALLOW DELETE
         //             \-> not empty -> is this user the same one, who registered the appointment? -> is the event still far enough away? ALLOW RELEASE OF THE EVENT
 
-        $formatedTime = Carbon::createFromFormat('d.m.Y H:i', $time);
+        $formattedTime = Carbon::createFromFormat('d.m.Y H:i', $time);
+        $today = Carbon::now('Europe/Amsterdam');
+        $date = Carbon::parse($today);
 
         // 1. Get the event
-        $event = DoctorDates::where('doctor', '=', $doctorId)->where('time', '=', $formatedTime)->first();
+        $event = DoctorDates::where('doctor', '=', $doctorId)->where('time', '=', $formattedTime)->first();
 
         // 2. Is event empty?
-        if ($event->patient == null) {
-            if ($event->doctor == Auth::user()->id) {
-                // Check event's date
-                $today = Carbon::now();
-                $time = Carbon::parse($time);
-                //dd($time);
-                $date = $today->diff($time);
-                //dd($date);
-                if ($date->days > 1) $event->delete();
-            }
+        if (($event->patient == null) && ($event->doctor == Auth::user()->id)) {
+                $event->delete();
         }
-        else {
-            //dd($event->who_inserted == Auth::user()->id);
+        elseif (($event->patient != null) && ($event->who_inserted == Auth::user()->id)) {
             // 3. Did I sign someone/myself up for this appointment?
-            if ($event->who_inserted == Auth::user()->id) {
-                // Check event's date
-                $today = Carbon::now();
-                $time = Carbon::parse($time);
-                $date = $today->diff($time);
-                //if ($date->days > 1) {
-                    //if ($date->h > 12) {
-                        $event->patient = null;
-                        $event->who_inserted = null;
-                        $event->save();
-                    //}
-                //}
+
+            // Check event's date
+            $date = $today->diff($formattedTime);
+            //dd($date);
+            if ($date->days > 0 || ($date->hours >= 12 && $date->days = 0)) {
+                //dd($date);
+                $event->patient = null;
+                $event->who_inserted = null;
+                $event->save();
             }
-
+        } else {
+            request()->session()->flash(
+                'cloneMessage',
+                'Dogodka ne morete sprositi/izbrisati!'
+            );
         }
-
         return redirect()->route('calendar.user');
     }
 }

@@ -38,8 +38,7 @@
                     {!! Form::label('docId', 'Izberite zdravnika:') !!}
                 </div>
 
-
-                <select class="col-sm-1 form-control" name="docId">
+                <select class="col-sm-1 form-control">
                     @if ($doctors->count())
                         @foreach($doctors as $doctor)
                             <option value="{{ $doctor->id }}" {{ $selectedDoc == $doctor->id ? 'selected="selected"' : '' }}>{{ $doctor->fullName }}</option>
@@ -50,7 +49,7 @@
                 {{-- Submit button --}}
                 <div class="form-group">
                     <div class="col-sm-10">
-                        {!! Form::submit('Osvežite koledar', ['class' => 'btn btn-primary']) !!}
+                        {!! Form::submit('Prikažite zdravnikov koledar', ['class' => 'btn btn-primary']) !!}
                         {!! link_to_route('calendar.user', 'Moj urnik', [], ['class' => 'btn btn-primary']) !!}
                     </div>
                 </div>
