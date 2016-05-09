@@ -53,6 +53,10 @@ class CalendarController extends Controller
                 // This (The-Not-Chosen) doctor's who_inserted events show up only on his schedule:
                 $tempCheckups = DoctorDates::where('who_inserted', '=', $actualUser->id)->get();
                 foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+
+                // I'm the doc, and someone else registered event:
+                $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('who_inserted', '!=', $docId)->whereNotNull('who_inserted')->get();
+                foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
             }
 
             // Selected doctor's (or this doctor's) open events:
@@ -120,6 +124,13 @@ class CalendarController extends Controller
                     $title = $title->fullName;
                     $backgroundClr = '#099';
                     $url = route('calendar.registerEvent', ['time' => $start, 'user' => $checkup->patient, 'doctor' => $docId]);
+                } // We're the ones who created open appointment:
+                elseif ($actualUser->id == $checkup->doctor && $actualUser->id != $checkup->who_inserted && $checkup->who_inserted != null) {
+                    $title = User::where('id', '=', $checkup->patient)->first();
+                    //dd($title);
+                    $title = $title->fullName;
+                    $backgroundClr = '#099';
+                    $url = route('calendar.registerEvent', ['time' => $start, 'user' => $checkup->who_inserted, 'doctor' => $docId]);
                 } // The event is still open
                 elseif (null == $checkup->patitent) {
                     $title = 'Prost termin';
