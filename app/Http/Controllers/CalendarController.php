@@ -37,6 +37,7 @@ class CalendarController extends Controller
         $checkups = null;
         $docId = null;
         if (session('showUser') != $user->id) {
+            $docId = Auth::user()->id;
             $user = User::where('id', '=', session('showUser'))->first();
         }
 
@@ -100,7 +101,7 @@ class CalendarController extends Controller
                 $today = Carbon::now('Europe/Amsterdam');
                 $date = Carbon::parse($today);
                 if ($date->gt($start)) $url = null;
-                else $url = Route('calendar.registerEvent', [$start, $user->id, $docId]);
+                else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $user->id, 'doctor' => $docId]);
 
                 // We're the patient
                 if ($user->id == $checkup->patient) {
@@ -410,19 +411,20 @@ class CalendarController extends Controller
             }
         }
         else {
+            //dd($event->who_inserted == Auth::user()->id);
             // 3. Did I sign someone/myself up for this appointment?
             if ($event->who_inserted == Auth::user()->id) {
                 // Check event's date
                 $today = Carbon::now();
                 $time = Carbon::parse($time);
                 $date = $today->diff($time);
-                if ($date->days > 1) {
-                    if ($date->h > 12) {
+                //if ($date->days > 1) {
+                    //if ($date->h > 12) {
                         $event->patient = null;
                         $event->who_inserted = null;
                         $event->save();
-                    }
-                }
+                    //}
+                //}
             }
 
         }
