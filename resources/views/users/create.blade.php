@@ -41,7 +41,7 @@
                                 <div class="col-md-6">
                                     {!! Form::select('person_type', array(0 => 'osebni zdravnik', 1 => 'zobozdravnik', 2 => 'medicinska sestra'), ['class' => 'form-control', 'required']) !!}
 
-                                    
+
 
                                     @if ($errors->has('person_type'))
                                         <span class="help-block">

@@ -164,7 +164,6 @@ class CalendarController extends Controller
         $today = Carbon::now('Europe/Amsterdam');
         $date = Carbon::parse($today);
 
-
         $monday = $date->startOfWeek()->toDateTimeString();
         $saturday = $date->endOfWeek()->toDateTimeString();
 
@@ -172,8 +171,6 @@ class CalendarController extends Controller
                                 ->where('time', '>=', $monday)
                                 ->where('time', '<=', $saturday)
                                 ->get();
-
-        //dd($docsCurrentWeek);
 
         // Is this week's schedule empty? Then we're done here.
         if ($docsCurrentWeek->count() == 0) {
@@ -184,8 +181,6 @@ class CalendarController extends Controller
             return redirect()->route('calendar.user');
         }
 
-
-
         // Get next week's events:
         $nextMonday = Carbon::parse($monday)->addDays(7)->toDateTimeString();
         $nextSaturday = Carbon::parse($saturday)->addDays(7)->toDateTimeString();
@@ -195,7 +190,7 @@ class CalendarController extends Controller
             ->get();
         if ($docsNextWeek != null) {
             // Check for collision:
-            $detection = $this->checkForCollision($docsCurrentWeek, $docsNextWeek);
+            $detection = $this->checkForCollision($docsCurrentWeek, $docsNextWeek, 7);
             if ($detection) {
                 // Collision, redirect back with a warning message:
                 request()->session()->flash(
@@ -206,7 +201,7 @@ class CalendarController extends Controller
             }
         }
 
-        // Clone the week:
+        // Next week we've either got nothing happening or no collisions, clone the week:
         foreach ($docsCurrentWeek as $cloneTemplate) {
             // Weird PHP/Laravel shenanigans O___O
             if (count($docsCurrentWeek) == 1) $cloneTemplate = $docsCurrentWeek;
@@ -226,32 +221,29 @@ class CalendarController extends Controller
 
     }
 
-    public function checkForCollision($current, $next) {
+    public function checkForCollision($current, $next, $days) {
 
-        //dd($current->count());
         foreach ($current as $firstEvent) {
-
             // Weird PHP/Laravel shenanigans O___O
             if (count($current) == 1) $firstEvent = $current;
 
             foreach ($next as $secondEvent) {
-
                 // Weird PHP/Laravel shenanigans O___O
                 if (count($next) == 1) $secondEvent = $next;
 
                 // Compare days of the week:
                 $firstA = Carbon::parse($firstEvent->time);
                 $firstB = Carbon::parse($secondEvent->time);
+                if ($firstA->dayOfWeek == $firstB->dayOfWeek) {
 
-                if ($firstA->dayOfWeek == $firstA->dayOfWeek) {
                     // Compare days:
-                    if ($firstA->toDateString() == $firstB->toDateString()) {
+                    if ($firstA->addDays($days)->toDateString() == $firstB->toDateString()) {
+
                         // Compare hours:
-                        // (StartA <= EndB) and (EndA >= StartB) -> OVERLAP!
+                        // (StartA <= EndB) and (EndA >= StartB) <-> OVERLAP!
                         $secondA = Carbon::parse($firstEvent->time_end);
                         $secondB = Carbon::parse($secondEvent->time_end);
-
-                        if (($firstA->lte($secondB)) && ($secondA->gte($firstB))) {
+                        if (($firstA->lte($secondB)) && ($secondA->addDays($days)->gte($firstB))) {
                             return true;
                         }
                     }
@@ -294,18 +286,10 @@ class CalendarController extends Controller
         // Get properly formated input:
         $startDate = Carbon::createFromFormat('d/m', $request->dayStart);
         $endDate = Carbon::createFromFormat('d/m', $request->dayEnd);
-        //$startDate = Carbon::parse($request->dayStart)->toDateString();//->dayOfWeek;
-        //$endDate = Carbon::parse($request->dayEnd)->toDateString();//->dayOfWeek;
 
         //dd(Carbon::parse($startDate)->dayOfWeek); // 1 = PON
         $jump = Carbon::createFromFormat('H:i', $request->interval);
-
-        //$startTime = Carbon::parse($request->hourStart)->toTimeString(); //$request->hourStart;
-        //$startTime = Carbon::createFromFormat('H:i', $request->hourStart);
-        //$endTime = Carbon::parse($request->hourEnd)->toTimeString(); //$request->hourEnd;
         $endTime = Carbon::createFromFormat('H:i', $request->hourEnd);
-
-        // Create query that checks for doc's events within the allocated time slot:
         $queryStartTime = $startDate->toDateString() . ' ' . Carbon::createFromFormat('H:i', $request->hourStart)->toTimeString();
         $queryEndTime = $endDate->toDateString() . ' ' . $endTime->toTimeString();
 
@@ -313,8 +297,6 @@ class CalendarController extends Controller
             ->where('time', '>=', $queryStartTime)
             ->where('time', '<=', $queryEndTime)
             ->get();
-
-        //dd($collisionCandidates);
 
         for ($startDate; $startDate <= $endDate; $startDate = $startDate->addDay()) {
             foreach ($request->days as $day) {
@@ -334,11 +316,10 @@ class CalendarController extends Controller
                         $dd->doctor = Auth::user()->id;
 
                         // Check for collision before saving event:
-                        if (!$this->checkForCollision($dd, $collisionCandidates)) {
+                        if (!$this->checkForCollision($dd, $collisionCandidates, 0)) {
                             // No collision, save event:
                             $dd->save();
                         } elseif (request()->session()->get('cloneMessage') == null) {
-                            //dd(request()->session()->get('cloneMessage'));
                             request()->session()->flash(
                                 'cloneMessage',
                                 'Nekateri termini niso bili dodani zaradi kolizije!'
