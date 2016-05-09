@@ -85,6 +85,7 @@ class UserAdminController extends Controller
     public function create(Request $request)
     {
         // TODO figure out a way to handle this if the user type method is not defined
+        // Type currently always defaults to 'doctor' via submit
         $userType = $request->get('type', 'patient');
         // Lahko bi nastavili neko default vrednost, samo ne vem kako? Spodaj je nedelujoč poskus.
         //if ($userType == NULL || $userType == '') $userType = 'doctor';
@@ -117,8 +118,13 @@ class UserAdminController extends Controller
         }
 
         //var_dump($request->person_type);
-        if ($request->person_type == 1) {
+        if ($request->person_type == 2) {
             $user = $this->users->createNurse([
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+        } else if ($request->person_type == 1) {
+            $user = $this->users->createPersonalDentist([
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
             ]);

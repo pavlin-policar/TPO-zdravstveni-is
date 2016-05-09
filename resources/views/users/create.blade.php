@@ -34,15 +34,22 @@
                     </div>
 
                     {{-- Job title --}}
-                    <div class="form-group{{ $errors->has('person_type') ? ' has-error' : '' }}">
-                        {!! Form::label('person_type', 'Poklic*', ['class' => 'col-sm-2 control-label']) !!}
-                        <div class="col-md-4">
-                            {!! Form::select('person_type', array(0 => 'zdravnik', 1 => 'medicinska sestra'), ['class' => 'form-control', 'required']) !!}
-                            @if ($errors->has('person_type'))
-                                <span class="help-block">
-                                        <strong>{{ $errors->first('person_type') }}</strong>
-                                    </span>
-                            @endif
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="form-group{{ $errors->has('person_type') ? ' has-error' : '' }}">
+                                {!! Form::label('person_type', 'Poklic*', ['class' => 'col-sm-2 control-label']) !!}
+                                <div class="col-md-6">
+                                    {!! Form::select('person_type', array(0 => 'osebni zdravnik', 1 => 'zobozdravnik', 2 => 'medicinska sestra'), ['class' => 'form-control', 'required']) !!}
+
+                                    
+
+                                    @if ($errors->has('person_type'))
+                                        <span class="help-block">
+                                                <strong>{{ $errors->first('person_type') }}</strong>
+                                            </span>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -86,4 +93,11 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        $("#hide").click(function(){
+            $("#hide").hide();
+        });
+    </script>
 @endsection
