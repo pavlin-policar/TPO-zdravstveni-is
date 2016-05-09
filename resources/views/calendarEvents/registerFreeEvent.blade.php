@@ -58,11 +58,11 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             @if ($creator != null && $creator->who_inserted == Auth::user()->id)
-                                {!! Form::submit('Dodaj opombe', ['class' => 'btn btn-primary']) !!}
+                                {!! Form::submit('Dodajte opombe', ['class' => 'btn btn-primary']) !!}
                                 {!! link_to_route('calendar.cancelEvent', 'Sprostite termin', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
                             @elseif ($creator != null)
                                 @can('canDoDoctoryStuff', App\Models\User::class)
-                                    {!! Form::submit('Dodaj opombe', ['class' => 'btn btn-primary']) !!}
+                                    {!! Form::submit('Dodajte opombe', ['class' => 'btn btn-primary']) !!}
                                 @endcan
                             @elseif ($creator == null)
                                 @if ($doctor == Auth::user()->id && Session('showUser') == Auth::user()->id)
@@ -72,6 +72,7 @@
                                     {!! Form::submit('Rezerviraj termin', ['class' => 'btn btn-primary']) !!}
                                 @endif
                             @endif
+                                {!! link_to_route('calendar.user', 'Nazaj na koledar', null, ['class' => 'btn btn-primary']) !!}
                         </div>
 
 

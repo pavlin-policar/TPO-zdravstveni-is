@@ -31,9 +31,13 @@
                 Naročanje</span>
             <div class="description">Naročite se tako, da kliknete na prost termin</div><br />
         @endif
+    </div>
 
-        <div class="col-sm-6 form-group">
-            {!! Form::open(['route' => 'calendar.user', 'method' => 'get', 'class' => 'form-horizontal']) !!}
+    <div class="row">
+        <div class="card">
+            <br />
+            <div class="col-sm-3 form-group">
+                {!! Form::open(['route' => 'calendar.user', 'method' => 'get', 'class' => 'form-horizontal']) !!}
                 <div class="col-sm-10">
                     {!! Form::label('docId', 'Izberite zdravnika:') !!}
                 </div>
@@ -54,9 +58,9 @@
                     </div>
                 </div>
 
-            {!! Form::close() !!}
+                {!! Form::close() !!}
+            </div>
         </div>
-
     </div>
 
     <br />
@@ -68,7 +72,7 @@
 
     <style>
         #calendar {
-            width: 50%;
+            width: 90%;
         }
     </style>
 @endsection

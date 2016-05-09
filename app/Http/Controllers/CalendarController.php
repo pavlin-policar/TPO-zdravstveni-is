@@ -124,6 +124,7 @@ class CalendarController extends Controller
                         }
                 } // We're the patient
                 elseif ($actualUser->id == $checkup->patient) {
+                    if($actualUser->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $checkup->doctor]);
                     $title = User::where('id', '=', $checkup->patient)->first();
                     $title = $title->fullName;
                     $backgroundClr = '#904';
@@ -372,19 +373,35 @@ class CalendarController extends Controller
 
     public function register($time, $userId, $doctorId, Request $request) {
 
-        // Does this patient already have a checkup scheduled?
-        //TODO
-
         $start = Carbon::createFromFormat('d.m.Y H:i', $time);
 
         // Is event already full?
         $checkup = DoctorDates::where('patient', '=', $userId)->where('doctor', '=', $doctorId)->where('time', '=', $start)->first();
+
         if ($checkup != null) {
             //Event already full, we're just updating notes:
             if ($request->note != null) $checkup->note = $request->note;
             $checkup->save();
+            request()->session()->flash(
+                'cloneMessage',
+                'Opombe posodobljene!'
+            );
             return redirect()->route('calendar.user');
         }
+
+        // Doctor can set you up with another appointment, even if you have one or ten already:
+        if (!Auth::user()->isDoctor()) {
+            $event = DoctorDates::where('patient', '=', $userId)->first();
+            if ($event->count > 0) {
+                request()->session()->flash(
+                    'cloneMessage',
+                    'Naenkrat se ahko naročite samo na en termin! Za več naročil se obrnite na svojega osebnega doktorja.'
+                );
+                return redirect()->route('calendar.user');
+            }
+        }
+
+
         // The event is still free, so this is just user trying to register:
         $checkup = DoctorDates::where('patient', '=', null)->where('doctor', '=', $doctorId)->where('time', '=', $start)->first();
         if ($checkup != null) {
