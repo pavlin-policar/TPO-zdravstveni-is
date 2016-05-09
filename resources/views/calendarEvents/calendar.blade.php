@@ -38,7 +38,7 @@
                     {!! Form::label('docId', 'Izberite zdravnika:') !!}
                 </div>
 
-                <select class="col-sm-1 form-control">
+                <select class="col-sm-1 form-control" name="docId">
                     @if ($doctors->count())
                         @foreach($doctors as $doctor)
                             <option value="{{ $doctor->id }}" {{ $selectedDoc == $doctor->id ? 'selected="selected"' : '' }}>{{ $doctor->fullName }}</option>

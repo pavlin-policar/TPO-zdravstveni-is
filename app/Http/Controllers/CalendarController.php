@@ -113,13 +113,22 @@ class CalendarController extends Controller
                 if ($date->gt($start)) $url = null;
                 else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
 
-                // We're the patient
-                if ($actualUser->id == $checkup->patient) {
+                // Our break! \o/
+                if ($checkup->note == 'odmor') {
+                        $title = 'Odmor';
+                        $backgroundClr = '#364';
+                        if ($actualUser->id == $checkup->who_inserted) {
+                            $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
+                        } else {
+                            $url = null;
+                        }
+                } // We're the patient
+                elseif ($actualUser->id == $checkup->patient) {
                     $title = User::where('id', '=', $checkup->patient)->first();
                     $title = $title->fullName;
                     $backgroundClr = '#904';
                 } // We're the ones who registered the appointment
-                elseif ($actualUser->id == $checkup->who_inserted) {
+                elseif ($actualUser->id == $checkup->who_inserted && $checkup->patient != 0) {
                     $title = User::where('id', '=', $checkup->patient)->first();
                     $title = $title->fullName;
                     $backgroundClr = '#099';
@@ -403,6 +412,7 @@ class CalendarController extends Controller
                 //dd($date);
                 $event->patient = null;
                 $event->who_inserted = null;
+                $event->note = null;
                 $event->save();
             }
         } else {
@@ -412,5 +422,19 @@ class CalendarController extends Controller
             );
         }
         return redirect()->route('calendar.user');
+    }
+
+    public function introduceBreak($time, $userId, $doctorId) {
+        // Get event, set patient to -1.
+        $formattedTime = Carbon::createFromFormat('d.m.Y H:i', $time);
+        $breakTime = DoctorDates::where('doctor', '=', $doctorId)->where('time', '=', $formattedTime)->first();
+
+        $breakTime->note = 'odmor';
+        $breakTime->patient = $userId;
+        $breakTime->who_inserted = $userId;
+        //dd($breakTime);
+        $breakTime->save();
+
+        return  redirect()->route('calendar.user');
     }
 }

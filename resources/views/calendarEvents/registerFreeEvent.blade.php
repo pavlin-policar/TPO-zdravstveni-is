@@ -67,6 +67,7 @@
                             @elseif ($creator == null)
                                 @if ($doctor == Auth::user()->id && Session('showUser') == Auth::user()->id)
                                     {!! link_to_route('calendar.cancelEvent', 'Odstranite termin', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
+                                    {!! link_to_route('calendar.introduceBreak', 'Označite odmor za malico', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
                                 @else
                                     {!! Form::submit('Rezerviraj termin', ['class' => 'btn btn-primary']) !!}
                                 @endif
