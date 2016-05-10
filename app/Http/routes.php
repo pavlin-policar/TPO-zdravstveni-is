@@ -234,7 +234,14 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'CheckController@show',
         'as' => 'check.show'
     ]);
-
+    Route::get('/special-list/{codeType}', [
+        'uses' => 'CodeController@specialList',
+        'as' => 'code.specialList',
+    ]);
+    Route::get('/special-list/detail/{code}', [
+        'uses' => 'CodeController@specialListDetail',
+        'as' => 'code.publicDetail',
+    ]);
     /**
      * Routes only available to the doctor user.
      */

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Models\Code;
 use App\Models\CodeType;
+use App\Models\ManualsCodes;
+use App\Models\AllergiesAndDiseasesMedical;
 use Illuminate\Http\Request;
 
 class CodeController extends Controller
@@ -87,5 +89,24 @@ class CodeController extends Controller
         $codeType = $code->code_type;
         $code->delete();
         return redirect()->route('codeTypes.show', ['id' => $codeType]);
+    }
+
+    public function specialList(CodeType $codeType){
+        $this->authorize('can-see-code-type-codes', $codeType);
+
+        return view('code.publicList')->with('codeType', $codeType);
+    }
+
+    public function specialListDetail(Code $code){
+        $data['code']=$code;
+        $data['manuals']=ManualsCodes::join('manuals', 'manuals_codes.manual', '=', 'manuals.id')
+            ->select('manuals.*')
+            ->where('manuals_codes.code', '=', $code->id)
+            ->get();
+        $data['goodMedicals'] = AllergiesAndDiseasesMedical::join('codes', 'allergies_and_diseases_medical.cure', '=', 'codes.id')
+            ->select('codes.*')
+            ->where('allergies_and_diseases_medical.allergy_or_disease', '=', $code->id)
+            ->get();
+        return view('code.publicDetail')->with($data);
     }
 }

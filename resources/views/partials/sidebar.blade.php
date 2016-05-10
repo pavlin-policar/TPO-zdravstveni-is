@@ -97,6 +97,26 @@
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
                     </a>
                 </li>
+                <li class="panel panel-default dropdown">
+                    <a data-toggle="collapse" href="#dropdown-charges">
+                        <span class="icon fa fa-info-circle"></span><span class="title">Informacije</span>
+                    </a>
+                    <div id="dropdown-charges" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    {!! link_to_route('code.specialList', 'Informacije o boleznih',13) !!}
+                                </li>
+                                <li>
+                                    {!! link_to_route('code.specialList', 'Informacije o zdravilih',14) !!}
+                                </li>
+                                <li>
+                                    {!! link_to_route('code.specialList', 'Informacije o dietah',12) !!}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
