@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CalendarScheduleRequest;
 use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateChargeRequest;
@@ -181,6 +182,7 @@ class CalendarController extends Controller
             'defaultView' => 'agendaWeek',
             'allDaySlot' => false,
             'eventTextColor' => 'white',
+            'eventHeight' => '2',
         ]);  //add an array with addEvents
 
         $today = new \DateTime();
@@ -255,14 +257,16 @@ class CalendarController extends Controller
 
     public function checkForCollision($current, $next, $days) {
 
+        //dd($next);
         foreach ($current as $firstEvent) {
+
             // Weird PHP/Laravel shenanigans O___O
             if (count($current) == 1) $firstEvent = $current;
 
-
             foreach ($next as $secondEvent) {
-                // Weird PHP/Laravel shenanigans O___O FIREFOX SPECIFIC
-                //if (count($next) == 1) $secondEvent = $next;
+
+                // Weird PHP/Laravel shenanigans O___O
+                if (count($next) == 1) $secondEvent = $next;
 
                 // Compare days of the week:
                 $firstA = Carbon::parse($firstEvent->time);
@@ -290,36 +294,11 @@ class CalendarController extends Controller
         return view('calendarEvents.docSchedule');
     }
 
-    public function createSchedule(Request $request) {
-
-        $validator = Validator::make($request->all(), [
-            'days' => 'required',
-            'hourStart' => 'required|date_format:"H:i"',
-            'hourEnd' => 'required|date_format:"H:i"',
-            //ISO 8601 Y-m-d
-            'dayStart' => 'required|date_format:"Y-m-d"|after:today',
-            'dayEnd' => 'required|date_format:"Y-m-d"|after:"dayStart"',
-            'interval' => 'required',
-        ],
-            [
-                'days.required' => 'Izbrati morate vsaj en dan!',
-                'required' => 'Polje ne sme ostati prazno!',
-                'dayStart.date_format' => 'Datum podan v napačnem formatu!',
-                'dayEnd.date_format' => 'Datum podan v napačnem formatu!',
-                'date_format' => 'Čas mora biti podan v formatu HH:mm!',
-                'dayEnd.after' => 'Končni datum mora biti večji od začetnega',
-                'after' => 'Začetni datum mora biti kasnejši od današnjega!',
-            ]);
-
-        // Validate user input:
-        if ($validator->fails()) {
-            return view('calendarEvents.docSchedule')->withErrors($validator);
-        }
-
+    public function createSchedule(CalendarScheduleRequest $request) {
         // Get properly formated input:
-        $startDate = Carbon::createFromFormat('Y-d-m', $request->dayStart);
-        $endDate = Carbon::createFromFormat('Y-d-m', $request->dayEnd);
-        //dd($endDate);
+        $startDate = Carbon::createFromFormat('Y-m-d', $request->dayStart);
+        $endDate = Carbon::createFromFormat('Y-m-d', $request->dayEnd);
+
         //dd(Carbon::parse($startDate)->dayOfWeek); // 1 = PON
         $jump = Carbon::createFromFormat('H:i', $request->interval);
         $endTime = Carbon::createFromFormat('H:i', $request->hourEnd);

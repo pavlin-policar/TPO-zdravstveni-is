@@ -168,6 +168,7 @@ return [
          */
         Collective\Html\HtmlServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
+        App\Providers\ScheduleServiceProvider::class,
 
     ],
 
@@ -224,3 +225,4 @@ return [
     ],
 
 ];
+
