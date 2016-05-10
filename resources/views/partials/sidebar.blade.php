@@ -98,10 +98,10 @@
                     </a>
                 </li>
                 <li class="panel panel-default dropdown">
-                    <a data-toggle="collapse" href="#dropdown-charges">
+                    <a data-toggle="collapse" href="#dropdown-info">
                         <span class="icon fa fa-info-circle"></span><span class="title">Informacije</span>
                     </a>
-                    <div id="dropdown-charges" class="panel-collapse collapse">
+                    <div id="dropdown-info" class="panel-collapse collapse">
                         <div class="panel-body">
                             <ul class="nav navbar-nav">
                                 <li>
