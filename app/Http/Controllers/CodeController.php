@@ -92,9 +92,7 @@ class CodeController extends Controller
     }
 
     public function specialList(CodeType $codeType){
-        $this->authorize('can-see-code-type-codes', $codeType);
-
-        return view('code.publicList')->with('codeType', $codeType);
+         return view('code.publicList')->with('codeType', $codeType);
     }
 
     public function specialListDetail(Code $code){
