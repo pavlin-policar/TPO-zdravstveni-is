@@ -259,9 +259,10 @@ class CalendarController extends Controller
             // Weird PHP/Laravel shenanigans O___O
             if (count($current) == 1) $firstEvent = $current;
 
+
             foreach ($next as $secondEvent) {
-                // Weird PHP/Laravel shenanigans O___O
-                if (count($next) == 1) $secondEvent = $next;
+                // Weird PHP/Laravel shenanigans O___O FIREFOX SPECIFIC
+                //if (count($next) == 1) $secondEvent = $next;
 
                 // Compare days of the week:
                 $firstA = Carbon::parse($firstEvent->time);
@@ -316,9 +317,9 @@ class CalendarController extends Controller
         }
 
         // Get properly formated input:
-        $startDate = Carbon::createFromFormat('d/m', $request->dayStart);
-        $endDate = Carbon::createFromFormat('d/m', $request->dayEnd);
-
+        $startDate = Carbon::createFromFormat('Y-d-m', $request->dayStart);
+        $endDate = Carbon::createFromFormat('Y-d-m', $request->dayEnd);
+        //dd($endDate);
         //dd(Carbon::parse($startDate)->dayOfWeek); // 1 = PON
         $jump = Carbon::createFromFormat('H:i', $request->interval);
         $endTime = Carbon::createFromFormat('H:i', $request->hourEnd);
