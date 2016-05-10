@@ -289,8 +289,8 @@ class CalendarController extends Controller
             'days' => 'required',
             'hourStart' => 'required|date_format:"H:i"',
             'hourEnd' => 'required|date_format:"H:i"',
-            'dayStart' => 'required|date_format:"d/m/Y"|after:today',
-            'dayEnd' => 'required|date_format:"d/m/Y"|after:"dayStart"',
+            'dayStart' => 'required|date_format:"d.m.Y"|after:today',
+            'dayEnd' => 'required|date_format:"d.m.Y"|after:"dayStart"',
             'interval' => 'required',
         ],
             [
@@ -367,7 +367,6 @@ class CalendarController extends Controller
         $start = Carbon::createFromFormat('d.m.Y H:i', $time);
         $creator = DoctorDates::where('patient', '=', $userId)->where('time', '=', $start)->first();
         $date = DoctorDates::where('time', '=', $start)->first();
-
         return view('calendarEvents.registerFreeEvent', ['time' => $time, 'patient' => $patient, 'creator' => $creator, 'doctor' => $doctorId, 'date' => $date]);
     }
 

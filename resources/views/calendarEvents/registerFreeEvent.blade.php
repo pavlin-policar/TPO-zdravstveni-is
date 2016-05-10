@@ -50,7 +50,11 @@
                     <div class="form-group">
                         {!! Form::label('note', 'Opombe pregleda:', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            {!! Form::textarea('note', $creator->note, ['class' => 'field']) !!}
+                            @if ($creator != null)
+                                {!! Form::textarea('note', $creator->note, ['class' => 'field']) !!}
+                            @else
+                                {!! Form::textarea('note', '', ['class' => 'field']) !!}
+                            @endif
                         </div>
                     </div>
 
