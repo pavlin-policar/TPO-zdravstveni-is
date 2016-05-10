@@ -26,7 +26,7 @@ class CheckMeasurementRequest extends Request
             'type' => 'required',
             'provider' => 'required',
             'check' => 'required',
-            'result' => 'required'
+            'result' => 'required|min:-50|max:600'
         ];
     }
 }

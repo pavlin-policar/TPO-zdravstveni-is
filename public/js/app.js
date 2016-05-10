@@ -163,19 +163,13 @@ $(document).ready(function(){
         $('#pswd_info').hide();
     });
 
-    $("#measurementType").change(function(){
+    $(".measurementT").change(function(){
         var min =$('option:selected', this).attr('min');
         var max =$('option:selected', this).attr('max');
-        $("#measurementResult").attr('min', min);
-        $("#measurementResult").attr('max', max);
+        $(".measurementR").attr('min', min);
+        $(".measurementR").attr('max', max);
     });
 
-    $("#measurementTypeShow").change(function(){
-        var min =$('option:selected', this).attr('min');
-        var max =$('option:selected', this).attr('max');
-        $("#measurementResultShow").attr('min', min);
-        $("#measurementResultShow").attr('max', max);
-    });
 });
 
 

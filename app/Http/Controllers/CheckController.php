@@ -44,7 +44,7 @@ class CheckController extends Controller
 
         $thisCheck = Checks::findOrFail($id);
 
-        if(($thisCheck->doctor == session('user'))||($thisCheck->patient == session('user'))||($thisCheck->patient == session('showUser'))) {
+        if((($thisCheck->doctor == session('user'))||($thisCheck->patient == session('user'))||($thisCheck->patient == session('showUser'))) && ($thisCheck->doctor == Auth::user()->id)) {
             $data['check'] = DB::table('checks')
                 ->join('users', 'checks.doctor', '=', 'users.id')
                 ->join('doctor_dates', 'checks.doctor_date', '=', 'doctor_dates.id')
@@ -214,7 +214,11 @@ class CheckController extends Controller
         $checkCode = CheckCodes::find($id);
         $checkCode->note = $request['note'];
         $checkCode->start = $request['start'];
-        $checkCode->end = $request['end'];
+        if(strlen($request->end) <= 1)
+            $request->end == NULL;
+        else
+            $checkCode->end = $request['end'];
+
         $checkCode->check = $request['check'];
         $checkCode->code = $request['code'];
 
@@ -227,22 +231,29 @@ class CheckController extends Controller
 
     public function checkUpdateMeasurement(CheckMeasurementRequest $request, $id) {
 
-        $measurement = Measurement::find($id);
-        $measurement->provider = $request['provider'];
-        $measurement->patient = $request['patient'];
-        $measurement->type = $request['type'];
-        $measurement->check = $request['check'];
-        $measurement->time = Carbon::createFromFormat('Y-m-d H:i', $request['date'] . " " . $request['time']);
+        $type = Code::find($request->type);
 
-        $measurement->update();
+        if($request->result < $type->min_value || $request->result > $type->max_value){
+            return redirect()->back()->with('error', 'Napačna vrednost');
+        }
+        else {
+            $measurement = Measurement::find($id);
+            $measurement->provider = $request['provider'];
+            $measurement->patient = $request['patient'];
+            $measurement->type = $request['type'];
+            $measurement->check = $request['check'];
+            $measurement->time = Carbon::createFromFormat('Y-m-d H:i', $request['date'] . " " . $request['time']);
 
-        $measurementResult = MeasurementResult::where('measurement', $id)->first();
-        $measurementResult->type = $request['type'];
-        $measurementResult->result = $request['result'];
+            $measurement->update();
 
-        $measurementResult->update();
+            $measurementResult = MeasurementResult::where('measurement', $id)->first();
+            $measurementResult->type = $request['type'];
+            $measurementResult->result = $request['result'];
 
-        return redirect()->back()->with('Check', 'CheckMeasurementAdded');
+            $measurementResult->update();
+
+            return redirect()->back()->with('Check', 'CheckMeasurementAdded');
+        }
     }
 
     public function checkAdd(CheckRequest $request)
@@ -258,12 +269,16 @@ class CheckController extends Controller
         return redirect()->back()->with('Check', 'CheckAdded');
     }
 
-    public function checkAddCode(CheckCodeRequest $request)
-    {
+    public function checkAddCode(CheckCodeRequest $request){
+
         $checkCode = new CheckCodes();
         $checkCode->note = $request['note'];
         $checkCode->start = $request['start'];
-        $checkCode->end = $request['end'];
+        if(strlen($request->end) <= 1)
+            $request->end == NULL;
+        else
+            $checkCode->end = $request['end'];
+
         $checkCode->check = $request['check'];
         $checkCode->code = $request['code'];
 
@@ -274,23 +289,30 @@ class CheckController extends Controller
 
     public function checkAddMeasurement(CheckMeasurementRequest $request) {
 
-        $measurement = new Measurement();
-        $measurement->provider = $request['provider'];
-        $measurement->patient = $request['patient'];
-        $measurement->type = $request['type'];
-        $measurement->check = $request['check'];
-        $measurement->time = Carbon::createFromFormat('Y-m-d H:i', $request['date'] . " " . $request['time']);
+        $type = Code::find($request->type);
 
-        $measurement->save();
+        if($request->result < $type->min_value || $request->result > $type->max_value){
+            return redirect()->back()->with('error', 'Napačna vrednost');
+        }
+        else{
+            $measurement = new Measurement();
+            $measurement->provider = $request['provider'];
+            $measurement->patient = $request['patient'];
+            $measurement->type = $request['type'];
+            $measurement->check = $request['check'];
+            $measurement->time = Carbon::createFromFormat('Y-m-d H:i', $request['date'] . " " . $request['time']);
 
-        $measurementResult = new MeasurementResult();
-        $measurementResult->measurement = $measurement->id;
-        $measurementResult->type = $request['type'];
-        $measurementResult->result = $request['result'];
+            $measurement->save();
 
-        $measurementResult->save();
+            $measurementResult = new MeasurementResult();
+            $measurementResult->measurement = $measurement->id;
+            $measurementResult->type = $request['type'];
+            $measurementResult->result = $request['result'];
 
-        return redirect()->back()->with('Check', 'CheckMeasurementAdded');
+            $measurementResult->save();
+
+            return redirect()->back()->with('Check', 'CheckMeasurementAdded');
+        }
     }
 
 

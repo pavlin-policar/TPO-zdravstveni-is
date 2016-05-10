@@ -86,7 +86,7 @@
                     {!! Form::close() !!}
                 </div>
                 <div class="col-sm-offset-2 col-sm-10">
-                    @if(Auth::user()->isDoctor())
+                    @if(Auth::user()->isDoctor() && $date->patient != null)
                         {!! link_to_route('check.doctor', 'Uredi podatke o pregledu', ['date' => $date->id],  ['class' => 'btn btn-primary']) !!}
                     @endif
                 </div>

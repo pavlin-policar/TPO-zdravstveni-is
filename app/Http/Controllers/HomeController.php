@@ -150,10 +150,10 @@ class HomeController extends Controller
                 ->get();
 
             $data['allDatesDoctor'] = DoctorDates::join('users', 'doctor_dates.patient', '=', 'users.id')
-                ->select('doctor_dates.note', 'doctor_dates.time', 'users.*', 'doctor_dates.id')
+                ->select('doctor_dates.*', 'users.*', 'doctor_dates.id')
                 ->where('doctor_dates.doctor', $user->id)
                 ->where('doctor_dates.time', '>', Carbon::today())
-                ->orderBy('doctor_dates.time', 'desc')
+                ->orderBy('doctor_dates.time', 'asc')
                 ->take(20)
                 ->get();
 

@@ -50,7 +50,7 @@
                             <div class="form-group{{ $errors->has('pacient') ? ' has-error' : '' }}">
                                 {!! Form::label('pacient', 'Pacient', ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-10">
-                                    {!! Form::text('pacient', $patient->fullName, ['class' => 'form-control']) !!}
+                                    {!! Form::text('pacient', $patient->fullName, ['class' => 'form-control', 'disabled']) !!}
                                     @if ($errors->has('pacient'))
                                         <span class="help-block">{{ $errors->first('pacient') }}</span>
                                     @endif
@@ -271,7 +271,7 @@
                                         <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                                             {!! Form::label('type', 'Meritev', ['class' => 'col-sm-2 control-label']) !!}
                                             <div class="col-sm-10">
-                                                <select class="form-control select2-hidden-accessible" required="required" id="measurementTypeShow" name="type" tabindex="-1" aria-hidden="true" style="width: 100%">
+                                                <select class="form-control select2-hidden-accessible measurementT" required="required" id="measurementTypeShow" name="type" tabindex="-1" aria-hidden="true" style="width: 100%">
                                                     <option value="null">Izberite meritev</option>
                                                     @foreach($codesMeasurement as $m)
                                                         @if($d->type == $m->id)
@@ -291,9 +291,12 @@
                                         <div class="form-group{{ $errors->has('result') ? ' has-error' : '' }}">
                                             {!! Form::label('result', 'Vrednost', ['class' => 'col-sm-2 control-label']) !!}
                                             <div class="col-sm-10">
-                                                {!! Form::number('result', $d->result, ['class' => 'form-control', 'required', 'id' => 'measurementResultShow']) !!}
+                                                {!! Form::number('result', $d->result, ['class' => 'form-control measurementR', 'required', 'id' => 'measurementResultShow']) !!}
                                                 @if ($errors->has('result'))
                                                     <span class="help-block">{{ $errors->first('result') }}</span>
+                                                @endif
+                                                @if (Session::has('error'))
+                                                    <div class="alert alert-danger">{{ Session::get('error') }}</div>
                                                 @endif
                                             </div>
                                         </div>

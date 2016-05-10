@@ -218,17 +218,7 @@
 
                                     @else
                                         @foreach ($doctorDates as $doctorDate)
-                                            @if($user->isDoctor() || true)
-                                                <a href="{{ url('/doctor/check', $doctorDate->id ) }}">
-                                                    <table class="table table-hover">
-                                                        <tr>
-                                                            <td>{{ date("d.m.Y H:i",strtotime($doctorDate->time)) }}</td>
-                                                            <td>{{ $doktorCheck[$doctorDate->doctor]->fullName }}</td>
-                                                            <td>{{ $doctorDate->note }}</td>
-                                                        </tr>
-                                                    </table>
-                                                </a>
-                                            @else
+                                            @if($doctorDate->doctor != $doctorDate->patient)
                                                 <table class="table table-hover">
                                                     <tr>
                                                         <td>{{ date("d.m.Y H:i",strtotime($doctorDate->time)) }}</td>
@@ -459,15 +449,25 @@
                                             @foreach($allDatesDoctor as $date)
                                                 <tr>
                                                     <td class="no-padding">
-                                                        <a href="{{ url('/doctor/check', $date->id ) }}">
+                                                        @if($date->patient == $date->doctor)
                                                             <table class="table table-hover no-margin-bottom">
                                                                 <tr>
                                                                     <td>{{ date("d.m.Y H:i",strtotime($date->time)) }}</td>
-                                                                    <td>{{ $date->first_name }}</td>
+                                                                    <td>{{ $date->first_name }} {{ $date->last_name }}</td>
                                                                     <td>{{ $date->note }}</td>
                                                                 </tr>
                                                             </table>
-                                                        </a>
+                                                        @else
+                                                            <a href="{{ url('/doctor/check', $date->id ) }}">
+                                                                <table class="table table-hover no-margin-bottom">
+                                                                    <tr>
+                                                                        <td>{{ date("d.m.Y H:i",strtotime($date->time)) }}</td>
+                                                                        <td>{{ $date->first_name }} {{ $date->last_name }}</td>
+                                                                        <td>{{ $date->note }}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </a>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
