@@ -435,7 +435,7 @@
                                         <table class="table table-hover table-responsive">
                                             <tbody>
                                             @foreach($user->patients as $patient)
-                                                {!! link_to_route('dashboard.show', $patient->fullName, $patient->id, ['class' => 'btn btn-default'])!!}&nbsp;
+                                                {!! link_to_route('charges.activate', $patient->fullName, $patient->id, ['class' => 'btn btn-default'])!!}&nbsp;
                                             @endforeach
                                             </tbody>
                                         </table>
