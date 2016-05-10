@@ -65,8 +65,10 @@
                                 @foreach($goodMedicals as $goodMedical)
                                     <tr>
                                         <td>{{ $goodMedical['name'] }}</td>
-                                        <td>{{ $goodMedical['description'] }}</td>
-                                        <td></td>
+                                        <td>@if(!empty($goodMedical['description']))
+                                                <a href="{{$goodMedical['description']}}" class="btn btn-primary form-control" target="_blank">NAVODILA</a>
+                                            @endif</td>
+                                        <td>{!! link_to_route('code.publicDetail', 'PODROBNOSTI', ['code'=>$goodMedical], ['class' => 'btn btn-primary']) !!}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
