@@ -295,8 +295,9 @@ class CalendarController extends Controller
             'days' => 'required',
             'hourStart' => 'required|date_format:"H:i"',
             'hourEnd' => 'required|date_format:"H:i"',
-            'dayStart' => 'required|date_format:"d.m.Y"|after:today',
-            'dayEnd' => 'required|date_format:"d.m.Y"|after:"dayStart"',
+            //ISO 8601 Y-m-d
+            'dayStart' => 'required|date_format:"Y-m-d"|after:today',
+            'dayEnd' => 'required|date_format:"Y-m-d"|after:"dayStart"',
             'interval' => 'required',
         ],
             [
