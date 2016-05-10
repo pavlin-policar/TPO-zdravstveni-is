@@ -432,10 +432,19 @@
                                         <div class="fa fa-compress icon-arrow-right" id="glyphicon-patient"></div>
                                     </div>
                                     <div class="card-body no-padding" id="dash-patient">
-                                        <table class="table table-hover table-responsive">
+                                        <table class="datatable table table-striped" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Ime</th>
+                                                <th>Priimek</th>
+                                            </tr>
+                                            </thead>
                                             <tbody>
                                             @foreach($user->patients as $patient)
-                                                {!! link_to_route('charges.activate', $patient->fullName, $patient->id, ['class' => 'btn btn-default'])!!}&nbsp;
+                                                <tr>
+                                                    <td>{!! link_to_route('charges.activate', $patient->first_name, $patient->id)!!}</td>
+                                                    <td>{!! link_to_route('charges.activate', $patient->last_name, $patient->id)!!}</td>
+                                                </tr>
                                             @endforeach
                                             </tbody>
                                         </table>
