@@ -36,16 +36,22 @@ class CalendarController extends Controller
         $actualUser = Auth::user();
         $checkups = null;
         $docId = null;
-        if ($request->docId != null) $docId = $request->docId;
-        $selectedDoc = $docId;
+        $selectedDoc = null;
 
-        //request()->session()->flash('showUser', 11);
-        // Session user is not the same as logged user:
-        if (session('showUser') != $actualUser->id) {
-
-            //$docId = Auth::user()->id;
+        // Možnosti:
+        if ($actualUser->id == session('showUser')) {
+            if ($actualUser->isDoctor()) $selectedDoc = $actualUser->id;
+            elseif ($actualUser->hasDoctor()) $selectedDoc = $actualUser->personal_doctor_id;
+        } else {
             $actualUser = User::where('id', '=', session('showUser'))->first();
+            if ($actualUser->hasDoctor()) $selectedDoc = $actualUser->personal_doctor_id;
         }
+
+        if ($request->docId != null) {
+            $docId = $request->docId;
+            $selectedDoc = $docId;
+        }
+
 
         // Doctors get to see [their OR chosen doc's schedule] AND any events where they show up under who_inserted
         if ($actualUser->isDoctor()) {
