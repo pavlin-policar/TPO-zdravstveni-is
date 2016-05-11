@@ -53,10 +53,9 @@ class HomeController extends Controller
 
         if($me->id==$user->id || empty(session('showUser'))){
             session(['isMyProfile' => true]);
-            session(['showUser' => $user->id]);
+            session(['showUser' => $me->id]);
             $user=$me;
-        }
-        else{
+        } else{
             session(['isMyProfile' => false]);
             session(['showUser' => $user->id]);
             session(['simpleUserData' => $user->first_name.' '.$user->last_name]);
@@ -163,7 +162,7 @@ class HomeController extends Controller
             return view('dashboard')->with($data);
         }
         else{
-            return abort(403, 'Unauthorized action.');
+            return redirect('logout');
         }
     }
 
