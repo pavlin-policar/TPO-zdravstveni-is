@@ -67,7 +67,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ $user->firstName }} <span class="caret"></span></a>
                 <ul class="dropdown-menu animated fadeInDown">
                     <li class="profile-img">
-                        <img src="http://funnne.com/w-img/user.jpg" class="profile-img">
+                        <img src="{{ asset('img/user.jpg') }}" class="profile-img">
                     </li>
                     <li>
                         <div class="profile-info">
