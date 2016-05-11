@@ -14,12 +14,17 @@
             @yield('menu')
 
             <ul class="nav navbar-nav">
-                <li class="active">
+                <?php // forgive me Lord, for this atrocity ?>
+                <?php
+                    $route = Route::current()->getName();
+                    $routeGroup = explode('.', $route)[0];
+                ?>
+                <li class="{{ $routeGroup == 'dashboard' ? 'active' : '' }}">
                     <a href="{{ route('dashboard.show') }}">
                         <span class="icon fa fa-tachometer"></span><span class="title">Nadzorna plošča</span>
                     </a>
                 </li>
-                <li class="panel panel-default dropdown">
+                <li class="panel panel-default dropdown {{ $routeGroup == 'check' || $routeGroup == 'calendar' ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#dropdown-check">
                         <span class="icon fa fa-hospital-o"></span><span class="title">Pregledi</span>
                     </a>
@@ -46,7 +51,7 @@
                     </div>
                 </li>
                 @can('can-see-delegates', App\Models\User::class)
-                <li class="panel panel-default dropdown">
+                <li class="panel panel-default dropdown {{ $routeGroup == 'charges' ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#dropdown-charges">
                         <span class="icon fa fa-user-md"></span><span class="title">Oskrbovanci</span>
                     </a>
@@ -71,33 +76,33 @@
                 </li>
                 @endcan
                 @can('can-do-admin-stuff', App\Models\User::class)
-                <li class="inactive">
+                <li class="{{ $routeGroup == 'code' && strpos($route, 'specialList') === false ? 'active' : '' }}">
                     <a href="{{ route('code.index') }}">
                         <span class="icon fa fa-database"></span><span class="title">Urejanje šifrantov</span>
                     </a>
                 </li>
-                <li class="inactive">
+                <li class="{{ $routeGroup == 'users' ? 'active' : '' }}">
                     <a href="{{ route('users.index') }}">
                         <span class="icon fa fa-users"></span><span class="title">Urejanje uporabnikov</span>
                     </a>
                 </li>
-                <li class="inactive">
+                <li class="{{ $routeGroup == 'medicalDiseases' ? 'active' : '' }}">
                     <a href="{{ route('medicalDiseases.list') }}">
                         <span class="icon fa fa-medkit"></span><span class="title">Urejanje zdravil za bolezni</span>
                     </a>
                 </li>
-                <li class="inactive">
+                <li class="{{ $routeGroup == 'manuals' ? 'active' : '' }}">
                     <a href="{{ route('manuals.list') }}">
                         <span class="icon fa fa-book"></span><span class="title">Urejanje člankov in navodil</span>
                     </a>
                 </li>
                 @endcan
-                <li class="inactive">
+                <li class="{{ $routeGroup == 'profile' ? 'active' : '' }}">
                     <a href="{{ route('profile.show') }}">
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
                     </a>
                 </li>
-                <li class="panel panel-default dropdown">
+                <li class="panel panel-default dropdown {{ strpos($route, 'specialList') !== false ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#dropdown-info">
                         <span class="icon fa fa-info-circle"></span><span class="title">Informacije</span>
                     </a>
