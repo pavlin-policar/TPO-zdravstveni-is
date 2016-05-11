@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PostsTableSeeder::class);
         $this->call(CodeTableSeeder::class);
         $this->call(UserTableSeeder::class);
+        $this->call(AllergiesAndDiseasesMedicalTableSeeder::class);
     }
 }

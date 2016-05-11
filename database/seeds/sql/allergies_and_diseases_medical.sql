@@ -7,8 +7,8 @@
 -- Različica strežnika: 5.5.47-0ubuntu0.14.04.1
 -- Različica PHP: 5.3.28
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+-- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -17,34 +17,34 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Zbirka podatkov: `sql7112186`
+-- Zbirka podatkov: sql7112186
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabele `allergies_and_diseases_medical`
+-- Struktura tabele allergies_and_diseases_medical
 --
 
-CREATE TABLE IF NOT EXISTS `allergies_and_diseases_medical` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `note` text COLLATE utf8_unicode_ci,
-  `sideEffects` text COLLATE utf8_unicode_ci,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `allergy_or_disease` int(10) unsigned NOT NULL,
-  `cure` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `allergies_and_diseases_medical_allergy_or_disease_foreign` (`allergy_or_disease`),
-  KEY `allergies_and_diseases_medical_cure_foreign` (`cure`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=93 ;
+-- CREATE TABLE IF NOT EXISTS allergies_and_diseases_medical (
+--   id int(10) unsigned NOT NULL AUTO_INCREMENT,
+--   note text COLLATE utf8_unicode_ci,
+--   sideEffects text COLLATE utf8_unicode_ci,
+--   deleted_at timestamp NULL DEFAULT NULL,
+--   created_at timestamp NULL DEFAULT NULL,
+--   updated_at timestamp NULL DEFAULT NULL,
+--   allergy_or_disease int(10) unsigned NOT NULL,
+--   cure int(10) unsigned NOT NULL,
+--   PRIMARY KEY (id),
+--   KEY allergies_and_diseases_medical_allergy_or_disease_foreign (allergy_or_disease),
+--   KEY allergies_and_diseases_medical_cure_foreign (cure)
+-- ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=93 ;
 
 --
--- Odloži podatke za tabelo `allergies_and_diseases_medical`
+-- Odloži podatke za tabelo allergies_and_diseases_medical
 --
 
-INSERT INTO `allergies_and_diseases_medical` (`id`, `note`, `sideEffects`, `deleted_at`, `created_at`, `updated_at`, `allergy_or_disease`, `cure`) VALUES
+INSERT INTO allergies_and_diseases_medical (id, note, sideEffects, deleted_at, created_at, updated_at, allergy_or_disease, cure) VALUES
 (2, NULL, NULL, NULL, '2016-04-21 23:00:00', '2016-04-21 23:00:00', 68, 88),
 (3, NULL, NULL, NULL, '2016-04-22 15:41:08', '2016-04-22 15:41:08', 68, 89),
 (4, NULL, NULL, NULL, '2016-04-22 15:41:08', '2016-04-22 15:41:08', 68, 90),
@@ -142,11 +142,11 @@ INSERT INTO `allergies_and_diseases_medical` (`id`, `note`, `sideEffects`, `dele
 --
 
 --
--- Omejitve za tabelo `allergies_and_diseases_medical`
+-- Omejitve za tabelo allergies_and_diseases_medical
 --
-ALTER TABLE `allergies_and_diseases_medical`
-  ADD CONSTRAINT `allergies_and_diseases_medical_cure_foreign` FOREIGN KEY (`cure`) REFERENCES `codes` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `allergies_and_diseases_medical_allergy_or_disease_foreign` FOREIGN KEY (`allergy_or_disease`) REFERENCES `codes` (`id`) ON UPDATE CASCADE;
+-- ALTER TABLE allergies_and_diseases_medical
+--   ADD CONSTRAINT allergies_and_diseases_medical_cure_foreign FOREIGN KEY (cure) REFERENCES codes (id) ON UPDATE CASCADE,
+--   ADD CONSTRAINT allergies_and_diseases_medical_allergy_or_disease_foreign FOREIGN KEY (allergy_or_disease) REFERENCES codes (id) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
