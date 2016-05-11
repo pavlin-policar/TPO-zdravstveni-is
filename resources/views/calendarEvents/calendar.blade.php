@@ -25,11 +25,17 @@
                 <span class="title">
                     Naročanje</span>
                 <div class="description">Naročite se tako, da kliknete na prost termin</div><br />
+                <div class="form-group has-error">
+                    <span class="help-block">{!! Session::pull('cloneMessage') !!}</span>
+                </div>
             @endcan
         @else
             <span class="title">
                 Naročanje</span>
             <div class="description">Naročite se tako, da kliknete na prost termin</div><br />
+            <div class="form-group has-error">
+                <span class="help-block">{!! Session::pull('cloneMessage') !!}</span>
+            </div>
         @endif
     </div>
 

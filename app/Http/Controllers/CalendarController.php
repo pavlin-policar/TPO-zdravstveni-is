@@ -38,6 +38,7 @@ class CalendarController extends Controller
         $docId = null;
         if ($request->docId != null) $docId = $request->docId;
         $selectedDoc = $docId;
+
         //request()->session()->flash('showUser', 11);
         // Session user is not the same as logged user:
         if (session('showUser') != $actualUser->id) {
@@ -48,22 +49,46 @@ class CalendarController extends Controller
 
         // Doctors get to see [their OR chosen doc's schedule] AND any events where they show up under who_inserted
         if ($actualUser->isDoctor()) {
-            // This doctor, if no other has been chosen:
-            if (($request->docId == null)) { //|| (session('showUser') != $actualUser->id)) {
-                $docId = $actualUser->id;
-
+            //Doctor of a doctor type situation?
+            if($actualUser->id != Auth::user()->id) {
+                if ($request->docId == null) $docId = $actualUser->id;
                 // This (The-Not-Chosen) doctor's who_inserted events show up only on his schedule:
                 $tempCheckups = DoctorDates::where('who_inserted', '=', $actualUser->id)->get();
+                //dd($tempCheckups);
                 foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
 
                 // I'm the doc, and someone else registered event:
-                $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('who_inserted', '!=', $docId)->whereNotNull('who_inserted')->get();
+                $tempCheckups = DoctorDates::where('doctor', '=', $docId)->whereNotIn('who_inserted', [$docId, $actualUser->id])
+                                                                         ->whereNotNull('who_inserted')->get();
+                //dd($tempCheckups);
                 foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
 
                 // I'm the doc, but I'm also a patient sometimes, and I don't always reserve my events without help.
                 // All appointments where I'm the patient and I didn't register the events:
-                $tempCheckups = DoctorDates::where('patient', '=', $docId)->where('who_inserted', '!=', $docId)->whereNotNull('who_inserted')->get();
+                $tempCheckups = DoctorDates::where('patient', '=', $docId)->where('who_inserted', '!=', $docId)
+                                                                          ->whereNotNull('who_inserted')->get();
+                                                                          //->where('doctor', '!=', $docId);
+                //dd($tempCheckups);
                 foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+            }
+            // This doctor, if no other has been chosen:
+            else {
+                if (($request->docId == null)) { //|| (session('showUser') != $actualUser->id)) {
+                    $docId = $actualUser->id;
+
+                    // This (The-Not-Chosen) doctor's who_inserted events show up only on his schedule:
+                    $tempCheckups = DoctorDates::where('who_inserted', '=', $actualUser->id)->get();
+                    foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+
+                    // I'm the doc, and someone else registered event:
+                    $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('who_inserted', '!=', $docId)->whereNotNull('who_inserted')->get();
+                    foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+
+                    // I'm the doc, but I'm also a patient sometimes, and I don't always reserve my events without help.
+                    // All appointments where I'm the patient and I didn't register the events:
+                    $tempCheckups = DoctorDates::where('patient', '=', $docId)->where('who_inserted', '!=', $docId)->whereNotNull('who_inserted')->get();
+                    foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+                }
             }
 
             // Selected doctor's (or this doctor's) open events:
@@ -118,7 +143,18 @@ class CalendarController extends Controller
                 $today = Carbon::now('Europe/Amsterdam');
                 $date = Carbon::parse($today);
                 if ($date->gt($start)) $url = null;
-                else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
+                else {
+                    if ($actualUser->isDoctor() && $actualUser->id != Auth::user()->id) {
+                        //dd('ayup');
+                        if($request->docId != null) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
+                        else {
+                            if (Auth::user()->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => Auth::user()->id]);
+                            else $url = null;
+                        }
+                    } else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
+
+
+                }
 
                 // Our break! \o/
                 if ($checkup->note == 'odmor') {
@@ -420,13 +456,18 @@ class CalendarController extends Controller
 
             // Check event's date
             $date = $today->diff($formattedTime);
-            //dd($date);
-            if ($date->days > 0 || ($date->hours >= 12 && $date->days = 0)) {
-                //dd($date);
+            if ($date->days > 0 || ($date->h >= 12 && $date->days = 0)) {
+                dd($date);
                 $event->patient = null;
                 $event->who_inserted = null;
                 $event->note = null;
                 $event->save();
+            } else {
+                //dd($date);
+                request()->session()->flash(
+                    'cloneMessage',
+                    'Dogodka ne morete sprositi/izbrisati!'
+                );
             }
         } else {
             request()->session()->flash(
