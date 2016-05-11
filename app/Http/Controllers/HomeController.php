@@ -56,6 +56,7 @@ class HomeController extends Controller
         }
         else{
             session(['isMyProfile' => false]);
+            session(['showUser' => $user->id]);
             session(['simpleUserData' => $user->first_name.' '.$user->last_name]);
         }
 

@@ -98,9 +98,12 @@ class CheckController extends Controller
     public function showMedical(User $user)
     {
         if (!$user->existsInStorage()) {
-            $user = Auth::user();
-        }
-        $data['medicals'] =  DB::table('checks_codes')
+            if(session('isMyProfile'))
+                $user = Auth::user();
+            else
+                $user = User::find(session('showUser'));
+
+            $data['medicals'] =  DB::table('checks_codes')
                 ->join('checks', 'checks_codes.check', '=', 'checks.id')
                 ->join('codes', 'checks_codes.code', '=', 'codes.id')
                 ->select('checks_codes.*', 'codes.name', 'codes.description', 'codes.code_type')
@@ -108,52 +111,77 @@ class CheckController extends Controller
                 ->where('codes.code_type', 14)
                 ->orderBy('checks_codes.start', 'desc')
                 ->get();
-        return view('checks.medical')->with($data);
+            return view('checks.medical')->with($data);
+        }
+        else {
+            return abort(404, 'Not found.');
+        }
     }
 
     public function showMeasurement(User $user)
     {
         if (!$user->existsInStorage()) {
-            $user = Auth::user();
-        }
-        $data['measurements'] = Measurement::join('codes', 'measurements.type', '=', 'codes.id')
-            ->join('users', 'measurements.provider', '=', 'users.id')
-            ->select('measurements.*', 'codes.name', 'codes.description', 'users.first_name', 'users.last_name')
-            ->where('measurements.patient', '=', $user->id)
-            ->orderBy('measurements.time', 'desc')
-            ->get();
+            if(session('isMyProfile'))
+                $user = Auth::user();
+            else
+                $user = User::find(session('showUser'));
 
-        return view('checks.measurement')->with($data);
+            $data['measurements'] = Measurement::join('codes', 'measurements.type', '=', 'codes.id')
+                ->join('users', 'measurements.provider', '=', 'users.id')
+                ->select('measurements.*', 'codes.name', 'codes.description', 'users.first_name', 'users.last_name')
+                ->where('measurements.patient', '=', $user->id)
+                ->orderBy('measurements.time', 'desc')
+                ->get();
+
+            return view('checks.measurement')->with($data);
+        }
+        else {
+            return abort(404, 'Not found.');
+        }
     }
 
     public function showDisease(User $user)
     {
         if (!$user->existsInStorage()) {
-            $user = Auth::user();
+            if(session('isMyProfile'))
+                $user = Auth::user();
+            else
+                $user = User::find(session('showUser'));
+
+            $data['diseases'] =  CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
+                    ->join('codes', 'checks_codes.code', '=', 'codes.id')
+                    ->select('checks_codes.*', 'codes.name', 'codes.description', 'codes.code_type')
+                    ->where('checks.patient', '=', $user->id)
+                    ->where('codes.code_type', 13)
+                    ->orderBy('checks_codes.start', 'desc')
+                    ->get();
+            return view('checks.disease')->with($data);
         }
-        $data['diseases'] =  CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
-                ->join('codes', 'checks_codes.code', '=', 'codes.id')
-                ->select('checks_codes.*', 'codes.name', 'codes.description', 'codes.code_type')
-                ->where('checks.patient', '=', $user->id)
-                ->where('codes.code_type', 13)
-                ->orderBy('checks_codes.start', 'desc')
-                ->get();
-        return view('checks.disease')->with($data);
+        else {
+            return abort(404, 'Not found.');
+        }
     }
 
     public function showDiet(User $user)
     {
         if (!$user->existsInStorage()) {
-            $user = Auth::user();
-        }
-        $data['diets'] =  CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
+            if(session('isMyProfile'))
+                $user = Auth::user();
+            else
+                $user = User::find(session('showUser'));
+
+            $data['diets'] =  CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
                 ->join('codes', 'checks_codes.code', '=', 'codes.id')
                 ->select('checks_codes.*', 'codes.name', 'codes.description', 'codes.code_type')
                 ->where('checks.patient', '=', $user->id)
                 ->where('codes.code_type', 12)
                 ->orderBy('checks_codes.start', 'desc')
                 ->get();
-        return view('checks.diet')->with($data);
+            return view('checks.diet')->with($data);
+        }
+        else {
+            return abort(404, 'Not found.');
+        }
     }
 
     public function doctorDate($id){
