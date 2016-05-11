@@ -51,8 +51,10 @@ class HomeController extends Controller
                 $user = Auth::user();
         }
 
-        if($me->id==$user->id){
+        if($me->id==$user->id || empty(session('showUser'))){
             session(['isMyProfile' => true]);
+            session(['showUser' => $user->id]);
+            $user=$me;
         }
         else{
             session(['isMyProfile' => false]);
