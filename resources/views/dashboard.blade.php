@@ -411,7 +411,7 @@
                             </div>
                         </div>
                     </div>
-                    @if($user->isDoctor())
+                    @if($user->isDoctor() && session('isMyProfile'))
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="card card-info">
@@ -443,7 +443,7 @@
                             </div>
                         </div>
                     @endif
-                    @if($user->isDoctor())
+                    @if($user->isDoctor() && session('isMyProfile'))
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="card card-info">
