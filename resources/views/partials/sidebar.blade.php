@@ -76,7 +76,7 @@
                 </li>
                 @endcan
                 @can('can-do-admin-stuff', App\Models\User::class)
-                <li class="{{ $routeGroup == 'code' && strpos($route, 'specialList') === false ? 'active' : '' }}">
+                <li class="{{ $routeGroup == 'code' && strpos($route, 'specialList') === false && strpos($route, 'publicDetail') === false ? 'active' : '' }}">
                     <a href="{{ route('code.index') }}">
                         <span class="icon fa fa-database"></span><span class="title">Urejanje šifrantov</span>
                     </a>
@@ -102,7 +102,7 @@
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
                     </a>
                 </li>
-                <li class="panel panel-default dropdown {{ strpos($route, 'specialList') !== false ? 'active' : '' }}">
+                <li class="panel panel-default dropdown {{ strpos($route, 'specialList') !== false || strpos($route, 'publicDetail') !== false ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#dropdown-info">
                         <span class="icon fa fa-info-circle"></span><span class="title">Informacije</span>
                     </a>
