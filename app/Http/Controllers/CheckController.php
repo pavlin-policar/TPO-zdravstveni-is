@@ -43,8 +43,8 @@ class CheckController extends Controller
     public function show($id) {
 
         $thisCheck = Checks::findOrFail($id);
-
-        if((($thisCheck->doctor == session('user'))||($thisCheck->patient == session('user'))||($thisCheck->patient == session('showUser'))) && ($thisCheck->doctor == Auth::user()->id)) {
+        //die($thisCheck->patient ."=". session('user'));
+        if(($thisCheck->doctor == session('user'))||($thisCheck->patient == session('user'))||($thisCheck->patient == session('showUser'))) {
             $data['check'] = DB::table('checks')
                 ->join('users', 'checks.doctor', '=', 'users.id')
                 ->join('doctor_dates', 'checks.doctor_date', '=', 'doctor_dates.id')
