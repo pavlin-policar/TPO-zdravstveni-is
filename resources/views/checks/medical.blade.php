@@ -27,7 +27,11 @@
                                 <tr>
                                     <td>{{ $medicals[$x]->name }}</td>
                                     <td>{{ date("d.m.Y H:i",strtotime($medicals[$x]->start)) }}</td>
-                                    <td>{{ date("d.m.Y H:i",strtotime($medicals[$x]->end)) }}</td>
+                                    @if($medicals[$x]->end == null)
+                                        <td></td>
+                                    @else
+                                        <td>{{ date("d.m.Y H:i",strtotime($medicals[$x]->end)) }}</td>
+                                    @endif
                                     <td>{{ $medicals[$x]->note }}</td>
                                     <td><a href ='{{ $medicals[$x]->description }}' target="_blank">{{ $medicals[$x]->description }}</a></td>
                                 </tr>

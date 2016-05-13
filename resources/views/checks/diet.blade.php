@@ -30,7 +30,7 @@
                                 @if($diets[$x]->end == null)
                                     <td></td>
                                 @else
-                                    <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                    <td>{{ date("d.m.Y H:i",strtotime($diets[$x]->end)) }}</td>
                                 @endif
                                 <td>{{ $diets[$x]->note }}</td>
                                 <td><a href ='{{ $diets[$x]->description }}' target="_blank">{{ $diets[$x]->description }}</a></td>
