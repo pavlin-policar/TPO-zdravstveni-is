@@ -423,7 +423,7 @@ class CalendarController extends Controller
             if ($event->count > 0) {
                 request()->session()->flash(
                     'cloneMessage',
-                    'Naenkrat se ahko naročite samo na en termin! Za več naročil se obrnite na svojega osebnega doktorja.'
+                    'Naenkrat se lahko naročite samo na en termin! Za več naročil se obrnite na svojega osebnega doktorja.'
                 );
                 return redirect()->route('calendar.user');
             }
@@ -463,7 +463,7 @@ class CalendarController extends Controller
             // Check event's date
             $date = $today->diff($formattedTime);
             if ($date->days > 0 || ($date->h >= 12 && $date->days = 0)) {
-                dd($date);
+                //dd($date);
                 $event->patient = null;
                 $event->who_inserted = null;
                 $event->note = null;
