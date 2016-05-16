@@ -13,13 +13,12 @@ class AllergiesAndDiseasesMedicalTableSeeder extends Seeder
      */
     public function run()
     {
-        //TODO check if this actually works (regex is fine, but does the file get found?)
         DB::table('allergies_and_diseases_medical')->delete();
         // insert all postcodes from postcodes.sql
         DB::transaction(function () {
             //DB::unprepared(File::get('database/seeds/sql/allergies_and_diseases_medical.sql'));
             $pattern = '/\((\w+), (\w+), (\w+), (\'[^\']+\'), (\'[^\']+\'), (\d+), (\d+)\)/';
-            $sql = file_get_contents('/database/seeds/sql/allergies_diseases_postgres_friendly.sql');
+            $sql = File::get('database/seeds/sql/allergies_diseases_postgres_friendly.sql');
             $result = preg_match_all($pattern, $sql, $results);
             foreach ($results as $result) {
                 DB::table('allergies_and_diseases_medical')->insert(
