@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\CreateDoctorProfileRequest;
+use App\Http\Requests\CreateNurseProfileRequest;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateDoctorsRequest;
 use App\Models\User;
@@ -79,6 +80,20 @@ class UserController extends Controller
     }
 
     /**
+     * Update the doctors personal information.
+     *
+     * @param User $user
+     * @param CreateNurseProfileRequest $request
+     * @return mixed
+     */
+    public function updateNursePersonalInfo(User $user, CreateNurseProfileRequest $request)
+    {
+        $this->authorize('canUpdatePersonalInfo', $user);
+        $this->users->updateDoctor($user, $request->all());
+        return redirect()->back();
+    }
+
+    /**
      * Display the page that gives you a notice that you haven't completed registration yet.
      *
      * @return mixed
@@ -104,6 +119,8 @@ class UserController extends Controller
         }
         if ($user->isDoctor()) {
             return view('profile.create-doctor')->with('user', $user);
+        } else if ($user->isNurse()) {
+            return view('profile.create-nurse')->with('user', $user);
         } else {
             return view('profile.create-patient')->with('user', $user);
         }
@@ -132,6 +149,22 @@ class UserController extends Controller
      * @param CreateDoctorProfileRequest $request
      */
     public function createDoctorProfile(CreateDoctorProfileRequest $request)
+    {
+        if (Auth::user()->hasCreatedProfile()) {
+            return redirect()->back();
+        }
+        $this->users->updateDoctor(Auth::user(), $request->all());
+        return redirect()->route('dashboard.show');
+    }
+
+    /**
+     * Persist the nurses information to the database when a nurse creates their profile for the
+     * first time.
+     *
+     * @param CreateDoctorProfileRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function createNurseProfile(CreateNurseProfileRequest $request)
     {
         if (Auth::user()->hasCreatedProfile()) {
             return redirect()->back();

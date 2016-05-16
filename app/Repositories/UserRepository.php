@@ -107,6 +107,10 @@ class UserRepository
         $user->person_type = Code::NURSE()->id;
         $user->confirmation_code = str_random(30);
         $user->save();
+        // then we need to insert a record into doctors table that references the user
+        $user->doctorProfile()->create($data + [
+                'doctor_type_id' => Code::PERSONAL_DOCTOR()->id
+            ]);
 
         return $user;
     }

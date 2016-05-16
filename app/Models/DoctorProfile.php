@@ -71,6 +71,19 @@ class DoctorProfile extends Model
     }
 
     /**
+     * Check if the doctor profile of a given nurse is actually valid.
+     *
+     * @return bool
+     */
+    public function isValidNurse()
+    {
+        return
+            $this->institution_id !== null and
+            $this->doctor_type_id !== null and
+            $this->doctor_number !== null;
+    }
+
+    /**
      * Get the user object associated with the doctor profile.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

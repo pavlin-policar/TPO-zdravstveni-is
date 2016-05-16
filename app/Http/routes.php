@@ -84,6 +84,10 @@ Route::group(['middleware' => ['web', 'auth', 'email-validated']], function () {
         'uses' => 'UserController@createDoctorProfile',
         'as' => 'profile.postCreateDoctor',
     ]);
+    Route::post('profile/create-nurse', [
+        'uses' => 'UserController@createNurseProfile',
+        'as' => 'profile.postCreateNurse',
+    ]);
 });
 
 /**
@@ -161,6 +165,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
     Route::put('profile/{user}/update-doctor', [
         'uses' => 'UserController@updateDoctorPersonalInfo',
         'as' => 'profile.updateDoctorPersonal',
+    ]);
+    Route::put('profile/{user}/update-nurse', [
+        'uses' => 'UserController@updateNursePersonalInfo',
+        'as' => 'profile.updateNursePersonal',
     ]);
     Route::put('profile/{user}/password', [
         'uses' => 'UserController@changePassword',

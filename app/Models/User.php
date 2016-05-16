@@ -149,6 +149,8 @@ class User extends Authenticatable
         // the doctor profile contains different data than the regular user profile.
         if ($this->isDoctor()) {
             return $this->doctorProfile->isValid();
+        } else if ($this->isNurse()) {
+            return $this->doctorProfile->isValidNurse();
         } else {
             return
                 $this->address !== null and
@@ -534,7 +536,8 @@ class User extends Authenticatable
      */
     public function doctorProfile()
     {
-        return $this->isDoctor() ? $this->hasOne(DoctorProfile::class, 'user_id') : null;
+        return ($this->isDoctor() or $this->isNurse()) ?
+            $this->hasOne(DoctorProfile::class, 'user_id') : null;
     }
 
     /**
