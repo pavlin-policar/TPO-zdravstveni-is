@@ -266,7 +266,7 @@
                                             @for ($x=0; $x < count($checkData); $x++)
                                                 @if($checkData[$x]->code_type == 14)
                                                     <tr>
-                                                        <td>{{ $checkData[$x]->name }}</td>
+                                                        <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
                                                         <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
                                                         <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
                                                     </tr>
@@ -351,7 +351,7 @@
                                             @for ($x=0; $x < count($checkData); $x++)
                                                 @if($checkData[$x]->code_type == 13)
                                                     <tr>
-                                                        <td>{{ $checkData[$x]->name }}</td>
+                                                        <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
                                                         <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
                                                     </tr>
                                                 @endif
@@ -394,7 +394,7 @@
                                                 @for ($x=0; $x < count($checkData); $x++)
                                                     @if($checkData[$x]->code_type == 12)
                                                         <tr>
-                                                            <td>{{ $checkData[$x]->name }}</td>
+                                                            <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
                                                             <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
                                                             @if($checkData[$x]->end == null)
                                                                 <td></td>
