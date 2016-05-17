@@ -33,134 +33,151 @@ class CalendarController extends Controller
 
     public function index(Request $request)
     {
-        $actualUser = Auth::user();
-        $checkups = null;
-        $docId = null;
-        $selectedDoc = null;
+        // Types of users:
+        $nurse = null;
+        $doc = null;
+        $patient = null;
 
-        // Možnosti:
-        if ($actualUser->id == session('showUser')) {
-            if ($actualUser->isDoctor()) $selectedDoc = $actualUser->id;
-            elseif ($actualUser->hasDoctor()) $selectedDoc = $actualUser->personal_doctor_id;
-        } else {
-            $actualUser = User::where('id', '=', session('showUser'))->first();
-            if ($actualUser->hasDoctor()) $selectedDoc = $actualUser->personal_doctor_id;
-        }
-
-        if ($request->docId != null) {
-            $docId = $request->docId;
-            $selectedDoc = $docId;
-        }
-
-
-        // Doctors get to see [their OR chosen doc's schedule] AND any events where they show up under who_inserted
-        if ($actualUser->isDoctor()) {
-            //Doctor of a doctor type situation?
-            if($actualUser->id != Auth::user()->id) {
-                if ($request->docId == null) $docId = $actualUser->id;
-                // This (The-Not-Chosen) doctor's who_inserted events show up only on his schedule:
-                $tempCheckups = DoctorDates::where('who_inserted', '=', $actualUser->id)->get();
-                //dd($tempCheckups);
-                foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-                // I'm the doc, and someone else registered event:
-                $tempCheckups = DoctorDates::where('doctor', '=', $docId)->whereNotIn('who_inserted', [$docId, $actualUser->id])
-                                                                         ->whereNotNull('who_inserted')->get();
-                //dd($tempCheckups);
-                foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-                // I'm the doc, but I'm also a patient sometimes, and I don't always reserve my events without help.
-                // All appointments where I'm the patient and I didn't register the events:
-                $tempCheckups = DoctorDates::where('patient', '=', $docId)->where('who_inserted', '!=', $docId)
-                                                                          ->whereNotNull('who_inserted')->get();
-                                                                          //->where('doctor', '!=', $docId);
-                //dd($tempCheckups);
-                foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-            }
-            // This doctor, if no other has been chosen:
-            else {
-                if (($request->docId == null)) { //|| (session('showUser') != $actualUser->id)) {
-                    $docId = $actualUser->id;
-
-                    // This (The-Not-Chosen) doctor's who_inserted events show up only on his schedule:
-                    $tempCheckups = DoctorDates::where('who_inserted', '=', $actualUser->id)->get();
-                    foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-                    // I'm the doc, and someone else registered event:
-                    $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('who_inserted', '!=', $docId)->whereNotNull('who_inserted')->get();
-                    foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-                    // I'm the doc, but I'm also a patient sometimes, and I don't always reserve my events without help.
-                    // All appointments where I'm the patient and I didn't register the events:
-                    $tempCheckups = DoctorDates::where('patient', '=', $docId)->where('who_inserted', '!=', $docId)->whereNotNull('who_inserted')->get();
-                    foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+        // Elevated user type?
+        if (Auth::user()->isNurse) {
+            $nurse = Auth::user();
+            if (session('showDoc') != null) {
+                $doc = User::where('id', '=', session('showDoc'));
+                if (session('showUser') != null) {
+                    $patient = User::where('id', '=', session('showUser'));
                 }
             }
-
-            // Selected doctor's (or this doctor's) open events:
-            $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
-            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-        } // User has a personal doctor and is not a doctor themselves:
-        elseif ($actualUser->hasDoctor()){
-            // Actual user's personal doc, if no other has been chosen:
-            if ($request->docId == null) $docId = $actualUser->personal_doctor_id;
-
-            // User is patient:
-            $tempCheckups = DoctorDates::where('patient', '=', $actualUser->id)->get();
-            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-            // User isn't a patient, but they're responsible for registering event:
-            $tempCheckups = DoctorDates::where('who_inserted', '=', $actualUser->id)->where('patient', '!=', $actualUser->id)->get();
-            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-            // Selected or personal doctor's open events:
-            $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
-            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-        } // User is not a doc and does not have a personal doctor, but can still view doctors schedules:
+        }
+        elseif (Auth::user()->isDoctor) {
+            $doc = Auth::user();
+            if (session('showUser')) {
+                $patient = User::where('id', '=', session('showUser'));
+            }
+        }
         else {
-            // Selected doctor's open events:
-            $tempCheckups = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
-            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-            // User's registered events:
-            $tempCheckups = DoctorDates::where('patient', '=', $actualUser->id)->get();
-            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
-
-            // User's who_inserted events, where they're not the patient:
-            $tempCheckups = DoctorDates::where('who_inserted', '=', $actualUser->id)->where('patient', '!=', $actualUser->id)->get();
-            foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
+            $patient = Auth::user();
         }
 
-        //dd($checkups);
+        // QUERY BUILDING
+        $appointments = null;
+        //TODO check and doublecheck query results
+        // 1. Cases for nurse
+        // 1.1 is $doc null? -> Y: nurse is a normal patient; $patient = $nurse;
+        //					 -> N: nurse is working on assigned doctor's tasks; is $patient null? -> Y: doctor is a normal patient; $patient = $doc; schedule options logic in blade via isNurse and showDoc!!
+        //																						  -> N: nurse working on a patient through doctor; build query in here?
+        if ($nurse != null) {
+            if ($doc == null) $patient = $nurse;
+            else {
+                if ($request->docId != null) $docId = $request->docId;
+                else {
+                    $docId = $doc->id;
+                    // Query doc's who_inserted appointments (MINUS below query), where doc isn't patient
+                    // UNLESS docId has been chosen in dropdown list
+                    if ($patient != null) {
+                        // This is how we cancel doubles (through patient query later on)
+                        $results = DoctorDates::where('who_inserted', '=', $docId)
+                            ->whereNotNull('patient')
+                            ->whereNotIn('patient', [$docId, $patient->id])
+                            ->get();
+                    } else $results = DoctorDates::where('who_inserted', '=', $docId)->whereNotNull('patient')->whereNotIn('patient', $docId)->get();
+                    foreach ($results as $result) $appointments[] = $result;
+                }
+                // Query doc's scheduled appointments (ONLY open ones) UNLESS docId has been chosen in dropdown list:
+                $results = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
+                foreach ($results as $result) $appointments[] = $result;
 
+                if ($patient == null) $patient = $doc;
+            }
+        }
+
+        // 2. Cases for doctor
+        // 2.1 is $patient null? -> Y: doctor is a normal patient; $patient = $doc; schedule options logic in blade via isNurse and showDoc!!
+        //						 -> N: doctor working on a patient; build query here?
+        else if ($doc != null) {
+            if ($request->docId != null) $docId = $request->docId;
+            else {
+                $docId = $doc->id;
+                // Query doc's who_inserted appointments (MINUS below query), where doc isn't patient
+                // UNLESS docId has been chosen in dropdown list
+                if ($patient != null) {
+                    // This is how we cancel doubles (through patient query later on)
+                    $results = DoctorDates::where('who_inserted', '=', $docId)
+                                          ->whereNotNull('patient')
+                                          ->whereNotIn('patient', [$docId, $patient->id])
+                                          ->get();
+                } else $results = DoctorDates::where('who_inserted', '=', $docId)->whereNotNull('patient')->whereNotIn('patient', $docId)->get();
+                foreach ($results as $result) $appointments[] = $result;
+            }
+            // Query doc's scheduled appointments (ONLY open ones) UNLESS docId has been chosen in dropdown list:
+            $results = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
+            foreach ($results as $result) $appointments[] = $result;
+
+            if ($patient == null) $patient = $doc;
+
+        }
+
+        // 3. Cases for patient
+        // No need for conditional, $patient won't ever be null by this point
+        // Query patient's appointment's:
+        $results = DoctorDates::where('patient', '=', $patient->id)->get();
+        foreach ($results as $result) $appointments[] = $result;
+
+        //dd($appointments);
+
+
+        // EVENT CREATION
+        //TODO
         $events = [];
-        if ($checkups != null) {
-            foreach ($checkups as $checkup) {
+        if ($appointments != null) {
+            foreach ($appointments as $checkup) {
+                // 1. Default values
                 $backgroundClr = '#50000';
                 $start = $checkup->time;
 
-                if (!$actualUser->hasDoctor() && !$actualUser->isDoctor()) {
-                    $docId = $checkup->doctor;
-                }
-
+                // 2. Date comparison
                 // We only allow accessing the event, if the day of event hasn't passed yet:
                 $today = Carbon::now('Europe/Amsterdam');
                 $date = Carbon::parse($today);
                 if ($date->gt($start)) $url = null;
+
+                // 3. Cases
+                // 3.1 Nurse, Doc, Patient case
+                //TODO
+
+                // 3.2 Doc, Patient case
+                // 3.3 Patient case
+                //TODO
+
+
+
+
+
+
+
+
+
+        $events = [];
+        if ($appointments != null) {
+            foreach ($appointments as $checkup) {
+                $backgroundClr = '#50000';
+                $start = $checkup->time;
+
+                if ($date->gt($start)) $url = null;
                 else {
-                    if ($actualUser->isDoctor() && $actualUser->id != Auth::user()->id) {
+                    if ($actualUser->isDoctor() && $actualUser->id != Auth::user()->id && !Auth::user()->isNurse()){
                         //dd('ayup');
                         if($request->docId != null) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
                         else {
                             if (Auth::user()->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => Auth::user()->id]);
                             else $url = null;
                         }
-                    } else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
-
-
-                }
+                    } elseif (Auth::user()->isNurse() && $proxyPatient != null && $proxyPatient->isDoctor()) {
+                        if($request->docId != null) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $proxyPatient->id, 'doctor' => $docId]);
+                        else {
+                            if (Auth::user()->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $proxyPatient->id, 'doctor' => $actualUser->id]);
+                            else $url = null;
+                        }
+                    } else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $proxyPatient->id, 'doctor' => $docId]);                }
 
                 // Our break! \o/
                 if ($checkup->note == 'odmor') {
