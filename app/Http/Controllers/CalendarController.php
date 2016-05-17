@@ -39,19 +39,19 @@ class CalendarController extends Controller
         $patient = null;
 
         // Elevated user type?
-        if (Auth::user()->isNurse) {
+        if (Auth::user()->isNurse()) {
             $nurse = Auth::user();
             if (session('showDoc') != null) {
                 $doc = User::where('id', '=', session('showDoc'));
-                if (session('showUser') != null) {
-                    $patient = User::where('id', '=', session('showUser'));
+                if (session('showUser') != $doc->id && session('showUser') != $nurse->id) {
+                    $patient = User::where('id', '=', session('showUser'))->first();
                 }
             }
         }
-        elseif (Auth::user()->isDoctor) {
+        elseif (Auth::user()->isDoctor()) {
             $doc = Auth::user();
-            if (session('showUser')) {
-                $patient = User::where('id', '=', session('showUser'));
+            if (session('showUser') != $doc->id) {
+                $patient = User::where('id', '=', session('showUser'))->first();
             }
         }
         else {
@@ -59,9 +59,13 @@ class CalendarController extends Controller
             if ($patient->hasDoctor()) $doc = $patient->personal_doctor_id;
         }
 
+        //dd($nurse);
+        //dd($doc);
+        //dd($patient);
+
         // QUERY BUILDING
         $appointments = null;
-        //TODO check and doublecheck query results
+        //TODO check and doublecheck query results for nurse, when possible
         // 1. Cases for nurse
         // 1.1 is $doc null? -> Y: nurse is a normal patient; $patient = $nurse;
         //					 -> N: nurse is working on assigned doctor's tasks; is $patient null? -> Y: doctor is a normal patient; $patient = $doc; schedule options logic in blade via isNurse and showDoc!!
@@ -74,20 +78,22 @@ class CalendarController extends Controller
                     $docId = $doc->id;
                     // Query doc's who_inserted appointments (MINUS below query), where doc isn't patient
                     // UNLESS docId has been chosen in dropdown list
-                    if ($patient != null) {
-                        // This is how we cancel doubles (through patient query later on)
-                        $results = DoctorDates::where('who_inserted', '=', $docId)
-                            ->whereNotNull('patient')
-                            ->whereNotIn('patient', [$docId, $patient->id])
-                            ->get();
-                    } else $results = DoctorDates::where('who_inserted', '=', $docId)->whereNotNull('patient')->whereNotIn('patient', $docId)->get();
-                    foreach ($results as $result) $appointments[] = $result;
+                    if ($patient == null) {
+                        $results = DoctorDates::where('who_inserted', '=', $docId)->whereNotNull('patient')->whereNotIn('patient', [$docId])->get();
+                        foreach ($results as $result) $appointments[] = $result;
+                    } else {
+                        // Query doc's scheduled breaks:
+                        $results = DoctorDates::where('doctor', '=', $docId)->where('note', '=', 'odmor')->get();
+                        foreach ($results as $result) $appointments[] = $result;
+                    }
+
                 }
                 // Query doc's scheduled appointments (ONLY open ones) UNLESS docId has been chosen in dropdown list:
-                $results = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
+                $results = DoctorDates::where('doctor', '=', $docId)->whereNull('patient')->get();
                 foreach ($results as $result) $appointments[] = $result;
 
                 if ($patient == null) $patient = $doc;
+
             }
         }
 
@@ -100,26 +106,26 @@ class CalendarController extends Controller
                 $docId = $doc->id;
                 // Query doc's who_inserted appointments (MINUS below query), where doc isn't patient
                 // UNLESS docId has been chosen in dropdown list
-                if ($patient != null) {
-                    // This is how we cancel doubles (through patient query later on)
-                    $results = DoctorDates::where('who_inserted', '=', $docId)
-                                          ->whereNotNull('patient')
-                                          ->whereNotIn('patient', [$docId, $patient->id])
-                                          ->get();
-                } else $results = DoctorDates::where('who_inserted', '=', $docId)->whereNotNull('patient')->whereNotIn('patient', $docId)->get();
-                foreach ($results as $result) $appointments[] = $result;
+                if ($patient == null) {
+                    $results = DoctorDates::where('who_inserted', '=', $docId)->whereNotNull('patient')->whereNotIn('patient', [$docId])->get();
+                    foreach ($results as $result) $appointments[] = $result;
+                } else {
+                    // Query doc's scheduled breaks:
+                    $results = DoctorDates::where('doctor', '=', $docId)->where('note', '=', 'odmor')->get();
+                    foreach ($results as $result) $appointments[] = $result;
+                }
+
             }
             // Query doc's scheduled appointments (ONLY open ones) UNLESS docId has been chosen in dropdown list:
-            $results = DoctorDates::where('doctor', '=', $docId)->where('patient', '=', null)->get();
+            $results = DoctorDates::where('doctor', '=', $docId)->whereNull('patient')->get();
             foreach ($results as $result) $appointments[] = $result;
 
             if ($patient == null) $patient = $doc;
-
         }
 
         // 3. Cases for patient
         // No need for conditional, $patient won't ever be null by this point
-        // Query patient's appointment's:
+        // Query patient's appointments:
         $results = DoctorDates::where('patient', '=', $patient->id)->get();
         foreach ($results as $result) $appointments[] = $result;
 
@@ -142,7 +148,6 @@ class CalendarController extends Controller
         // open appointment
         // full appointment
 
-        //TODO
         $events = [];
         if ($appointments != null) {
             foreach ($appointments as $checkup) {
@@ -150,83 +155,43 @@ class CalendarController extends Controller
                 // 1. Default values
                 $backgroundClr = '#50000';
                 $start = $checkup->time;
+                $ends = $checkup->time_end;
+                $end = Carbon::createFromFormat('Y-m-d H:i:s',$ends);
+                $url = route('calendar.registerEvent', ['time' => $start, 'user' => $checkup->patient, 'doctor' => $doc->id]);
                 if ($checkup->patient != null) $title = User::where('id', '=', $checkup->patient)->first()->fullName;
 
-                // 2. Date comparison
+                // 2. Cases
+                //TODO
+
+                // Break:
+                if ($checkup->note == 'odmor') {
+                    $title = 'Odmor';
+                    $backgroundClr = '#364';
+                    if (session('showUser') != $doc->id) $url = null;
+                    elseif ($checkup->who_inserted == $doc->id || ($nurse != null && $checkup->who_inserted == $nurse->id)) {
+                        $url = route('calendar.registerEvent', ['time' => $start, 'user' => $checkup->doctor, 'doctor' => $checkup->who_inserted]);
+                    }
+
+                }
+
+                // Full appointment:
+                if ($checkup->patient != null && $checkup->patient != $patient->id) $backgroundClr = "#904";
+                else if ($checkup->patient == $patient->id) $backgroundClr = "#099";
+
+
+                // Open appointment:
+                if ($checkup->patient == null) {
+                    $title = "Prost termin";
+                    $url = route('calendar.registerEvent', ['time' => $start, 'user' => $patient->id, 'doctor' => $checkup->doctor]);
+                }
+
+                // 3. Date comparison
                 // We only allow accessing the event, if the day of event hasn't passed yet:
                 $today = Carbon::now('Europe/Amsterdam');
                 $date = Carbon::parse($today);
                 if ($date->gt($start)) $url = null;
 
-                // 3. Cases
-                //TODO
-                // Break:
-                if ($checkup->note) {
-                    $title = 'Odmor';
-                    $backgroundClr = '#364';
-                    if ($checkup->who_inserted == $doc->id || ($nurse != null && $checkup->who_inserted == $nurse->id)) {
-                        $url = route('calendar.registerEvent', ['time' => $start, 'user' => $checkup->doctor, 'doctor' => $checkup->who_inserted]);
-                    }
-                }
-
-            }
-
-
-
-
-
-
-
-        $events = [];
-        if ($appointments != null) {
-            foreach ($appointments as $checkup) {
-                $backgroundClr = '#50000';
-                $start = $checkup->time;
-
-                if ($date->gt($start)) $url = null;
-                else {
-                    if ($actualUser->isDoctor() && $actualUser->id != Auth::user()->id && !Auth::user()->isNurse()){
-                        //dd('ayup');
-                        if($request->docId != null) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
-                        else {
-                            if (Auth::user()->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => Auth::user()->id]);
-                            else $url = null;
-                        }
-                    } elseif (Auth::user()->isNurse() && $proxyPatient != null && $proxyPatient->isDoctor()) {
-                        if($request->docId != null) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $proxyPatient->id, 'doctor' => $docId]);
-                        else {
-                            if (Auth::user()->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $proxyPatient->id, 'doctor' => $actualUser->id]);
-                            else $url = null;
-                        }
-                    } else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $proxyPatient->id, 'doctor' => $docId]);
-                } } }
-                 // We're the patient
-                elseif ($actualUser->id == $checkup->patient) {
-                    if($actualUser->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $checkup->doctor]);
-                    $title = User::where('id', '=', $checkup->patient)->first();
-                    $title = $title->fullName;
-                    $backgroundClr = '#904';
-                } // We're the ones who registered the appointment
-                elseif ($actualUser->id == $checkup->who_inserted && $checkup->patient != 0) {
-                    $title = User::where('id', '=', $checkup->patient)->first();
-                    $title = $title->fullName;
-                    $backgroundClr = '#099';
-                    $url = route('calendar.registerEvent', ['time' => $start, 'user' => $checkup->patient, 'doctor' => $docId]);
-                } // We're the ones who created open appointment:
-                elseif ($actualUser->id == $checkup->doctor && $actualUser->id != $checkup->who_inserted && $checkup->who_inserted != null) {
-                    $title = User::where('id', '=', $checkup->patient)->first();
-                    //dd($title);
-                    $title = $title->fullName;
-                    $backgroundClr = '#099';
-                    $url = route('calendar.registerEvent', ['time' => $start, 'user' => $checkup->who_inserted, 'doctor' => $docId]);
-                } // The event is still open
-                elseif (null == $checkup->patitent) {
-                    $title = 'Prost termin';
-                }
-
-                $ends = $checkup->time_end;
-                $end = Carbon::createFromFormat('Y-m-d H:i:s',$ends);
-
+                // 4. Build event
                 $events[] = \Calendar::event(
                     $title,
                     false,
@@ -238,8 +203,15 @@ class CalendarController extends Controller
                         'color' => $backgroundClr,
                     ]
                 );
+
             }
+
+
         }
+
+
+
+
 
         $calendar = \Calendar::addEvents($events)->setOptions([
             //set fullcalendar options
@@ -259,6 +231,8 @@ class CalendarController extends Controller
         $today = new \DateTime();
         // Get all doctors:
         $doctors = User::where('person_type', '=', Code::DOCTOR()->id)->get(); //->prepend('flavourText', '');
+        if ($request->docId != null) $selectedDoc = $request->docId;
+        else $selectedDoc = $docId;
 
         return view('calendarEvents.calendar', compact('calendar', 'events', 'today','doctors', 'selectedDoc'));
     }
