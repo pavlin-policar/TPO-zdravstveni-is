@@ -56,6 +56,7 @@ class CalendarController extends Controller
         }
         else {
             $patient = Auth::user();
+            if ($patient->hasDoctor()) $doc = $patient->personal_doctor_id;
         }
 
         // QUERY BUILDING
@@ -93,7 +94,7 @@ class CalendarController extends Controller
         // 2. Cases for doctor
         // 2.1 is $patient null? -> Y: doctor is a normal patient; $patient = $doc; schedule options logic in blade via isNurse and showDoc!!
         //						 -> N: doctor working on a patient; build query here?
-        else if ($doc != null) {
+        if ($doc != null && $nurse == null) {
             if ($request->docId != null) $docId = $request->docId;
             else {
                 $docId = $doc->id;
@@ -126,13 +127,30 @@ class CalendarController extends Controller
 
 
         // EVENT CREATION
+
+        // Variables:
+        // note
+        // time
+        // time_end
+        // doctor
+        // patient
+        // who_inserted
+        // Fullcalendar specific variables: title, color, url
+
+        // Types of events:
+        // break
+        // open appointment
+        // full appointment
+
         //TODO
         $events = [];
         if ($appointments != null) {
             foreach ($appointments as $checkup) {
+
                 // 1. Default values
                 $backgroundClr = '#50000';
                 $start = $checkup->time;
+                if ($checkup->patient != null) $title = User::where('id', '=', $checkup->patient)->first()->fullName;
 
                 // 2. Date comparison
                 // We only allow accessing the event, if the day of event hasn't passed yet:
@@ -141,14 +159,17 @@ class CalendarController extends Controller
                 if ($date->gt($start)) $url = null;
 
                 // 3. Cases
-                // 3.1 Nurse, Doc, Patient case
                 //TODO
+                // Break:
+                if ($checkup->note) {
+                    $title = 'Odmor';
+                    $backgroundClr = '#364';
+                    if ($checkup->who_inserted == $doc->id || ($nurse != null && $checkup->who_inserted == $nurse->id)) {
+                        $url = route('calendar.registerEvent', ['time' => $start, 'user' => $checkup->doctor, 'doctor' => $checkup->who_inserted]);
+                    }
+                }
 
-                // 3.2 Doc, Patient case
-                // 3.3 Patient case
-                //TODO
-
-
+            }
 
 
 
@@ -177,18 +198,9 @@ class CalendarController extends Controller
                             if (Auth::user()->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $proxyPatient->id, 'doctor' => $actualUser->id]);
                             else $url = null;
                         }
-                    } else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $proxyPatient->id, 'doctor' => $docId]);                }
-
-                // Our break! \o/
-                if ($checkup->note == 'odmor') {
-                        $title = 'Odmor';
-                        $backgroundClr = '#364';
-                        if ($actualUser->id == $checkup->who_inserted) {
-                            $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
-                        } else {
-                            $url = null;
-                        }
-                } // We're the patient
+                    } else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $proxyPatient->id, 'doctor' => $docId]);
+                } } }
+                 // We're the patient
                 elseif ($actualUser->id == $checkup->patient) {
                     if($actualUser->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $checkup->doctor]);
                     $title = User::where('id', '=', $checkup->patient)->first();
