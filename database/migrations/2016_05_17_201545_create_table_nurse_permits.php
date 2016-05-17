@@ -16,7 +16,7 @@ class CreateTableNursePermits extends Migration
             $table->increments('id');
 			$table->integer('nurse')->unsigned();
 			$table->integer('doctor')->unsigned();
-			$table->integer('permit')->unsigned()->nullable();
+			$table->integer('permit_type')->unsigned()->nullable();
 			$table->foreign('permit_type')
                 ->references('id')->on('codes')
                 ->onUpdate('cascade');
