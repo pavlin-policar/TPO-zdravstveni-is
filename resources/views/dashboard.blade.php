@@ -3,7 +3,141 @@
 @section('content')
 
     <div class="container-fluid">
-        <div class="dashboard-padding-top">
+        <div class="dashboard-padding-top" id="dashboard">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="card" data-expanded="0">
+                        <div class="card-header">
+                            <div class="card-title" style="width:100%">
+                                <div class="title pull-left">
+                                    <span class="fa fa-wrench"></span>&nbsp;Nastative nadzorne
+                                    plošče
+                                </div>
+                                <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {!! Form::open(['route' => ['api.dashboard.updateLayout', Auth::user()->id], 'method' => 'put', 'id' => 'dashboard-layout-update']) !!}
+                            <div class="sub-title">Nastavitev vidnih elementov</div>
+                            {{-- Personnel --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-personnel', true, $settings['dashboard-personnel'], ['id' => 'dashboard-personnel']) !!}
+                                    {!! Form::label('dashboard-personnel', 'Zdravniško osebje', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Past checkups --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-past-checkups', true, $settings['dashboard-past-checkups'], ['id' => 'dashboard-past-checkups']) !!}
+                                    {!! Form::label('dashboard-past-checkups', 'Pretekli pregledi', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Future checkups --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-future-checkups', true, $settings['dashboard-future-checkups'], ['id' => 'dashboard-future-checkups']) !!}
+                                    {!! Form::label('dashboard-future-checkups', 'Prihajajoči pregledi', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Medicine --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-medicine', true, $settings['dashboard-medicine'], ['id' => 'dashboard-medicine']) !!}
+                                    {!! Form::label('dashboard-medicine', 'Zdravila', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Measurements --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-measurements', true, $settings['dashboard-measurements'], ['id' => 'dashboard-measurements']) !!}
+                                    {!! Form::label('dashboard-measurements', 'Meritve', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Sickness --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-sickness', true, $settings['dashboard-sickness'], ['id' => 'dashboard-sickness']) !!}
+                                    {!! Form::label('dashboard-sickness', 'Bolezni in alergije', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Diets --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-diets', true, $settings['dashboard-diets'], ['id' => 'dashboard-diets']) !!}
+                                    {!! Form::label('dashboard-diets', 'Diete', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+
+                            <div class="sub-title">Napredno</div>
+                            <div class="form-group{{ $errors->has('num_displayed') ? ' has-error' : '' }}">
+                                {!! Form::label('num_displayed', 'Št. prikazanih vnosov', ['class' => 'col-sm-2 control-label']) !!}
+                                <div class="col-sm-10">
+                                    {!! Form::text('num_displayed', $settings['num_displayed'], ['class' => 'form-control', 'required']) !!}
+                                    <span class="help-block">Število najnovejših vnosov, ki se bodo prikazale na nadzorni plošči v vsakem elementu.</span>
+                                    @if ($errors->has('num_displayed'))
+                                        <span class="help-block">{{ $errors->first('num_displayed') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="sub-title">Osebne nastavitve</div>
+                            {{-- Birth date --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-birthdate', true, $settings['dashboard-birthdate'], ['id' => 'dashboard-birthdate']) !!}
+                                    {!! Form::label('dashboard-birthdate', 'Datum rojstva', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Gender --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-gender', true, $settings['dashboard-gender'], ['id' => 'dashboard-gender']) !!}
+                                    {!! Form::label('dashboard-gender', 'Spol', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Email --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-email', true, $settings['dashboard-email'], ['id' => 'dashboard-email']) !!}
+                                    {!! Form::label('dashboard-email', 'Elektronski naslov', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Telephone --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-telephone', true, $settings['dashboard-telephone'], ['id' => 'dashboard-telephone']) !!}
+                                    {!! Form::label('dashboard-telephone', 'Telefonska številka', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Address --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-address', true, $settings['dashboard-address'], ['id' => 'dashboard-address']) !!}
+                                    {!! Form::label('dashboard-address', 'Naslov', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- ZZ Code --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-zz', true, $settings['dashboard-zz'], ['id' => 'dashboard-zz']) !!}
+                                    {!! Form::label('dashboard-zz', 'Številka zdravstvenega zavarovanja', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+
+                            {{-- Submit button --}}
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    {!! Form::submit('Shrani nastavitve', ['class' => 'btn btn-primary']) !!}
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
                     <a href="{{ url('/check/medical') }}">
@@ -62,16 +196,16 @@
                     </a>
                 </div>
             </div>
-            <div class="row  no-margin-bottom">
-                <div class="col-sm-6 col-xs-12">
+            <div class="row no-margin-bottom">
+                <div class="col-md-6 col-xs-12">
                     <div class="row">
                         <div class="col-xs-12">
-                            <div class="card card-no-padding">
+                            <div class="card card-no-padding" data-expanded="1" id="card-personal">
                                 <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">Osebni podatki pacienta</div>
+                                    <div class="card-title" style="width:100%">
+                                        <div class="title pull-left">Osebni podatki pacienta</div>
+                                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                     </div>
-                                    <div class="fa fa-compress icon-arrow-right" id="glyphicon-user"></div>
                                 </div>
                                 <div class="card-body no-padding" id="dash-user">
                                     <table class="table table-hover">
@@ -79,42 +213,50 @@
                                         <tr>
                                             <td>Ime:</td>
                                             <td>{{ $user->first_name }}</td>
-
                                         </tr>
                                         <tr>
                                             <td>Priimek:</td>
                                             <td>{{ $user->last_name }}</td>
                                         </tr>
+                                        @if($settings['dashboard-birthdate'])
                                         <tr>
                                             <td>Datum rojstva:</td>
-                                            <td>{{  date("d.m.Y", strtotime($user->birth_date)) }}</td>
+                                            <td>{{ date("d.m.Y", strtotime($user->birth_date)) }}</td>
                                         </tr>
+                                        @endif
+                                        @if($settings['dashboard-address'])
                                         <tr>
                                             <td>Naslov:</td>
-                                            <td>{{ $user->address }}</td>
+                                            <td>{{ $user->address }}, {{ $user->postCode !== null ? $user->postCode : 'not given' }}</td>
                                         </tr>
+                                        @endif
+                                        @if($settings['dashboard-telephone'])
+                                        <tr>
+                                            <td>Telefonska številka:</td>
+                                            <td>{{ $user->phone_number }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($settings['dashboard-zz'])
                                         <tr>
                                             <td>Številka kartice:</td>
                                             <td>{{ $user->zz_card_number }}</td>
                                         </tr>
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                        @if($settings['dashboard-personnel'])
                         <div class="col-xs-12">
-                            <div class="card card-no-padding">
-                                <a name="HCP">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <div class="title">Vaše izbrano osebje</div>
-                                        </div>
-                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-personal"></div>
+                            <div class="card card-no-padding" data-expanded="1" id="card-personnel">
+                                <div class="card-header">
+                                    <div class="card-title" style="width:100%">
+                                        <div class="title pull-left">Vaše izbrano osebje</div>
+                                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                     </div>
-                                </a>
-                                <div class="card-body no-padding" id="dash-personal">
+                                </div>
+                                <div class="card-body no-padding">
                                     <h4>Osebni zdravnik:</h4>
                                     <li class="panel panel-default dropdown">
                                         <a data-toggle="collapse" href="#dropdown-element-doctor">
@@ -127,7 +269,9 @@
                                                     <h5>Medicinske sestre:</h5>
                                                     <ul class="nav navbar-nav">
                                                         @foreach ($doctorNurse as $nurse)
-                                                            <li><a href="#HCP"> {{ $doctorNurse[$nurse->id]->fullName }} </a></li>
+                                                            <li>
+                                                                <a href="#HCP"> {{ $doctorNurse[$nurse->id]->fullName }} </a>
+                                                            </li>
                                                         @endforeach
                                                     </ul>
                                                 </div>
@@ -147,74 +291,60 @@
                                                     <h5>Medicinske sestre:</h5>
                                                     <ul class="nav navbar-nav">
                                                         @foreach ($dentistNurse as $nurse)
-                                                            <li><a href="#HCP"> {{ $dentistNurse[$nurse->id]->fullName }} </a></li>
+                                                            <li>
+                                                                <a href="#HCP"> {{ $dentistNurse[$nurse->id]->fullName }} </a>
+                                                            </li>
                                                         @endforeach
                                                     </ul>
                                                 </div>
                                             </div>
                                         @endif
                                     </li>
-                                    <!--
-                                    <table class="table table-hover">
-                                        <tbody>
-                                        <tr>
-                                            <td>Osebni zdravnik:</td>
-                                            <td>{{ $user->doctor !== null ? $user->doctor->fullName : 'Niste si še izbrali osebnega zdravnika' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Osebni zobozdravnik:</td>
-                                            <td>{{ $user->dentist !== null ? $user->dentist->fullName : 'Niste si še izbrali osebnega zobozdravnika' }}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    -->
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                        @endif
+                        @if($settings['dashboard-past-checkups'])
                         <div class="col-xs-12">
-                            <div class="card card-no-padding">
+                            <div class="card card-no-padding" data-expanded="1" id="card-past-checkups">
                                 <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">Vaši pretekli pregledi</div>
+                                    <div class="card-title" style="width:100%">
+                                        <div class="title pull-left">Vaši pretekli pregledi</div>
+                                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                     </div>
-                                    <div class="fa fa-compress icon-arrow-right" id="glyphicon-check-old"></div>
                                 </div>
                                 <div class="card-body no-padding" id="dash-check-old">
                                     @if(count($checksOld) == 0)
                                     </br>
                                     <p>Do sedaj še niste bili na pregledu.</p>
                                     @else
-                                        @for ($x=0; $x < count($checksOld); $x++)
-                                            <a href="{{ url('/check', $checksOld[$x]->id) }}">
-                                                <table class="table table-hover table-responsive">
-                                                    <tr>
-                                                        <td>{{ date("d.m.Y H:i",strtotime($checksOld[$x]->time)) }}</td>
-                                                        <td>{{ $checksOld[$x]->first_name }} {{ $checksOld[$x]->last_name }}</td>
-                                                        <td>{{ $checksOld[$x]->note }}</td>
-                                                    </tr>
-                                                </table>
-                                            </a>
-                                        @endfor
+                                        <table class="table table-hover table-responsive">
+                                            @for ($x = 0, $max = count($checksOld); $x < $max; $x++)
+                                                <tr class="clickable-link" data-href="{{ url('/check', $checksOld[$x]->id) }}">
+                                                    <td>{{ date("d.m.Y H:i",strtotime($checksOld[$x]->time)) }}</td>
+                                                    <td>{{ $checksOld[$x]->first_name }} {{ $checksOld[$x]->last_name }}</td>
+                                                    <td>{{ $checksOld[$x]->note }}</td>
+                                                </tr>
+                                            @endfor
+                                        </table>
                                     @endif
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                        @endif
+                        @if($settings['dashboard-future-checkups'])
                         <div class="col-xs-12">
-                            <div class="card card-no-padding">
+                            <div class="card card-no-padding" data-expanded="1" id="card-future-checkups">
                                 <div class="card-header">
-                                    <div class="card-title">
-                                        <div class="title">Vaši prihajajoči pregledi</div>
+                                    <div class="card-title" style="width:100%">
+                                        <div class="title pull-left">Vaši prihajajoči pregledi</div>
+                                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                     </div>
-                                    <div class="fa fa-compress icon-arrow-right" id="glyphicon-check"></div>
                                 </div>
                                 <div class="card-body no-padding" id="dash-check">
                                     @if(count($doctorDates) == 0)
-                                        </br>
-                                        <p><strong>Niste prijavljeni</strong> na pregled.</p></br>
+                                    </br>
+                                    <p><strong>Niste prijavljeni</strong> na pregled.</p></br>
 
                                     @else
                                         @foreach ($doctorDates as $doctorDate)
@@ -232,20 +362,20 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
-                <div class="col-sm-6 col-xs-12">
+                <div class="col-md-6 col-xs-12">
                     <div class="row">
+                        @if($settings['dashboard-medicine'])
                         <div class="col-xs-12">
-                            <div class="card">
-                                <a name="medical">
-                                    <div class="card red card-header">
-                                        <div class="card-title">
-                                            <div class="title title-white">Zdravila</div>
-                                        </div>
-                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-medical"></div>
+                            <div class="card" data-expanded="1" id="card-medicine">
+                                <div class="card red card-header">
+                                    <div class="card-title title-white" style="width:100%">
+                                        <div class="title pull-left">Zdravila</div>
+                                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                     </div>
-                                </a>
+                                </div>
                                 <div class="card-body no-padding" id="dash-medical">
                                     <table class="table table-hover table-responsive">
                                         @if($checkCountMedical == 0)
@@ -278,18 +408,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                        @endif
+                        @if($settings['dashboard-measurements'])
                         <div class="col-xs-12">
-                            <div class="card">
-                                <a name="measurment">
-                                    <div class="card yellow card-header">
-                                        <div class="card-title">
-                                            <div class="title title-white">Meritve</div>
-                                        </div>
-                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
+                            <div class="card" data-expanded="1" id="card-measurements">
+                                <div class="card yellow card-header">
+                                    <div class="card-title title-white" style="width:100%">
+                                        <div class="title pull-left">Meritve</div>
+                                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                     </div>
-                                </a>
+                                </div>
                                 <div class="card-body no-padding" id="dash-measurments">
                                     <table class="table table-hover table-responsive">
                                         @if(count($checkMeasurement) == 0)
@@ -320,18 +448,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                            @endif
+                            @if($settings['dashboard-sickness'])
                         <div class="col-xs-12">
-                            <div class="card card-success">
-                                <a name="allergy">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <div class="title title-white">Bolezni in alergije</div>
-                                        </div>
-                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-allergy"></div>
+                            <div class="card card-success" data-expanded="1" id="card-allergies">
+                                <div class="card-header">
+                                    <div class="card-title title-white" style="width:100%">
+                                        <div class="title pull-left">Bolezni in alergije</div>
+                                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                     </div>
-                                </a>
+                                </div>
                                 <div class="card-body no-padding" id="dash-allergy">
                                     <table class="table table-hover table-responsive">
                                         @if($checkCountDisease == 0)
@@ -362,18 +488,16 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
+                            @endif
+                            @if($settings['dashboard-diets'])
                         <div class="col-xs-12">
-                            <div class="card card-info">
-                                <a name="diet">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <div class="title title-white">Diete</div>
-                                        </div>
-                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
+                            <div class="card card-info" data-expanded="1" id="card-diets">
+                                <div class="card-header">
+                                    <div class="card-title title-white" style="width:100%">
+                                        <div class="title pull-left">Diete</div>
+                                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                     </div>
-                                </a>
+                                </div>
                                 <div class="card-body no-padding" id="dash-diet">
                                     <table class="table table-hover table-responsive">
                                         @if($checkCountDiet == 0)
@@ -384,42 +508,41 @@
                                             </tr>
                                         @else
                                             <thead>
-                                                <tr>
-                                                    <td>Dieta:</td>
-                                                    <td>Začetek diete:</td>
-                                                    <td>Konec diete:</td>
-                                                </tr>
+                                            <tr>
+                                                <td>Dieta:</td>
+                                                <td>Začetek diete:</td>
+                                                <td>Konec diete:</td>
+                                            </tr>
                                             </thead>
                                             <tbody>
-                                                @for ($x=0; $x < count($checkData); $x++)
-                                                    @if($checkData[$x]->code_type == 12)
-                                                        <tr>
-                                                            <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
-                                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
-                                                            @if($checkData[$x]->end == null)
-                                                                <td></td>
-                                                            @else
+                                            @for ($x=0; $x < count($checkData); $x++)
+                                                @if($checkData[$x]->code_type == 12)
+                                                    <tr>
+                                                        <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
+                                                        <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
+                                                        @if($checkData[$x]->end == null)
+                                                            <td></td>
+                                                        @else
                                                             <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
-                                                            @endif
-                                                        </tr>
-                                                    @endif
-                                                @endfor
+                                                        @endif
+                                                    </tr>
+                                                @endif
+                                            @endfor
                                             </tbody>
                                         @endif
                                     </table>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    @if($user->isDoctor() && session('isMyProfile'))
-                        <div class="row">
+                            @endif
+                        @if($user->isDoctor() && session('isMyProfile'))
                             <div class="col-xs-12">
-                                <div class="card card-info">
+                                <div class="card card-info" data-expanded="1" id="card-patients">
                                     <div class="card-header">
-                                        <div class="card-title">
-                                            <div class="title title-white">PACIENTI</div>
+                                        <div class="card-title title-white" style="width:100%">
+                                            <div class="title pull-left">Pacienti</div>
+                                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                         </div>
-                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-patient"></div>
                                     </div>
                                     <div class="card-body no-padding" id="dash-patient">
                                         <table class="datatable table table-striped" cellspacing="0" width="100%">
@@ -441,17 +564,15 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endif
-                    @if($user->isDoctor() && session('isMyProfile'))
-                        <div class="row">
+                        @endif
+                        @if($user->isDoctor() && session('isMyProfile'))
                             <div class="col-xs-12">
-                                <div class="card card-info">
+                                <div class="card card-info" data-expanded="1" id="card-appointments">
                                     <div class="card-header">
-                                        <div class="card-title">
-                                            <div class="title title-white">Pregledi</div>
+                                        <div class="card-title title-white" style="width:100%">
+                                            <div class="title pull-left">Pregledi</div>
+                                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                         </div>
-                                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-doctor-dates"></div>
                                     </div>
                                     <div class="card-body no-padding" id="dash-doctor-dates">
                                         <table class="table table-responsive">
@@ -484,11 +605,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 @endsection

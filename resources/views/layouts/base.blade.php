@@ -34,9 +34,11 @@
     {{ Html::script('vendor/js/ace/mode-html.js') }}
     {{ Html::script('vendor/js/ace/theme-github.js') }}
     {{ Html::script('vendor/js/bootstrap-timepicker.min.js') }}
+    {{ Html::script('https://fb.me/react-15.0.2.min.js') }}
+    {{ Html::script('https://fb.me/react-dom-15.0.2.min.js') }}
 
     {{-- App scripts --}}
-    {{ Html::script('js/app.js') }}
+    {{ Html::script('js/app-compiled.js') }}
     {{ Html::script('js/zis-compiled.js') }}
 </head>
 @yield('body')

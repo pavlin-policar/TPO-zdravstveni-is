@@ -58,7 +58,7 @@
                             <div class="tab-pane fade in active" id="personal-info" aria-labelledby="personal-info-tab">
                                 @if($user->isDoctor())
                                     @include('profile.tabs.doctor-profile-info', ['user' => $user])
-                                    @elseif($user->isNurse())
+                                @elseif($user->isNurse())
                                     @include('profile.tabs.nurse-profile-info', ['user' => $user])
                                 @else
                                     @include('profile.tabs.profile-info', ['user' => $user])

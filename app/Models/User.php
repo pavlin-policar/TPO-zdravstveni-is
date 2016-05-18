@@ -57,6 +57,7 @@ class User extends Authenticatable
         'caretaker_id',
         'password',
         'last_login',
+        'dashboard_layout',
     ];
 
     /**
@@ -427,6 +428,16 @@ class User extends Authenticatable
     /**
      * RELATIONSHIPS
      */
+
+    /**
+     * Get the postcode assigned to the given user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function postCode()
+    {
+        return $this->belongsTo(Postcode::class, 'post');
+    }
 
     /**
      * Get the person type assigned to the given user.

@@ -403,4 +403,15 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
             'as' => 'users.restore',
         ]);
     });
+
+    Route::group(['namespace' => 'Api\V1', 'prefix' => 'api/v1'], function () {
+        Route::get('profile-layout/{user}', [
+            'uses' => 'DashboardController@getDashboardLayout',
+            'as' => 'api.dashboard.getLayout',
+        ]);
+        Route::put('profile-layout/{user}', [
+            'uses' => 'DashboardController@updateDashboardLayout',
+            'as' => 'api.dashboard.updateLayout',
+        ]);
+    });
 });

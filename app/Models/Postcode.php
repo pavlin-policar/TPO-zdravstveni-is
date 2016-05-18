@@ -37,4 +37,14 @@ class Postcode extends Model
     {
         return $this->post . ' (' . $this->postcode . ')';
     }
+
+    /**
+     * Get a string representation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->postcode . ' ' . $this->post;
+    }
 }
