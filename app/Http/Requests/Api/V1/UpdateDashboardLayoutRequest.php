@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\V1;
 
 use App\Http\Requests\Request;
 
@@ -13,7 +13,7 @@ class UpdateDashboardLayoutRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**

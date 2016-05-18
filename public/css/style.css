@@ -21,6 +21,10 @@ body.login-page {
   font-size: 2rem;
 }
 
+.clickable-link {
+  cursor: pointer;
+}
+
 .has-error .checkbox,
 .has-error .checkbox-inline,
 .has-error .control-label,

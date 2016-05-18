@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Api\V1\DashboardController;
 use App\Models\CheckCodes;
 use Carbon\Carbon;
 use DB;
@@ -43,6 +44,14 @@ class HomeController extends Controller
     public function dashboard(User $user){
 
         $me = Auth::user();
+
+        $dashboardSettings = Auth::user()->dashboard_layout;
+        if ($dashboardSettings === null) {
+            $dashboardSettings = DashboardController::$defaults;
+        } else {
+            $dashboardSettings = json_decode($dashboardSettings, true);
+        }
+        $limit = $dashboardSettings['num_displayed'];
 
         if (!$user->existsInStorage()) {
             if(!empty(session('showUser')))
@@ -99,6 +108,7 @@ class HomeController extends Controller
                     return $query->where('checks_codes.end', '>', Carbon::now())
                         ->orWhere('checks_codes.end', '=', null);
                 })
+                ->take($limit)
                 ->get();
 
             $data['checkCountMedical'] = CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
@@ -141,6 +151,7 @@ class HomeController extends Controller
                 ->select('measurements.*', 'codes.name', 'codes.description')
                 ->where('measurements.patient', '=', $user->id)
                 ->where('measurements.time', '>', $lastMonth)
+                ->take($limit)
                 ->get();
 
             $data['checksOld'] = Checks::join('users', 'checks.doctor', '=', 'users.id')
@@ -149,6 +160,7 @@ class HomeController extends Controller
                 ->where('checks.patient', $user->id)
                 ->where('doctor_dates.time', '<', Carbon::now())
                 ->orderBy('doctor_dates.time', 'desc')
+                ->take($limit)
                 ->get();
 
             $data['allDatesDoctor'] = DoctorDates::join('users', 'doctor_dates.patient', '=', 'users.id')
@@ -156,10 +168,12 @@ class HomeController extends Controller
                 ->where('doctor_dates.doctor', $user->id)
                 ->where('doctor_dates.time', '>', Carbon::today())
                 ->orderBy('doctor_dates.time', 'asc')
-                ->take(20)
+                ->take($limit)
                 ->get();
 
-            return view('dashboard')->with($data);
+            return view('dashboard')
+                ->with($data)
+                ->with('settings', $dashboardSettings);
         }
         else{
             return redirect('logout');

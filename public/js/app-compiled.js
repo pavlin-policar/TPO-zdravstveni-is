@@ -1,13 +1,15 @@
 'use strict';
 
 $(document).ready(function () {
-
+    // expand / collapse dashboard items
     var elements = $('#dashboard [class^=col-] > .card');
     elements.each(function (idx) {
         var element = $(elements[idx]);
+        // only apply the event handler to functions with defined data-expanded attributes
         if (typeof element.data('expanded') == 'undefined') {
             return;
         }
+        // change halder function
         var handleChange = function handleChange(card) {
             var duration = 300;
             if (card.data('expanded')) {
@@ -26,8 +28,9 @@ $(document).ready(function () {
                 card.data('expanded', 1);
             }
         };
-        element.find('.expand-trigger').click(function (e) {
-            return handleChange($(e.target).parent().parent().parent());
+        // set up the triggers
+        element.find('.card-header').click(function () {
+            handleChange($(this).parent());
         });
         // hide if the initial state is hidden
         if (!element.data('expanded')) {
@@ -37,6 +40,22 @@ $(document).ready(function () {
             element.children('.card-header').find('.expand-trigger').addClass('fa-expand');
         }
     });
+
+    // convert some elements to clickable links
+    $('.clickable-link').click(function () {
+        window.document.location = $(this).data('href');
+    });
+
+    // dashboard layout submit button
+    // $('#dashboard-layout-update').submit(function(e) {
+    //     e.preventDefault();
+    //     const form = $(this);
+    //     $.ajax({
+    //         url: form.attr('action'),
+    //         method: 'put',
+    //         data: form.serializeArray(),
+    //     })
+    // });
 
     $("#password").keyup(function () {
         check_pass();
@@ -146,10 +165,10 @@ $(document).ready(function () {
         console.log("change password");
         console.log($("#password-reset").html());
         /*
-        $("#profileView").html($("#password-reset").html());
-        $("#li-personal-info").attr("class", "");
-        $("#li-password-reset").attr("class", "active");
-        */
+         $("#profileView").html($("#password-reset").html());
+         $("#li-personal-info").attr("class", "");
+         $("#li-password-reset").attr("class", "active");
+         */
         $("#password-reset-tab").click();
     }
 

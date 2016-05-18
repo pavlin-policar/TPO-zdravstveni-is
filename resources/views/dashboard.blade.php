@@ -4,18 +4,6 @@
 
     <div class="container-fluid">
         <div class="dashboard-padding-top" id="dashboard">
-            {{--<script type="text/jsx">--}}
-            {{--React.render(--}}
-            {{--<Dashboard>--}}
-            {{--<Row>--}}
-            {{--<DashboardComponent className="col-lg-3 col-md-6 col-sm-6 col-xs-12">--}}
-            {{--<Title>Osebni podatki pacienta</Title>--}}
-            {{--<Body id="dash-user"></Body>--}}
-            {{--</DashboardComponent>--}}
-            {{--</Row>--}}
-            {{--</Dashboard>,--}}
-            {{--document.getElementById('dashboard'));--}}
-            {{--</script>--}}
             <div class="row">
                 <div class="col-xs-12">
                     <div class="card" data-expanded="0">
@@ -29,7 +17,123 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            body
+                            {!! Form::open(['route' => ['api.dashboard.updateLayout', Auth::user()->id], 'method' => 'put', 'id' => 'dashboard-layout-update']) !!}
+                            <div class="sub-title">Nastavitev vidnih elementov</div>
+                            {{-- Personnel --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-personnel', true, $settings['dashboard-personnel'], ['id' => 'dashboard-personnel']) !!}
+                                    {!! Form::label('dashboard-personnel', 'Zdravniško osebje', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Past checkups --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-past-checkups', true, $settings['dashboard-past-checkups'], ['id' => 'dashboard-past-checkups']) !!}
+                                    {!! Form::label('dashboard-past-checkups', 'Pretekli pregledi', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Future checkups --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-future-checkups', true, $settings['dashboard-future-checkups'], ['id' => 'dashboard-future-checkups']) !!}
+                                    {!! Form::label('dashboard-future-checkups', 'Prihajajoči pregledi', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Medicine --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-medicine', true, $settings['dashboard-medicine'], ['id' => 'dashboard-medicine']) !!}
+                                    {!! Form::label('dashboard-medicine', 'Zdravila', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Measurements --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-measurements', true, $settings['dashboard-measurements'], ['id' => 'dashboard-measurements']) !!}
+                                    {!! Form::label('dashboard-measurements', 'Meritve', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Sickness --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-sickness', true, $settings['dashboard-sickness'], ['id' => 'dashboard-sickness']) !!}
+                                    {!! Form::label('dashboard-sickness', 'Bolezni in alergije', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Diets --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-diets', true, $settings['dashboard-diets'], ['id' => 'dashboard-diets']) !!}
+                                    {!! Form::label('dashboard-diets', 'Diete', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+
+                            <div class="sub-title">Napredno</div>
+                            <div class="form-group{{ $errors->has('num_displayed') ? ' has-error' : '' }}">
+                                {!! Form::label('num_displayed', 'Št. prikazanih vnosov', ['class' => 'col-sm-2 control-label']) !!}
+                                <div class="col-sm-10">
+                                    {!! Form::text('num_displayed', $settings['num_displayed'], ['class' => 'form-control', 'required']) !!}
+                                    <span class="help-block">Število najnovejših vnosov, ki se bodo prikazale na nadzorni plošči v vsakem elementu.</span>
+                                    @if ($errors->has('num_displayed'))
+                                        <span class="help-block">{{ $errors->first('num_displayed') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="sub-title">Osebne nastavitve</div>
+                            {{-- Birth date --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-birthdate', true, $settings['dashboard-birthdate'], ['id' => 'dashboard-birthdate']) !!}
+                                    {!! Form::label('dashboard-birthdate', 'Datum rojstva', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Gender --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-gender', true, $settings['dashboard-gender'], ['id' => 'dashboard-gender']) !!}
+                                    {!! Form::label('dashboard-gender', 'Spol', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Email --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-email', true, $settings['dashboard-email'], ['id' => 'dashboard-email']) !!}
+                                    {!! Form::label('dashboard-email', 'Elektronski naslov', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Telephone --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-telephone', true, $settings['dashboard-telephone'], ['id' => 'dashboard-telephone']) !!}
+                                    {!! Form::label('dashboard-telephone', 'Telefonska številka', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- Address --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-address', true, $settings['dashboard-address'], ['id' => 'dashboard-address']) !!}
+                                    {!! Form::label('dashboard-address', 'Naslov', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+                            {{-- ZZ Code --}}
+                            <div class="checkbox">
+                                <div class="checkbox3 checkbox-round">
+                                    {!! Form::checkbox('dashboard-zz', true, $settings['dashboard-zz'], ['id' => 'dashboard-zz']) !!}
+                                    {!! Form::label('dashboard-zz', 'Številka zdravstvenega zavarovanja', ['class' => 'control-label']) !!}
+                                </div>
+                            </div>
+
+                            {{-- Submit button --}}
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                    {!! Form::submit('Shrani nastavitve', ['class' => 'btn btn-primary']) !!}
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+
+                            {!! Form::close() !!}
                         </div>
                     </div>
                 </div>
@@ -109,29 +213,41 @@
                                         <tr>
                                             <td>Ime:</td>
                                             <td>{{ $user->first_name }}</td>
-
                                         </tr>
                                         <tr>
                                             <td>Priimek:</td>
                                             <td>{{ $user->last_name }}</td>
                                         </tr>
+                                        @if($settings['dashboard-birthdate'])
                                         <tr>
                                             <td>Datum rojstva:</td>
-                                            <td>{{  date("d.m.Y", strtotime($user->birth_date)) }}</td>
+                                            <td>{{ date("d.m.Y", strtotime($user->birth_date)) }}</td>
                                         </tr>
+                                        @endif
+                                        @if($settings['dashboard-address'])
                                         <tr>
                                             <td>Naslov:</td>
-                                            <td>{{ $user->address }}</td>
+                                            <td>{{ $user->address }}, {{ $user->postCode !== null ? $user->postCode : 'not given' }}</td>
                                         </tr>
+                                        @endif
+                                        @if($settings['dashboard-telephone'])
+                                        <tr>
+                                            <td>Telefonska številka:</td>
+                                            <td>{{ $user->phone_number }}</td>
+                                        </tr>
+                                        @endif
+                                        @if($settings['dashboard-zz'])
                                         <tr>
                                             <td>Številka kartice:</td>
                                             <td>{{ $user->zz_card_number }}</td>
                                         </tr>
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+                        @if($settings['dashboard-personnel'])
                         <div class="col-xs-12">
                             <div class="card card-no-padding" data-expanded="1" id="card-personnel">
                                 <div class="card-header">
@@ -187,6 +303,8 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
+                        @if($settings['dashboard-past-checkups'])
                         <div class="col-xs-12">
                             <div class="card card-no-padding" data-expanded="1" id="card-past-checkups">
                                 <div class="card-header">
@@ -200,21 +318,21 @@
                                     </br>
                                     <p>Do sedaj še niste bili na pregledu.</p>
                                     @else
-                                        @for ($x=0; $x < count($checksOld); $x++)
-                                            <a href="{{ url('/check', $checksOld[$x]->id) }}">
-                                                <table class="table table-hover table-responsive">
-                                                    <tr>
-                                                        <td>{{ date("d.m.Y H:i",strtotime($checksOld[$x]->time)) }}</td>
-                                                        <td>{{ $checksOld[$x]->first_name }} {{ $checksOld[$x]->last_name }}</td>
-                                                        <td>{{ $checksOld[$x]->note }}</td>
-                                                    </tr>
-                                                </table>
-                                            </a>
-                                        @endfor
+                                        <table class="table table-hover table-responsive">
+                                            @for ($x = 0, $max = count($checksOld); $x < $max; $x++)
+                                                <tr class="clickable-link" data-href="{{ url('/check', $checksOld[$x]->id) }}">
+                                                    <td>{{ date("d.m.Y H:i",strtotime($checksOld[$x]->time)) }}</td>
+                                                    <td>{{ $checksOld[$x]->first_name }} {{ $checksOld[$x]->last_name }}</td>
+                                                    <td>{{ $checksOld[$x]->note }}</td>
+                                                </tr>
+                                            @endfor
+                                        </table>
                                     @endif
                                 </div>
                             </div>
                         </div>
+                        @endif
+                        @if($settings['dashboard-future-checkups'])
                         <div class="col-xs-12">
                             <div class="card card-no-padding" data-expanded="1" id="card-future-checkups">
                                 <div class="card-header">
@@ -244,10 +362,12 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-md-6 col-xs-12">
                     <div class="row">
+                        @if($settings['dashboard-medicine'])
                         <div class="col-xs-12">
                             <div class="card" data-expanded="1" id="card-medicine">
                                 <div class="card red card-header">
@@ -288,6 +408,8 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
+                        @if($settings['dashboard-measurements'])
                         <div class="col-xs-12">
                             <div class="card" data-expanded="1" id="card-measurements">
                                 <div class="card yellow card-header">
@@ -326,6 +448,8 @@
                                 </div>
                             </div>
                         </div>
+                            @endif
+                            @if($settings['dashboard-sickness'])
                         <div class="col-xs-12">
                             <div class="card card-success" data-expanded="1" id="card-allergies">
                                 <div class="card-header">
@@ -364,6 +488,8 @@
                                 </div>
                             </div>
                         </div>
+                            @endif
+                            @if($settings['dashboard-diets'])
                         <div class="col-xs-12">
                             <div class="card card-info" data-expanded="1" id="card-diets">
                                 <div class="card-header">
@@ -408,6 +534,7 @@
                                 </div>
                             </div>
                         </div>
+                            @endif
                         @if($user->isDoctor() && session('isMyProfile'))
                             <div class="col-xs-12">
                                 <div class="card card-info" data-expanded="1" id="card-patients">
