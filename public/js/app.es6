@@ -1,4 +1,42 @@
 $(document).ready(function(){
+
+    const elements = $('#dashboard [class^=col-] > .card');
+    elements.each(idx => {
+        const element = $(elements[idx]);
+        if (typeof element.data('expanded') == 'undefined') {
+            return;
+        }
+        const handleChange = card => {
+            const duration = 300;
+            if (card.data('expanded')) {
+                card.children('.card-body').slideUp(duration);
+                setTimeout(
+                    () => card.children('.card-header').css({ 'borderWidth': '0 ' }),
+                    duration
+                );
+                card.children('.card-header').find('.expand-trigger').removeClass('fa-compress');
+                card.children('.card-header').find('.expand-trigger').addClass('fa-expand');
+                card.data('expanded', 0)
+            } else {
+                card.children('.card-body').slideDown(300);
+                card.children('.card-header').css({ 'borderWidth': '1px' });
+                card.children('.card-header').find('.expand-trigger').removeClass('fa-expand');
+                card.children('.card-header').find('.expand-trigger').addClass('fa-compress');
+                card.data('expanded', 1)
+            }
+        };
+        element.find('.expand-trigger').click(e =>
+            handleChange($(e.target).parent().parent().parent())
+        );
+        // hide if the initial state is hidden
+        if (!element.data('expanded')) {
+            element.children('.card-body').slideUp(0);
+            element.children('.card-header').css({ 'borderWidth': '1px' });
+            element.children('.card-header').find('.expand-trigger').removeClass('fa-compress');
+            element.children('.card-header').find('.expand-trigger').addClass('fa-expand');
+        }
+    });
+
   $("#password").keyup(function(){
     check_pass();
   });
