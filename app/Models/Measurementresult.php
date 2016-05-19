@@ -32,7 +32,7 @@ class MeasurementResult extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function patient()
+    public function measurement()
     {
         return $this->belongsTo(Measurement::class, 'measurement');
     }

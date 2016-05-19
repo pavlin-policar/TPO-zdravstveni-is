@@ -465,9 +465,9 @@
                                             <tbody>
                                             @for ($x=0; $x < count($checkMeasurement); $x++)
                                                 <tr>
-                                                    <td>{{ $checkMeasurement[$x]->name }}</td>
-                                                    <td>{{ $checkMeasurement[$x]->description }}</td>
-                                                    <td>{{ date("d.m.Y H:i",strtotime($checkMeasurement[$x]->time)) }}</td>
+                                                    <td>{!! link_to_route('measurement.edit', $checkMeasurement[$x]->name, $checkMeasurement[$x]->id)!!}</td>
+                                                    <td>{!! link_to_route('measurement.edit', $checkMeasurement[$x]->description, $checkMeasurement[$x]->id)!!}</td>
+                                                    <td>{!! link_to_route('measurement.edit', date("d.m.Y H:i",strtotime($checkMeasurement[$x]->time)), $checkMeasurement[$x]->id)!!}</td>
                                                 </tr>
                                             @endfor
                                             </tbody>

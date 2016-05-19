@@ -17,6 +17,7 @@
     {{ Html::style('vendor/css/jquery.dataTables.min.css') }}
     {{ Html::style('vendor/css/dataTables.bootstrap.css') }}
     {{ Html::style('vendor/css/select2.min.css') }}
+    {{ Html::style('vendor/css/sweetalert.css') }}
     {{-- App stylesheets --}}
     {{ Html::style('css/style.css') }}
     {{ Html::style('css/themes/flat-blue.css') }}
@@ -34,6 +35,7 @@
     {{ Html::script('vendor/js/ace/mode-html.js') }}
     {{ Html::script('vendor/js/ace/theme-github.js') }}
     {{ Html::script('vendor/js/bootstrap-timepicker.min.js') }}
+    {{ Html::script('vendor/js/sweetalert.min.js') }}
     {{ Html::script('https://fb.me/react-15.0.2.min.js') }}
     {{ Html::script('https://fb.me/react-dom-15.0.2.min.js') }}
 

@@ -128,7 +128,8 @@ class CheckController extends Controller
 
             $data['measurements'] = Measurement::join('codes', 'measurements.type', '=', 'codes.id')
                 ->join('users', 'measurements.provider', '=', 'users.id')
-                ->select('measurements.*', 'codes.name', 'codes.description', 'users.first_name', 'users.last_name')
+                ->join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
+                ->select('measurements.*', 'codes.name', 'codes.description', 'users.first_name', 'users.last_name', 'measurement_results.result')
                 ->where('measurements.patient', '=', $user->id)
                 ->orderBy('measurements.time', 'desc')
                 ->get();

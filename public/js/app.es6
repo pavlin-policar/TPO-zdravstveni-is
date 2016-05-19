@@ -169,6 +169,21 @@ $(document).ready(() => {
         }
     });
 
+    $('button#delete').on('click', function(){
+        swal({
+                title: "Ali ste prepričani?",
+                text: "Podatki se bodo za vedno izbrisali!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ja, izbriši!",
+                cancelButtonText: "Prekliči",
+                closeOnConfirm: false
+            },
+            function(){
+                $("#deleteMeasurementForm").submit();
+            });
+    });
 
     if ($("#profileChangePassword").html() != null) {
         console.log("change password");

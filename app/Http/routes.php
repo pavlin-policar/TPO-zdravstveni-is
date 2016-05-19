@@ -260,8 +260,16 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'measurement.add'
     ]);
     Route::get('/measurement/{id}', [
-        'uses' => 'MeasurementController@showOneMeasurement',
-        'as' => 'measurement.showOne'
+        'uses' => 'MeasurementController@editMeasurement',
+        'as' => 'measurement.edit'
+    ]);
+    Route::put('/measurement/{id}', [
+        'uses' => 'MeasurementController@updateMeasurement',
+        'as' => 'measurement.update'
+    ]);
+    Route::delete('/measurement/{id}', [
+        'uses' => 'MeasurementController@deleteMeasurement',
+        'as' => 'measurement.delete'
     ]);
     /**
      * Routes only available to the doctor user.
