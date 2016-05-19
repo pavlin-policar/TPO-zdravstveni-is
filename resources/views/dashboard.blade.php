@@ -221,7 +221,11 @@
                                         @if($settings['dashboard-birthdate'])
                                         <tr>
                                             <td>Datum rojstva:</td>
-                                            <td>{{ date("d.m.Y", strtotime($user->birth_date)) }}</td>
+                                            @if($user->birth_date == null)
+                                                <td></td>
+                                            @else
+                                                <td>{{ date("d.m.Y",strtotime($user->birth_date)) }}</td>
+                                            @endif
                                         </tr>
                                         @endif
                                         @if($settings['dashboard-address'])
@@ -319,6 +323,14 @@
                                     <p>Do sedaj še niste bili na pregledu.</p>
                                     @else
                                         <table class="table table-hover table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Datum</th>
+                                                    <th>Doktor</th>
+                                                    <th>Opombe</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                             @for ($x = 0, $max = count($checksOld); $x < $max; $x++)
                                                 <tr class="clickable-link" data-href="{{ url('/check', $checksOld[$x]->id) }}">
                                                     <td>{{ date("d.m.Y H:i",strtotime($checksOld[$x]->time)) }}</td>
@@ -326,6 +338,7 @@
                                                     <td>{{ $checksOld[$x]->note }}</td>
                                                 </tr>
                                             @endfor
+                                            </tbody>
                                         </table>
                                     @endif
                                 </div>
@@ -347,17 +360,28 @@
                                     <p><strong>Niste prijavljeni</strong> na pregled.</p></br>
 
                                     @else
-                                        @foreach ($doctorDates as $doctorDate)
-                                            @if($doctorDate->doctor != $doctorDate->patient)
-                                                <table class="table table-hover">
-                                                    <tr>
-                                                        <td>{{ date("d.m.Y H:i",strtotime($doctorDate->time)) }}</td>
-                                                        <td>{{ $doktorCheck[$doctorDate->doctor]->fullName }}</td>
-                                                        <td>{{ $doctorDate->note }}</td>
-                                                    </tr>
-                                                </table>
-                                            @endif
-                                        @endforeach
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Datum</th>
+                                                <th>Doktor</th>
+                                                <th>Opombe</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($doctorDates as $doctorDate)
+                                                    @if($doctorDate->doctor != $doctorDate->patient)
+
+                                                            <tr>
+                                                                <td>{{ date("d.m.Y H:i",strtotime($doctorDate->time)) }}</td>
+                                                                <td>{{ $doktorCheck[$doctorDate->doctor]->fullName }}</td>
+                                                                <td>{{ $doctorDate->note }}</td>
+                                                            </tr>
+
+                                                    @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     @endif
                                 </div>
                             </div>
@@ -387,9 +411,9 @@
                                         @else
                                             <thead>
                                             <tr>
-                                                <td>Zdravilo:</td>
-                                                <td>Začetek jemanja:</td>
-                                                <td>Konec jemanja:</td>
+                                                <th>Zdravilo:</th>
+                                                <th>Začetek jemanja:</th>
+                                                <th>Konec jemanja:</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -397,8 +421,12 @@
                                                 @if($checkData[$x]->code_type == 14)
                                                     <tr>
                                                         <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
-                                                        <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
-                                                        <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                                        <td>{{ date("d.m.Y",strtotime($checkData[$x]->start)) }}</td>
+                                                        @if($checkData[$x]->end == null)
+                                                            <td></td>
+                                                        @else
+                                                            <td>{{ date("d.m.Y",strtotime($checkData[$x]->end)) }}</td>
+                                                        @endif
                                                     </tr>
                                                 @endif
                                             @endfor
@@ -429,9 +457,9 @@
                                         @else
                                             <thead>
                                             <tr>
-                                                <td>Meritev:</td>
-                                                <td>Opis:</td>
-                                                <td>Datum meritve:</td>
+                                                <th>Meritev:</th>
+                                                <th>Opis:</th>
+                                                <th>Datum meritve:</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -469,8 +497,8 @@
                                         @else
                                             <thead>
                                             <tr>
-                                                <td>Bolezen ali alergija:</td>
-                                                <td>Datum odkritja:</td>
+                                                <th>Bolezen ali alergija:</th>
+                                                <th>Datum odkritja:</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -478,7 +506,7 @@
                                                 @if($checkData[$x]->code_type == 13)
                                                     <tr>
                                                         <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
-                                                        <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
+                                                        <td>{{ date("d.m.Y",strtotime($checkData[$x]->start)) }}</td>
                                                     </tr>
                                                 @endif
                                             @endfor
@@ -509,9 +537,9 @@
                                         @else
                                             <thead>
                                             <tr>
-                                                <td>Dieta:</td>
-                                                <td>Začetek diete:</td>
-                                                <td>Konec diete:</td>
+                                                <th>Dieta:</th>
+                                                <th>Začetek diete:</th>
+                                                <th>Konec diete:</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -519,11 +547,11 @@
                                                 @if($checkData[$x]->code_type == 12)
                                                     <tr>
                                                         <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
-                                                        <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->start)) }}</td>
+                                                        <td>{{ date("d.m.Y",strtotime($checkData[$x]->start)) }}</td>
                                                         @if($checkData[$x]->end == null)
                                                             <td></td>
                                                         @else
-                                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                                            <td>{{ date("d.m.Y",strtotime($checkData[$x]->end)) }}</td>
                                                         @endif
                                                     </tr>
                                                 @endif
@@ -575,32 +603,31 @@
                                         </div>
                                     </div>
                                     <div class="card-body no-padding" id="dash-doctor-dates">
-                                        <table class="table table-responsive">
-                                            @foreach($allDatesDoctor as $date)
-                                                <tr>
-                                                    <td class="no-padding">
-                                                        @if($date->patient == $date->doctor)
-                                                            <table class="table table-hover no-margin-bottom">
-                                                                <tr>
-                                                                    <td>{{ date("d.m.Y H:i",strtotime($date->time)) }}</td>
-                                                                    <td>{{ $date->first_name }} {{ $date->last_name }}</td>
-                                                                    <td>{{ $date->note }}</td>
-                                                                </tr>
-                                                            </table>
-                                                        @else
-                                                            <a href="{{ url('/doctor/check', $date->id ) }}">
-                                                                <table class="table table-hover no-margin-bottom">
-                                                                    <tr>
-                                                                        <td>{{ date("d.m.Y H:i",strtotime($date->time)) }}</td>
-                                                                        <td>{{ $date->first_name }} {{ $date->last_name }}</td>
-                                                                        <td>{{ $date->note }}</td>
-                                                                    </tr>
-                                                                </table>
-                                                            </a>
+                                        <table class="datatable table table-striped" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Datum</th>
+                                                <th>Pacient</th>
+                                                <th>Opombe</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($allDatesDoctor as $date)
+                                                    @if($date->patient == $date->doctor)
+                                                        <tr>
+                                                            <td>{{ date("d.m.Y H:i",strtotime($date->time)) }}</td>
+                                                            <td>{{ $date->first_name }} {{ $date->last_name }}</td>
+                                                            <td>{{ $date->note }}</td>
+                                                        </tr>
+                                                    @else
+                                                        <tr>
+                                                            <td>{!! link_to_route('check.doctor', date("d.m.Y H:i",strtotime($date->time)), $date->id)!!}</td>
+                                                            <td>{!! link_to_route('check.doctor', $date->first_name .' '. $date->last_name, $date->id)!!}</td>
+                                                            <td>{!! link_to_route('check.doctor', $date->note, $date->id)!!}</td>
+                                                        </tr>
                                                         @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                                @endforeach
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -610,5 +637,5 @@
                 </div>
             </div>
         </div>
-
+    </div>
 @endsection

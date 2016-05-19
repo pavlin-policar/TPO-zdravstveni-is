@@ -250,6 +250,19 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'CodeController@specialListDetail',
         'as' => 'code.publicDetail',
     ]);
+
+    Route::get('/measurement/add', [
+        'uses' => 'MeasurementController@newMeasurement',
+        'as' => 'measurement.new'
+    ]);
+    Route::post('/measurement/add', [
+        'uses' => 'MeasurementController@addMeasurement',
+        'as' => 'measurement.add'
+    ]);
+    Route::get('/measurement/{id}', [
+        'uses' => 'MeasurementController@showOneMeasurement',
+        'as' => 'measurement.showOne'
+    ]);
     /**
      * Routes only available to the doctor user.
      */

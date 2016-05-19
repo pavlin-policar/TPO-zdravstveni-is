@@ -14,7 +14,7 @@
                     </div>
                 </a>
                 <div class="card-body no-padding" id="dash-measurments">
-                    <table class="table table-hover table-responsive">
+                    <table class="datatable table table-striped" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <td>Meritev:</td>

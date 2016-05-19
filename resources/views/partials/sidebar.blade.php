@@ -50,6 +50,11 @@
                         </div>
                     </div>
                 </li>
+                <li class="{{ $routeGroup == 'measurement' ? 'active' : '' }}">
+                    <a href="{{ route('measurement.add') }}">
+                        <span class="icon fa fa-stethoscope"></span><span class="title">Dodaj meritev</span>
+                    </a>
+                </li>
                 @can('can-see-delegates', App\Models\User::class)
                 <li class="panel panel-default dropdown {{ $routeGroup == 'charges' ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#dropdown-charges">

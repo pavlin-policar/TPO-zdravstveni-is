@@ -272,6 +272,8 @@ a:hover {
       .navbar .dropdown.profile .dropdown-menu .profile-info .username {
         font-size: 1.8em; }
 
+
+
 .app-container {
   min-height: 100%;
   position: relative;
@@ -455,7 +457,7 @@ a:hover {
   transition: all 0.25s; }
 
 .app-container.expanded .side-body {
-  margin-left: 120px; }
+  margin-left: 240px; }
 
 /* small screen */
 @media (max-width: 768px) {
@@ -498,7 +500,7 @@ a:hover {
   .app-container.expanded .side-body {
     margin-left: 10px; }
   .app-container .app-footer .wrapper, .app-container.expanded .app-footer .wrapper {
-    padding-left: 25px; } }
+    padding-left: 125px; } }
 
 /* Card */
 .card {

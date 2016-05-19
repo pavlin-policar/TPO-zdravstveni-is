@@ -12,7 +12,7 @@
                     <div class="fa fa-compress icon-arrow-right" id="glyphicon-medical"></div>
                 </div>
                 <div class="card-body no-padding" id="dash-medical">
-                    <table class="table table-hover table-responsive">
+                    <table class="datatable table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Zdravilo: </th>

@@ -24,7 +24,7 @@
                                     </tr>
                                     <tr>
                                         <td>Datum: </td>
-                                        <td>{{ $check->time }}</td>
+                                        <td>{{ date("d.m.Y H:i",strtotime($check->time)) }}</td>
                                     </tr>
 
                                 </table>
@@ -33,6 +33,52 @@
                     </div>
                 </div>
             </div>
+            @if(count($checkMeasurement) > 0)
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="card">
+                            <div class="card yellow card-header">
+                                <div class="card-title">
+                                    <div class="title title-white">Meritve</div>
+                                </div>
+                                <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
+                            </div>
+                            <div class="card-body no-padding" id="dash-measurments">
+                                <table class="table table-hover">
+                                    @for ($x=0; $x < count($checkMeasurement); $x++)
+                                        <tr><td><p></p></td><td><p></p></td></tr>
+                                        <tr>
+                                            <td>Meritev: </td>
+                                            <td>{{ $checkMeasurement[$x]->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Opis: </td>
+                                            <td>{{ $checkMeasurement[$x]->description }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Podatki: </td>
+                                            <td>{{ $checkMeasurement[$x]->result }} mmol/l</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Datum meritve: </td>
+                                            <td>{{ date("d.m.Y H:i",strtotime($checkMeasurement[$x]->time)) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Zdravnik: </td>
+                                            <td>{{ $checkMeasurement[$x]->first_name }} {{ $checkMeasurement[$x]->last_name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Opombe: </td>
+                                            <td>{{ $checkMeasurement[$x]->note }}</td>
+                                        </tr>
+
+                                    @endfor
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="col-sm-6 col-xs-12">
             @if($checkCountMedical > 0)
@@ -49,6 +95,7 @@
                             <table class="table table-hover">
                                 @for ($x=0; $x < count($checkData); $x++)
                                     @if($checkData[$x]->code_type == 14)
+                                        <tr><td><p></p></td><td><p></p></td></tr>
                                         <tr>
                                             <td>Zdravilo: </td>
                                             <td>{{ $checkData[$x]->name }}</td>
@@ -77,51 +124,6 @@
                 </div>
             </div>
             @endif
-            @if(count($checkMeasurement) > 0)
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="card">
-                        <div class="card yellow card-header">
-                            <div class="card-title">
-                                <div class="title title-white">Meritve</div>
-                                </div>
-                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
-                        </div>
-                        <div class="card-body no-padding" id="dash-measurments">
-                            <table class="table table-hover">
-                                @for ($x=0; $x < count($checkMeasurement); $x++)
-                                    <tr>
-                                        <td>Meritev: </td>
-                                        <td>{{ $checkMeasurement[$x]->name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Opis: </td>
-                                        <td>{{ $checkMeasurement[$x]->description }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Podatki: </td>
-                                        <td>{{ $checkMeasurement[$x]->result }} mmol/l</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Datum meritve: </td>
-                                        <td>{{ date("d.m.Y H:i",strtotime($checkMeasurement[$x]->time)) }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Zdravnik: </td>
-                                        <td>{{ $checkMeasurement[$x]->first_name }} {{ $checkMeasurement[$x]->last_name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Opombe: </td>
-                                        <td>{{ $checkMeasurement[$x]->note }}</td>
-                                    </tr>
-
-                                @endfor
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
             @if($checkCountDisease > 0)
             <div class="row">
                 <div class="col-xs-12">
@@ -136,6 +138,7 @@
                             <table class="table table-hover">
                                 @for ($x=0; $x < count($checkData); $x++)
                                     @if($checkData[$x]->code_type == 13)
+                                        <tr><td><p></p></td><td><p></p></td></tr>
                                         <tr>
                                             <td>Bolezen ali alergija: </td>
                                             <td>{{ $checkData[$x]->name }}</td>
@@ -146,7 +149,11 @@
                                         </tr>
                                         <tr>
                                             <td>Izginotje bolezni ali alergije: </td>
-                                            <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                            @if($checkData[$x]->end == null)
+                                                <td></td>
+                                            @else
+                                                <td>{{ date("d.m.Y H:i",strtotime($checkData[$x]->end)) }}</td>
+                                            @endif
                                         </tr>
                                         <tr>
                                             <td>Opombe: </td>
@@ -178,6 +185,7 @@
                             <table class="table table-hover">
                                 @for ($x=0; $x < count($checkData); $x++)
                                     @if($checkData[$x]->code_type == 12)
+                                        <tr><td><p></p></td><td><p></p></td></tr>
                                         <tr>
                                             <td>Dieta: </td>
                                             <td>{{ $checkData[$x]->name }}</td>

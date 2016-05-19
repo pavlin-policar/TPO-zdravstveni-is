@@ -12,7 +12,7 @@
                     <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
                 </div>
                 <div class="card-body no-padding" id="dash-diet">
-                    <table class="table table-hover table-responsive">
+                    <table class="datatable table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Dieta: </th>
