@@ -45,14 +45,6 @@ class HomeController extends Controller
 
         $me = Auth::user();
 
-        $dashboardSettings = Auth::user()->dashboard_layout;
-        if ($dashboardSettings === null) {
-            $dashboardSettings = DashboardController::$defaults;
-        } else {
-            $dashboardSettings = json_decode($dashboardSettings, true);
-        }
-        $limit = $dashboardSettings['num_displayed'];
-
         if (!$user->existsInStorage()) {
             if(!empty(session('showUser')))
                 $user=User::findOrFail(session('showUser'));
@@ -69,6 +61,14 @@ class HomeController extends Controller
             session(['showUser' => $user->id]);
             session(['simpleUserData' => $user->first_name.' '.$user->last_name]);
         }
+
+        $dashboardSettings = $user->dashboard_layout;
+        if ($dashboardSettings === null) {
+            $dashboardSettings = DashboardController::$defaults;
+        } else {
+            $dashboardSettings = json_decode($dashboardSettings, true);
+        }
+        $limit = $dashboardSettings['num_displayed'];
 
         if(($me->id==$user->id)||($me->id==$user->personal_doctor_id)||($me->id==$user->personal_dentist_id)||($me->id==$user->caretaker_id)) {
             $data['user'] = $user;
