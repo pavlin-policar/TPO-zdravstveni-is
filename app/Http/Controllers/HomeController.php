@@ -70,7 +70,7 @@ class HomeController extends Controller
         }
         $limit = $dashboardSettings['num_displayed'];
 
-        if(($me->id==$user->id)||($me->id==$user->personal_doctor_id)||($me->id==$user->personal_dentist_id)||($me->id==$user->caretaker_id)) {
+        if(($me->id==$user->id)||($me->id==$user->personal_doctor_id)||($me->id==$user->personal_dentist_id)||($me->id==$user->caretaker_id) || ($me->isNurse())) {
             $data['user'] = $user;
             $data['isMyProfile'] = session('isMyProfile');
             $data['personal_doctor'] = User::find($user->personal_doctor_id);
@@ -170,6 +170,14 @@ class HomeController extends Controller
                 ->orderBy('doctor_dates.time', 'asc')
                 ->take($limit)
                 ->get();
+            
+            if ($user->isNurse()) {
+                $doctors = DoctorNurse::where('nurse', '=', $user->id)->get();
+                $tempDocs = null;
+                foreach ($doctors as $dottore) $tempDocs[] = $dottore->doctor;
+                $data['docs'] = User::whereIn('id', $tempDocs)->get();
+            }
+
 
             return view('dashboard')
                 ->with($data)

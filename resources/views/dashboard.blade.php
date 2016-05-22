@@ -633,7 +633,6 @@
                                 </div>
                             </div>
                         @endif
-
                         @if($user->isDoctor() && session('isMyProfile'))
                             <div class="col-xs-12">
                                 <div class="card card-info" data-expanded="1" id="card-patients">
@@ -659,6 +658,43 @@
                                                 </tr>
                                             @endforeach
                                             </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($user->isNurse() && session('isMyProfile'))
+                            <div class="col-xs-12">
+                                <div class="card card-info" data-expanded="1" id="card-patients">
+                                    <div class="card-header">
+                                        <div class="card-title title-white" style="width:100%">
+                                            <div class="title pull-left">Pacienti</div>
+                                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body no-padding" id="dash-patient">
+                                        <table class="datatable table table-striped" cellspacing="0" width="100%">
+                                            @foreach($docs as $doctor)
+                                                <thead>
+                                                    <tr>
+                                                        <th>Doktor: {!! $doctor->fullName !!}</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Ime</th>
+                                                        <th>Priimek</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($doctor->patients as $patient)
+                                                        <tr>
+                                                            <td>{!! link_to_route('charges.activate', $patient->first_name, $patient->id)!!}</td>
+                                                            <td>{!! link_to_route('charges.activate', $patient->last_name, $patient->id)!!}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            @endforeach
+
                                         </table>
                                     </div>
                                 </div>

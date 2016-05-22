@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use PhpParser\Comment\Doc;
 
 /**
  * Class User
@@ -91,7 +92,7 @@ class User extends Authenticatable
      * @return string
      */
     public function getFullNameAttribute()
-    {
+    {        
         if ($this->last_name !== null) {
             return $this->first_name . ' ' . $this->last_name;
         }
@@ -239,10 +240,18 @@ class User extends Authenticatable
      * @param User $user
      * @return bool
      */
-    public function isElevatingDoctorOf(User $user)
+    public function isNurseInChargeOf(User $user)
     {
-        return $this->id === DoctorNurse::where('nurse', '=', $user->id)
-                                        ->where('doctor', '=', $this->id)->first()->doctor;
+        return true;
+        //TODO
+        if ( ($this->id === DoctorNurse::where('nurse', '=', $this->id)
+             ->where('doctor', '=', $user->personal_doctor_id)->first()->nurse) ||
+             ($this->id === DoctorNurse::where('nurse', '=', $this->id)
+             ->where('doctor', '=', $user->personal_dentist_id)->first()->nurse) )
+            {
+                return true;
+            }
+        else return false;
     }
 
     /**
