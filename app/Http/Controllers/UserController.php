@@ -7,6 +7,7 @@ use App\Http\Requests\CreateDoctorProfileRequest;
 use App\Http\Requests\CreateNurseProfileRequest;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateDoctorsRequest;
+use App\Http\Requests\ElevateNurseRequest;
 use App\Models\Code;
 use App\Models\User;
 use App\Repositories\UserRepository;
@@ -229,7 +230,7 @@ class UserController extends Controller
     public function elevateNurse(ElevateNurseRequest $request, User $user)
     {
         $this->authorize('canUpdateDoctors', $user);
-        $this->users->elevateNurse($user, $request->all());
+        $this->users->elevateNurse($user, $request->nurse_id);
         return redirect()->back();
     }
     

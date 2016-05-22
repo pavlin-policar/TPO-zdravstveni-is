@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Code;
+use App\Models\DoctorNurse;
 use App\Models\User;
 
 /**
@@ -53,16 +54,13 @@ class UserRepository
      * @param array $data
      * @return User
      */
-    public function elevateNurse(array $data)
+    public function elevateNurse($user, $nurse_id)
     {
         //TODO
-        $user = new User($data);
-        $user->confirmed = 0;
-        $user->person_type = Code::PATIENT()->id;
-        dd($data);
-        //$user->save();
+        $docID = $user->id;
+        $docNurEntry = DoctorNurse::create(['nurse' => $nurse_id, 'doctor' => $docID]);
 
-        return $user;
+        return $docNurEntry;
     }
 
     /**

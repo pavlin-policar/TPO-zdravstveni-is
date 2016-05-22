@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class UpdateDoctorsRequest extends Request
+class ElevateNurseRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
