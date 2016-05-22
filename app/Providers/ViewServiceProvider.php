@@ -8,6 +8,8 @@ use App\Models\DoctorProfile;
 use App\Models\Postcode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use App\Models\User;
+use App\Models\NurseInstitutions;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,7 @@ class ViewServiceProvider extends ServiceProvider
         $this->composeChargeForm();
         $this->composerDoctorsSelectBox();
         $this->composerDentistsSelectBox();
+        $this->composerNursesSelectBox();
     }
 
     /**
@@ -146,6 +149,27 @@ class ViewServiceProvider extends ServiceProvider
                     }
                 });
                 $view->with('dentists', $doctors);
+            }
+        );
+    }
+
+    protected function composerNursesSelectBox()
+    {
+        view()->composer(
+            'partials.form-elements.select-nurse',
+            function ($view) {
+                // Get the nurses from the same institution as this doctor
+                $docInstID = Auth::user()->doctorProfile->institution_id;
+                $profiles = User::join('nurses_institutions', 'users.id', '=', 'nurses_institutions.nurse_id')
+                    ->where('nurses_institutions.institution_id', '=', $docInstID)
+                    ->get();
+
+                $nurses = [];
+                foreach($profiles as $profile) {
+                    $nurses[$profile->id] = $profile->fullName;
+                }
+
+                $view->with('nurses', $nurses);
             }
         );
     }

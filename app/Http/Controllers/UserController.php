@@ -7,6 +7,7 @@ use App\Http\Requests\CreateDoctorProfileRequest;
 use App\Http\Requests\CreateNurseProfileRequest;
 use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateDoctorsRequest;
+use App\Models\Code;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class UserController extends Controller
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function showProfile(User $user)
-    {
+    {        
         // If no user id was supplied, assume the user would like to edit their own profile.
         if (!$user->existsInStorage()) {
             if(session('isMyProfile'))
@@ -217,6 +218,21 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Elevate chosen nurse's position.
+     *
+     * @param ElevateNurseRequest $request
+     * @param User $user
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function elevateNurse(ElevateNurseRequest $request, User $user)
+    {
+        $this->authorize('canUpdateDoctors', $user);
+        $this->users->elevateNurse($user, $request->all());
+        return redirect()->back();
+    }
+    
     /**
      * Delete a users account.
      *

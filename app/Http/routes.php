@@ -170,6 +170,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'UserController@updateNursePersonalInfo',
         'as' => 'profile.updateNursePersonal',
     ]);
+    Route::put('profile/{user}/elevate-nurse', [
+        'uses' => 'UserController@elevateNurse',
+        'as' => 'profile.elevateNurse',
+    ]);
     Route::put('profile/{user}/password', [
         'uses' => 'UserController@changePassword',
         'as' => 'profile.changePassword',

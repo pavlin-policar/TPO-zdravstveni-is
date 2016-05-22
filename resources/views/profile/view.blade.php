@@ -36,6 +36,16 @@
                                     </div>
                                 </a>
                             </li>
+                            @if ($user->isDoctor())
+                                <li role="step" id="li-elevate-nurse">
+                                    <a href="#elevate-nurse" id="account-elevate-tab" role="tab" data-toggle="tab">
+                                        <div class="icon fa fa-user-md"></div>
+                                        <div class="step-title">
+                                            <div class="title">Pooblastitve</div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endif
                             <li role="step" id="li-password-reset">
                                 <a href="#password-reset" id="password-reset-tab" role="tab" data-toggle="tab">
                                     <div class="icon fa fa-key"></div>
@@ -67,6 +77,11 @@
                             <div class="tab-pane fade" id="doctors" aria-labelledby="doctors-tab">
                                 @include('profile.tabs.doctors', ['user' => $user])
                             </div>
+                            @if ($user->isDoctor())
+                                <div class="tab-pane fade" id="elevate-nurse" aria-labelledby="account-elevate-tab">
+                                    @include('profile.tabs.elevate', ['user' => $user])
+                                </div>
+                            @endif
                             <div class="tab-pane fade" id="password-reset" aria-labelledby="password-reset-tab">
                                 @include('profile.tabs.profile-change-passwd', ['user' => $user])
                             </div>

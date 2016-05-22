@@ -48,6 +48,24 @@ class UserRepository
     }
 
     /**
+     * Add a nurse-doctor pair to the database (elevate nurse).
+     *
+     * @param array $data
+     * @return User
+     */
+    public function elevateNurse(array $data)
+    {
+        //TODO
+        $user = new User($data);
+        $user->confirmed = 0;
+        $user->person_type = Code::PATIENT()->id;
+        dd($data);
+        //$user->save();
+
+        return $user;
+    }
+
+    /**
      * Update a given patient and persist changes to storage.
      *
      * @param User $user
