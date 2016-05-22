@@ -39,16 +39,7 @@ class CalendarController extends Controller
         $patient = null;
 
         // Elevated user type?
-        if (Auth::user()->isNurse()) {
-            $nurse = Auth::user();
-            if (session('showDoc') != null) {
-                $doc = User::where('id', '=', session('showDoc'));
-                if (session('showUser') != $doc->id && session('showUser') != $nurse->id) {
-                    $patient = User::where('id', '=', session('showUser'))->first();
-                }
-            }
-        }
-        elseif (Auth::user()->isDoctor()) {
+        if (Auth::user()->isDoctor() || Auth::user()->isNurse()) {
             $doc = Auth::user();
             if (session('showUser') != $doc->id) {
                 $patient = User::where('id', '=', session('showUser'))->first();
@@ -65,49 +56,18 @@ class CalendarController extends Controller
 
         // QUERY BUILDING
         $appointments = null;
-        //TODO check and doublecheck query results for nurse, when possible
-        // 1. Cases for nurse
-        // 1.1 is $doc null? -> Y: nurse is a normal patient; $patient = $nurse;
-        //					 -> N: nurse is working on assigned doctor's tasks; is $patient null? -> Y: doctor is a normal patient; $patient = $doc; schedule options logic in blade via isNurse and showDoc!!
-        //																						  -> N: nurse working on a patient through doctor; build query in here?
-        if ($nurse != null) {
-            if ($doc == null) $patient = $nurse;
-            else {
-                if ($request->docId != null) $docId = $request->docId;
-                else {
-                    $docId = $doc->id;
-                    // Query doc's who_inserted appointments (MINUS below query), where doc isn't patient
-                    // UNLESS docId has been chosen in dropdown list
-                    if ($patient == null) {
-                        $results = DoctorDates::where('who_inserted', '=', $docId)->whereNotNull('patient')->whereNotIn('patient', [$docId])->get();
-                        foreach ($results as $result) $appointments[] = $result;
-                    } else {
-                        // Query doc's scheduled breaks:
-                        $results = DoctorDates::where('doctor', '=', $docId)->where('note', '=', 'odmor')->get();
-                        foreach ($results as $result) $appointments[] = $result;
-                    }
 
-                }
-                // Query doc's scheduled appointments (ONLY open ones) UNLESS docId has been chosen in dropdown list:
-                $results = DoctorDates::where('doctor', '=', $docId)->whereNull('patient')->get();
-                foreach ($results as $result) $appointments[] = $result;
-
-                if ($patient == null) $patient = $doc;
-
-            }
-        }
-
-        // 2. Cases for doctor
-        // 2.1 is $patient null? -> Y: doctor is a normal patient; $patient = $doc; schedule options logic in blade via isNurse and showDoc!!
+        // 1. Cases for doctor or nurse
+        // 1.1 is $patient null? -> Y: doctor is a normal patient; $patient = $doc; schedule options logic in blade via isNurse and showDoc!!
         //						 -> N: doctor working on a patient; build query here?
-        if ($doc != null && $nurse == null) {
+        if ($doc != null) {
             if ($request->docId != null) $docId = $request->docId;
             else {
                 $docId = $doc->id;
                 // Query doc's who_inserted appointments (MINUS below query), where doc isn't patient
                 // UNLESS docId has been chosen in dropdown list
                 if ($patient == null) {
-                    $results = DoctorDates::where('who_inserted', '=', $docId)->whereNotNull('patient')->whereNotIn('patient', [$docId])->get();
+                    $results = DoctorDates::where('who_inserted', '=', $docId)->orWhere('doctor', '=', $docId)->whereNotNull('patient')->whereNotIn('patient', [$docId])->get();
                     foreach ($results as $result) $appointments[] = $result;
                 } else {
                     // Query doc's scheduled breaks:
@@ -123,7 +83,7 @@ class CalendarController extends Controller
             if ($patient == null) $patient = $doc;
         }
 
-        // 3. Cases for patient
+        // 2. Cases for patient
         // No need for conditional, $patient won't ever be null by this point
         // Query patient's appointments:
         $results = DoctorDates::where('patient', '=', $patient->id)->get();
@@ -175,8 +135,14 @@ class CalendarController extends Controller
                 }
 
                 // Full appointment:
-                if ($checkup->patient != null && $checkup->patient != $patient->id) $backgroundClr = "#904";
-                else if ($checkup->patient == $patient->id) $backgroundClr = "#099";
+                if ($checkup->patient != null && $checkup->patient != $patient->id) {
+                    $backgroundClr = "#904";
+                    $url = route('calendar.registerEvent', ['time' => $start, 'user' => $patient->id, 'doctor' => $checkup->doctor]);
+                }
+                else if ($checkup->patient == $patient->id) {
+                    $backgroundClr = "#099";
+                    $url = route('calendar.registerEvent', ['time' => $start, 'user' => $patient->id, 'doctor' => $checkup->doctor]);
+                }
 
 
                 // Open appointment:
@@ -423,7 +389,7 @@ class CalendarController extends Controller
         // Doctor can set you up with another appointment, even if you have one or ten already:
         if (!Auth::user()->isDoctor()) {
             $event = DoctorDates::where('patient', '=', $userId)->first();
-            if ($event->count > 0) {
+            if ($event != null && $event->count > 0) {
                 request()->session()->flash(
                     'cloneMessage',
                     'Naenkrat se lahko naročite samo na en termin! Za več naročil se obrnite na svojega osebnega doktorja.'
