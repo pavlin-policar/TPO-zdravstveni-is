@@ -116,6 +116,7 @@ class ChargeController extends Controller
         if($user->id!=Auth::user()->id) {
             session(['isMyProfile' => false]);
             session(['simpleUserData' => $user->first_name.' '.$user->last_name]);
+            //dd($user);
         }else
             session(['isMyProfile' => true]);
         return redirect()->route('dashboard.show', [$user]);

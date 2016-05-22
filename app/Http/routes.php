@@ -174,6 +174,10 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'UserController@elevateNurse',
         'as' => 'profile.elevateNurse',
     ]);
+    Route::get('profile/{user}/free-nurse', [
+        'uses' => 'UserController@freeNurse',
+        'as' => 'profile.freeNurse',
+    ]);
     Route::put('profile/{user}/password', [
         'uses' => 'UserController@changePassword',
         'as' => 'profile.changePassword',

@@ -9,6 +9,8 @@ use App\Http\Requests\CreateProfileRequest;
 use App\Http\Requests\UpdateDoctorsRequest;
 use App\Http\Requests\ElevateNurseRequest;
 use App\Models\Code;
+use App\Models\DoctorDates;
+use App\Models\DoctorNurse;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
@@ -231,6 +233,21 @@ class UserController extends Controller
     {
         $this->authorize('canUpdateDoctors', $user);
         $this->users->elevateNurse($user, $request->nurse_id);
+        return redirect()->back();
+    }
+
+    /**
+     * Free doctor's elevated nurse.
+     *
+     * @param Request $request
+     * @param User $nurse
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function freeNurse(Request $request, $nurse)
+    {
+        DoctorNurse::where('nurse', '=', $nurse)
+                   ->where('doctor', '=', Auth::user()->id)->first()->delete();
         return redirect()->back();
     }
     

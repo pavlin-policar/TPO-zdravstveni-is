@@ -160,14 +160,19 @@ class ViewServiceProvider extends ServiceProvider
             function ($view) {
                 // Get the nurses from the same institution as this doctor
                 $docInstID = Auth::user()->doctorProfile->institution_id;
-                //TODO subtract existing relations, so they don't show up!
+
                 $existing = User::join('doctor_nurse', 'users.id', '=', 'doctor_nurse.nurse')
                     ->where('doctor_nurse.doctor', '=', Auth::user()->id)
                     ->get();
 
+                $notIn = Array();
+                foreach($existing as $m){
+                    $notIn[]=$m->nurse;
+                }
+
                 $profiles = User::join('nurses_institutions', 'users.id', '=', 'nurses_institutions.nurse_id')
-                    ->join('doctor_nurse', 'users.id', '=', 'doctor_nurse.nurse')
                     ->where('nurses_institutions.institution_id', '=', $docInstID)
+                    ->whereNotIn('users.id', $notIn)
                     ->get();
 
                 $nurses = [];

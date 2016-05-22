@@ -15,6 +15,7 @@ class UserPolicy
             $user->isSameUserAs($victim) or
             $user->isCaretakerOf($victim) or
             $user->isDoctorOf($victim) or
+            $user->isElevatingDoctorOf($victim) or
             $user->isAdmin();
     }
 

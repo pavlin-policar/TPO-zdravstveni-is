@@ -234,6 +234,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the given user is the elevated nurse of a given doctor.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isElevatingDoctorOf(User $user)
+    {
+        return $this->id === DoctorNurse::where('nurse', '=', $user->id)
+                                        ->where('doctor', '=', $this->id)->first()->doctor;
+    }
+
+    /**
      * Check if the user is an admin user.
      *
      * @return bool
@@ -259,7 +271,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is an doctor.
+     * Check if the user is a doctor.
      *
      * @return bool
      */
@@ -269,7 +281,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is an nurse.
+     * Check if the user is a nurse.
      *
      * @return bool
      */
@@ -562,6 +574,19 @@ class User extends Authenticatable
             return $this->hasMany(User::class, 'personal_doctor_id');
         } else if ($this->isPersonalDentist()) {
             return $this->hasMany(User::class, 'personal_dentist_id');
+        }
+    }
+
+    /**
+     * Get the nurses, elevated by this doctor / dentist.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function nurses()
+    {
+        if ($this->isDoctor()) {
+            return $results = $this->hasMany(DoctorNurse::class, 'doctor')
+                            ->join('users', 'users.id', '=', 'nurse');
         }
     }
 

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Class Postcodes
  *
- * @property int    postcode
- * @property string post
+ * @property int nurse
+ * @property int doctor
  *
  * @package App\Models
  */
