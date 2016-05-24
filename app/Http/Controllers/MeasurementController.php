@@ -57,8 +57,8 @@ class MeasurementController extends Controller
     }
 
     public function addMeasurement(AddMeasurementRequest $request){
-
-        $type = Code::find($request->type);
+echo $request;
+    /*    $type = Code::find($request->type);
 
         if($request->result < $type->min_value || $request->result > $type->max_value){
             return redirect()->back()->with('error', 'Napačna vrednost');
@@ -89,7 +89,7 @@ class MeasurementController extends Controller
             $measurementResult->save();
 
             return redirect()->back()->with('msg', 'Meritev je bila dodana');
-        }
+        }*/
     }
 
     public function editMeasurement($id){
@@ -122,12 +122,15 @@ class MeasurementController extends Controller
     public function updateMeasurement(AddMeasurementRequest $request, $id){
 
         $type = Code::find($request->type);
+        $measurement = Measurement::find($id);
 
-        if($request->result < $type->min_value || $request->result > $type->max_value){
+        if($measurement->check > 0){
+            return redirect()->back()->with('error', 'Te meritve ni dovoljeno urejati');
+        }
+        else if($request->result < $type->min_value || $request->result > $type->max_value){
             return redirect()->back()->with('error', 'Napačna vrednost');
         }
         else {
-            $measurement = Measurement::find($id);
 
             if($request['provider'] > 0){
                 $measurement->provider = $request['provider'];
@@ -150,9 +153,15 @@ class MeasurementController extends Controller
 
     public function deleteMeasurement($id){
 
-        MeasurementResult::where('measurement', $id)->delete();
-        Measurement::destroy($id);
+        $measurement = Measurement::find($id);
 
-        return redirect()->route('check.measurement')->with('msg', 'Meritev je bila izbrisana');
+        if($measurement->check > 0){
+            return redirect()->back()->with('error', 'Te meritve ni dovoljeno brisati');
+        }
+        else{
+            MeasurementResult::where('measurement', $id)->delete();
+            Measurement::destroy($id);
+            return redirect()->route('check.measurement')->with('msg', 'Meritev je bila izbrisana');
+        }
     }
 }

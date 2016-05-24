@@ -231,7 +231,7 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'check.medical'
     ]);
 
-    Route::get('/check/measurement/{user?}', [
+    Route::get('/check/measurement/{id?}', [
         'uses' => 'CheckController@showMeasurement',
         'as' => 'check.measurement'
     ]);

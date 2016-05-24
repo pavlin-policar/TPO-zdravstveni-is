@@ -230,6 +230,21 @@ $(document).ready(function () {
         $(".measurementR").attr('min', min);
         $(".measurementR").attr('max', max);
     });
+
+    if ( $( "#graph" ).length ) {
+
+        var jsonData = jQuery.parseJSON( $( "#graph" ).text() );
+
+        Morris.Line({
+            element: 'graf-meritev',
+            data: jsonData,
+            xkey: 'time',
+            ykeys: ['result'],
+            labels: ['Vrednost'],
+            behaveLikeLine: true,
+            resize: true
+        });
+    }
 });
 
 $(function () {

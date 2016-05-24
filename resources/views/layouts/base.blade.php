@@ -18,12 +18,14 @@
     {{ Html::style('vendor/css/dataTables.bootstrap.css') }}
     {{ Html::style('vendor/css/select2.min.css') }}
     {{ Html::style('vendor/css/sweetalert.css') }}
+    {{ Html::style('vendor/css/morris.css') }}
     {{-- App stylesheets --}}
     {{ Html::style('css/style.css') }}
     {{ Html::style('css/themes/flat-blue.css') }}
 
     {{-- Vendor scripts --}}
     {{ Html::script('vendor/js/jquery.min.js') }}
+    {{ Html::script('vendor/js/raphael.min.js') }}
     {{ Html::script('vendor/js/bootstrap.min.js') }}
     {{ Html::script('vendor/js/Chart.min.js') }}
     {{ Html::script('vendor/js/bootstrap-switch.min.js') }}
@@ -36,8 +38,9 @@
     {{ Html::script('vendor/js/ace/theme-github.js') }}
     {{ Html::script('vendor/js/bootstrap-timepicker.min.js') }}
     {{ Html::script('vendor/js/sweetalert.min.js') }}
-    {{ Html::script('https://fb.me/react-15.0.2.min.js') }}
-    {{ Html::script('https://fb.me/react-dom-15.0.2.min.js') }}
+    {{ Html::script('vendor/js/react-15.0.2.min.js') }}
+    {{ Html::script('vendor/js/react-dom-15.0.2.min.js') }}
+    {{ Html::script('vendor/js/morris.min.js') }}
 
     {{-- App scripts --}}
     {{ Html::script('js/app-compiled.js') }}

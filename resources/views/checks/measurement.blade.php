@@ -49,5 +49,77 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="card">
+                <a name="measurment">
+                    <div class="card yellow card-header">
+                        <div class="card-title">
+                            <div class="title title-white">Grafi</div>
+                        </div>
+                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-medical"></div>
+                    </div>
+                </a>
+                <div class="card-body" id="dash-medical">
+
+                    {{-- Type --}}
+                    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
+                        {!! Form::label('type', 'Izberite tip meritve', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-sm-10">
+                            <select class="form-control select2-hidden-accessible measurementT" required="required" id="measurementType" name="type" onchange="location = this.value;" tabindex="-1" aria-hidden="true" style="width: 100%">
+                                <option value="null">Izberite meritev</option>
+                                @foreach($codesMeasurement as $m)
+                                    @if($typeID == $m->id)
+                                        <option selected="selected" value="{{ url('/check/measurement', $m->id) }}">{{ $m->name }}</option>
+                                    @else
+                                        <option value="{{ url('/check/measurement', $m->id) }}">{{ $m->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @if ($errors->has('type'))
+                                <span id="checkMeasurementCode" class="help-block">{{ $errors->first('type') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    @if($graph != null && count($graph) > 0)
+                        <div class="hidden">
+                            <p id="type">{{ $type }}</p>
+                            <p id="graph">{{ $graph }}</p>
+                        </div>
+
+                        <div class="row margin-graph">
+                            <div class="col-md-3 col-sm-4 col-xs-12">
+                                <table class="table table-hover padding-bottom padding-top">
+                                    <tr>
+                                        <td>Meritev </td>
+                                        <td>{{ $type->name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Opis </td>
+                                        <td>{{ $type->description }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Minimalna vrednost </td>
+                                        <td>{{ $type->min_value }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Maksimalna vrednost </td>
+                                        <td>{{ $type->max_value }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-9 col-sm-8 col-xs-12">
+                                <div id="graf-meritev"></div>
+                            </div>
+                        </div>
+                    @elseif(count($graph) == 0)
+                        <div class="col-sm-8 col-sm-offset-2 margin-graph">
+                            <h4>Ni podatkov o tej meritvi!</h4>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection

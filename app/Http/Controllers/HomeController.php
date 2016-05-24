@@ -108,7 +108,7 @@ class HomeController extends Controller
                     return $query->where('checks_codes.end', '>', Carbon::now())
                         ->orWhere('checks_codes.end', '=', null);
                 })
-                ->take($limit)
+                ->take(3*$limit)
                 ->get();
 
             $data['checkCountMedical'] = CheckCodes::join('checks', 'checks_codes.check', '=', 'checks.id')
