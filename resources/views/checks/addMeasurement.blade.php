@@ -62,7 +62,7 @@
 <div class="form-group{{ $errors->has('result') ? ' has-error' : '' }}">
     {!! Form::label('result', 'Vrednost', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        {!! Form::number('result', null, ['class' => 'form-control measurementR', 'required', 'id' => 'measurementResult']) !!}
+        {!! Form::number('result', null, ['class' => 'form-control measurementR', 'required', 'id' => 'measurementResult', 'step' => 'any']) !!}
         @if ($errors->has('result'))
             <span class="help-block">{{ $errors->first('result') }}</span>
         @endif

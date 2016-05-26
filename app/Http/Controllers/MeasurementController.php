@@ -57,8 +57,8 @@ class MeasurementController extends Controller
     }
 
     public function addMeasurement(AddMeasurementRequest $request){
-echo $request;
-    /*    $type = Code::find($request->type);
+
+        $type = Code::find($request->type);
 
         if($request->result < $type->min_value || $request->result > $type->max_value){
             return redirect()->back()->with('error', 'Napačna vrednost');
@@ -89,7 +89,7 @@ echo $request;
             $measurementResult->save();
 
             return redirect()->back()->with('msg', 'Meritev je bila dodana');
-        }*/
+        }
     }
 
     public function editMeasurement($id){

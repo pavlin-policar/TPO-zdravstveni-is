@@ -32,23 +32,12 @@
                     </div>
                 </div>
 
-                {{-- Personal doctor select box --}}
-                <div class="form-group{{ $errors->has('provider') ? ' has-error' : '' }}">
-                    {!! Form::label('provider', 'Zdravnik', ['class' => 'col-sm-2 control-label']) !!}
+                {{-- Provider id --}}
+                <div class="form-group{{ $errors->has('provider') ? ' has-error' : '' }} hidden">
                     <div class="col-sm-10">
-                        {{--{!! Form::select('doctor',  $doctors, $check->doctor, ['class' => 'form-control', 'required']) !!}--}}
-                        <select class="form-control select2-hidden-accessible" required="required" id="provider" name="provider" tabindex="-1" aria-hidden="true" style="width: 100%">
-                            <option value="null">Izberite zdravnika</option>
-                            @foreach($doctors as $d)
-                                @if($patient->doctor->id == $d->id)
-                                    <option selected="selected" value="{{ $d->id }}">{{ $d->fullName }}</option>
-                                @else
-                                    <option value="{{ $d->id }}">{{ $d->fullName }}</option>
-                                @endif
-                            @endforeach
-                        </select>
+                        {!! Form::text('provider', $patient->id, ['class' => 'form-control', 'required']) !!}
                         @if ($errors->has('provider'))
-                            <span id="checkChangeDoctor" class="help-block">{{ $errors->first('provider') }}</span>
+                            <span class="help-block">{{ $errors->first('provider') }}</span>
                         @endif
                     </div>
                 </div>
@@ -73,7 +62,7 @@
                 <div class="form-group{{ $errors->has('result') ? ' has-error' : '' }}">
                     {!! Form::label('result', 'Vrednost', ['class' => 'col-sm-2 control-label']) !!}
                     <div class="col-sm-10">
-                        {!! Form::number('result', null, ['class' => 'form-control measurementR', 'required', 'id' => 'measurementResult']) !!}
+                        {!! Form::number('result', null, ['class' => 'form-control measurementR', 'required', 'id' => 'measurementResult', 'step' => 'any']) !!}
                         @if ($errors->has('result'))
                             <span class="help-block">{{ $errors->first('result') }}</span>
                         @endif
