@@ -145,6 +145,11 @@ class CheckController extends Controller
                     ->where('measurements.type', $id)
                     ->orderBy('measurements.time', 'asc')
                     ->get();
+                if(!empty($data['type']['code'])){
+                    $data['normalValues']=Code::where('code', "=", 'normal')
+                        ->where('code_type', "=", $data['type']['code'])
+                        ->first();
+                }
             }
             else{
                 $data['type'] = null;

@@ -100,11 +100,15 @@
                                     </tr>
                                     <tr>
                                         <td>Minimalna vrednost </td>
-                                        <td>{{ $type->min_value }}</td>
+                                        <td id="minimal">{{ $type->min_value }}</td>
                                     </tr>
                                     <tr>
                                         <td>Maksimalna vrednost </td>
-                                        <td>{{ $type->max_value }}</td>
+                                        <td id="maximal">{{ $type->max_value }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Normalne vrednosti </td>
+                                        <td><b id="minNormal">{{ $normalValues->min_value }}</b> - <b id="maxNormal">{{ $normalValues->max_value }}</b></td>
                                     </tr>
                                 </table>
                             </div>
