@@ -137,18 +137,23 @@ class CheckController extends Controller
                 ->where('measurements.patient', '=', $user->id)
                 ->orderBy('measurements.time', 'desc')
                 ->get();
-
-            if(($id >= 180)&&($id <= 185)){
+            if(isset($id)&&!empty($id)) {
                 $data['type'] = Code::find($id);
-                $data['graph'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
-                    ->select('measurement_results.result', 'measurements.time')
-                    ->where('measurements.type', $id)
-                    ->orderBy('measurements.time', 'asc')
-                    ->get();
-                if(!empty($data['type']['code'])){
-                    $data['normalValues']=Code::where('code', "=", 'normal')
-                        ->where('code_type', "=", $data['type']['code'])
-                        ->first();
+                if ($data['type']->code_type == 15) {
+
+                    $data['graph'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
+                        ->select('measurement_results.result', 'measurements.time')
+                        ->where('measurements.type', $id)
+                        ->orderBy('measurements.time', 'asc')
+                        ->get();
+                    if (!empty($data['type']['code'])) {
+                        $data['normalValues'] = Code::where('code', "=", 'normal')
+                            ->where('code_type', "=", $data['type']['code'])
+                            ->first();
+                    }
+                } else{
+                    $data['type'] = null;
+                    $data['graph'] = null;
                 }
             }
             else{
