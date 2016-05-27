@@ -269,6 +269,23 @@ $(document).ready(function () {
 			goalStrokeWidth: 3
         });
     }
+
+    $("#measurementType").change(function () {
+
+        var ind = $("#measurementType").prop('selectedIndex');
+
+        if(ind == 6){
+            $("#labelWeight").text('Višina');
+            $("#measurementWeightResult").attr('required', true);
+            $("#measurementWeight").attr('class', 'form-group');
+        }
+        else{
+            $("#labelWeight").text('Vrednost');
+            $("#measurementWeightResult").removeAttr('required');
+            $("#measurementWeight").attr('class', 'form-group hidden');
+        }       
+    });
+
 });
 
 $(function () {

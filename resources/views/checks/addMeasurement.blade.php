@@ -27,7 +27,7 @@
     <div class="col-sm-10">
         {{--{!! Form::select('doctor',  $doctors, $check->doctor, ['class' => 'form-control', 'required']) !!}--}}
         <select class="form-control select2-hidden-accessible" required="required" id="provider" name="provider" tabindex="-1" aria-hidden="true" style="width: 100%">
-            <option value="null">Izberite zdravnika</option>
+            <option value="">Izberite zdravnika</option>
             @foreach($doctors as $d)
                 @if($d->id == $dates->doctor)
                     <option value="{{ $d->id }}" selected="selected">{{ $d->fullName }}</option>
@@ -47,7 +47,7 @@
     {!! Form::label('type', 'Meritev', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
         <select class="form-control select2-hidden-accessible measurementT" required="required" id="measurementType" name="type" tabindex="-1" aria-hidden="true" style="width: 100%">
-            <option value="null">Izberite meritev</option>
+            <option value="">Izberite meritev</option>
             @foreach($codesMeasurement as $m)
                 <option min="{{ $m->min_value }}" max="{{ $m->max_value }}" value="{{ $m->id }}">{{ $m->name }}</option>
             @endforeach
@@ -60,7 +60,7 @@
 
 {{-- Result --}}
 <div class="form-group{{ $errors->has('result') ? ' has-error' : '' }}">
-    {!! Form::label('result', 'Vrednost', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('result', 'Vrednost', ['class' => 'col-sm-2 control-label', 'id' => 'labelWeight']) !!}
     <div class="col-sm-10">
         {!! Form::number('result', null, ['class' => 'form-control measurementR', 'required', 'id' => 'measurementResult', 'step' => 'any']) !!}
         @if ($errors->has('result'))
@@ -68,6 +68,16 @@
         @endif
         @if (Session::has('error'))
             <div class="alert alert-danger">{{ Session::get('error') }}</div>
+        @endif
+    </div>
+</div>
+{{-- Weight --}}
+<div class="form-group{{ $errors->has('weight') ? ' has-error' : '' }} hidden" id="measurementWeight">
+    {!! Form::label('weight', 'Teža', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-10">
+        {!! Form::number('weight', null, ['class' => 'form-control', 'min' => '1', 'max' => '250', 'id' => 'measurementWeightResult', 'step' => 'any']) !!}
+        @if ($errors->has('weight'))
+            <span class="help-block">{{ $errors->first('weight') }}</span>
         @endif
     </div>
 </div>

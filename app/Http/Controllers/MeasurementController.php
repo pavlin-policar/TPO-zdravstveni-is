@@ -50,13 +50,12 @@ class MeasurementController extends Controller
         if(!session('isMyProfile'))
             $data['patient'] = User::find(session('showUser'));
 
-        $data['doctors'] = User::where('person_type', 4)->get();
         $data['codesMeasurement'] = Code::where('code_type', 15)->get();
 
         return view('measurements.add')->with($data);
     }
 
-    public function addMeasurement(AddMeasurementRequest $request){
+    public function addMeasurement(AddMeasurementRequest $request){echo $request;
 
         $type = Code::find($request->type);
 
@@ -84,7 +83,13 @@ class MeasurementController extends Controller
             $measurementResult = new MeasurementResult();
             $measurementResult->measurement = $measurement->id;
             $measurementResult->type = $request['type'];
-            $measurementResult->result = $request['result'];
+            if($request['type'] == 185){
+                $bmi = $request['weight'] / (($request['result']/100)*($request['result']/100));
+                $measurementResult->result = (round($bmi*100))/100;
+            }
+            else{
+                $measurementResult->result = $request['result'];
+            }
 
             $measurementResult->save();
 
@@ -104,7 +109,7 @@ class MeasurementController extends Controller
         if($m->patient == $user->id || $m->patient == $me->id){
 
             $data = Array();
-            $data['doctors'] = User::where('person_type', 4)->get();
+            $data['patient'] = $user;
             $data['codesMeasurement'] = Code::where('code_type', 15)->get();
             $data['measurement'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
                 ->select('measurements.*', 'measurement_results.result')

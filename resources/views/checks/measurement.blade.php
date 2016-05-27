@@ -62,17 +62,19 @@
                 </a>
                 <div class="card-body" id="dash-medical">
 
+                    {!! Form::open(['route' => ['check.measurement'], 'method' => 'get', 'class' => 'form-horizontal']) !!}
+
                     {{-- Type --}}
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                         {!! Form::label('type', 'Izberite tip meritve', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            <select class="form-control select2-hidden-accessible measurementT" required="required" id="measurementType" name="type" onchange="location = this.value;" tabindex="-1" aria-hidden="true" style="width: 100%">
-                                <option value="null">Izberite meritev</option>
+                            <select class="form-control select2-hidden-accessible measurementT" required="required" id="measurementType" name="type" tabindex="-1" aria-hidden="true" style="width: 100%">
+                                <option value="">Izberite meritev</option>
                                 @foreach($codesMeasurement as $m)
                                     @if($typeID == $m->id)
-                                        <option selected="selected" value="{{ url('/check/measurement', $m->id) }}">{{ $m->name }}</option>
+                                        <option selected="selected" value="{{ $m->id }}">{{ $m->name }}</option>
                                     @else
-                                        <option value="{{ url('/check/measurement', $m->id) }}">{{ $m->name }}</option>
+                                        <option value="{{ $m->id }}">{{ $m->name }}</option>
                                     @endif
                                 @endforeach
                             </select>
@@ -81,6 +83,37 @@
                             @endif
                         </div>
                     </div>
+
+                    {{-- From --}}
+                    <div class="form-group{{ $errors->has('from') ? ' has-error' : '' }}">
+                        {!! Form::label('from', 'Od', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-sm-10">
+                            {!! Form::date('from', null, ['class' => 'form-control']) !!}
+                            @if ($errors->has('from'))
+                                <span class="help-block">{{ $errors->first('from') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    {{-- To --}}
+                    <div class="form-group{{ $errors->has('to') ? ' has-error' : '' }}">
+                        {!! Form::label('to', 'Do', ['class' => 'col-sm-2 control-label']) !!}
+                        <div class="col-sm-10">
+                            {!! Form::date('to', null, ['class' => 'form-control']) !!}
+                            @if ($errors->has('to'))
+                                <span class="help-block">{{ $errors->first('to') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- Submit button --}}
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            {!! Form::submit('Prikaži graf', ['class' => 'btn btn-primary']) !!}
+                        </div>
+                    </div>
+
+                    {!! Form::close() !!}
+
                     @if($graph != null && count($graph) > 0)
                         <div class="hidden">
                             <p id="type">{{ $type }}</p>

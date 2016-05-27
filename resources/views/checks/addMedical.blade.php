@@ -16,7 +16,7 @@
     {!! Form::label('code', 'Zdravila', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
         <select class="form-control select2-hidden-accessible" required="required" id="code" name="code" tabindex="-1" aria-hidden="true" style="width: 100%">
-            <option value="null">Izberite zdravila</option>
+            <option value="">Izberite zdravila</option>
             @foreach($codesMedical as $m)
                 <option value="{{ $m->id }}">{{ $m->name }}</option>
             @endforeach

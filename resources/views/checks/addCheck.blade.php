@@ -37,7 +37,7 @@
     <div class="col-sm-10">
         {{--{!! Form::select('doctor',  $doctors, $check->doctor, ['class' => 'form-control', 'required']) !!}--}}
         <select class="form-control select2-hidden-accessible" required="required" id="doctor" name="doctor" tabindex="-1" aria-hidden="true" style="width: 100%">
-            <option value="null">Izberite zdravnika</option>
+            <option value="">Izberite zdravnika</option>
             @foreach($doctors as $d)
                 @if($d->id == $dates->doctor)
                     <option value="{{ $d->id }}" selected="selected">{{ $d->fullName }}</option>
