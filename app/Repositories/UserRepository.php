@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Code;
 use App\Models\DoctorNurse;
+use App\Models\NurseInstitutions;
 use App\Models\User;
 
 /**
@@ -126,8 +127,8 @@ class UserRepository
         // then we need to insert a record into doctors table that references the user
         $user->doctorProfile()->create($data + [
                 'doctor_type_id' => Code::PERSONAL_DOCTOR()->id
-            ]);
-
+        ]);
+        
         return $user;
     }
 

@@ -54,7 +54,7 @@ class CalendarController extends Controller
 
 
         // Doctors get to see [their OR chosen doc's schedule] AND any events where they show up under who_inserted
-        if ($actualUser->isDoctor() || $actualUser->isNurse) {
+        if ($actualUser->isDoctor() || $actualUser->isNurse()) {
             //Doctor of a doctor type situation?
             if($actualUser->id != Auth::user()->id) {
                 if ($request->docId == null) $docId = $actualUser->id;
