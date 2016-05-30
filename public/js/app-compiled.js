@@ -230,6 +230,62 @@ $(document).ready(function () {
         $(".measurementR").attr('min', min);
         $(".measurementR").attr('max', max);
     });
+
+    if ( $( "#graph" ).length ) {
+
+        var jsonData = jQuery.parseJSON( $( "#graph" ).text() );
+        var minimal = jQuery.parseJSON( $( "#minimal" ).text() );
+        var maximal = jQuery.parseJSON( $( "#maximal" ).text() );
+        var minNormal = jQuery.parseJSON( $( "#minNormal" ).text() );
+        var maxNormal = jQuery.parseJSON( $( "#maxNormal" ).text() );
+		var plus=(maxNormal-minNormal)/20;
+		var array=[];
+		while(minNormal<=maxNormal){
+			array.push(minNormal);
+			minNormal+=plus;
+		}
+		//alert(array);
+        Morris.Line({
+            element: 'graf-meritev',
+            data: jsonData,
+            xkey: 'time',
+            ykeys: ['result'],
+            labels: ['Vrednost'],
+			xLabelFormat: function(d) { return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear(); },
+			hoverCallback: function(index, options, content) {
+				var d=new Date(content.substring(36, 55)),
+				dformat = [d.getDate(),d.getMonth()+1,
+						   d.getFullYear()].join('.')+' '+
+						  [d.getHours(),
+						   d.getMinutes()].join(':');
+				return dformat+content.substring(55,255);
+			},
+            behaveLikeLine: true,
+            resize: true,
+			ymin: minimal,
+			ymax: maximal,
+			goals: array,
+			goalLineColors: ['#22FF22'],
+			goalStrokeWidth: 3
+        });
+    }
+
+    $("#measurementType").change(function () {
+
+        var ind = $("#measurementType").prop('selectedIndex');
+
+        if(ind == 6){
+            $("#labelWeight").text('Višina');
+            $("#measurementWeightResult").attr('required', true);
+            $("#measurementWeight").attr('class', 'form-group');
+        }
+        else{
+            $("#labelWeight").text('Vrednost');
+            $("#measurementWeightResult").removeAttr('required');
+            $("#measurementWeight").attr('class', 'form-group hidden');
+        }       
+    });
+
 });
 
 $(function () {

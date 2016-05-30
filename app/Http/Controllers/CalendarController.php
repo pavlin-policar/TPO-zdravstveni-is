@@ -54,7 +54,7 @@ class CalendarController extends Controller
 
 
         // Doctors get to see [their OR chosen doc's schedule] AND any events where they show up under who_inserted
-        if ($actualUser->isDoctor()) {
+        if ($actualUser->isDoctor() || $actualUser->isNurse()) {
             //Doctor of a doctor type situation?
             if($actualUser->id != Auth::user()->id) {
                 if ($request->docId == null) $docId = $actualUser->id;
@@ -72,8 +72,8 @@ class CalendarController extends Controller
                 // I'm the doc, but I'm also a patient sometimes, and I don't always reserve my events without help.
                 // All appointments where I'm the patient and I didn't register the events:
                 $tempCheckups = DoctorDates::where('patient', '=', $docId)->where('who_inserted', '!=', $docId)
-                                                                          ->whereNotNull('who_inserted')->get();
-                                                                          //->where('doctor', '!=', $docId);
+                                                                          ->whereNotNull('who_inserted')->get()
+                                                                          ->where('doctor', '!=', $docId);
                 //dd($tempCheckups);
                 foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
             }
@@ -150,11 +150,11 @@ class CalendarController extends Controller
                 $date = Carbon::parse($today);
                 if ($date->gt($start)) $url = null;
                 else {
-                    if ($actualUser->isDoctor() && $actualUser->id != Auth::user()->id) {
+                    if ( ($actualUser->isDoctor() || $actualUser->isNurse() ) && $actualUser->id != Auth::user()->id) {
                         //dd('ayup');
                         if($request->docId != null) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
                         else {
-                            if (Auth::user()->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => Auth::user()->id]);
+                            if (Auth::user()->isDoctor() || Auth::user()->isNurse()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => Auth::user()->id]);
                             else $url = null;
                         }
                     } else $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $docId]);
@@ -418,7 +418,7 @@ class CalendarController extends Controller
         }
 
         // Doctor can set you up with another appointment, even if you have one or ten already:
-        if (!Auth::user()->isDoctor()) {
+        if (!Auth::user()->isDoctor() || !Auth::user()->isNurse()) {
             $event = DoctorDates::where('patient', '=', $userId)->first();
             if ($event->count > 0) {
                 request()->session()->flash(
@@ -431,7 +431,8 @@ class CalendarController extends Controller
 
 
         // The event is still free, so this is just user trying to register:
-        $checkup = DoctorDates::where('patient', '=', null)->where('doctor', '=', $doctorId)->where('time', '=', $start)->first();
+        $checkup = DoctorDates::where('patient', '=', null)->where('time', '=', $start)->first();
+        //dd($checkup);
         if ($checkup != null) {
             $checkup->patient = $userId;
             $checkup->who_inserted = Auth::user()->id;
@@ -481,6 +482,7 @@ class CalendarController extends Controller
                 'Dogodka ne morete sprositi/izbrisati!'
             );
         }
+
         return redirect()->route('calendar.user');
     }
 

@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use DB;
 use App\Models\User;
 use App\Models\Code;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -118,14 +119,29 @@ class CheckController extends Controller
         }
     }
 
-    public function showMeasurement(User $user)
-    {
-        if (!$user->existsInStorage()) {
-            if(session('isMyProfile'))
-                $user = Auth::user();
-            else
-                $user = User::find(session('showUser'));
+    public function showMeasurement(Request $request){
 
+        $id = $request->type;
+        $from = $request->from;
+        $to = $request->to;
+
+        if($from == null){
+            $from = Carbon::create(1970, 1, 1);
+        }
+        if($to == null){
+            $to = Carbon::tomorrow('Europe/London');
+        }
+
+        if(session('isMyProfile'))
+            $user = Auth::user();
+        else
+            $user = User::find(session('showUser'));
+
+        if ($user->existsInStorage()) {
+
+            $data = Array();
+            $data['typeID'] = $id;
+            $data['codesMeasurement'] = Code::where('code_type', 15)->get();
             $data['measurements'] = Measurement::join('codes', 'measurements.type', '=', 'codes.id')
                 ->join('users', 'measurements.provider', '=', 'users.id')
                 ->join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
@@ -133,6 +149,32 @@ class CheckController extends Controller
                 ->where('measurements.patient', '=', $user->id)
                 ->orderBy('measurements.time', 'desc')
                 ->get();
+
+            if(isset($id)&&!empty($id)) {
+                $data['type'] = Code::find($id);
+                if ($data['type']->code_type == 15) {
+
+                    $data['graph'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
+                        ->select('measurement_results.result', 'measurements.time')
+                        ->where('measurements.type', $id)
+                        ->where('measurements.time', '>', $from)
+                        ->where('measurements.time', '<=', $to)
+                        ->orderBy('measurements.time', 'asc')
+                        ->get();
+                    if (!empty($data['type']['code'])) {
+                        $data['normalValues'] = Code::where('code', "=", 'normal')
+                            ->where('code_type', "=", $data['type']['code'])
+                            ->first();
+                    }
+                } else{
+                    $data['type'] = null;
+                    $data['graph'] = null;
+                }
+            }
+            else{
+                $data['type'] = null;
+                $data['graph'] = null;
+            }
 
             return view('checks.measurement')->with($data);
         }
@@ -336,7 +378,13 @@ class CheckController extends Controller
             $measurementResult = new MeasurementResult();
             $measurementResult->measurement = $measurement->id;
             $measurementResult->type = $request['type'];
-            $measurementResult->result = $request['result'];
+            if($request['type'] == 185){
+                $bmi = $request['weight'] / (($request['result']/100)*($request['result']/100));
+                $measurementResult->result = (round($bmi*100))/100;
+            }
+            else{
+                $measurementResult->result = $request['result'];
+            }
 
             $measurementResult->save();
 

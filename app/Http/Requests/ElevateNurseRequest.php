@@ -2,8 +2,7 @@
 
 namespace App\Http\Requests;
 
-
-class CheckMeasurementRequest extends Request
+class ElevateNurseRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +22,7 @@ class CheckMeasurementRequest extends Request
     public function rules()
     {
         return [
-            'type' => 'required|between:1,3',
-            'provider' => 'required',
-            'check' => 'required',
-            'result' => 'required|min:-50|max:600'
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'between' => 'Izbrati morate tip meritve!',
+            'nurse_id' => 'exists:users,id',
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use PhpParser\Comment\Doc;
 
 /**
  * Class User
@@ -91,7 +92,7 @@ class User extends Authenticatable
      * @return string
      */
     public function getFullNameAttribute()
-    {
+    {        
         if ($this->last_name !== null) {
             return $this->first_name . ' ' . $this->last_name;
         }
@@ -234,6 +235,26 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the given user is the elevated nurse of a given doctor.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function isNurseInChargeOf(User $user)
+    {
+        return true;
+        //TODO
+        if ( ($this->id === DoctorNurse::where('nurse', '=', $this->id)
+             ->where('doctor', '=', $user->personal_doctor_id)->first()->nurse) ||
+             ($this->id === DoctorNurse::where('nurse', '=', $this->id)
+             ->where('doctor', '=', $user->personal_dentist_id)->first()->nurse) )
+            {
+                return true;
+            }
+        else return false;
+    }
+
+    /**
      * Check if the user is an admin user.
      *
      * @return bool
@@ -259,7 +280,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is an doctor.
+     * Check if the user is a doctor.
      *
      * @return bool
      */
@@ -269,7 +290,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is an nurse.
+     * Check if the user is a nurse.
      *
      * @return bool
      */
@@ -562,6 +583,19 @@ class User extends Authenticatable
             return $this->hasMany(User::class, 'personal_doctor_id');
         } else if ($this->isPersonalDentist()) {
             return $this->hasMany(User::class, 'personal_dentist_id');
+        }
+    }
+
+    /**
+     * Get the nurses, elevated by this doctor / dentist.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function nurses()
+    {
+        if ($this->isDoctor()) {
+            return $results = $this->hasMany(DoctorNurse::class, 'doctor')
+                            ->join('users', 'users.id', '=', 'nurse');
         }
     }
 

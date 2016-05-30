@@ -170,6 +170,14 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'uses' => 'UserController@updateNursePersonalInfo',
         'as' => 'profile.updateNursePersonal',
     ]);
+    Route::post('profile/{user}/elevate-nurse', [
+        'uses' => 'UserController@elevateNurse',
+        'as' => 'profile.elevateNurse',
+    ]);
+    Route::get('profile/{user}/free-nurse', [
+        'uses' => 'UserController@freeNurse',
+        'as' => 'profile.freeNurse',
+    ]);
     Route::put('profile/{user}/password', [
         'uses' => 'UserController@changePassword',
         'as' => 'profile.changePassword',
@@ -223,7 +231,7 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
         'as' => 'check.medical'
     ]);
 
-    Route::get('/check/measurement/{user?}', [
+    Route::get('/check/measurement', [
         'uses' => 'CheckController@showMeasurement',
         'as' => 'check.measurement'
     ]);

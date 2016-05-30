@@ -74,7 +74,7 @@
                                 {!! Form::label('num_displayed', 'Št. prikazanih vnosov', ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-10">
                                     {!! Form::text('num_displayed', $settings['num_displayed'], ['class' => 'form-control', 'required']) !!}
-                                    <span class="help-block">Število najnovejših vnosov, ki se bodo prikazale na nadzorni plošči v vsakem elementu.</span>
+                                    <span class="help-block">Število najnovejših vnosov, ki se bodo prikazali na nadzorni plošči v vsakem elementu.</span>
                                     @if ($errors->has('num_displayed'))
                                         <span class="help-block">{{ $errors->first('num_displayed') }}</span>
                                     @endif
@@ -633,6 +633,74 @@
                                 </div>
                             </div>
                         @endif
+                        @if($user->isDoctor() && session('isMyProfile'))
+                            <div class="col-xs-12">
+                                <div class="card card-info" data-expanded="1" id="card-patients">
+                                    <div class="card-header">
+                                        <div class="card-title title-white" style="width:100%">
+                                            <div class="title pull-left">Pooblaščeno osebje</div>
+                                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body no-padding" id="dash-patient">
+                                        <table class="datatable table table-striped" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Ime</th>
+                                                <th>Priimek</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($user->nurses as $nurse)
+                                                <tr>
+                                                    <td>{!! link_to_route('profile.freeNurse', $nurse->first_name, $nurse->id)!!}</td>
+                                                    <td>{!! link_to_route('profile.freeNurse', $nurse->last_name, $nurse->id)!!}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($user->isNurse() && session('isMyProfile'))
+                            <div class="col-xs-12">
+                                <div class="card card-info" data-expanded="1" id="card-patients">
+                                    <div class="card-header">
+                                        <div class="card-title title-white" style="width:100%">
+                                            <div class="title pull-left">Pacienti</div>
+                                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body no-padding" id="dash-patient">
+                                        <table class="datatable table table-striped" cellspacing="0" width="100%">
+                                            @foreach($docs as $doctor)
+                                                <thead>
+                                                    <tr>
+                                                        <th>Doktor: {!! $doctor->fullName !!}</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Ime</th>
+                                                        <th>Priimek</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($doctor->patients as $patient)
+                                                        <tr>
+                                                            <td>{!! link_to_route('charges.activate', $patient->first_name, $patient->id)!!}</td>
+                                                            <td>{!! link_to_route('charges.activate', $patient->last_name, $patient->id)!!}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            @endforeach
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                     </div>
                 </div>
             </div>

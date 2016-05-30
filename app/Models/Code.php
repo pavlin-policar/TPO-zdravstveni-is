@@ -48,6 +48,7 @@ class Code extends Model
         'code_type',
         'min_value',
         'max_value',
+        'code'
     ];
 
     /**
