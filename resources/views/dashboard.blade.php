@@ -653,8 +653,10 @@
                                             <tbody>
                                             @foreach($user->nurses as $nurse)
                                                 <tr>
-                                                    <td>{!! link_to_route('profile.freeNurse', $nurse->first_name, $nurse->id)!!}</td>
-                                                    <td>{!! link_to_route('profile.freeNurse', $nurse->last_name, $nurse->id)!!}</td>
+                                                    <td>{!! $nurse->first_name !!} </td>
+                                                    <td>{!! $nurse->last_name !!}</td>
+                                                    <td>{!! link_to_route('profile.freeNurse', '[Sprostite osebo]', $nurse->id) !!}</td>
+
                                                 </tr>
                                             @endforeach
                                             </tbody>
