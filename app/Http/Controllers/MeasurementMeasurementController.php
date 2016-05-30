@@ -51,15 +51,16 @@ class MeasurementMeasurementController extends Controller
             ->get();
         foreach($old as $new){
             if(in_array($new->id,$medicals)){
-                //echo $id." ostane";
+                //echo $new->id." ostane";
                 if(($key = array_search($new->id, $medicals)) !== false) {
                     unset($medicals[$key]);
                 }
             } else {
-                //echo $id." izbris";
+                //echo $new->id." izbris";
                 $new->delete();
             }
         }
+        //die();
         if(!empty($medicals))
             foreach ($medicals as $medical) {
                 if(empty($medical))
