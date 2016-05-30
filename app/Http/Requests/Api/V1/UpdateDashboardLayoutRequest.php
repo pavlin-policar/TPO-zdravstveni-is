@@ -24,7 +24,7 @@ class UpdateDashboardLayoutRequest extends Request
     public function rules()
     {
         return [
-            'num_displayed' => 'numeric|min:0',
+            'num_displayed' => 'integer|min:0',
         ];
     }
 }
