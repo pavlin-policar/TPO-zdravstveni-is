@@ -46,13 +46,13 @@ class MeasurementMeasurementController extends Controller
         if(empty($id))
             die("Empty");
         $old = MeasurementMeasurement::join('codes', 'measurement_measurement.small_measurement', '=', 'codes.id')
-            ->select('codes.*')
+            ->select('measurement_measurement.*')
             ->where('measurement_measurement.big_measurement', '=', $id)
             ->get();
         foreach($old as $new){
-            if(in_array($new->id,$medicals)){
+            if(in_array($new->small_measurement,$medicals)){
                 //echo $new->id." ostane";
-                if(($key = array_search($new->id, $medicals)) !== false) {
+                if(($key = array_search($new->small_measurement, $medicals)) !== false) {
                     unset($medicals[$key]);
                 }
             } else {
