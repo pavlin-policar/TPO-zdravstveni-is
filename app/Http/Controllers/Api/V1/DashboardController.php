@@ -62,7 +62,7 @@ class DashboardController extends Controller
     public function updateDashboardLayout(User $user, UpdateDashboardLayoutRequest $request)
     {
         $reset = array_map(function ($el) {
-            return is_bool($el) ? false : $el;
+            return !is_bool($el);
         }, static::$defaults);
         $settings = $request->all() + $reset;
         unset($settings['_method']);
