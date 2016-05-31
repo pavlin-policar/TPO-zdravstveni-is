@@ -1,7 +1,7 @@
 {!! Form::open(['route' => ['check.create'], 'method' => 'post', 'class' => 'form-horizontal']) !!}
 
 {{-- Doctor date --}}
-<div class="form-group{{ $errors->has('doctor_date') ? ' has-error' : '' }} invisible">
+<div class="form-group{{ $errors->has('doctor_date') ? ' has-error' : '' }} hidden">
     <div class="col-sm-10">
         {!! Form::text('doctor_date', $dates->id, ['class' => 'form-control', 'required']) !!}
         @if ($errors->has('doctor_date'))

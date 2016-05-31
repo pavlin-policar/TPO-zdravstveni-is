@@ -23,7 +23,7 @@ class CheckMeasurementRequest extends Request
     public function rules()
     {
         return [
-            'type' => 'required|between:1,3',
+            'type' => 'required',
             'provider' => 'required',
             'check' => 'required'
         ];
@@ -32,7 +32,6 @@ class CheckMeasurementRequest extends Request
     public function messages()
     {
         return [
-            'between' => 'Izbrati morate tip meritve!',
             'required' => 'Polje ne sme biti prazno!',
         ];
     }

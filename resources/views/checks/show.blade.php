@@ -57,7 +57,7 @@
                                         </tr>
                                         <tr>
                                             <td>Podatki: </td>
-                                            <td>{{ $checkMeasurement[$x]->result }} mmol/l</td>
+                                            <td>{{ $checkMeasurement[$x]->result }}</td>
                                         </tr>
                                         <tr>
                                             <td>Datum meritve: </td>

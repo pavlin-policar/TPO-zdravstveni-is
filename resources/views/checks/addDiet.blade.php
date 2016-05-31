@@ -1,7 +1,7 @@
 {!! Form::open(['route' => ['check.createCode'], 'method' => 'post', 'class' => 'form-horizontal']) !!}
 
 {{-- Check ID --}}
-<div class="form-group{{ $errors->has('check') ? ' has-error' : '' }} invisible">
+<div class="form-group{{ $errors->has('check') ? ' has-error' : '' }} hidden">
     <div class="col-sm-10">
         {!! Form::text('check', $checkID, ['class' => 'form-control']) !!}
         @if ($errors->has('id'))

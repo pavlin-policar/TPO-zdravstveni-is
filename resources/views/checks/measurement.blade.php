@@ -88,7 +88,7 @@
                     <div class="form-group{{ $errors->has('from') ? ' has-error' : '' }}">
                         {!! Form::label('from', 'Od', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            {!! Form::date('from', $from, ['class' => 'form-control']) !!}
+                            {!! Form::date('from', null, ['class' => 'form-control']) !!}
                             @if ($errors->has('from'))
                                 <span class="help-block">{{ $errors->first('from') }}</span>
                             @endif
@@ -98,7 +98,7 @@
                     <div class="form-group{{ $errors->has('to') ? ' has-error' : '' }}">
                         {!! Form::label('to', 'Do', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            {!! Form::date('to', $to, ['class' => 'form-control']) !!}
+                            {!! Form::date('to', null, ['class' => 'form-control']) !!}
                             @if ($errors->has('to'))
                                 <span class="help-block">{{ $errors->first('to') }}</span>
                             @endif
@@ -117,37 +117,101 @@
                     @if($graph != null && count($graph) > 0)
                         <div class="hidden">
                             <p id="type">{{ $type }}</p>
+                            @if(isset($type1))
+                                <p id="type">{{ $type1 }}</p>
+                            @endif
                             <p id="graph">{{ $graph }}</p>
+                            @if(isset($graph1))
+                                <p id="graph1">{{ $graph1 }}</p>
+                            @endif
                         </div>
 
                         <div class="row margin-graph">
-                            <div class="col-md-3 col-sm-4 col-xs-12">
-                                <table class="table table-hover padding-bottom padding-top">
-                                    <tr>
-                                        <td>Meritev </td>
-                                        <td>{{ $type->name }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Opis </td>
-                                        <td>{{ $type->description }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Minimalna vrednost </td>
-                                        <td id="minimal">{{ $type->min_value }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Maksimalna vrednost </td>
-                                        <td id="maximal">{{ $type->max_value }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Normalne vrednosti </td>
-                                        <td><b id="minNormal">{{ $normalValues->min_value }}</b> - <b id="maxNormal">{{ $normalValues->max_value }}</b></td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-md-9 col-sm-8 col-xs-12">
-                                <div id="graf-meritev"></div>
-                            </div>
+                            @if(isset($type1))
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <table class="table table-hover padding-bottom padding-top">
+                                        <tr>
+                                            <td>Meritev </td>
+                                            <td>{{ $type->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Opis </td>
+                                            <td>{{ $type->description }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Minimalna vrednost </td>
+                                            <td id="minimal">{{ $type->min_value }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maksimalna vrednost </td>
+                                            <td id="maximal">{{ $type->max_value }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Normalne vrednosti </td>
+                                            <td><b id="minNormal">{{ $normalValues->min_value }}</b> - <b id="maxNormal">{{ $normalValues->max_value }}</b></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <table class="table table-hover padding-bottom padding-top">
+                                        <tr>
+                                            <td>Meritev </td>
+                                            <td>{{ $type1->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Opis </td>
+                                            <td>{{ $type1->description }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Minimalna vrednost </td>
+                                            <td id="minimal1">{{ $type1->min_value }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maksimalna vrednost </td>
+                                            <td id="maximal1">{{ $type1->max_value }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Normalne vrednosti </td>
+                                            <td><b id="minNormal1">{{ $normalValues1->min_value }}</b> - <b id="maxNormal1">{{ $normalValues1->max_value }}</b></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            @else
+                                <div class="col-md-3 col-sm-4 col-xs-12">
+                                    <table class="table table-hover padding-bottom padding-top">
+                                        <tr>
+                                            <td>Meritev </td>
+                                            <td>{{ $type->name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Opis </td>
+                                            <td>{{ $type->description }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Minimalna vrednost </td>
+                                            <td id="minimal">{{ $type->min_value }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maksimalna vrednost </td>
+                                            <td id="maximal">{{ $type->max_value }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Normalne vrednosti </td>
+                                            <td><b id="minNormal">{{ $normalValues->min_value }}</b> - <b id="maxNormal">{{ $normalValues->max_value }}</b></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            @endif
+                            @if(isset($graph1))
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div id="graf-meritev"></div>
+                                </div>
+                            @else
+                                <div class="col-md-9 col-sm-8 col-xs-12">
+                                    <div id="graf-meritev"></div>
+                                </div>
+                            @endif
+
                         </div>
                     @elseif(count($graph) == 0)
                         <div class="col-sm-8 col-sm-offset-2 margin-graph">
