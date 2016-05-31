@@ -52,6 +52,9 @@ class Handler extends ExceptionHandler
         if ($e instanceof UnsupportedFileFormatException) {
             return response()->view('errors.file-format', [], Response::HTTP_BAD_REQUEST);
         }
+        if ($e instanceof ModelNotFoundException) {
+            return response()->view('errors.general', [], Response::HTTP_BAD_REQUEST);
+        }
         return parent::render($request, $e);
     }
 }
