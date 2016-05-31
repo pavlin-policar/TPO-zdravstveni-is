@@ -13,11 +13,11 @@
                             </div>
                             <div class="fa fa-compress icon-arrow-right" id="glyphicon-check-old"></div>
                         </div>
-                        <div class="card-body no-padding">
+                        <div class="card-body">
                             {!! Form::open(['route' => ['check.update', $check->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
                             {{-- ID --}}
-                            <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }} invisible">
+                            <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }} hidden">
                                 <div class="col-sm-10">
                                     {!! Form::text('id', $check->id, ['class' => 'form-control']) !!}
                                     @if ($errors->has('id'))
@@ -119,12 +119,20 @@
                             </div>
                             <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
                         </div>
-                        <div class="card-body no-padding" id="dash-measurments">
+                        <div class="card-body" id="dash-measurments">
+
+                            @if (Session::has('msg'))
+                                <div class="alert alert-success fade in">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    {{ Session::get('msg') }}
+                                </div>
+                            @endif
+
                             @foreach ($checkMeasurement[$check->id] as $d)
                                 {!! Form::open(['route' => ['check.updateMeasurement', $d->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
                                 {{-- Check ID --}}
-                                <div class="form-group{{ $errors->has('check') ? ' has-error' : '' }} invisible">
+                                <div class="form-group{{ $errors->has('check') ? ' has-error' : '' }} hidden">
                                     <div class="col-sm-10">
                                         {!! Form::text('check', $check->id, ['class' => 'form-control']) !!}
                                         @if ($errors->has('id'))
@@ -168,7 +176,7 @@
                                 <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                                     {!! Form::label('type', 'Meritev', ['class' => 'col-sm-2 control-label']) !!}
                                     <div class="col-sm-10">
-                                        <select class="form-control select2-hidden-accessible measurementT" required="required" id="measurementTypeShow" name="type" tabindex="-1" aria-hidden="true" style="width: 100%">
+                                        <select class="form-control select2-hidden-accessible measurementT" disabled required="required" id="measurementTypeShow" name="type" tabindex="-1" aria-hidden="true" style="width: 100%">
                                             <option value="null">Izberite meritev</option>
                                             @foreach($codesMeasurement as $m)
                                                 @if($d->type == $m->id)
@@ -180,6 +188,15 @@
                                         </select>
                                         @if ($errors->has('type'))
                                             <span id="checkMeasurementCode" class="help-block">{{ $errors->first('type') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                {{-- Type --}}
+                                <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }} hidden">
+                                    <div class="col-sm-10">
+                                        {!! Form::number('type', $d->type, ['class' => 'form-control', 'required']) !!}
+                                        @if ($errors->has('type'))
+                                            <span class="help-block">{{ $errors->first('type') }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -247,13 +264,13 @@
                                 </div>
                                 <div class="fa fa-compress icon-arrow-right" id="glyphicon-medical"></div>
                             </div>
-                            <div class="card-body no-padding" id="dash-medical">
+                            <div class="card-body" id="dash-medical">
                                 @foreach ($checkData[$check->id] as $d)
                                     @if($d->code_type == 14)
                                         {!! Form::open(['route' => ['check.updateCode', $d->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
                                         {{-- ID --}}
-                                        <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }} invisible">
+                                        <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }} hidden">
                                             <div class="col-sm-10">
                                                 {!! Form::text('id', $d->id, ['class' => 'form-control']) !!}
                                                 @if ($errors->has('id'))
@@ -348,13 +365,13 @@
                                 </div>
                                 <div class="fa fa-compress icon-arrow-right" id="glyphicon-allergy"></div>
                             </div>
-                            <div class="card-body no-padding" id="dash-allergy">
+                            <div class="card-body" id="dash-allergy">
                                 @foreach ($checkData[$check->id] as $d)
                                     @if($d->code_type == 13)
                                         {!! Form::open(['route' => ['check.updateCode', $check->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
                                         {{-- ID --}}
-                                        <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }} invisible">
+                                        <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }} hidden">
                                             {!! Form::label('id', 'ID', ['class' => 'col-sm-2 control-label']) !!}
                                             <div class="col-sm-10">
                                                 {!! Form::text('id', $d->id, ['class' => 'form-control']) !!}
@@ -450,13 +467,13 @@
                                 </div>
                                 <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
                             </div>
-                            <div class="card-body no-padding" id="dash-diet">
+                            <div class="card-body" id="dash-diet">
                                 @foreach ($checkData[$check->id] as $d)
                                     @if($d->code_type == 12)
                                         {!! Form::open(['route' => ['check.updateCode', $check->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
                                         {{-- ID --}}
-                                        <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }} invisible">
+                                        <div class="form-group{{ $errors->has('id') ? ' has-error' : '' }} hidden">
                                             {!! Form::label('id', 'ID', ['class' => 'col-sm-2 control-label']) !!}
                                             <div class="col-sm-10">
                                                 {!! Form::text('id', $d->id, ['class' => 'form-control']) !!}
@@ -558,7 +575,7 @@
                             </div>
                             <div class="fa fa-compress icon-arrow-right" id="glyphicon-check-old"></div>
                         </div>
-                        <div class="card-body no-padding">
+                        <div class="card-body">
                              @include('checks.addCheck')
                         </div>
                     </div>

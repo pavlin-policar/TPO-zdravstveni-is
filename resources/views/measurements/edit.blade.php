@@ -11,7 +11,7 @@
                     </div>
                     <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
                 </div>
-                <div class="card-body no-padding" id="dash-measurments">
+                <div class="card-body " id="dash-measurments">
 
                     @if (Session::has('msg'))
                         <div class="alert alert-success fade in">
@@ -23,7 +23,7 @@
                     {!! Form::open(['route' => ['measurement.update', $measurement->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
                     {{-- Patient id --}}
-                    <div class="form-group{{ $errors->has('patient') ? ' has-error' : '' }} invisible">
+                    <div class="form-group{{ $errors->has('patient') ? ' has-error' : '' }} hidden">
                         <div class="col-sm-10">
                             {!! Form::text('patient', $measurement->patient, ['class' => 'form-control', 'required']) !!}
                             @if ($errors->has('patient'))
@@ -46,8 +46,7 @@
                     <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }}">
                         {!! Form::label('type', 'Meritev', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            <select class="form-control select2-hidden-accessible measurementT" required="required" id="measurementType" name="type" tabindex="-1" aria-hidden="true" style="width: 100%">
-                                <option value="null">Izberite meritev</option>
+                            <select class="form-control select2-hidden-accessible measurementT" disabled required="required" id="measurementType" name="type" tabindex="-1" aria-hidden="true" style="width: 100%">
                                 @foreach($codesMeasurement as $m)
                                     @if($measurement->type == $m->id)
                                         <option selected="selected" min="{{ $m->min_value }}" max="{{ $m->max_value }}" value="{{ $m->id }}">{{ $m->name }}</option>
@@ -58,6 +57,16 @@
                             </select>
                             @if ($errors->has('type'))
                                 <span id="checkMeasurementCode" class="help-block">{{ $errors->first('type') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    {{-- Type --}}
+                    <div class="form-group{{ $errors->has('type') ? ' has-error' : '' }} hidden">
+                        <div class="col-sm-10">
+                            {!! Form::number('type', $measurement->type, ['class' => 'form-control', 'required']) !!}
+                            @if ($errors->has('type'))
+                                <span class="help-block">{{ $errors->first('type') }}</span>
                             @endif
                         </div>
                     </div>

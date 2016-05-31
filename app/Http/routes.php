@@ -324,7 +324,18 @@ Route::group(['middleware' => ['web', 'authenticated']], function () {
      * Routes only available to the admin user.
      */
     Route::group(['middleware' => 'admin'], function () {
-
+        Route::get('/measurement-measurement', [
+            'uses' => 'MeasurementMeasurementController@showMeasurements',
+            'as' => 'measurementMeasurement.list',
+        ]);
+        Route::get('/measurement-measurement/{code}', [
+            'uses' => 'MeasurementMeasurementController@editMeasurement',
+            'as' => 'measurementMeasurement.editList',
+        ]);
+        Route::post('/measurement-measurement/update', [
+            'uses' => 'MeasurementMeasurementController@editMeasurementList',
+            'as' => 'measurementMeasurement.editMeasurementList',
+        ]);
         Route::get('/manuals', [
             'uses' => 'ManualController@showList',
             'as' => 'manuals.list',

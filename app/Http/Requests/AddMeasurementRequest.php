@@ -23,17 +23,16 @@ class AddMeasurementRequest extends Request
     public function rules()
     {
         return [
-            'type' => 'required|between:1,3',
+            'type' => 'required',
             'patient' => 'required',
-            'provider' => 'required',
-            'result' => 'required|min:-50|max:600'
+            'provider' => 'required'
         ];
     }
 
     public function messages()
     {
         return [
-            'between' => 'Izbrati morate tip meritve!',
+            'required' => 'Polje ne sme biti prazno!'
         ];
     }
 }

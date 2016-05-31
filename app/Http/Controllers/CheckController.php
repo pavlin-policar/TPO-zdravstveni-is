@@ -10,6 +10,7 @@ use App\Models\Checks;
 use App\Models\CheckCodes;
 use App\Models\DoctorDates;
 use App\Models\Measurement;
+use App\Models\MeasurementMeasurement;
 use App\Models\MeasurementResult;
 use Carbon\Carbon;
 use DB;
@@ -125,6 +126,10 @@ class CheckController extends Controller
         $from = $request->from;
         $to = $request->to;
 
+        $data = Array();
+        $data['from'] = $from;
+        $data['to'] = $to;
+
         if($from == null){
             $from = Carbon::create(1970, 1, 1);
         }
@@ -139,9 +144,8 @@ class CheckController extends Controller
 
         if ($user->existsInStorage()) {
 
-            $data = Array();
             $data['typeID'] = $id;
-            $data['codesMeasurement'] = Code::where('code_type', 15)->get();
+            $data['codesMeasurement'] = Code::where('code_type', '>=', 15)->where('code_type', '<=', 16)->get();
             $data['measurements'] = Measurement::join('codes', 'measurements.type', '=', 'codes.id')
                 ->join('users', 'measurements.provider', '=', 'users.id')
                 ->join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
@@ -166,6 +170,38 @@ class CheckController extends Controller
                             ->where('code_type', "=", $data['type']['code'])
                             ->first();
                     }
+                } else if($data['type']->code_type == 16){
+                    $small = MeasurementMeasurement::where('big_measurement', $request['type'])->select('small_measurement')->get();
+                    if(count($small) == 2){
+                        $data['type'] = Code::find($small[0]->small_measurement);
+                        $data['type1'] = Code::find($small[1]->small_measurement);
+
+                        $data['graph'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
+                            ->select('measurement_results.result', 'measurements.time')
+                            ->where('measurements.type', $small[0]->small_measurement)
+                            ->where('measurements.time', '>', $from)
+                            ->where('measurements.time', '<=', $to)
+                            ->orderBy('measurements.time', 'asc')
+                            ->get();
+                        if (!empty($data['type']['code'])) {
+                            $data['normalValues'] = Code::where('code', "=", 'normal')
+                                ->where('code_type', "=", $data['type']['code'])
+                                ->first();
+                        }
+                        $data['graph1'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
+                            ->select('measurement_results.result', 'measurements.time')
+                            ->where('measurements.type', $small[1]->small_measurement)
+                            ->where('measurements.time', '>', $from)
+                            ->where('measurements.time', '<=', $to)
+                            ->orderBy('measurements.time', 'asc')
+                            ->get();
+                        if (!empty($data['type1']['code'])) {
+                            $data['normalValues1'] = Code::where('code', "=", 'normal')
+                                ->where('code_type', "=", $data['type1']['code'])
+                                ->first();
+                        }
+                    }
+
                 } else{
                     $data['type'] = null;
                     $data['graph'] = null;
@@ -227,8 +263,9 @@ class CheckController extends Controller
         }
     }
 
-    public function doctorDate($id){
+    public function doctorDate($id, Request $request){
 
+        $typeID = $request['type'];
         $data['dates'] =  DoctorDates::findOrFail($id);
 
         if($data['dates']->doctor == session('user')) {
@@ -236,10 +273,13 @@ class CheckController extends Controller
             $data['patient'] = User::find($data['dates']->patient);
             $data['doctors'] = User::where('person_type', 4)->get();
             $data['codesMeasurement'] = Code::where('code_type', 15)->get();
+            $data['bigMeasurement'] = Code::where('code_type', 16)->get();
             $data['checks'] = Checks::where('doctor_date', $id)->get();
             $data['codesMedical'] = Code::where('code_type', 14)->get();
             $data['codesDisease'] = Code::where('code_type', 13)->get();
             $data['codesDiet'] = Code::where('code_type', 12)->get();
+            $data['selected'] = false;
+            $data['big'] = false;
 
             if (count($data['checks']) > 0) {
                 foreach ($data['checks'] as $check) {
@@ -258,6 +298,28 @@ class CheckController extends Controller
                         ->get();
 
                 }
+            }
+
+            if(isset($typeID) && $typeID > 0){
+                $data['typeID'] = $typeID;
+                $data['measurement'] = Code::find($typeID);
+                if(isset($data['measurement'])){
+                    if($data['measurement']->code_type == 15){
+                        $data['selected'] = true;
+                    }
+                    else if($data['measurement']->code_type == 16){
+                        $data['selected'] = true;
+                        $data['big'] = true;
+                        $smallMeasurement = MeasurementMeasurement::where('big_measurement', $data['measurement']->id)->select('small_measurement')->get();
+                        $data['measurement']['small'] = Code::where('id', $smallMeasurement[0]['small_measurement'])->get();
+                        for ($x = 1; $x < count($smallMeasurement); $x++) {
+                            $data['measurement']['small'][$x] = Code::find($smallMeasurement[$x]['small_measurement']);
+                        }
+                    }
+                }
+            }
+            else{
+                $data['typeID'] = 0;
             }
 
             return view('checks.doctor')->with($data);
@@ -366,29 +428,68 @@ class CheckController extends Controller
             return redirect()->back()->with('error', 'Napačna vrednost');
         }
         else{
-            $measurement = new Measurement();
-            $measurement->provider = $request['provider'];
-            $measurement->patient = $request['patient'];
-            $measurement->type = $request['type'];
-            $measurement->check = $request['check'];
-            $measurement->time = Carbon::createFromFormat('Y-m-d H:i', $request['date'] . " " . $request['time']);
+            if(isset($request['result']) || $request['result'] != null) {
+                $measurement = new Measurement();
+                $measurement->provider = $request['provider'];
+                $measurement->patient = $request['patient'];
+                $measurement->type = $request['type'];
+                $measurement->check = $request['check'];
+                $measurement->time = Carbon::createFromFormat('Y-m-d H:i', $request['date'] . " " . $request['time']);
+                $measurement->save();
 
-            $measurement->save();
-
-            $measurementResult = new MeasurementResult();
-            $measurementResult->measurement = $measurement->id;
-            $measurementResult->type = $request['type'];
-            if($request['type'] == 185){
-                $bmi = $request['weight'] / (($request['result']/100)*($request['result']/100));
-                $measurementResult->result = (round($bmi*100))/100;
+                $measurementResult = new MeasurementResult();
+                $measurementResult->measurement = $measurement->id;
+                $measurementResult->type = $request['type'];
+                if (isset($request['weight']) || $request['weight'] != null) {
+                    $bmi = $request['weight'] / (($request['result'] / 100) * ($request['result'] / 100));
+                    $measurementResult->result = (round($bmi * 100)) / 100;
+                } else {
+                    $measurementResult->result = $request['result'];
+                }
+                $measurementResult->save();
             }
-            else{
-                $measurementResult->result = $request['result'];
+            else {
+                $small = MeasurementMeasurement::where('big_measurement', $request['type'])->get();
+
+                $stack = array();
+                if (isset($request['result0'])) {
+                    array_push($stack, $request['result0']);
+                }
+                if (isset($request['result1'])) {
+                    array_push($stack, $request['result1']);
+                }
+                if (isset($request['result2'])) {
+                    array_push($stack, $request['result2']);
+                }
+                if (isset($request['result3'])) {
+                    array_push($stack, $request['result3']);
+                }
+                if (isset($request['result4'])) {
+                    array_push($stack, $request['result4']);
+                }
+                $x=0;
+                foreach($small as $s){
+                    $measurement = new Measurement();
+                    $measurement->provider = $request['provider'];
+                    $measurement->patient = $request['patient'];
+                    $measurement->type = $s->small_measurement;
+                    $measurement->check = $request['check'];
+                    $measurement->time = Carbon::createFromFormat('Y-m-d H:i', $request['date'] . " " . $request['time']);
+                    $measurement->save();
+
+                    $measurementResult = new MeasurementResult();
+                    $measurementResult->measurement = $measurement->id;
+                    $measurementResult->type = $s->small_measurement;
+                    $measurementResult->result = $stack[$x];
+                    $measurementResult->save();
+
+                    $x++;
+                }
+
+                //print_r($stack);
             }
 
-            $measurementResult->save();
-
-            return redirect()->back()->with('Check', 'CheckMeasurementAdded');
+            return redirect()->back()->with('msg', 'Meritev je bila dodana');
         }
     }
 

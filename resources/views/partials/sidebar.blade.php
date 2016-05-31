@@ -91,6 +91,11 @@
                         <span class="icon fa fa-users"></span><span class="title">Urejanje uporabnikov</span>
                     </a>
                 </li>
+                <li class="{{ $routeGroup == 'measurementMeasurement' ? 'active' : '' }}">
+                    <a href="{{ route('measurementMeasurement.list') }}">
+                        <span class="icon fa fa-wrench"></span><span class="title">Urejanje pod meritev</span>
+                    </a>
+                </li>
                 <li class="{{ $routeGroup == 'medicalDiseases' ? 'active' : '' }}">
                     <a href="{{ route('medicalDiseases.list') }}">
                         <span class="icon fa fa-medkit"></span><span class="title">Urejanje zdravil za bolezni</span>

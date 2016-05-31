@@ -161,6 +161,29 @@ class ViewServiceProvider extends ServiceProvider
                 // Get the nurses from the same institution as this doctor
                 $docInstID = Auth::user()->doctorProfile->institution_id;
 
+                // Existing relations:
+                $existing = User::join('doctor_nurse', 'users.id', '=', 'doctor_nurse.nurse')
+                    ->where('doctor_nurse.doctor', '=', Auth::user()->id)
+                    ->get();
+
+                $notIn = Array();
+                foreach($existing as $m){
+                    $notIn[]=$m->nurse;
+                }
+
+                // All new possible relations, without the existing ones:
+                $profiles = User::where('person_type', '=', 5)
+                                ->whereNotIn('id', $notIn)
+                                ->get();
+
+                $nurses = [];
+                foreach($profiles as $profile) {
+                    if ($profile->doctorProfile->institution_id == $docInstID) {
+                        $nurses[$profile->id] = $profile->fullName;
+                    }
+                }
+
+                /* DEPRECATED
                 $existing = User::join('doctor_nurse', 'users.id', '=', 'doctor_nurse.nurse')
                     ->where('doctor_nurse.doctor', '=', Auth::user()->id)
                     ->get();
@@ -178,7 +201,7 @@ class ViewServiceProvider extends ServiceProvider
                 $nurses = [];
                 foreach($profiles as $profile) {
                     $nurses[$profile->nurse_id] = $profile->fullName;
-                }
+                }*/
 
                 $view->with('nurses', $nurses);
             }

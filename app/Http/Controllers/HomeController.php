@@ -148,7 +148,8 @@ class HomeController extends Controller
 
             $lastMonth = new Carbon('last month');
             $data['checkMeasurement'] = Measurement::join('codes', 'measurements.type', '=', 'codes.id')
-                ->select('measurements.*', 'codes.name', 'codes.description')
+                ->join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
+                ->select('measurements.*', 'codes.name', 'codes.description', 'measurement_results.result')
                 ->where('measurements.patient', '=', $user->id)
                 ->where('measurements.time', '>', $lastMonth)
                 ->take($limit)
