@@ -458,6 +458,7 @@
                                             <thead>
                                             <tr>
                                                 <th>Meritev:</th>
+                                                <th>Vrednost:</th>
                                                 <th>Opis:</th>
                                                 <th>Datum meritve:</th>
                                             </tr>
@@ -466,6 +467,7 @@
                                             @for ($x=0; $x < count($checkMeasurement); $x++)
                                                 <tr>
                                                     <td>{!! link_to_route('measurement.edit', $checkMeasurement[$x]->name, $checkMeasurement[$x]->id)!!}</td>
+                                                    <td>{!! link_to_route('measurement.edit', $checkMeasurement[$x]->result, $checkMeasurement[$x]->id)!!}</td>
                                                     <td>{!! link_to_route('measurement.edit', $checkMeasurement[$x]->description, $checkMeasurement[$x]->id)!!}</td>
                                                     <td>{!! link_to_route('measurement.edit', date("d.m.Y H:i",strtotime($checkMeasurement[$x]->time)), $checkMeasurement[$x]->id)!!}</td>
                                                 </tr>

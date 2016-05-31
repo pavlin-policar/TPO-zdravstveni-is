@@ -15,10 +15,10 @@
             <div class="card">
                 <a name="measurment">
                     <div class="card yellow card-header">
-                        <div class="card-title">
-                            <div class="title title-white">Meritve</div>
+                        <div class="card-title title-white" style="width:100%">
+                            <div class="title pull-left">Meritve</div>
+                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger" id="glyphicon-measurments"></div>
                         </div>
-                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
                     </div>
                 </a>
                 <div class="card-body no-padding" id="dash-measurments">
@@ -54,10 +54,10 @@
             <div class="card">
                 <a name="measurment">
                     <div class="card yellow card-header">
-                        <div class="card-title">
-                            <div class="title title-white">Grafi</div>
+                        <div class="card-title title-white" style="width:100%">
+                            <div class="title pull-left">Grafi</div>
+                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger" id="glyphicon-medical"></div>
                         </div>
-                        <div class="fa fa-compress icon-arrow-right" id="glyphicon-medical"></div>
                     </div>
                 </a>
                 <div class="card-body" id="dash-medical">
