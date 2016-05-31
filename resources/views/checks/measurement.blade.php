@@ -12,15 +12,13 @@
                 </div>
             @endif
 
-            <div class="card">
-                <a name="measurment">
+                <div class="card" data-expanded="1">
                     <div class="card yellow card-header">
                         <div class="card-title title-white" style="width:100%">
                             <div class="title pull-left">Meritve</div>
-                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger" id="glyphicon-measurments"></div>
+                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                         </div>
                     </div>
-                </a>
                 <div class="card-body no-padding" id="dash-measurments">
                     <table class="datatable table table-striped" cellspacing="0" width="100%">
                             <thead>
@@ -51,15 +49,13 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div class="card">
-                <a name="measurment">
-                    <div class="card yellow card-header">
-                        <div class="card-title title-white" style="width:100%">
-                            <div class="title pull-left">Grafi</div>
-                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger" id="glyphicon-medical"></div>
-                        </div>
+            <div class="card" data-expanded="1">
+                <div class="card yellow card-header">
+                    <div class="card-title title-white" style="width:100%">
+                        <div class="title pull-left">Grafi</div>
+                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                     </div>
-                </a>
+                </div>
                 <div class="card-body" id="dash-medical">
 
                     {!! Form::open(['route' => ['check.measurement'], 'method' => 'get', 'class' => 'form-horizontal']) !!}

@@ -4,12 +4,12 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div class="card card-info">
-                <div class="card-header">
-                    <div class="card-title">
-                        <div class="title title-white">Diete</div>
+            <div class="card card-info" data-expanded="1">
+                <div class="card yellow card-header">
+                    <div class="card-title title-white" style="width:100%">
+                        <div class="title pull-left">Diete</div>
+                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                     </div>
-                    <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
                 </div>
                 <div class="card-body no-padding" id="dash-diet">
                     <table class="datatable table table-striped" cellspacing="0" width="100%">

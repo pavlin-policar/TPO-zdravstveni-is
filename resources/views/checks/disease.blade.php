@@ -4,12 +4,12 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div class="card card-success">
-                <div class="card-header">
-                    <div class="card-title">
-                        <div class="title title-white">Bolezni in alergije</div>
+            <div class="card card-success" data-expanded="1">
+                <div class="card yellow card-header">
+                    <div class="card-title title-white" style="width:100%">
+                        <div class="title pull-left">Bolezni in alergije</div>
+                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                     </div>
-                    <div class="fa fa-compress icon-arrow-right" id="glyphicon-allergy"></div>
                 </div>
                 <div class="card-body no-padding" id="dash-allergy">
                     <table class="datatable table table-striped" cellspacing="0" width="100%">

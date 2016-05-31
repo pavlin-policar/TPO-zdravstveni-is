@@ -5,12 +5,12 @@
         <div class="col-sm-6 col-xs-12">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="card card-no-padding">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <div class="title">Vaš pregled </div>
+                    <div class="card card-no-padding" data-expanded="1">
+                        <div class="card yellow card-header">
+                            <div class="card-title title-white" style="width:100%">
+                                <div class="title pull-left">Vaš pregled </div>
+                                <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                             </div>
-                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-check-old"></div>
                         </div>
                         <div class="card-body no-padding" id="dash-check-old">
                             @if($check == null)

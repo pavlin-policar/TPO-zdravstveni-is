@@ -1,6 +1,6 @@
 $(document).ready(() => {
     // expand / collapse dashboard items
-    const elements = $('#dashboard [class^=col-] > .card');
+    const elements = $('[class^=col-] > .card');
     elements.each(idx => {
         const element = $(elements[idx]);
         // only apply the event handler to functions with defined data-expanded attributes

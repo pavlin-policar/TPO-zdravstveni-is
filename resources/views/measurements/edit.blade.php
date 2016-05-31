@@ -4,12 +4,12 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div class="card">
+            <div class="card" data-expanded="1">
                 <div class="card yellow card-header">
-                    <div class="card-title">
-                        <div class="title title-white">Uredi meritev</div>
+                    <div class="card-title title-white" style="width:100%">
+                        <div class="title pull-left">Uredi meritev</div>
+                        <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                     </div>
-                    <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
                 </div>
                 <div class="card-body " id="dash-measurments">
 
