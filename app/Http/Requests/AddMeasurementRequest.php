@@ -25,8 +25,7 @@ class AddMeasurementRequest extends Request
         return [
             'type' => 'required|between:1,3',
             'patient' => 'required',
-            'provider' => 'required',
-            'result' => 'required|min:-50|max:600'
+            'provider' => 'required'
         ];
     }
 
@@ -34,6 +33,7 @@ class AddMeasurementRequest extends Request
     {
         return [
             'between' => 'Izbrati morate tip meritve!',
+            'required' => 'Polje ne sme biti prazno!'
         ];
     }
 }

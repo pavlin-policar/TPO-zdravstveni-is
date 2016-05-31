@@ -25,8 +25,7 @@ class CheckMeasurementRequest extends Request
         return [
             'type' => 'required|between:1,3',
             'provider' => 'required',
-            'check' => 'required',
-            'result' => 'required|min:-50|max:600'
+            'check' => 'required'
         ];
     }
 
@@ -34,6 +33,7 @@ class CheckMeasurementRequest extends Request
     {
         return [
             'between' => 'Izbrati morate tip meritve!',
+            'required' => 'Polje ne sme biti prazno!',
         ];
     }
 }

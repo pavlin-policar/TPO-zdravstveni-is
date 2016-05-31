@@ -125,6 +125,10 @@ class CheckController extends Controller
         $from = $request->from;
         $to = $request->to;
 
+        $data = Array();
+        $data['from'] = $from;
+        $data['to'] = $to;
+
         if($from == null){
             $from = Carbon::create(1970, 1, 1);
         }
@@ -139,7 +143,6 @@ class CheckController extends Controller
 
         if ($user->existsInStorage()) {
 
-            $data = Array();
             $data['typeID'] = $id;
             $data['codesMeasurement'] = Code::where('code_type', 15)->get();
             $data['measurements'] = Measurement::join('codes', 'measurements.type', '=', 'codes.id')
@@ -378,7 +381,7 @@ class CheckController extends Controller
             $measurementResult = new MeasurementResult();
             $measurementResult->measurement = $measurement->id;
             $measurementResult->type = $request['type'];
-            if($request['type'] == 185){
+            if(isset($request['weight']) || $request['weight'] != null){
                 $bmi = $request['weight'] / (($request['result']/100)*($request['result']/100));
                 $measurementResult->result = (round($bmi*100))/100;
             }

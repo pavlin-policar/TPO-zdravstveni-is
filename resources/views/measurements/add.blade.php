@@ -51,6 +51,9 @@
                             @foreach($codesMeasurement as $m)
                                 <option min="{{ $m->min_value }}" max="{{ $m->max_value }}" value="{{ $m->id }}">{{ $m->name }}</option>
                             @endforeach
+                            @foreach($bigMeasurement as $big)
+                                <option min="{{ $big->min_value }}" max="{{ $big->max_value }}" value="{{ $big->id }}">{{ $big->name }}</option>
+                            @endforeach
                         </select>
                         @if ($errors->has('type'))
                             <span id="checkMeasurementCode" class="help-block">{{ $errors->first('type') }}</span>
@@ -59,7 +62,7 @@
                 </div>
 
                 {{-- Result --}}
-                <div class="form-group{{ $errors->has('result') ? ' has-error' : '' }}">
+                <div class="form-group{{ $errors->has('result') ? ' has-error' : '' }}" id="resultOrigin">
                     {!! Form::label('result', 'Vrednost', ['class' => 'col-sm-2 control-label', 'id' => 'labelWeight']) !!}
                     <div class="col-sm-10">
                         {!! Form::number('result', null, ['class' => 'form-control measurementR', 'required', 'id' => 'measurementResult', 'step' => 'any']) !!}
@@ -71,6 +74,27 @@
                         @endif
                     </div>
                 </div>
+
+                @foreach($bigMeasurement as $big)
+                    @if(isset($big) && count($big->small) > 0)
+                        @foreach($big->small as $small)
+                            {{-- Result --}}
+                            <div class="form-group{{ $errors->has('result') ? ' has-error' : '' }} " id="{{ $small->name  }}">
+                                {!! Form::label('result', $small->name, ['class' => 'col-sm-2 control-label', 'id' => 'labelWeight']) !!}
+                                <div class="col-sm-10">
+                                    {!! Form::number("result$small->id", null, ['class' => 'form-control', 'min' => $small->min_value, 'max' => $small->max_value, 'id' => "$small->name Result", 'step' => 'any']) !!}
+                                    @if ($errors->has('result'))
+                                        <span class="help-block">{{ $errors->first('result') }}</span>
+                                    @endif
+                                    @if (Session::has('error'))
+                                        <div class="alert alert-danger">{{ Session::get('error') }}</div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                @endforeach
+
                 {{-- Weight --}}
                 <div class="form-group{{ $errors->has('weight') ? ' has-error' : '' }} hidden" id="measurementWeight">
                     {!! Form::label('weight', 'Teža', ['class' => 'col-sm-2 control-label']) !!}

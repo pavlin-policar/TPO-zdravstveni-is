@@ -273,8 +273,9 @@ $(document).ready(function () {
     $("#measurementType").change(function () {
 
         var ind = $("#measurementType").prop('selectedIndex');
+        var val = $("option:selected", this).text();
 
-        if(ind == 6){
+        if(val == "Merjenje telesne teže"){
             $("#labelWeight").text('Višina');
             $("#measurementWeightResult").attr('required', true);
             $("#measurementWeight").attr('class', 'form-group');

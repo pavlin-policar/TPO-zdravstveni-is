@@ -88,7 +88,7 @@
                     <div class="form-group{{ $errors->has('from') ? ' has-error' : '' }}">
                         {!! Form::label('from', 'Od', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            {!! Form::date('from', null, ['class' => 'form-control']) !!}
+                            {!! Form::date('from', $from, ['class' => 'form-control']) !!}
                             @if ($errors->has('from'))
                                 <span class="help-block">{{ $errors->first('from') }}</span>
                             @endif
@@ -98,7 +98,7 @@
                     <div class="form-group{{ $errors->has('to') ? ' has-error' : '' }}">
                         {!! Form::label('to', 'Do', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            {!! Form::date('to', null, ['class' => 'form-control']) !!}
+                            {!! Form::date('to', $to, ['class' => 'form-control']) !!}
                             @if ($errors->has('to'))
                                 <span class="help-block">{{ $errors->first('to') }}</span>
                             @endif

@@ -16,6 +16,7 @@ use App\Models\DoctorDates;
 use App\Models\DoctorNurse;
 use App\Models\Code;
 use App\Models\Measurement;
+use App\Models\MeasurementMeasurement;
 use App\Models\MeasurementResult;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -47,16 +48,26 @@ class MeasurementController extends Controller
 
         $data = Array();
         $data['patient'] = Auth::user();
-        if(!session('isMyProfile'))
-            $data['patient'] = User::find(session('showUser'));
 
         $data['codesMeasurement'] = Code::where('code_type', 15)->get();
+        $data['bigMeasurement'] = Code::where('code_type', 16)->get();
+
+        if(count($data['bigMeasurement']) > 0)
+        foreach($data['bigMeasurement'] as $m) {
+            $smallMeasurement = MeasurementMeasurement::where('big_measurement', $m->id)->select('small_measurement')->get();
+            $m['count'] = count($smallMeasurement);
+            $m['small'] = Array();
+            $m['small'] = Code::where('id', $smallMeasurement[0]['small_measurement'])->get();
+            for ($x = 1; $x < count($smallMeasurement); $x++) {
+                $m['small'][$x] = Code::find($smallMeasurement[$x]['small_measurement']);
+            }
+        }
 
         return view('measurements.add')->with($data);
     }
 
     public function addMeasurement(AddMeasurementRequest $request){echo $request;
-
+/*
         $type = Code::find($request->type);
 
         if($request->result < $type->min_value || $request->result > $type->max_value){
@@ -83,9 +94,10 @@ class MeasurementController extends Controller
             $measurementResult = new MeasurementResult();
             $measurementResult->measurement = $measurement->id;
             $measurementResult->type = $request['type'];
-            if($request['type'] == 185){
+            if(isset($request['weight']) || $request['weight'] != null){
                 $bmi = $request['weight'] / (($request['result']/100)*($request['result']/100));
                 $measurementResult->result = (round($bmi*100))/100;
+                echo $request['weight'];
             }
             else{
                 $measurementResult->result = $request['result'];
@@ -94,7 +106,7 @@ class MeasurementController extends Controller
             $measurementResult->save();
 
             return redirect()->back()->with('msg', 'Meritev je bila dodana');
-        }
+        }*/
     }
 
     public function editMeasurement($id){
