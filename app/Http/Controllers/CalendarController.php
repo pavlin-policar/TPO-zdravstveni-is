@@ -248,7 +248,10 @@ class CalendarController extends Controller
         $monday = $date->startOfWeek()->toDateTimeString();
         $saturday = $date->endOfWeek()->toDateTimeString();
 
-        $docsCurrentWeek = DoctorDates::where('doctor', '=', Auth::user()->id)
+        $docid = null;
+        if (Auth::user()->id == session('showUser')) $docid = Auth::user()->id;
+        else $docid = session('showUser');
+        $docsCurrentWeek = DoctorDates::where('doctor', '=', $docid)
                                 ->where('time', '>=', $monday)
                                 ->where('time', '<=', $saturday)
                                 ->get();
@@ -265,7 +268,7 @@ class CalendarController extends Controller
         // Get next week's events:
         $nextMonday = Carbon::parse($monday)->addDays(7)->toDateTimeString();
         $nextSaturday = Carbon::parse($saturday)->addDays(7)->toDateTimeString();
-        $docsNextWeek = DoctorDates::where('doctor', '=', Auth::user()->id)
+        $docsNextWeek = DoctorDates::where('doctor', '=', $docid)
             ->where('time', '>=', $nextMonday)
             ->where('time', '<=', $nextSaturday)
             ->get();
@@ -352,7 +355,10 @@ class CalendarController extends Controller
         $queryStartTime = $startDate->toDateString() . ' ' . Carbon::createFromFormat('H:i', $request->hourStart)->toTimeString();
         $queryEndTime = $endDate->toDateString() . ' ' . $endTime->toTimeString();
 
-        $collisionCandidates = DoctorDates::where('doctor', '=', Auth::user()->id)
+        $docid = null;
+        if (Auth::user()->id == session('showUser')) $docid = Auth::user()->id;
+        else $docid = session('showUser');
+        $collisionCandidates = DoctorDates::where('doctor', '=', $docid)
             ->where('time', '>=', $queryStartTime)
             ->where('time', '<=', $queryEndTime)
             ->get();
@@ -372,7 +378,7 @@ class CalendarController extends Controller
                         $dd = new DoctorDates();
                         $dd->time = $time;
                         $dd->time_end = $timeEnd;
-                        $dd->doctor = Auth::user()->id;
+                        $dd->doctor = $docid;
 
                         // Check for collision before saving event:
                         if (!$this->checkForCollision($dd, $collisionCandidates, 0)) {
