@@ -87,6 +87,7 @@ class MeasurementController extends Controller
         }
         else{
             if(isset($request['result']) || $request['result'] != null) {
+
                 $measurement = new Measurement();
                 if($request['provider'] > 0){
                     $measurement->provider = $request['provider'];
@@ -104,7 +105,7 @@ class MeasurementController extends Controller
                 $measurementResult = new MeasurementResult();
                 $measurementResult->measurement = $measurement->id;
                 $measurementResult->type = $request['type'];
-                if (isset($request['weight']) || $request['weight'] != null) {
+                if (isset($request['weight']) && $request['weight'] != null && $request['weight'] > 0) {
                     $bmi = $request['weight'] / (($request['result'] / 100) * ($request['result'] / 100));
                     $measurementResult->result = (round($bmi * 100)) / 100;
                 } else {

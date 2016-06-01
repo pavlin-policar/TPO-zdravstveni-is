@@ -440,7 +440,7 @@ class CheckController extends Controller
                 $measurementResult = new MeasurementResult();
                 $measurementResult->measurement = $measurement->id;
                 $measurementResult->type = $request['type'];
-                if (isset($request['weight']) || $request['weight'] != null) {
+                if (isset($request['weight']) && $request['weight'] != null && $request['weight'] > 0) {
                     $bmi = $request['weight'] / (($request['result'] / 100) * ($request['result'] / 100));
                     $measurementResult->result = (round($bmi * 100)) / 100;
                 } else {

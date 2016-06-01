@@ -11,7 +11,7 @@
                         <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                     </div>
                 </div>
-                <div class="card-body no-padding" id="dash-diet">
+                <div class="card-body" id="dash-diet">
                     <table class="datatable table table-striped" cellspacing="0" width="100%">
                         <thead>
                             <tr>
