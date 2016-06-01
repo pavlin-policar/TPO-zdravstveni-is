@@ -650,6 +650,7 @@
                                             <tr>
                                                 <th>Ime</th>
                                                 <th>Priimek</th>
+                                                <th></th>
                                             </tr>
                                             </thead>
                                             <tbody>

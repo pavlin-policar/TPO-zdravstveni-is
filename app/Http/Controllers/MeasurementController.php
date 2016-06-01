@@ -48,10 +48,14 @@ class MeasurementController extends Controller
 
         $id = $request['type'];
         $data = Array();
-        $data['patient'] = Auth::user();
         $data['selected'] = false;
         $data['big'] = false;
         $data['id'] = 0;
+
+        if(session('isMyProfile'))
+            $data['patient'] = Auth::user();
+        else
+            $data['patient'] = User::find(session('showUser'));
 
         $data['codesMeasurement'] = Code::where('code_type', 15)->get();
         $data['bigMeasurement'] = Code::where('code_type', 16)->get();

@@ -161,6 +161,7 @@ class CheckController extends Controller
                     $data['graph'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
                         ->select('measurement_results.result', 'measurements.time')
                         ->where('measurements.type', $id)
+                        ->where('measurements.patient', '=', $user->id)
                         ->where('measurements.time', '>', $from)
                         ->where('measurements.time', '<=', $to)
                         ->orderBy('measurements.time', 'asc')
@@ -179,6 +180,7 @@ class CheckController extends Controller
                         $data['graph'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
                             ->select('measurement_results.result', 'measurements.time')
                             ->where('measurements.type', $small[0]->small_measurement)
+                            ->where('measurements.patient', '=', $user->id)
                             ->where('measurements.time', '>', $from)
                             ->where('measurements.time', '<=', $to)
                             ->orderBy('measurements.time', 'asc')
@@ -191,6 +193,7 @@ class CheckController extends Controller
                         $data['graph1'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
                             ->select('measurement_results.result', 'measurements.time')
                             ->where('measurements.type', $small[1]->small_measurement)
+                            ->where('measurements.patient', '=', $user->id)
                             ->where('measurements.time', '>', $from)
                             ->where('measurements.time', '<=', $to)
                             ->orderBy('measurements.time', 'asc')
@@ -201,7 +204,6 @@ class CheckController extends Controller
                                 ->first();
                         }
                     }
-
                 } else{
                     $data['type'] = null;
                     $data['graph'] = null;
