@@ -233,13 +233,118 @@ $(document).ready(() => {
         $('#pswd_info').hide();
     });
 
-    $(".measurementT").change(function() {
-        var min = $('option:selected', this).attr('min');
-        var max = $('option:selected', this).attr('max');
-        $(".measurementR").attr('min', min);
-        $(".measurementR").attr('max', max);
+    $(".measurementT").change(function () {
+        /*
+         var min = $('option:selected', this).attr('min');
+         var max = $('option:selected', this).attr('max');
+         $(".measurementR").attr('min', min);
+         $(".measurementR").attr('max', max);*/
+
+        $("#showMeasurement").click();
     });
 
+    if ( $( "#graph" ).length ) {
+        if( $( "#graph1" ).length ) {
+            var json = jQuery.parseJSON( $( "#graph" ).text() );
+            var json1 = jQuery.parseJSON( $( "#graph1" ).text() );
+            json1 = jQuery.parseJSON(JSON.stringify(json1).replace(/"result":/g, '"result1":'));
+            var jsonData = $.merge(json, json1);
+
+            var minimal = jQuery.parseJSON( $( "#minimal" ).text() );
+            var maximal = jQuery.parseJSON( $( "#maximal" ).text() );
+            var minNormal = jQuery.parseJSON( $( "#minNormal" ).text() );
+            var maxNormal = jQuery.parseJSON( $( "#maxNormal" ).text() );
+            var plus=(maxNormal-minNormal)/20;
+            var array=[];
+            while(minNormal<=maxNormal){
+                array.push(minNormal);
+                minNormal+=plus;
+            }
+            var minimal1 = jQuery.parseJSON( $( "#minimal1" ).text() );
+            var maximal1 = jQuery.parseJSON( $( "#maximal1" ).text() );
+            var minNormal1 = jQuery.parseJSON( $( "#minNormal1" ).text() );
+            var maxNormal1 = jQuery.parseJSON( $( "#maxNormal1" ).text() );
+            var plus1=(maxNormal1-minNormal1)/20;
+            var array1=[];
+            while(minNormal1<=maxNormal1){
+                array.push(minNormal1);
+                minNormal1+=plus1;
+            }
+            //alert(array);
+            Morris.Line({
+                element: 'graf-meritev',
+                data: jsonData,
+                xkey: 'time',
+                ykeys: ['result', 'result1'],
+                labels: ['Sistolični', 'Diastolični'],
+                xLabelFormat: function(d) { return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear(); },
+                hoverCallback: function(index, options, content) {
+                    var d=new Date(content.substring(36, 55)),
+                        dformat = [d.getDate(),d.getMonth()+1,
+                                d.getFullYear()].join('.')+' '+
+                            [d.getHours(),
+                                d.getMinutes()].join(':');
+                    return dformat+content.substring(55,255);
+                },
+                behaveLikeLine: true,
+                resize: true,
+                ymin: minimal,
+                ymax: maximal,
+                goals: array,
+                goalLineColors: ['#22FF22'],
+                goalStrokeWidth: 3
+            });
+        }
+        else{
+            var jsonData = jQuery.parseJSON( $( "#graph" ).text() );
+            var minimal = jQuery.parseJSON( $( "#minimal" ).text() );
+            var maximal = jQuery.parseJSON( $( "#maximal" ).text() );
+            var minNormal = jQuery.parseJSON( $( "#minNormal" ).text() );
+            var maxNormal = jQuery.parseJSON( $( "#maxNormal" ).text() );
+            var plus=(maxNormal-minNormal)/20;
+            var array=[];
+            while(minNormal<=maxNormal){
+                array.push(minNormal);
+                minNormal+=plus;
+            }
+            //alert(array);
+            Morris.Line({
+                element: 'graf-meritev',
+                data: jsonData,
+                xkey: 'time',
+                ykeys: ['result'],
+                labels: ['Vrednost'],
+                xLabelFormat: function(d) { return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear(); },
+                hoverCallback: function(index, options, content) {
+                    var d=new Date(content.substring(36, 55)),
+                        dformat = [d.getDate(),d.getMonth()+1,
+                                d.getFullYear()].join('.')+' '+
+                            [d.getHours(),
+                                d.getMinutes()].join(':');
+                    return dformat+content.substring(55,255);
+                },
+                behaveLikeLine: true,
+                resize: true,
+                ymin: minimal,
+                ymax: maximal,
+                goals: array,
+                goalLineColors: ['#22FF22'],
+                goalStrokeWidth: 3
+            });
+        }
+    }
+
+    $("#measurementType").ready( function () {
+
+        var ind = $("#measurementType").prop('selectedIndex');
+        var val = $("option:selected", this).text();
+
+        if(val == "Merjenje telesne teže"){
+            $("#labelWeight").text('Višina');
+            $("#measurementWeightResult").attr('required', true);
+            $("#measurementWeight").attr('class', 'form-group');
+        }
+    });
 });
 
 
