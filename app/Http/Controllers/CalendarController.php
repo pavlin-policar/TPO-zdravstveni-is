@@ -10,6 +10,7 @@ use App\Models\DoctorDates;
 use App\Models\User;
 use App\Models\Code;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
