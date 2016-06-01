@@ -659,7 +659,6 @@
                                                     <td>{!! $nurse->first_name !!} </td>
                                                     <td>{!! $nurse->last_name !!}</td>
                                                     <td>{!! link_to_route('profile.freeNurse', '[Sprostite osebo]', $nurse->id) !!}</td>
-
                                                 </tr>
                                             @endforeach
                                             </tbody>
@@ -683,7 +682,7 @@
                                             @foreach($docs as $doctor)
                                                 <thead>
                                                     <tr>
-                                                        <th>Doktor: {!! $doctor->fullName !!}</th>
+                                                        <th>Doktor: {!! link_to_route('charges.activate', $doctor->fullName, $doctor->id) !!}</th>
                                                     </tr>
                                                     <tr>
                                                         <th>Ime</th>
