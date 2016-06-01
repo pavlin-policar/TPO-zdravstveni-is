@@ -230,8 +230,12 @@ class CalendarController extends Controller
         $today = new \DateTime();
         // Get all doctors:
         $doctors = User::where('person_type', '=', Code::DOCTOR()->id)->get(); //->prepend('flavourText', '');
+        if (Auth::user()->isNurse() && Auth::user()->id != session('showUser')) {
+            $user = User::where('id', '=', session('showUser'))->first();
+            if ($user != null && !$user->isDoctor()) $user = null;
+        }
 
-        return view('calendarEvents.calendar', compact('calendar', 'events', 'today','doctors', 'selectedDoc'));
+        return view('calendarEvents.calendar', compact('calendar', 'events', 'today','doctors', 'selectedDoc', 'user'));
     }
 
     public function cloneWeek(){

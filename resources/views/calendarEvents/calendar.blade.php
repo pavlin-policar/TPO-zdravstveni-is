@@ -29,6 +29,17 @@
                     <span class="help-block">{!! Session::pull('cloneMessage') !!}</span>
                 </div>
             @endcan
+        @elseif ($user != null)
+                <span class="title">Pregled terminov</span>
+                <div class="description">Pregled prostih in zasedenih terminov</div>
+                <div class="form-group has-error">
+                    <span class="help-block">{!! Session::pull('cloneMessage') !!}</span>
+                </div>
+                <div class>
+                    {!! link_to_route('calendar.schedule', 'Uredite svoj urnik', [], ['class' => 'btn btn-primary']) !!}
+                    {!! link_to_route('calendar.cloneWeek', 'Ponovite tekoči teden', [], ['class' => 'btn btn-primary']) !!}
+                </div>
+                <br />
         @else
             <span class="title">
                 Naročanje</span>
