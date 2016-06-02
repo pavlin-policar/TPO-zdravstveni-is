@@ -282,8 +282,8 @@ $(document).ready(() => {
                 },
                 behaveLikeLine: true,
                 resize: true,
-                ymin: minimal,
-                ymax: maximal,
+                ymin: Math.min(minimal, minimal1),
+                ymax: Math.max(maximal, maximal1),
                 goals: array,
                 goalLineColors: ['#22FF22'],
                 goalStrokeWidth: 3
@@ -338,6 +338,17 @@ $(document).ready(() => {
             $("#measurementWeightResult").attr('required', true);
             $("#measurementWeight").attr('class', 'form-group');
         }
+    });
+
+    $('input[name=start]').change(function () {
+        var start = $(this).val();
+        //$('input[name=end]').attr('min', start);
+        $(':input:eq(' + ($(':input').index(this) + 1) + ')').attr('min', start);
+    });
+
+    $('input[name=end]').change(function () {
+        var end = $(this).val();
+        $(':input:eq(' + ($(':input').index(this) - 1) + ')').attr('max', end);
     });
 });
 

@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
-use App\Http\Requests\CheckRequest;
 use App\Http\Requests\CheckCodeRequest;
 use App\Http\Requests\CheckMeasurementRequest;
-use App\Models\Checks;
+use App\Http\Requests\CheckRequest;
 use App\Models\CheckCodes;
+use App\Models\Checks;
+use App\Models\Code;
 use App\Models\DoctorDates;
 use App\Models\Measurement;
 use App\Models\MeasurementMeasurement;
 use App\Models\MeasurementResult;
+use App\Models\User;
 use Carbon\Carbon;
 use DB;
-use App\Models\User;
-use App\Models\Code;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -129,6 +129,8 @@ class CheckController extends Controller
         $data = Array();
         $data['from'] = $from;
         $data['to'] = $to;
+        $data['type'] = null;
+        $data['graph'] = null;
 
         if($from == null){
             $from = Carbon::create(1970, 1, 1);
@@ -204,15 +206,9 @@ class CheckController extends Controller
                                 ->first();
                         }
                     }
-                } else{
-                    $data['type'] = null;
-                    $data['graph'] = null;
                 }
             }
-            else{
-                $data['type'] = null;
-                $data['graph'] = null;
-            }
+
 
             return view('checks.measurement')->with($data);
         }
@@ -346,6 +342,10 @@ class CheckController extends Controller
 
     public function checkUpdateCode(CheckCodeRequest $request, $id)
     {
+        if((strlen($request->end) > 1) && (Carbon::createFromFormat('Y-m-d', $request['end']) < Carbon::createFromFormat('Y-m-d', $request['start']))){
+            return redirect()->back()->with('errorCheck', 'Vnešen je napačen datum');
+        }
+
         $checkCode = CheckCodes::find($id);
         $checkCode->note = $request['note'];
         $checkCode->start = $request['start'];
@@ -405,6 +405,10 @@ class CheckController extends Controller
     }
 
     public function checkAddCode(CheckCodeRequest $request){
+
+        if((strlen($request->end) <= 1) && (Carbon::createFromFormat('Y-m-d H', $request['end']) < Carbon::createFromFormat('Y-m-d H', $request['start']))){
+            return redirect()->back()->with('errorCheck', 'Vnešen je napačen datum');
+        }
 
         $checkCode = new CheckCodes();
         $checkCode->note = $request['note'];
