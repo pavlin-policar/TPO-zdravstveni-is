@@ -6,7 +6,7 @@ $(document).ready(function () {
     elements.each(function (idx) {
         var element = $(elements[idx]);
         // only apply the event handler to functions with defined data-expanded attributes
-        if (typeof element.data('expanded') == 'undefined') {
+        if (typeof element.data('expanded') == 'undefined' || element.data('expanded') === null) {
             return;
         }
         // change halder function
@@ -45,17 +45,6 @@ $(document).ready(function () {
     $('.clickable-link').click(function () {
         window.document.location = $(this).data('href');
     });
-
-    // dashboard layout submit button
-    // $('#dashboard-layout-update').submit(function(e) {
-    //     e.preventDefault();
-    //     const form = $(this);
-    //     $.ajax({
-    //         url: form.attr('action'),
-    //         method: 'put',
-    //         data: form.serializeArray(),
-    //     })
-    // });
 
     $("#password").keyup(function () {
         check_pass();
@@ -161,20 +150,22 @@ $(document).ready(function () {
         }
     });
 
-    $('button#delete').on('click', function () {
-        swal({
-            title: "Ali ste prepričani?",
-            text: "Podatki se bodo za vedno izbrisali!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Ja, izbriši!",
-            cancelButtonText: "Prekliči",
-            closeOnConfirm: false
-        }, function () {
-            $("#deleteMeasurementForm").submit();
+    if ($('button#delete')) {
+        $('button#delete').on('click', function () {
+            swal({
+                title: "Ali ste prepričani?",
+                text: "Podatki se bodo za vedno izbrisali!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ja, izbriši!",
+                cancelButtonText: "Prekliči",
+                closeOnConfirm: false
+            }, function () {
+                $("#deleteMeasurementForm").submit();
+            });
         });
-    });
+    }
 
     if ($("#profileChangePassword").html() != null) {
         console.log("change password");
@@ -234,32 +225,32 @@ $(document).ready(function () {
         $("#showMeasurement").click();
     });
 
-    if ( $( "#graph" ).length ) {
-        if( $( "#graph1" ).length ) {
-            var json = jQuery.parseJSON( $( "#graph" ).text() );
-            var json1 = jQuery.parseJSON( $( "#graph1" ).text() );
+    if ($("#graph").length) {
+        if ($("#graph1").length) {
+            var json = jQuery.parseJSON($("#graph").text());
+            var json1 = jQuery.parseJSON($("#graph1").text());
             json1 = jQuery.parseJSON(JSON.stringify(json1).replace(/"result":/g, '"result1":'));
             var jsonData = $.merge(json, json1);
 
-            var minimal = jQuery.parseJSON( $( "#minimal" ).text() );
-            var maximal = jQuery.parseJSON( $( "#maximal" ).text() );
-            var minNormal = jQuery.parseJSON( $( "#minNormal" ).text() );
-            var maxNormal = jQuery.parseJSON( $( "#maxNormal" ).text() );
-            var plus=(maxNormal-minNormal)/20;
-            var array=[];
-            while(minNormal<=maxNormal){
+            var minimal = jQuery.parseJSON($("#minimal").text());
+            var maximal = jQuery.parseJSON($("#maximal").text());
+            var minNormal = jQuery.parseJSON($("#minNormal").text());
+            var maxNormal = jQuery.parseJSON($("#maxNormal").text());
+            var plus = (maxNormal - minNormal) / 20;
+            var array = [];
+            while (minNormal <= maxNormal) {
                 array.push(minNormal);
-                minNormal+=plus;
+                minNormal += plus;
             }
-            var minimal1 = jQuery.parseJSON( $( "#minimal1" ).text() );
-            var maximal1 = jQuery.parseJSON( $( "#maximal1" ).text() );
-            var minNormal1 = jQuery.parseJSON( $( "#minNormal1" ).text() );
-            var maxNormal1 = jQuery.parseJSON( $( "#maxNormal1" ).text() );
-            var plus1=(maxNormal1-minNormal1)/20;
-            var array1=[];
-            while(minNormal1<=maxNormal1){
+            var minimal1 = jQuery.parseJSON($("#minimal1").text());
+            var maximal1 = jQuery.parseJSON($("#maximal1").text());
+            var minNormal1 = jQuery.parseJSON($("#minNormal1").text());
+            var maxNormal1 = jQuery.parseJSON($("#maxNormal1").text());
+            var plus1 = (maxNormal1 - minNormal1) / 20;
+            var array1 = [];
+            while (minNormal1 <= maxNormal1) {
                 array.push(minNormal1);
-                minNormal1+=plus1;
+                minNormal1 += plus1;
             }
             //alert(array);
             Morris.Line({
@@ -268,14 +259,13 @@ $(document).ready(function () {
                 xkey: 'time',
                 ykeys: ['result', 'result1'],
                 labels: ['Sistolični', 'Diastolični'],
-                xLabelFormat: function(d) { return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear(); },
-                hoverCallback: function(index, options, content) {
-                    var d=new Date(content.substring(36, 55)),
-                        dformat = [d.getDate(),d.getMonth()+1,
-                                d.getFullYear()].join('.')+' '+
-                            [d.getHours(),
-                                d.getMinutes()].join(':');
-                    return dformat+content.substring(55,255);
+                xLabelFormat: function xLabelFormat(d) {
+                    return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
+                },
+                hoverCallback: function hoverCallback(index, options, content) {
+                    var d = new Date(content.substring(36, 55)),
+                        dformat = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') + ' ' + [d.getHours(), d.getMinutes()].join(':');
+                    return dformat + content.substring(55, 255);
                 },
                 behaveLikeLine: true,
                 resize: true,
@@ -285,18 +275,17 @@ $(document).ready(function () {
                 goalLineColors: ['#22FF22'],
                 goalStrokeWidth: 3
             });
-        }
-        else{
-            var jsonData = jQuery.parseJSON( $( "#graph" ).text() );
-            var minimal = jQuery.parseJSON( $( "#minimal" ).text() );
-            var maximal = jQuery.parseJSON( $( "#maximal" ).text() );
-            var minNormal = jQuery.parseJSON( $( "#minNormal" ).text() );
-            var maxNormal = jQuery.parseJSON( $( "#maxNormal" ).text() );
-            var plus=(maxNormal-minNormal)/20;
-            var array=[];
-            while(minNormal<=maxNormal){
+        } else {
+            var jsonData = jQuery.parseJSON($("#graph").text());
+            var minimal = jQuery.parseJSON($("#minimal").text());
+            var maximal = jQuery.parseJSON($("#maximal").text());
+            var minNormal = jQuery.parseJSON($("#minNormal").text());
+            var maxNormal = jQuery.parseJSON($("#maxNormal").text());
+            var plus = (maxNormal - minNormal) / 20;
+            var array = [];
+            while (minNormal <= maxNormal) {
                 array.push(minNormal);
-                minNormal+=plus;
+                minNormal += plus;
             }
             //alert(array);
             Morris.Line({
@@ -305,14 +294,13 @@ $(document).ready(function () {
                 xkey: 'time',
                 ykeys: ['result'],
                 labels: ['Vrednost'],
-                xLabelFormat: function(d) { return d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear(); },
-                hoverCallback: function(index, options, content) {
-                    var d=new Date(content.substring(36, 55)),
-                        dformat = [d.getDate(),d.getMonth()+1,
-                                d.getFullYear()].join('.')+' '+
-                            [d.getHours(),
-                                d.getMinutes()].join(':');
-                    return dformat+content.substring(55,255);
+                xLabelFormat: function xLabelFormat(d) {
+                    return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
+                },
+                hoverCallback: function hoverCallback(index, options, content) {
+                    var d = new Date(content.substring(36, 55)),
+                        dformat = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') + ' ' + [d.getHours(), d.getMinutes()].join(':');
+                    return dformat + content.substring(55, 255);
                 },
                 behaveLikeLine: true,
                 resize: true,
@@ -325,12 +313,12 @@ $(document).ready(function () {
         }
     }
 
-    $("#measurementType").ready( function () {
+    $("#measurementType").ready(function () {
 
         var ind = $("#measurementType").prop('selectedIndex');
         var val = $("option:selected", this).text();
 
-        if(val == "Merjenje telesne teže"){
+        if (val == "Merjenje telesne teže") {
             $("#labelWeight").text('Višina');
             $("#measurementWeightResult").attr('required', true);
             $("#measurementWeight").attr('class', 'form-group');
