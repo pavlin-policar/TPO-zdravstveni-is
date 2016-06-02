@@ -6,6 +6,7 @@ use App\Models\Code;
 use App\Models\CodeType;
 use App\Models\DoctorProfile;
 use App\Models\Postcode;
+use GuzzleHttp\Message\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use App\Models\User;
@@ -158,12 +159,24 @@ class ViewServiceProvider extends ServiceProvider
         view()->composer(
             'partials.form-elements.select-nurse',
             function ($view) {
-                // Get the nurses from the same institution as this doctor
-                $docInstID = Auth::user()->doctorProfile->institution_id;
+
+                // Get correct profile ID from url:
+                preg_match("/[^\/]+$/", \Request::url(), $matches);
+                $last_word = $matches[0];
+
+                // Get correct user:
+                $correctUser = Auth::user();
+                if ($last_word != Auth::user()->id) $correctUser = User::where('id', '=', $last_word)->first();
+
+
+                // Get the nurses from the same institution as this doctor:
+                $docInstID = $correctUser->doctorProfile->institution_id;
+
+
 
                 // Existing relations:
                 $existing = User::join('doctor_nurse', 'users.id', '=', 'doctor_nurse.nurse')
-                    ->where('doctor_nurse.doctor', '=', Auth::user()->id)
+                    ->where('doctor_nurse.doctor', '=', $correctUser->id)
                     ->get();
 
                 $notIn = Array();
