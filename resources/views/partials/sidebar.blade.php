@@ -108,7 +108,7 @@
                 </li>
                 @endcan
                 <li class="{{ $routeGroup == 'profile' ? 'active' : '' }}">
-                    <a href="{{ route('profile.show') }}">
+                    <a href="{{ route('profile.show', $user->id) }}">
                         <span class="icon glyphicon glyphicon-cog"></span><span class="title">Nastavitve</span>
                     </a>
                 </li>
