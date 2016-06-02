@@ -549,8 +549,8 @@
                                             <tbody>
                                             @foreach($docs as $doctor)
                                                     <tr>
-                                                        <td>{!! link_to_route('charges.activate', $doctor->first_name, $patient->id)!!}</td>
-                                                        <td>{!! link_to_route('charges.activate', $doctor->last_name, $patient->id)!!}</td>
+                                                        <td>{!! link_to_route('charges.activate', $doctor->first_name, $doctor->id)!!}</td>
+                                                        <td>{!! link_to_route('charges.activate', $doctor->last_name, $doctor->id)!!}</td>
                                                     </tr>
                                             @endforeach
                                             </tbody>
