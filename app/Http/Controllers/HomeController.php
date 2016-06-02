@@ -108,6 +108,7 @@ class HomeController extends Controller
                     return $query->where('checks_codes.end', '>', Carbon::now())
                         ->orWhere('checks_codes.end', '=', null);
                 })
+                ->orderBy('checks_codes.start', 'desc')
                 ->take(3*$limit)
                 ->get();
 
@@ -152,6 +153,7 @@ class HomeController extends Controller
                 ->select('measurements.*', 'codes.name', 'codes.description', 'measurement_results.result')
                 ->where('measurements.patient', '=', $user->id)
                 ->where('measurements.time', '>', $lastMonth)
+                ->orderBy('measurements.time', 'desc')
                 ->take($limit)
                 ->get();
 

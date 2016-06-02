@@ -51,6 +51,7 @@ class MeasurementController extends Controller
         $data['selected'] = false;
         $data['big'] = false;
         $data['id'] = 0;
+        $data['provider'] = Auth::user();
 
         if(session('isMyProfile'))
             $data['patient'] = Auth::user();
@@ -180,7 +181,6 @@ class MeasurementController extends Controller
         if($m->patient == $user->id || $m->patient == $me->id){
 
             $data = Array();
-            $data['patient'] = $user;
             $data['codesMeasurement'] = Code::where('code_type', 15)->get();
             $data['measurement'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
                 ->select('measurements.*', 'measurement_results.result')

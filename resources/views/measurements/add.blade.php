@@ -72,7 +72,7 @@
                     {{-- Provider id --}}
                     <div class="form-group{{ $errors->has('provider') ? ' has-error' : '' }} hidden">
                         <div class="col-sm-10">
-                            {!! Form::text('provider', $patient->id, ['class' => 'form-control', 'required']) !!}
+                            {!! Form::text('provider', $provider->id, ['class' => 'form-control', 'required']) !!}
                             @if ($errors->has('provider'))
                                 <span class="help-block">{{ $errors->first('provider') }}</span>
                             @endif
