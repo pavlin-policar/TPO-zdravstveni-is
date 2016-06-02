@@ -231,6 +231,7 @@ class CalendarController extends Controller
         $today = new \DateTime();
         // Get all doctors:
         $doctors = User::where('person_type', '=', Code::DOCTOR()->id)->get(); //->prepend('flavourText', '');
+        $user = null;
         if (Auth::user()->isNurse() && Auth::user()->id != session('showUser')) {
             $user = User::where('id', '=', session('showUser'))->first();
             if ($user != null && !$user->isDoctor()) $user = null;
