@@ -4,7 +4,10 @@ $(document).ready(() => {
     elements.each(idx => {
         const element = $(elements[idx]);
         // only apply the event handler to functions with defined data-expanded attributes
-        if (typeof element.data('expanded') == 'undefined') {
+        if (
+            typeof element.data('expanded') == 'undefined' ||
+            element.data('expanded') === null
+        ) {
             return;
         }
         // change halder function
@@ -42,17 +45,6 @@ $(document).ready(() => {
     $('.clickable-link').click(function() {
         window.document.location = $(this).data('href')
     });
-
-    // dashboard layout submit button
-    // $('#dashboard-layout-update').submit(function(e) {
-    //     e.preventDefault();
-    //     const form = $(this);
-    //     $.ajax({
-    //         url: form.attr('action'),
-    //         method: 'put',
-    //         data: form.serializeArray(),
-    //     })
-    // });
 
     $("#password").keyup(function() {
         check_pass();
@@ -169,21 +161,23 @@ $(document).ready(() => {
         }
     });
 
-    $('button#delete').on('click', function(){
-        swal({
-                title: "Ali ste prepričani?",
-                text: "Podatki se bodo za vedno izbrisali!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Ja, izbriši!",
-                cancelButtonText: "Prekliči",
-                closeOnConfirm: false
-            },
-            function(){
-                $("#deleteMeasurementForm").submit();
-            });
-    });
+    if ($('button#delete')) {
+        $('button#delete').on('click', function(){
+            swal({
+                    title: "Ali ste prepričani?",
+                    text: "Podatki se bodo za vedno izbrisali!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ja, izbriši!",
+                    cancelButtonText: "Prekliči",
+                    closeOnConfirm: false
+                },
+                function(){
+                    $("#deleteMeasurementForm").submit();
+                });
+        });
+    }
 
     if ($("#profileChangePassword").html() != null) {
         console.log("change password");
