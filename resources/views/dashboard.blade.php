@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="card" data-expanded="0">
-                        <div class="card-header">
+                        <div class="card-header" role="button">
                             <div class="card-title" style="width:100%">
                                 <div class="title pull-left">
                                     <span class="fa fa-wrench"></span>&nbsp;Nastative nadzorne
