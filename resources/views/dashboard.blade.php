@@ -506,23 +506,22 @@
                                     </div>
                                     <div class="card-body no-padding" id="dash-patient">
                                         <table class="datatable table table-striped" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Ime</th>
+                                                <th>Priimek</th>
+                                                <th>Doktor</th>
+                                            </tr>
+                                            </thead>
                                             @foreach($docs as $doctor)
-                                                <thead>
-                                                <tr>
-                                                    <th>Doktor: {!! link_to_route('charges.activate', $doctor->fullName, $doctor->id) !!}</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>Ime</th>
-                                                    <th>Priimek</th>
-                                                </tr>
-                                                </thead>
                                                 <tbody>
-                                                @foreach($doctor->patients as $patient)
-                                                    <tr>
-                                                        <td>{!! link_to_route('charges.activate', $patient->first_name, $patient->id)!!}</td>
-                                                        <td>{!! link_to_route('charges.activate', $patient->last_name, $patient->id)!!}</td>
-                                                    </tr>
-                                                @endforeach
+                                                    @foreach($doctor->patients as $patient)
+                                                        <tr>
+                                                            <td>{!! link_to_route('charges.activate', $patient->first_name, $patient->id)!!}</td>
+                                                            <td>{!! link_to_route('charges.activate', $patient->last_name, $patient->id)!!}</td>
+                                                            <td>{!! link_to_route('charges.activate', $doctor->fullName, $doctor->id) !!}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             @endforeach
 
