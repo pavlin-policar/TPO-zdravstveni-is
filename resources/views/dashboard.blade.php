@@ -494,7 +494,6 @@
                                 </div>
                             </div>
                         @endif
-
                         @if($user->isNurse() && session('isMyProfile'))
                             <div class="col-xs-12">
                                 <div class="card card-info" data-expanded="1" id="card-patients">
@@ -506,26 +505,55 @@
                                     </div>
                                     <div class="card-body no-padding" id="dash-patient">
                                         <table class="datatable table table-striped" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Ime</th>
+                                                <th>Priimek</th>
+                                                <th>Doktor</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
                                             @foreach($docs as $doctor)
-                                                <thead>
-                                                <tr>
-                                                    <th>Doktor: {!! link_to_route('charges.activate', $doctor->fullName, $doctor->id) !!}</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>Ime</th>
-                                                    <th>Priimek</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($doctor->patients as $patient)
-                                                    <tr>
-                                                        <td>{!! link_to_route('charges.activate', $patient->first_name, $patient->id)!!}</td>
-                                                        <td>{!! link_to_route('charges.activate', $patient->last_name, $patient->id)!!}</td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
+                                                    @foreach($doctor->patients as $patient)
+                                                        <tr>
+                                                            <td>{!! link_to_route('charges.activate', $patient->first_name, $patient->id)!!}</td>
+                                                            <td>{!! link_to_route('charges.activate', $patient->last_name, $patient->id)!!}</td>
+                                                            <td>{!! link_to_route('charges.activate', $doctor->fullName, $doctor->id) !!}</td>
+                                                        </tr>
+                                                    @endforeach
                                             @endforeach
+                                            </tbody>
 
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        @if($user->isNurse() && session('isMyProfile'))
+                            <div class="col-xs-12">
+                                <div class="card card-info" data-expanded="1" id="card-patients">
+                                    <div class="card-header">
+                                        <div class="card-title title-white" style="width:100%">
+                                            <div class="title pull-left">Nadrejeni doktorji</div>
+                                            <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body no-padding" id="dash-patient">
+                                        <table class="datatable table table-striped" cellspacing="0" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th>Ime</th>
+                                                <th>Priimek</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($docs as $doctor)
+                                                    <tr>
+                                                        <td>{!! link_to_route('charges.activate', $doctor->first_name, $patient->id)!!}</td>
+                                                        <td>{!! link_to_route('charges.activate', $doctor->last_name, $patient->id)!!}</td>
+                                                    </tr>
+                                            @endforeach
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
