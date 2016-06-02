@@ -2,7 +2,8 @@
 @section('content')
 
     <!-- FullCalendar -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" rel="stylesheet"
+      xmlns="http://www.w3.org/1999/html"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
@@ -14,7 +15,7 @@
                 <span class="title">Pregled terminov</span>
                 <div class="description">Pregled prostih in zasedenih terminov</div>
                 <div class="form-group has-error">
-                    <span class="help-block">{!! Session::pull('cloneMessage') !!}</span>
+                    <h4 class="bg-danger"style="display:inline-block"><span>{!! Session::pull('cloneMessage') !!}</span></h4>
                 </div>
                 <div class>
                     {!! link_to_route('calendar.schedule', 'Uredite svoj urnik', [], ['class' => 'btn btn-primary']) !!}
@@ -26,14 +27,14 @@
                     Naročanje</span>
                 <div class="description">Naročite se tako, da kliknete na prost termin</div><br />
                 <div class="form-group has-error">
-                    <span class="help-block">{!! Session::pull('cloneMessage') !!}</span>
+                    <h4 class="bg-danger" style="display:inline-block">{!! Session::pull('cloneMessage') !!}</h4>
                 </div>
             @endcan
         @elseif ($user != null)
                 <span class="title">Pregled terminov</span>
                 <div class="description">Pregled prostih in zasedenih terminov</div>
-                <div class="form-group has-error">
-                    <span class="help-block">{!! Session::pull('cloneMessage') !!}</span>
+                <div class="form-group has-error" style="display:inline-block">
+                    <h4 class="bg-danger" style="display:inline-block"><span>{!! Session::pull('cloneMessage') !!}</span></h4>
                 </div>
                 <div class>
                     {!! link_to_route('calendar.schedule', 'Uredite svoj urnik', [], ['class' => 'btn btn-primary']) !!}
@@ -45,7 +46,7 @@
                 Naročanje</span>
             <div class="description">Naročite se tako, da kliknete na prost termin</div><br />
             <div class="form-group has-error">
-                <span class="help-block">{!! Session::pull('cloneMessage') !!}</span>
+                <h4 class="bg-danger" style="display:inline-block">{!! Session::pull('cloneMessage') !!}</h4>
             </div>
         @endif
     </div>
