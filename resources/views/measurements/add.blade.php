@@ -13,6 +13,13 @@
                 </div>
                 <div class="card-body" id="dash-measurments">
 
+                    @if (Session::has('errorEmpty'))
+                        <div class="alert alert-success fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            {{ Session::get('errorEmpty') }}
+                        </div>
+                    @endif
+
                     @if (Session::has('msg'))
                         <div class="alert alert-success fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>

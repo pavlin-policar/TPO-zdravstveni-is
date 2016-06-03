@@ -64,6 +64,7 @@ class MeasurementController extends Controller
         if(isset($id) && $id > 0){
             $data['id'] = $id;
             $data['measurement'] = Code::find($id);
+            $tipMeritve = $data['measurement']->name;
             if(isset($data['measurement'])){
                 if($data['measurement']->code_type == 15){
                     $data['selected'] = true;
@@ -72,12 +73,18 @@ class MeasurementController extends Controller
                     $data['selected'] = true;
                     $data['big'] = true;
                     $smallMeasurement = MeasurementMeasurement::where('big_measurement', $data['measurement']->id)->select('small_measurement')->get();
-                    $data['measurement']['small'] = Code::where('id', $smallMeasurement[0]['small_measurement'])->get();
-                    for ($x = 1; $x < count($smallMeasurement); $x++) {
-                        $data['measurement']['small'][$x] = Code::find($smallMeasurement[$x]['small_measurement']);
+                    if(count($smallMeasurement)>0) {
+                        $data['measurement']['small'] = Code::where('id', $smallMeasurement[0]['small_measurement'])->get();
+                        for ($x = 1; $x < count($smallMeasurement); $x++) {
+                            $data['measurement']['small'][$x] = Code::find($smallMeasurement[$x]['small_measurement']);
+                        }
+                    }
+                    else{
+                        return redirect()->back()->with('errorEmpty', "Meritev $tipMeritve je prazna");
                     }
                 }
             }
+
         }
 
         return view('measurements.add')->with($data);
@@ -197,10 +204,11 @@ class MeasurementController extends Controller
 
     public function updateMeasurement(AddMeasurementRequest $request, $id){
 
+        $me = Auth::user();
         $type = Code::find($request->type);
         $measurement = Measurement::find($id);
 
-        if($measurement->check > 0){
+        if(($measurement->check > 0)||($measurement->provider != $me->id)){
             return redirect()->back()->with('error', 'Te meritve ni dovoljeno urejati');
         }
         else if($request->result < $type->min_value || $request->result > $type->max_value){

@@ -3,6 +3,14 @@
 @section('content')
     @foreach($checks as $check)
     <div class="row  no-margin-bottom">
+
+        @if (Session::has('errorCheck'))
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ Session::get('errorCheck') }}
+            </div>
+        @endif
+
         <div class="col-sm-6 col-xs-12">
             <div class="row">
                 <div class="col-xs-12">
