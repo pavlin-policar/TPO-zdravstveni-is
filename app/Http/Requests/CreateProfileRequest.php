@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\CodeType;
-use Illuminate\Support\Facades\Auth;
 
 class CreateProfileRequest extends Request
 {
@@ -24,6 +23,11 @@ class CreateProfileRequest extends Request
      */
     public function rules()
     {
+        $emailUnique = $this->route('user') === null ? '' :
+            '|unique:users,email,' . $this->route(user)->id;
+        $zzUnique = $this->route('user') === null ? '' :
+            '|unique:users,zz_card_number,' . $this->route('user')->id;
+
         return [
             'first_name' => 'required',
             'last_name' => 'required',
@@ -32,12 +36,12 @@ class CreateProfileRequest extends Request
                 CodeType::whereKey(CodeType::$codeTypes['GENDER'])->firstOrFail()
                     ->codes->lists('id')->implode(','),
 
-            'email' => 'required|email|unique:users,email,' . $this->route('user')->id,
+            'email' => 'required|email|' . $emailUnique,
             'phone_number' => 'required',
             'post' => 'required|exists:posts,id',
             'address' => 'required',
 
-            'zz_card_number' => 'required|unique:users,zz_card_number,' . $this->route('user')->id,
+            'zz_card_number' => 'required' . $zzUnique,
         ];
     }
 }
