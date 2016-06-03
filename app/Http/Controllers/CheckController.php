@@ -406,7 +406,7 @@ class CheckController extends Controller
 
     public function checkAddCode(CheckCodeRequest $request){
 
-        if((strlen($request->end) <= 1) && (Carbon::createFromFormat('Y-m-d H', $request['end']) < Carbon::createFromFormat('Y-m-d H', $request['start']))){
+        if((strlen($request->end) > 1) && (Carbon::createFromFormat('Y-m-d H', $request['end']) < Carbon::createFromFormat('Y-m-d H', $request['start']))){
             return redirect()->back()->with('errorCheck', 'Vnešen je napačen datum');
         }
 
