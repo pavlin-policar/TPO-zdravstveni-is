@@ -24,7 +24,7 @@ class CreateChargeRequest extends Request
     public function rules()
     {
         $emailUnique = $this->route('user') === null ? '' :
-            '|unique:users,email,' . $this->route(user)->id;
+            '|unique:users,email,' . $this->route('user')->id;
         $zzUnique = $this->route('user') === null ? '' :
             '|unique:users,zz_card_number,' . $this->route('user')->id;
 
