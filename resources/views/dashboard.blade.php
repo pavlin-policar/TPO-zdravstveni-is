@@ -10,7 +10,7 @@
                         <div class="card-header" role="button">
                             <div class="card-title" style="width:100%">
                                 <div class="title pull-left">
-                                    <span class="fa fa-wrench"></span>&nbsp;Nastative nadzorne
+                                    <span class="fa fa-wrench"></span>&nbsp;Nastavitve nadzorne
                                     plošče
                                 </div>
                                 <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
