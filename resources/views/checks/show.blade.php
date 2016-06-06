@@ -6,8 +6,8 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="card card-no-padding" data-expanded="1">
-                        <div class="card yellow card-header">
-                            <div class="card-title title-white" style="width:100%">
+                        <div class="card white card-header">
+                            <div class="card-title title-black" style="width:100%">
                                 <div class="title pull-left">Vaš pregled </div>
                                 <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                             </div>
@@ -26,6 +26,10 @@
                                         <td>Datum: </td>
                                         <td>{{ date("d.m.Y H:i",strtotime($check->time)) }}</td>
                                     </tr>
+                                    <tr>
+                                        <td>Opombe: </td>
+                                        <td>{{ $check->note }}</td>
+                                    </tr>
 
                                 </table>
                             @endif
@@ -36,12 +40,12 @@
             @if(count($checkMeasurement) > 0)
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="card">
+                        <div class="card" data-expanded="1">
                             <div class="card yellow card-header">
-                                <div class="card-title">
-                                    <div class="title title-white">Meritve</div>
+                                <div class="card-title title-white" style="width:100%">
+                                    <div class="title pull-left">Meritve</div>
+                                    <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                 </div>
-                                <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
                             </div>
                             <div class="card-body no-padding" id="dash-measurments">
                                 <table class="table table-hover">
@@ -84,12 +88,12 @@
             @if($checkCountMedical > 0)
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="card">
+                    <div class="card" data-expanded="1">
                         <div class="card red card-header">
-                            <div class="card-title">
-                                <div class="title title-white">Zdravila</div>
+                            <div class="card-title title-white" style="width:100%">
+                                <div class="title pull-left">Zdravila</div>
+                                <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                             </div>
-                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-medical"></div>
                         </div>
                         <div class="card-body no-padding" id="dash-medical">
                             <table class="table table-hover">
@@ -127,12 +131,12 @@
             @if($checkCountDisease > 0)
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="card card-success">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <div class="title title-white">Bolezni in alergije</div>
+                    <div class="card card-success" data-expanded="1">
+                        <div class="card card-header">
+                            <div class="card-title title-white" style="width:100%">
+                                <div class="title pull-left">Bolezni in alergije</div>
+                                <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                             </div>
-                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-allergy"></div>
                         </div>
                         <div class="card-body no-padding" id="dash-allergy">
                             <table class="table table-hover">
@@ -174,12 +178,12 @@
             @if($checkCountDiet > 0)
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="card card-info">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <div class="title title-white">Diete</div>
+                    <div class="card card-info" data-expanded="1">
+                        <div class="card card-header">
+                            <div class="card-title title-white" style="width:100%">
+                                <div class="title pull-left">Diete</div>
+                                <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                             </div>
-                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
                         </div>
                         <div class="card-body no-padding" id="dash-diet">
                             <table class="table table-hover">

@@ -13,6 +13,20 @@
                 </div>
                 <div class="card-body " id="dash-measurments">
 
+                    @if (Session::has('errorEmpty'))
+                        <div class="alert alert-danger fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            {{ Session::get('errorEmpty') }}
+                        </div>
+                    @endif
+
+                    @if (Session::has('error'))
+                        <div class="alert alert-danger fade in">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            {{ Session::get('error') }}
+                        </div>
+                    @endif
+
                     @if (Session::has('msg'))
                         <div class="alert alert-success fade in">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -79,9 +93,6 @@
                             @if ($errors->has('result'))
                                 <span class="help-block">{{ $errors->first('result') }}</span>
                             @endif
-                            @if (Session::has('error'))
-                                <div class="alert alert-danger">{{ Session::get('error') }}</div>
-                            @endif
                         </div>
                     </div>
 
@@ -89,7 +100,7 @@
                     <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
                         {!! Form::label('date', 'Datum', ['class' => 'col-sm-2 control-label']) !!}
                         <div class="col-sm-10">
-                            {!! Form::date('date', date("Y-m-d", strtotime($measurement->time)), ['class' => 'form-control', 'required']) !!}
+                            {!! Form::date('date', date("Y-m-d", strtotime($measurement->time)), ['class' => 'form-control', 'max' => date("Y-m-d", strtotime(Carbon\Carbon::now())), 'required']) !!}
                             @if ($errors->has('date'))
                                 <span class="help-block">{{ $errors->first('date') }}</span>
                             @endif

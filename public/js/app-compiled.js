@@ -226,7 +226,70 @@ $(document).ready(function () {
     });
 
     if ($("#graph").length) {
-        if ($("#graph1").length) {
+        if ($("#graph2").length) {
+            var json = jQuery.parseJSON($("#graph").text());
+            var json1 = jQuery.parseJSON($("#graph1").text());
+            json1 = jQuery.parseJSON(JSON.stringify(json1).replace(/"result":/g, '"result1":'));
+            var jsonData = $.merge(json, json1);
+            var json2 = jQuery.parseJSON($("#graph2").text());
+            json2 = jQuery.parseJSON(JSON.stringify(json2).replace(/"result":/g, '"result2":'));
+            jsonData = $.merge(jsonData, json2);
+
+            var minimal = jQuery.parseJSON($("#minimal").text());
+            var maximal = jQuery.parseJSON($("#maximal").text());
+            var minNormal = jQuery.parseJSON($("#minNormal").text());
+            var maxNormal = jQuery.parseJSON($("#maxNormal").text());
+            var plus = (maxNormal - minNormal) / 20;
+            var array = [];
+            while (minNormal <= maxNormal) {
+                array.push(minNormal);
+                minNormal += plus;
+            }
+            var minimal1 = jQuery.parseJSON($("#minimal1").text());
+            var maximal1 = jQuery.parseJSON($("#maximal1").text());
+            var minNormal1 = jQuery.parseJSON($("#minNormal1").text());
+            var maxNormal1 = jQuery.parseJSON($("#maxNormal1").text());
+            var plus1 = (maxNormal1 - minNormal1) / 20;
+            var array1 = [];
+            while (minNormal1 <= maxNormal1) {
+                array.push(minNormal1);
+                minNormal1 += plus1;
+            }
+            var minimal2 = jQuery.parseJSON($("#minimal2").text());
+            var maximal2 = jQuery.parseJSON($("#maximal2").text());
+            var minNormal2 = jQuery.parseJSON($("#minNormal2").text());
+            var maxNormal2 = jQuery.parseJSON($("#maxNormal2").text());
+            var plus2 = (maxNormal2 - minNormal2) / 20;
+            var array2 = [];
+            while (minNormal2 <= maxNormal2) {
+                array.push(minNormal2);
+                minNormal2 += plus2;
+            }
+            //alert(array);
+            Morris.Line({
+                element: 'graf-meritev',
+                data: jsonData,
+                xkey: 'time',
+                ykeys: ['result', 'result1', 'result2'],
+                labels: [$("#meritev").text(), $("#meritev1").text(), $("#meritev2").text()],
+                xLabelFormat: function xLabelFormat(d) {
+                    return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
+                },
+                hoverCallback: function hoverCallback(index, options, content) {
+                    var d = new Date(content.substring(36, 55)),
+                        dformat = [d.getDate(), d.getMonth() + 1, d.getFullYear()].join('.') + ' ' + [d.getHours(), d.getMinutes()].join(':');
+                    return dformat + content.substring(55, content.length);
+                },
+                behaveLikeLine: false,
+                resize: true,
+                ymin: Math.min(minimal, minimal1, minimal2),
+                ymax: Math.max(maximal, maximal1, maximal2),
+                goals: array,
+                goalLineColors: ['#22FF22'],
+                goalStrokeWidth: 3
+            });
+        }
+        else if ($("#graph1").length) {
             var json = jQuery.parseJSON($("#graph").text());
             var json1 = jQuery.parseJSON($("#graph1").text());
             json1 = jQuery.parseJSON(JSON.stringify(json1).replace(/"result":/g, '"result1":'));
@@ -258,7 +321,7 @@ $(document).ready(function () {
                 data: jsonData,
                 xkey: 'time',
                 ykeys: ['result', 'result1'],
-                labels: ['Sistolični', 'Diastolični'],
+                labels: [$("#meritev").text(), $("#meritev1").text()],
                 xLabelFormat: function xLabelFormat(d) {
                     return d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
                 },

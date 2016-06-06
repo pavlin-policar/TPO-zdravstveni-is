@@ -31,7 +31,7 @@
 <div class="form-group{{ $errors->has('start') ? ' has-error' : '' }}">
     {!! Form::label('start', 'Začetek jemanja', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-10">
-        {!! Form::date('start', date(Carbon\Carbon::now()), ['class' => 'form-control', 'required']) !!}
+        {!! Form::date('start', null, ['class' => 'form-control', 'required']) !!}
         @if ($errors->has('start'))
             <span class="help-block">{{ $errors->first('start') }}</span>
         @endif

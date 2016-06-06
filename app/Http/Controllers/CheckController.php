@@ -50,7 +50,7 @@ class CheckController extends Controller
             $data['check'] = DB::table('checks')
                 ->join('users', 'checks.doctor', '=', 'users.id')
                 ->join('doctor_dates', 'checks.doctor_date', '=', 'doctor_dates.id')
-                ->select('doctor_dates.time', 'users.first_name', 'users.last_name')
+                ->select('doctor_dates.time', 'users.first_name', 'users.last_name', 'checks.note')
                 ->where('checks.id', '=', $id)
                 ->first();
 
@@ -203,6 +203,50 @@ class CheckController extends Controller
                         if (!empty($data['type1']['code'])) {
                             $data['normalValues1'] = Code::where('code', "=", 'normal')
                                 ->where('code_type', "=", $data['type1']['code'])
+                                ->first();
+                        }
+                    }else if(count($small) == 3){
+                        $data['type'] = Code::find($small[0]->small_measurement);
+                        $data['type1'] = Code::find($small[1]->small_measurement);
+                        $data['type2'] = Code::find($small[2]->small_measurement);
+
+                        $data['graph'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
+                            ->select('measurement_results.result', 'measurements.time')
+                            ->where('measurements.type', $small[0]->small_measurement)
+                            ->where('measurements.patient', '=', $user->id)
+                            ->where('measurements.time', '>', $from)
+                            ->where('measurements.time', '<=', $to)
+                            ->orderBy('measurements.time', 'asc')
+                            ->get();
+                        if (!empty($data['type']['code'])) {
+                            $data['normalValues'] = Code::where('code', "=", 'normal')
+                                ->where('code_type', "=", $data['type']['code'])
+                                ->first();
+                        }
+                        $data['graph1'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
+                            ->select('measurement_results.result', 'measurements.time')
+                            ->where('measurements.type', $small[1]->small_measurement)
+                            ->where('measurements.patient', '=', $user->id)
+                            ->where('measurements.time', '>', $from)
+                            ->where('measurements.time', '<=', $to)
+                            ->orderBy('measurements.time', 'asc')
+                            ->get();
+                        if (!empty($data['type1']['code'])) {
+                            $data['normalValues1'] = Code::where('code', "=", 'normal')
+                                ->where('code_type', "=", $data['type1']['code'])
+                                ->first();
+                        }
+                        $data['graph2'] = Measurement::join('measurement_results', 'measurements.id', '=', 'measurement_results.measurement')
+                            ->select('measurement_results.result', 'measurements.time')
+                            ->where('measurements.type', $small[2]->small_measurement)
+                            ->where('measurements.patient', '=', $user->id)
+                            ->where('measurements.time', '>', $from)
+                            ->where('measurements.time', '<=', $to)
+                            ->orderBy('measurements.time', 'asc')
+                            ->get();
+                        if (!empty($data['type2']['code'])) {
+                            $data['normalValues2'] = Code::where('code', "=", 'normal')
+                                ->where('code_type', "=", $data['type2']['code'])
                                 ->first();
                         }
                     }
@@ -369,7 +413,10 @@ class CheckController extends Controller
         $type = Code::find($request->type);
 
         if($request->result < $type->min_value || $request->result > $type->max_value){
-            return redirect()->back()->with('error', 'Napačna vrednost');
+            return redirect()->back()->with('errorCheck', 'Napačna vrednost');
+        }
+        else if( Carbon::createFromFormat('Y-m-d', $request['date']) > Carbon::now()){
+            return redirect()->back()->with('errorCheck', "Napačen datum");
         }
         else {
             $measurement = Measurement::find($id);
@@ -387,7 +434,7 @@ class CheckController extends Controller
 
             $measurementResult->update();
 
-            return redirect()->back()->with('Check', 'CheckMeasurementAdded');
+            return redirect()->back()->with('msg', 'Meritev je bila urejena');
         }
     }
 
@@ -401,12 +448,12 @@ class CheckController extends Controller
 
         $check->save();
 
-        return redirect()->back()->with('Check', 'CheckAdded');
+        return redirect()->back()->with('msg', 'Pregled je bil potrjen');
     }
 
     public function checkAddCode(CheckCodeRequest $request){
 
-        if((strlen($request->end) > 1) && (Carbon::createFromFormat('Y-m-d H', $request['end']) < Carbon::createFromFormat('Y-m-d H', $request['start']))){
+        if((strlen($request->end) > 1) && (Carbon::createFromFormat('Y-m-d', $request['end']) < Carbon::createFromFormat('Y-m-d', $request['start']))){
             return redirect()->back()->with('errorCheck', 'Vnešen je napačen datum');
         }
 
@@ -423,7 +470,7 @@ class CheckController extends Controller
 
         $checkCode->save();
 
-        return redirect()->back()->with('Check', 'CheckCodeAdded');
+        return redirect()->back()->with('msg', 'Podatki so bili dodani');
     }
 
     public function checkAddMeasurement(CheckMeasurementRequest $request) {
@@ -431,7 +478,10 @@ class CheckController extends Controller
         $type = Code::find($request->type);
 
         if($request->result < $type->min_value || $request->result > $type->max_value){
-            return redirect()->back()->with('error', 'Napačna vrednost');
+            return redirect()->back()->with('errorCheck', 'Napačna vrednost');
+        }
+        else if( Carbon::createFromFormat('Y-m-d', $request['date']) > Carbon::now()){
+           return redirect()->back()->with('errorCheck', "Napačen datum");
         }
         else{
             if(isset($request['result']) || $request['result'] != null) {

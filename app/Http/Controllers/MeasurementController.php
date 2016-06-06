@@ -80,7 +80,7 @@ class MeasurementController extends Controller
                         }
                     }
                     else{
-                        return redirect()->back()->with('errorEmpty', "Meritev $tipMeritve je prazna");
+                        return redirect()->back()->with('error', "Meritev $tipMeritve je prazna");
                     }
                 }
             }
@@ -94,8 +94,11 @@ class MeasurementController extends Controller
 
         $type = Code::find($request->type);
 
-        if($request->result < $type->min_value || $request->result > $type->max_value){
+        if($request->result < $type->min_value || $request->result > $type->max_value || $request['date'] > Carbon::now()){
             return redirect()->back()->with('error', 'Napačna vrednost');
+        }
+        else if( Carbon::createFromFormat('Y-m-d', $request['date']) > Carbon::now()){
+            return redirect()->back()->with('error', "Napačen datum");
         }
         else{
             if(isset($request['result']) || $request['result'] != null) {
@@ -214,6 +217,9 @@ class MeasurementController extends Controller
         else if($request->result < $type->min_value || $request->result > $type->max_value){
             return redirect()->back()->with('error', 'Napačna vrednost');
         }
+        else if( Carbon::createFromFormat('Y-m-d', $request['date']) > Carbon::now()){
+            return redirect()->back()->with('error', "Napačen datum");
+        }
         else {
 
             if($request['provider'] > 0){
@@ -238,8 +244,9 @@ class MeasurementController extends Controller
     public function deleteMeasurement($id){
 
         $measurement = Measurement::find($id);
+        $me = Auth::user();
 
-        if($measurement->check > 0){
+        if($measurement->check > 0 || $measurement->provider != $me->id){
             return redirect()->back()->with('error', 'Te meritve ni dovoljeno brisati');
         }
         else{

@@ -138,7 +138,7 @@
     <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
         {!! Form::label('date', 'Datum', ['class' => 'col-sm-2 control-label']) !!}
         <div class="col-sm-10">
-            {!! Form::date('date', date("Y-m-d", strtotime(Carbon\Carbon::now())), ['class' => 'form-control', 'required']) !!}
+            {!! Form::date('date', date("Y-m-d", strtotime(Carbon\Carbon::now())), ['class' => 'form-control', 'max' => date("Y-m-d", strtotime(Carbon\Carbon::now())), 'required']) !!}
             @if ($errors->has('date'))
                 <span class="help-block">{{ $errors->first('date') }}</span>
             @endif

@@ -5,9 +5,16 @@
     <div class="row  no-margin-bottom">
 
         @if (Session::has('errorCheck'))
-            <div class="alert alert-success fade in">
+            <div class="alert alert-danger fade in">
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 {{ Session::get('errorCheck') }}
+            </div>
+        @endif
+
+        @if (Session::has('msg'))
+            <div class="alert alert-success fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ Session::get('msg') }}
             </div>
         @endif
 
@@ -15,8 +22,8 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="card card-no-padding" data-expanded="1">
-                        <div class="card yellow card-header">
-                            <div class="card-title title-white" style="width:100%">
+                        <div class="card white card-header">
+                            <div class="card-title title-black" style="width:100%">
                                 <div class="title pull-left">Vaš pregled </div>
                                 <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                             </div>
@@ -120,21 +127,14 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="card">
+                    <div class="card" data-expanded="1">
                         <div class="card yellow card-header">
-                            <div class="card-title">
-                                <div class="title title-white">Meritve</div>
+                            <div class="card-title title-white" style="width:100%">
+                                <div class="title pull-left">Meritve</div>
+                                <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                             </div>
-                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-measurments"></div>
                         </div>
                         <div class="card-body" id="dash-measurments">
-
-                            @if (Session::has('msg'))
-                                <div class="alert alert-success fade in">
-                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                    {{ Session::get('msg') }}
-                                </div>
-                            @endif
 
                             @foreach ($checkMeasurement[$check->id] as $d)
                                 {!! Form::open(['route' => ['check.updateMeasurement', $d->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
@@ -227,7 +227,7 @@
                                 <div class="form-group{{ $errors->has('date') ? ' has-error' : '' }}">
                                     {!! Form::label('date', 'Datum', ['class' => 'col-sm-2 control-label']) !!}
                                     <div class="col-sm-10">
-                                        {!! Form::date('date', date("Y-m-d", strtotime($d->time)), ['class' => 'form-control', 'required']) !!}
+                                        {!! Form::date('date', date("Y-m-d", strtotime($d->time)), ['class' => 'form-control', 'max' => date("Y-m-d", strtotime(Carbon\Carbon::now())), 'required']) !!}
                                         @if ($errors->has('date'))
                                             <span class="help-block">{{ $errors->first('date') }}</span>
                                         @endif
@@ -265,12 +265,12 @@
         <div class="col-sm-6 col-xs-12">
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="card">
+                        <div class="card" data-expanded="1">
                             <div class="card red card-header">
-                                <div class="card-title">
-                                    <div class="title title-white">Zdravila</div>
+                                <div class="card-title title-white" style="width:100%">
+                                    <div class="title pull-left">Zdravila</div>
+                                    <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                 </div>
-                                <div class="fa fa-compress icon-arrow-right" id="glyphicon-medical"></div>
                             </div>
                             <div class="card-body" id="dash-medical">
                                 @foreach ($checkData[$check->id] as $d)
@@ -366,12 +366,12 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="card card-success">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <div class="title title-white">Bolezni in alergije</div>
+                        <div class="card card-success" data-expanded="1">
+                            <div class="card card-header">
+                                <div class="card-title title-white" style="width:100%">
+                                    <div class="title pull-left">Bolezni in alergije</div>
+                                    <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                 </div>
-                                <div class="fa fa-compress icon-arrow-right" id="glyphicon-allergy"></div>
                             </div>
                             <div class="card-body" id="dash-allergy">
                                 @foreach ($checkData[$check->id] as $d)
@@ -468,12 +468,12 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="card card-info">
-                            <div class="card-header">
-                                <div class="card-title">
-                                    <div class="title title-white">Diete</div>
+                        <div class="card card-info" data-expanded="1">
+                            <div class="card card-header">
+                                <div class="card-title title-white" style="width:100%">
+                                    <div class="title pull-left">Diete</div>
+                                    <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                                 </div>
-                                <div class="fa fa-compress icon-arrow-right" id="glyphicon-diet"></div>
                             </div>
                             <div class="card-body" id="dash-diet">
                                 @foreach ($checkData[$check->id] as $d)
@@ -576,12 +576,12 @@
         <div class="col-sm-6 col-xs-12">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="card card-no-padding">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <div class="title">Dodaj pregled</div>
+                    <div class="card card-no-padding" data-expanded="1">
+                        <div class="card card-header">
+                            <div class="card-title title-black" style="width:100%">
+                                <div class="title pull-left">Dodaj pregled</div>
+                                <div class="fa fa-compress icon-arrow-right text-right expand-trigger"></div>
                             </div>
-                            <div class="fa fa-compress icon-arrow-right" id="glyphicon-check-old"></div>
                         </div>
                         <div class="card-body">
                              @include('checks.addCheck')

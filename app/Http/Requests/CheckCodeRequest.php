@@ -29,4 +29,12 @@ class CheckCodeRequest extends Request
             'code' => 'required'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'max' => 'Vrednost ne sme biti večja od :max',
+            'min' => 'Vrednost ne sme biti manjša od :min',
+        ];
+    }
 }
