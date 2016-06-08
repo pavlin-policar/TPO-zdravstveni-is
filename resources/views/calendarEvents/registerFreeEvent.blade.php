@@ -1,6 +1,10 @@
 @extends('layouts.master')
 @section('content')
 
+    <?php
+        $person = \Illuminate\Foundation\Auth\User::where('id', '=', session('showUser'))->first();
+        //dd($person->person_type);
+    ?>
 
     <div class="page-title">
         @if(Auth::user()->id == Session('showUser'))
@@ -16,6 +20,9 @@
                     <div class="description">Naročite se na prost termin</div>
                 </div>
             @endcan
+        @elseif (Auth::user()->isNurse() && $person != null && $person->person_type == 4)
+                <span class="title">Pregled</span>
+                <div class="description">Podatki o pregledu</div>
         @else
             <div class="page-title">
                 <span class="title">Naročanje</span>
@@ -31,6 +38,8 @@
                     <div class="card-title">
                         <span class="title">Termin: <strong>{!! $time !!}</strong></span><br />
                         @if ($creator == null && $doctor == Auth::user()->id && Session('showUser') == Auth::user()->id)
+                            <span class="title">Upravljalec: <strong>{!! $patient->fullName !!}</strong></span>
+                        @elseif (Auth::user()->isNurse() && $person != null && $person->person_type == 4)
                             <span class="title">Upravljalec: <strong>{!! $patient->fullName !!}</strong></span>
                         @else
                             <span class="title">Pacient: <strong>{!! $patient->fullName !!}</strong></span>
@@ -58,10 +67,13 @@
                         </div>
                     </div>
 
-                    {{-- Submit button --}}
+                    {{-- Submit button & Co --}}
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             @if ($creator != null && $creator->who_inserted == Auth::user()->id)
+                                {!! Form::submit('Dodajte opombe', ['class' => 'btn btn-primary']) !!}
+                                {!! link_to_route('calendar.cancelEvent', 'Sprostite termin', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
+                            @elseif (Auth::user()->isNurse() && $person != null && $person->person_type == 4 && $creator != null)
                                 {!! Form::submit('Dodajte opombe', ['class' => 'btn btn-primary']) !!}
                                 {!! link_to_route('calendar.cancelEvent', 'Sprostite termin', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
                             @elseif ($creator != null)
@@ -72,6 +84,9 @@
                                 @if ($doctor == Auth::user()->id && Session('showUser') == Auth::user()->id)
                                     {!! link_to_route('calendar.cancelEvent', 'Odstranite termin', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
                                     {!! link_to_route('calendar.introduceBreak', 'Označite odmor za malico', ['time' => $time, 'user' => $patient, 'doctor' => $doctor], ['class' => 'btn btn-primary']) !!}
+                                @elseif (Auth::user()->isNurse() && $person != null && $person->person_type == 4 && $creator == null)
+                                    {!! link_to_route('calendar.cancelEvent', 'Odstranite termin', ['time' => $time, 'doctor' => $patient, 'user' => $doctor], ['class' => 'btn btn-primary']) !!}
+                                    {!! link_to_route('calendar.introduceBreak', 'Označite odmor za malico', ['time' => $time, 'doctor' => $patient, 'user' => $doctor], ['class' => 'btn btn-primary']) !!}
                                 @else
                                     {!! Form::submit('Rezerviraj termin', ['class' => 'btn btn-primary']) !!}
                                 @endif

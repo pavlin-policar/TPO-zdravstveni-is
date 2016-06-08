@@ -467,12 +467,13 @@ class CalendarController extends Controller
 
         // 1. Get the event
         $event = DoctorDates::where('doctor', '=', $doctorId)->where('time', '=', $formattedTime)->first();
-
         // 2. Is event empty?
-        if (($event->patient == null) && ($event->doctor == Auth::user()->id)) {
+        //if (($event->patient == null) && ($event->doctor == Auth::user()->id)) {
+        if ($event->patient == null) {
                 $event->delete();
         }
-        elseif (($event->patient != null) && ($event->who_inserted == Auth::user()->id)) {
+        //elseif (($event->patient != null) && (($event->who_inserted == Auth::user()->id) || $event->who_inserted == session('showUser'))) {
+        elseif ($event->patient != null) {
             // 3. Did I sign someone/myself up for this appointment?
 
             // Check event's date
