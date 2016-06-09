@@ -448,10 +448,10 @@ class CalendarController extends Controller
         }
 
         // Doctor can set you up with another appointment, even if you have one or ten already:
-        $u = Auth::user();
+        /*$u = Auth::user();
 
         if (!$u->isDoctor() && !$u->isNurse()) {
-            $event = DoctorDates::where('patient', '=', $userId)->first();
+            $event = DoctorDates::where('patient', '=', $userId)->get();
 
             if ($event != null) {
                 request()->session()->flash(
@@ -460,7 +460,7 @@ class CalendarController extends Controller
                 );
                 return redirect()->route('calendar.user');
             }
-        }
+        }*/
 
         // The event is still free, so this is just user trying to register:
         $checkup = DoctorDates::where('patient', '=', null)->where('time', '=', $start)->where('doctor', '=', $doctorId)->first();
