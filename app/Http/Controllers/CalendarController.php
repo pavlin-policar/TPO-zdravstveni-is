@@ -352,6 +352,8 @@ class CalendarController extends Controller
         $startDate = Carbon::createFromFormat('Y-m-d', $request->dayStart);
         $endDate = Carbon::createFromFormat('Y-m-d', $request->dayEnd);
 
+        if ($request->breakStart != null) $breakStart = Carbon::createFromFormat('H:i', $request->breakStart);
+        //dd($breakStart);
         //dd(Carbon::parse($startDate)->dayOfWeek); // 1 = PON
         $jump = Carbon::createFromFormat('H:i', $request->interval);
         $endTime = Carbon::createFromFormat('H:i', $request->hourEnd);
@@ -371,6 +373,7 @@ class CalendarController extends Controller
                 // Found chosen day:
                 if (Carbon::parse($startDate)->dayOfWeek == $day) {
                     $startTime = Carbon::createFromFormat('H:i', $request->hourStart);
+                    //dd($startTime == $breakStart);
                     $end = clone($startTime);
                     for ($startTime;  $startTime <= $endTime; $startTime->addMinutes($jump->minute)) {
                         $end->addMinutes($jump->minute); // -> Termin interval!
@@ -382,7 +385,11 @@ class CalendarController extends Controller
                         $dd->time = $time;
                         $dd->time_end = $timeEnd;
                         $dd->doctor = $docid;
-
+                        if ($breakStart == $startTime) {
+                            $dd->note = 'odmor';
+                            $dd->patient = $docid;
+                            $dd->who_inserted = $docid;
+                        }
                         // Check for collision before saving event:
                         if (!$this->checkForCollision($dd, $collisionCandidates, 0)) {
                             // No collision, save event:

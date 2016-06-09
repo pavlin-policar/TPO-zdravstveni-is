@@ -95,6 +95,18 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('breakStart') ? ' has-error' : '' }}">
+
+                            <div class="col-lg-offset-2 col-sm-10">
+                                {!! Form::label('breakStart', 'Začetek malice:', ['class' => 'control-label']) !!}
+                                {!! Form::time('breakStart', '') !!} <br />
+
+                                @if ($errors->has('breakStart'))
+                                    <span class="help-block">{{ $errors->first('breakStart') }}</span>
+                                @endif
+                            </div>
+                        </div>
+
                         {{-- Submit button --}}
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
