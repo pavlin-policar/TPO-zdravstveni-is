@@ -372,11 +372,13 @@
                                             </thead>
                                             <tbody>
                                             @for ($x = 0, $max = count($checksOld); $x < $max; $x++)
-                                                <tr class="clickable-link" data-href="{{ url('/check', $checksOld[$x]->id) }}">
-                                                    <td>{{ date("d.m.Y H:i",strtotime($checksOld[$x]->time)) }}</td>
-                                                    <td>{{ $checksOld[$x]->first_name }} {{ $checksOld[$x]->last_name }}</td>
-                                                    <td>{{ $checksOld[$x]->note }}</td>
-                                                </tr>
+                                                @if($checksOld[$x]->note != 'odmor')
+                                                    <tr class="clickable-link" data-href="{{ url('/check', $checksOld[$x]->id) }}">
+                                                        <td>{{ date("d.m.Y H:i",strtotime($checksOld[$x]->time)) }}</td>
+                                                        <td>{{ $checksOld[$x]->first_name }} {{ $checksOld[$x]->last_name }}</td>
+                                                        <td>{{ $checksOld[$x]->note }}</td>
+                                                    </tr>
+                                                @endif
                                             @endfor
                                             </tbody>
                                         </table>
@@ -410,8 +412,7 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($doctorDates as $doctorDate)
-                                                    @if($doctorDate->doctor != $doctorDate->patient)
-
+                                                    @if($doctorDate->doctor != $doctorDate->patient && $doctorDate->note != 'odmor')
                                                             <tr>
                                                                 <td>{{ date("d.m.Y H:i",strtotime($doctorDate->time)) }}</td>
                                                                 <td>{{ $doktorCheck[$doctorDate->doctor]->fullName }}</td>

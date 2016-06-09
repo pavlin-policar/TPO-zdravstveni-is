@@ -429,12 +429,12 @@ class CalendarController extends Controller
 
     public function register($time, $userId, $doctorId, Request $request) {
 
-        //dd($request);
-
         $start = Carbon::createFromFormat('d.m.Y H:i', $time);
 
         // Is event already full?
         $checkup = DoctorDates::where('patient', '=', $userId)->where('doctor', '=', $doctorId)->where('time', '=', $start)->first();
+
+        //dd($checkup);
 
         if ($checkup != null) {
             //Event already full, we're just updating notes:
@@ -463,13 +463,18 @@ class CalendarController extends Controller
         }
 
         // The event is still free, so this is just user trying to register:
-        $checkup = DoctorDates::where('patient', '=', null)->where('time', '=', $start)->first();
+        $checkup = DoctorDates::where('patient', '=', null)->where('time', '=', $start)->where('doctor', '=', $doctorId)->first();
         //dd($checkup);
         if ($checkup != null) {
             $checkup->patient = $userId;
             $checkup->who_inserted = Auth::user()->id;
             if ($request->note != null) $checkup->note = $request->note;
             $checkup->save();
+
+            request()->session()->flash(
+                'cloneMessage',
+                'Termin uspešno rezerviran!'
+            );
             return redirect()->route('calendar.user');
         }
     }
@@ -502,6 +507,11 @@ class CalendarController extends Controller
                 $event->who_inserted = null;
                 $event->note = null;
                 $event->save();
+
+                request()->session()->flash(
+                    'cloneMessage',
+                    'Termin uspešno sproščen!'
+                );
             } else {
                 //dd($date);
                 request()->session()->flash(
