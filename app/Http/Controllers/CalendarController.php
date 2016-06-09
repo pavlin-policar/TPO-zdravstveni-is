@@ -134,7 +134,7 @@ class CalendarController extends Controller
             foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
         }
 
-        //dd($checkups);
+        //dd($checkups[7]);
 
         $events = [];
         if ($checkups != null) {
@@ -174,6 +174,7 @@ class CalendarController extends Controller
                         }
                 } // We're the patient
                 elseif ($actualUser->id == $checkup->patient) {
+                    //dd($checkup);
                     if($actualUser->isDoctor()) $url = route('calendar.registerEvent', ['time' => $start, 'user' => $actualUser->id, 'doctor' => $checkup->doctor]);
                     $title = User::where('id', '=', $checkup->patient)->first();
                     $title = $title->fullName;
@@ -192,7 +193,7 @@ class CalendarController extends Controller
                     $backgroundClr = '#099';
                     $url = route('calendar.registerEvent', ['time' => $start, 'user' => $checkup->who_inserted, 'doctor' => $docId]);
                 } // The event is still open
-                elseif (null == $checkup->patitent) {
+                elseif (null == $checkup->patient) {
                     $title = 'Prost termin';
                 }
 
@@ -422,6 +423,8 @@ class CalendarController extends Controller
 
     public function register($time, $userId, $doctorId, Request $request) {
 
+        //dd($request);
+
         $start = Carbon::createFromFormat('d.m.Y H:i', $time);
 
         // Is event already full?
@@ -439,9 +442,12 @@ class CalendarController extends Controller
         }
 
         // Doctor can set you up with another appointment, even if you have one or ten already:
-        if (!Auth::user()->isDoctor() || !Auth::user()->isNurse()) {
+        $u = Auth::user();
+
+        if (!$u->isDoctor() && !$u->isNurse()) {
             $event = DoctorDates::where('patient', '=', $userId)->first();
-            if ($event->count > 0) {
+
+            if ($event != null) {
                 request()->session()->flash(
                     'cloneMessage',
                     'Naenkrat se lahko naročite samo na en termin! Za več naročil se obrnite na svojega osebnega doktorja.'
@@ -449,7 +455,6 @@ class CalendarController extends Controller
                 return redirect()->route('calendar.user');
             }
         }
-
 
         // The event is still free, so this is just user trying to register:
         $checkup = DoctorDates::where('patient', '=', null)->where('time', '=', $start)->first();
@@ -485,7 +490,7 @@ class CalendarController extends Controller
 
             // Check event's date
             $date = $today->diff($formattedTime);
-            if ($date->days > 0 || ($date->h >= 12 && $date->days = 0)) {
+            if ($date->days > 0 || ($date->h >= 12 && $date->days == 0)) {
                 //dd($date);
                 $event->patient = null;
                 $event->who_inserted = null;
@@ -495,7 +500,7 @@ class CalendarController extends Controller
                 //dd($date);
                 request()->session()->flash(
                     'cloneMessage',
-                    'Dogodka ne morete sprositi/izbrisati!'
+                    'Dogodka ne morete sprositi/izbrisati, ker je oddaljen manj kot 12 ur!'
                 );
             }
         } else {
