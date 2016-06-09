@@ -62,13 +62,10 @@
                             </div>
 
                             {{-- Patient  --}}
-                            <div class="form-group{{ $errors->has('pacient') ? ' has-error' : '' }}">
+                            <div class="form-group">
                                 {!! Form::label('pacient', 'Pacient', ['class' => 'col-sm-2 control-label']) !!}
                                 <div class="col-sm-10">
-                                    {!! Form::text('pacient', $patient->fullName, ['class' => 'form-control', 'disabled']) !!}
-                                    @if ($errors->has('pacient'))
-                                        <span class="help-block">{{ $errors->first('pacient') }}</span>
-                                    @endif
+                                    {!! link_to_route('charges.activate', $patient->full_name, $patient->id, ['class' => 'btn btn-default', 'style' => 'width:100%'])!!}
                                 </div>
                             </div>
 
