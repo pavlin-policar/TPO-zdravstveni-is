@@ -94,7 +94,7 @@ class MeasurementController extends Controller
 
         $type = Code::find($request->type);
 
-        if($request->result < $type->min_value || $request->result > $type->max_value || $request['date'] > Carbon::now()){
+        if($request->result < $type->min_value || $request->result > $type->max_value ){
             return redirect()->back()->with('error', 'Napačna vrednost');
         }
         else if( Carbon::createFromFormat('Y-m-d', $request['date']) > Carbon::now()){
