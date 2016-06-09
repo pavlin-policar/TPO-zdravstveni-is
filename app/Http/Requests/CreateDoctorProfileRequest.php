@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
 use App\Models\CodeType;
 
 class CreateDoctorProfileRequest extends Request
@@ -24,6 +23,14 @@ class CreateDoctorProfileRequest extends Request
      */
     public function rules()
     {
+        $emailUnique = $this->route('user') === null ? '' :
+            '|unique:users,email,' . $this->route('user')->id;
+        $doctorNumberUnique = '|unique:doctor,doctor_number' . (
+            $this->route('user') === null ?
+                '' :
+                (',' . $this->route('user')->doctorProfile->id)
+            );
+
         return [
             'first_name' => 'required|alpha',
             'last_name' => 'required|alpha',
@@ -32,10 +39,10 @@ class CreateDoctorProfileRequest extends Request
                 CodeType::whereKey(CodeType::$codeTypes['GENDER'])->firstOrFail()
                     ->codes->lists('id')->implode(','),
 
-            'email' => 'required|email',
+            'email' => 'required|email' . $emailUnique,
             'phone_number' => 'required',
 
-            'doctor_number' => 'required|',
+            'doctor_number' => 'required' . $doctorNumberUnique,
             'max_patients' => 'required|numeric',
             'institution_id' => 'required|exists:codes,id',
         ];

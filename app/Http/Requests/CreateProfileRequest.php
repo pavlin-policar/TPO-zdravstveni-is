@@ -36,7 +36,7 @@ class CreateProfileRequest extends Request
                 CodeType::whereKey(CodeType::$codeTypes['GENDER'])->firstOrFail()
                     ->codes->lists('id')->implode(','),
 
-            'email' => 'required|email|' . $emailUnique,
+            'email' => 'required|email' . $emailUnique,
             'phone_number' => 'required',
             'post' => 'required|exists:posts,id',
             'address' => 'required',
