@@ -134,7 +134,7 @@ class CalendarController extends Controller
             foreach ($tempCheckups as $tempCheckup) $checkups[] = $tempCheckup;
         }
 
-        //dd($checkups[7]);
+        //dd($checkups);
 
         $events = [];
         if ($checkups != null) {
@@ -195,6 +195,11 @@ class CalendarController extends Controller
                 } // The event is still open
                 elseif (null == $checkup->patient) {
                     $title = 'Prost termin';
+                } elseif ($actualUser->id != $checkup->patient) {
+                    //dd($checkup);
+                    $title = User::where('id', '=', $checkup->patient)->first();
+                    $title = $title->fullName;
+                    $backgroundClr = '#099';
                 }
 
                 $ends = $checkup->time_end;
@@ -353,6 +358,7 @@ class CalendarController extends Controller
         $startDate = Carbon::createFromFormat('Y-m-d', $request->dayStart);
         $endDate = Carbon::createFromFormat('Y-m-d', $request->dayEnd);
 
+        $breakStart = null;
         if ($request->breakStart != null) $breakStart = Carbon::createFromFormat('H:i', $request->breakStart);
         //dd($breakStart);
         //dd(Carbon::parse($startDate)->dayOfWeek); // 1 = PON
