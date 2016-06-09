@@ -86,8 +86,18 @@ class CodeController extends Controller
 
     public function updateCode(Request $request, Code $code)
     {
-        $code->code = $request->code;
-        $code->update($request->all());
+        //$code->code = $request->code;
+        //die(var_dump($request->all()));
+        $data = $request->all();
+
+        if ($data['min_value'] === '') {
+            unset($data['min_value']);
+        }
+        if ($data['max_value'] === '') {
+            unset($data['max_value']);
+        }
+        //die(var_dump($data));
+        $code->update($data);
         return redirect()->route('code.edit', ['id' => $code->id]);
         //return redirect("codeType/".$codeType->codeType);
     }
