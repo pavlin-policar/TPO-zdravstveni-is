@@ -26,14 +26,14 @@
                         @for ($x=0; $x < count($diseases); $x++)
                             <tr>
                                 <td>{{ $diseases[$x]->name }}</td>
-                                <td>{{ date("d.m.Y H:i",strtotime($diseases[$x]->start)) }}</td>
+                                <td>{{ date("d.m.Y",strtotime($diseases[$x]->start)) }}</td>
                                 @if($diseases[$x]->end == null)
                                     <td></td>
                                 @else
-                                    <td>{{ date("d.m.Y H:i",strtotime($diseases[$x]->end)) }}</td>
+                                    <td>{{ date("d.m.Y",strtotime($diseases[$x]->end)) }}</td>
                                 @endif
                                 <td>{{ $diseases[$x]->note }}</td>
-                                <td><a href ='{{ $diseases[$x]->description }}' target="_blank">{{ $diseases[$x]->description }}</a></td>
+                                <td>{{ $diseases[$x]->description }}</td>
                             </tr>
                         @endfor
                         </tbody>
