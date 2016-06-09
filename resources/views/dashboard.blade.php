@@ -17,7 +17,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            {!! Form::open(['route' => ['api.dashboard.updateLayout', Auth::user()->id], 'method' => 'put', 'id' => 'dashboard-layout-update']) !!}
+                            {!! Form::open(['route' => ['api.dashboard.updateLayout', $user->id], 'method' => 'put', 'id' => 'dashboard-layout-update']) !!}
                             <div class="sub-title">Nastavitev vidnih elementov</div>
                             {{-- Personnel --}}
                             <div class="checkbox">

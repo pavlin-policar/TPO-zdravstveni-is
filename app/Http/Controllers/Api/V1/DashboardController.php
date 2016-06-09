@@ -43,9 +43,10 @@ class DashboardController extends Controller
      */
     public function getDashboardLayout(User $user)
     {
-        $result = DashboardLayout::where('active_user_id', Auth::user()->id)
+        $result = DashboardLayout::where('active_user_id', $user->id)
             ->where('user_dashboard_id', $user->id)
             ->get();
+        $result = $user->dashboard_layout;
         // no result was found
         return $result->isEmpty() ?
             ['active_user_id' => Auth::user()->id, 'user_dashboard_id' => $user->id] :
@@ -67,7 +68,7 @@ class DashboardController extends Controller
         $settings = $request->all() + $reset;
         unset($settings['_method']);
         unset($settings['_token']);
-        Auth::user()->update([
+        $user->update([
             'dashboard_layout' => json_encode($settings, true)
         ]);
         return redirect()->back();
