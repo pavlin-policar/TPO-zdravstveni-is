@@ -268,16 +268,28 @@
                                             @endif
                                         </tr>
                                         @endif
+                                        @if($settings['dashboard-gender'])
+                                            <tr>
+                                                <td>Spol:</td>
+                                                <td>{{ $user->gender !== null ? App\Models\Code::find($user->gender)->name : 'Ni podano'}}</td>
+                                            </tr>
+                                        @endif
+                                        @if($settings['dashboard-email'])
+                                            <tr>
+                                                <td>Elektronski naslov:</td>
+                                                <td>{{ $user->email !== null ? $user->email : 'Ni podano'}}</td>
+                                            </tr>
+                                        @endif
+                                        @if($settings['dashboard-telephone'])
+                                            <tr>
+                                                <td>Telefonska številka:</td>
+                                                <td>{{ $user->phone_number }}</td>
+                                            </tr>
+                                        @endif
                                         @if($settings['dashboard-address'])
                                         <tr>
                                             <td>Naslov:</td>
                                             <td>{{ $user->address !== null ? $user->address.', ' : '' }} {{ $user->postCode !== null ? $user->postCode : '' }}</td>
-                                        </tr>
-                                        @endif
-                                        @if($settings['dashboard-telephone'])
-                                        <tr>
-                                            <td>Telefonska številka:</td>
-                                            <td>{{ $user->phone_number }}</td>
                                         </tr>
                                         @endif
                                         @if($settings['dashboard-zz'])
