@@ -219,13 +219,13 @@
                                             </thead>
                                             <tbody>
                                             @foreach($allDatesDoctor as $date)
-                                                @if($date->patient == $date->doctor)
+                                                @if(($date->patient == $date->doctor) && ($date->note != 'odmor'))
                                                     <tr>
                                                         <td>{{ date("d.m.Y H:i",strtotime($date->time)) }}</td>
                                                         <td>{{ $date->first_name }} {{ $date->last_name }}</td>
                                                         <td>{{ $date->note }}</td>
                                                     </tr>
-                                                @else
+                                                @elseif ($date->note != 'odmor')
                                                     <tr>
                                                         <td>{!! link_to_route('check.doctor', date("d.m.Y H:i",strtotime($date->time)), $date->id)!!}</td>
                                                         <td>{!! link_to_route('check.doctor', $date->first_name .' '. $date->last_name, $date->id)!!}</td>
