@@ -102,7 +102,7 @@
                                         <tr><td><p></p></td><td><p></p></td></tr>
                                         <tr>
                                             <td>Zdravilo: </td>
-                                            <td>{{ $checkData[$x]->name }}</td>
+                                            <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
                                         </tr>
                                         <tr>
                                             <td>Začetek jemanja: </td>
@@ -145,7 +145,7 @@
                                         <tr><td><p></p></td><td><p></p></td></tr>
                                         <tr>
                                             <td>Bolezen ali alergija: </td>
-                                            <td>{{ $checkData[$x]->name }}</td>
+                                            <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
                                         </tr>
                                         <tr>
                                             <td>Pojavitev bolezni ali alergije: </td>
@@ -192,7 +192,7 @@
                                         <tr><td><p></p></td><td><p></p></td></tr>
                                         <tr>
                                             <td>Dieta: </td>
-                                            <td>{{ $checkData[$x]->name }}</td>
+                                            <td>{!! link_to_route('code.publicDetail', $checkData[$x]->name, ['id' => $checkData[$x]->code ]) !!}</td>
                                         </tr>
                                         <tr>
                                             <td>Začetek diete: </td>
