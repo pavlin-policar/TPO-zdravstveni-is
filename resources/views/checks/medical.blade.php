@@ -25,7 +25,7 @@
                         <tbody>
                             @for ($x=0; $x < count($medicals); $x++)
                                 <tr>
-                                    <td>{{ $medicals[$x]->name }}</td>
+                                    <td>{!! link_to_route('code.publicDetail', $medicals[$x]->name, ['id' => $medicals[$x]->code ]) !!}</td>
                                     <td>{{ date("d.m.Y",strtotime($medicals[$x]->start)) }}</td>
                                     @if($medicals[$x]->end == null)
                                         <td></td>
