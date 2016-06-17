@@ -26,13 +26,14 @@
             <label class="col-md-4 control-label">Geslo</label>
 
             <div class="col-md-6">
-                <input type="password" class="form-control" name="password">
+                <input type="password" class="form-control" name="password" id='password'>
 
                 @if ($errors->has('password'))
                     <span class="help-block">
                         <strong>{{ $errors->first('password') }}</strong>
                     </span>
                 @endif
+                @include('profile.tabs.passCheck')
             </div>
         </div>
 
@@ -49,7 +50,9 @@
                 @endif
             </div>
         </div>
-
+        <div class="col-sm-offset-2 col-sm-10">
+            @include('auth.passwords.passStrength')
+        </div>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-4">
                 <button type="submit" class="btn btn-primary">
