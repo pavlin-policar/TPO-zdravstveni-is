@@ -10,11 +10,12 @@
   "dependencies": {
     "laravel-elixir": "^5.0.0",
     "bootstrap-sass": "^3.0.0",
-    "snyk": "^1.110.2"
+    "snyk": "^1.161.1"
   },
   "scripts": {
     "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "prepare": "npm run snyk-protect",
+    "prepublish": "npm run snyk-protect"
   },
   "snyk": true
 }
