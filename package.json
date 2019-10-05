@@ -10,7 +10,7 @@
   "dependencies": {
     "laravel-elixir": "^5.0.0",
     "bootstrap-sass": "^3.0.0",
-    "snyk": "^1.110.2"
+    "snyk": "^1.231.0"
   },
   "scripts": {
     "snyk-protect": "snyk protect",
